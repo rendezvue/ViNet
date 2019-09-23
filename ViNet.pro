@@ -27,34 +27,6 @@ INCLUDEPATH += /usr/local/include/opencv4/opencv /usr/local/include/opencv4 ./mo
 LIBS += -lboost_system -lboost_thread -lboost_filesystem -lboost_regex -lopencv_gapi -lopencv_stitching -lopencv_aruco -lopencv_bgsegm -lopencv_bioinspired -lopencv_ccalib -lopencv_dnn_objdetect -lopencv_dpm -lopencv_face -lopencv_freetype -lopencv_fuzzy -lopencv_hdf -lopencv_hfs -lopencv_img_hash -lopencv_line_descriptor -lopencv_reg -lopencv_rgbd -lopencv_saliency -lopencv_sfm -lopencv_stereo -lopencv_structured_light -lopencv_phase_unwrapping -lopencv_superres -lopencv_optflow -lopencv_surface_matching -lopencv_tracking -lopencv_datasets -lopencv_text -lopencv_dnn -lopencv_plot -lopencv_videostab -lopencv_video -lopencv_viz -lopencv_xfeatures2d -lopencv_shape -lopencv_ml -lopencv_ximgproc -lopencv_xobjdetect -lopencv_objdetect -lopencv_calib3d -lopencv_features2d -lopencv_highgui -lopencv_videoio -lopencv_imgcodecs -lopencv_flann -lopencv_xphoto -lopencv_photo -lopencv_imgproc -lopencv_core
 
 
-
-FORMS += \
-        mainwindow.ui \
-    cdialogconnect.ui \
-    formtoollist.ui \
-    formjobbase.ui \
-    formdeviceinfo.ui \
-    formcandidatetool.ui \
-    formjobtool.ui \
-    dialogsetbase.ui \
-    dialogchangename.ui \
-    dialogsettoolobject.ui \
-    dialogsettoolcrack.ui \
-    dialogsettoolline.ui \
-    dialogsettoolcircle.ui \
-    dialogsettooldistance.ui \
-    dialogsettoolinspectdistance.ui \
-    cdialognewproject.ui \
-    dialogselecttooloption.ui \
-    formtooloption.ui \
-    formproject.ui \
-    dialogsettoolangle.ui \
-    dialogsettoolcolor.ui \
-    dialogsettooldistanceinspect.ui \
-    dialogsettoolangleinspect.ui \
-    dialogsettooldiameterinspect.ui \
-    dialogsetcalibration.ui
-
 RESOURCES += \
     resource.qrc
 
@@ -144,4 +116,31 @@ SOURCES += \
     src/formtooloption.cpp \
     src/main.cpp \
     src/mainwindow.cpp
+
+FORMS += \
+    ui/cdialogconnect.ui \
+    ui/cdialognewproject.ui \
+    ui/dialogchangename.ui \
+    ui/dialogselecttooloption.ui \
+    ui/dialogsetbase.ui \
+    ui/dialogsetcalibration.ui \
+    ui/dialogsettoolangle.ui \
+    ui/dialogsettoolangleinspect.ui \
+    ui/dialogsettoolcircle.ui \
+    ui/dialogsettoolcolor.ui \
+    ui/dialogsettoolcrack.ui \
+    ui/dialogsettooldiameterinspect.ui \
+    ui/dialogsettooldistance.ui \
+    ui/dialogsettooldistanceinspect.ui \
+    ui/dialogsettoolinspectdistance.ui \
+    ui/dialogsettoolline.ui \
+    ui/dialogsettoolobject.ui \
+    ui/formcandidatetool.ui \
+    ui/formdeviceinfo.ui \
+    ui/formjobbase.ui \
+    ui/formjobtool.ui \
+    ui/formproject.ui \
+    ui/formtoollist.ui \
+    ui/formtooloption.ui \
+    ui/mainwindow.ui
 
