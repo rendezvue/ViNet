@@ -71,37 +71,37 @@ HEADERS += \
     module/PacketEthComm/RendezvueCheckData.h \
     module/pugixml/src/pugiconfig.hpp \
     module/pugixml/src/pugixml.hpp \
-    cdialogconnect.h \
-    cdialognewproject.h \
-    cjobtree.h \
-    cmat2qimage.h \
-    csettoolinfo.h \
-    csetuserregion.h \
-    cthreaddraw.h \
-    ctoollist.h \
-    dialogchangename.h \
-    dialogselecttooloption.h \
-    dialogsetbase.h \
-    dialogsetcalibration.h \
-    dialogsettoolangle.h \
-    dialogsettoolangleinspect.h \
-    dialogsettoolcircle.h \
-    dialogsettoolcolor.h \
-    dialogsettoolcrack.h \
-    dialogsettooldiameterinspect.h \
-    dialogsettooldistance.h \
-    dialogsettooldistanceinspect.h \
-    dialogsettoolinspectdistance.h \
-    dialogsettoolline.h \
-    dialogsettoolobject.h \
-    formcandidatetool.h \
-    formdeviceinfo.h \
-    formjobbase.h \
-    formjobtool.h \
-    formproject.h \
-    formtoollist.h \
-    formtooloption.h \
-    mainwindow.h
+    src/cdialogconnect.h \
+    src/cdialognewproject.h \
+    src/cjobtree.h \
+    src/cmat2qimage.h \
+    src/csettoolinfo.h \
+    src/csetuserregion.h \
+    src/cthreaddraw.h \
+    src/ctoollist.h \
+    src/dialogchangename.h \
+    src/dialogselecttooloption.h \
+    src/dialogsetbase.h \
+    src/dialogsetcalibration.h \
+    src/dialogsettoolangle.h \
+    src/dialogsettoolangleinspect.h \
+    src/dialogsettoolcircle.h \
+    src/dialogsettoolcolor.h \
+    src/dialogsettoolcrack.h \
+    src/dialogsettooldiameterinspect.h \
+    src/dialogsettooldistance.h \
+    src/dialogsettooldistanceinspect.h \
+    src/dialogsettoolinspectdistance.h \
+    src/dialogsettoolline.h \
+    src/dialogsettoolobject.h \
+    src/formcandidatetool.h \
+    src/formdeviceinfo.h \
+    src/formjobbase.h \
+    src/formjobtool.h \
+    src/formproject.h \
+    src/formtoollist.h \
+    src/formtooloption.h \
+    src/mainwindow.h
 
 SOURCES += \
     module/EnsembleAPI/src/Interface.cpp \
@@ -112,37 +112,36 @@ SOURCES += \
     module/PacketEthComm/EthernetClient.cpp \
     module/PacketEthComm/RendezvueCheckData.cpp \
     module/pugixml/src/pugixml.cpp \
-    cdialogconnect.cpp \
-    cdialognewproject.cpp \
-    cjobtree.cpp \
-    cmat2qimage.cpp \
-    csettoolinfo.cpp \
-    csetuserregion.cpp \
-    cthreaddraw.cpp \
-    ctoollist.cpp \
-    dialogchangename.cpp \
-    dialogselecttooloption.cpp \
-    dialogsetbase.cpp \
-    dialogsetcalibration.cpp \
-    dialogsettoolangle.cpp \
-    dialogsettoolangleinspect.cpp \
-    dialogsettoolcircle.cpp \
-    dialogsettoolcolor.cpp \
-    dialogsettoolcrack.cpp \
-    dialogsettooldiameterinspect.cpp \
-    dialogsettooldistance.cpp \
-    dialogsettooldistanceinspect.cpp \
-    dialogsettoolinspectdistance.cpp \
-    dialogsettoolline.cpp \
-    dialogsettoolobject.cpp \
-    formcandidatetool.cpp \
-    formdeviceinfo.cpp \
-    formjobbase.cpp \
-    formjobtool.cpp \
-    formproject.cpp \
-    formtoollist.cpp \
-    formtooloption.cpp \
-    main.cpp \
-    mainwindow.cpp
-
+    src/cdialogconnect.cpp \
+    src/cdialognewproject.cpp \
+    src/cjobtree.cpp \
+    src/cmat2qimage.cpp \
+    src/csettoolinfo.cpp \
+    src/csetuserregion.cpp \
+    src/cthreaddraw.cpp \
+    src/ctoollist.cpp \
+    src/dialogchangename.cpp \
+    src/dialogselecttooloption.cpp \
+    src/dialogsetbase.cpp \
+    src/dialogsetcalibration.cpp \
+    src/dialogsettoolangle.cpp \
+    src/dialogsettoolangleinspect.cpp \
+    src/dialogsettoolcircle.cpp \
+    src/dialogsettoolcolor.cpp \
+    src/dialogsettoolcrack.cpp \
+    src/dialogsettooldiameterinspect.cpp \
+    src/dialogsettooldistance.cpp \
+    src/dialogsettooldistanceinspect.cpp \
+    src/dialogsettoolinspectdistance.cpp \
+    src/dialogsettoolline.cpp \
+    src/dialogsettoolobject.cpp \
+    src/formcandidatetool.cpp \
+    src/formdeviceinfo.cpp \
+    src/formjobbase.cpp \
+    src/formjobtool.cpp \
+    src/formproject.cpp \
+    src/formtoollist.cpp \
+    src/formtooloption.cpp \
+    src/main.cpp \
+    src/mainwindow.cpp
 
