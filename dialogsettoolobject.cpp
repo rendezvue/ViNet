@@ -1,0 +1,306 @@
+#include "dialogsettoolobject.h"
+#include "ui_dialogsettoolobject.h"
+
+DialogSetToolObject::DialogSetToolObject(QWidget *parent) :
+    QDialog(parent),
+    ui(new Ui::DialogSetToolObject)
+{
+    ui->setupUi(this);
+
+	//button
+	connect(ui->pushButton_get_base_image, SIGNAL(clicked()), this,  SLOT(OnButtonGetImage())) ;
+	connect(ui->pushButton_name_change, SIGNAL(clicked()), this,  SLOT(OnButtonNameChange())) ;
+
+	//Object
+	connect(ui->pushButton_select_object, SIGNAL(clicked()), this,  SLOT(OnButtonSelectObject())) ;
+	connect(ui->pushButton_reset_object, SIGNAL(clicked()), this,  SLOT(OnButtonResetObject())) ;
+
+	
+	//slider
+	connect(ui->horizontalSlider_feature_level, SIGNAL(sliderReleased()), this, SLOT(OnSliderSetFeatureLevel()));
+	connect(ui->horizontalSlider_feature_level, SIGNAL(sliderMoved(int)), this, SLOT(OnSliderMove(int)));
+}
+
+DialogSetToolObject::~DialogSetToolObject()
+{
+    delete ui;
+}
+
+void DialogSetToolObject::SetToolId(const std::string id)
+{
+	SetId(id) ;
+    ui->label_id->setText(QString::fromUtf8(GetId().c_str()));
+}
+
+void DialogSetToolObject::showEvent(QShowEvent *ev)
+{
+    QDialog::showEvent(ev) ;
+
+    //Get Name
+    std::string tool_name = EnsembleToolGetName(GetId()) ;
+    ui->label_name->setText(QString::fromUtf8(tool_name.c_str()));
+
+    qDebug("Tool Name = %s", tool_name.c_str()) ;
+	
+	//Get Level 
+    int feature_level = EnsembleToolGetFeatureLevel(GetId());
+	//Set Slider
+	ui->horizontalSlider_feature_level->setValue(feature_level) ;
+	ui->label_feature_level->setText(QString::number(feature_level));
+
+	//Get Base Level
+	int base_feature_level = Ensemble_Job_Get_FeatureLevel(GetParentId());
+	//Set Slider
+	std::string str_base_feature_level ;
+	str_base_feature_level = "(Base: " + std::to_string(base_feature_level) + ")" ;
+	QString qstr_base_feature_level = QString::fromStdString(str_base_feature_level);
+	ui->label_feature_level_base->setText(qstr_base_feature_level);
+
+	//Image
+	OnButtonGetImage() ;
+}
+
+void DialogSetToolObject::OnButtonNameChange(void)
+{
+    std::string tool_name = EnsembleToolGetName(GetId()) ;
+
+    DialogChangeName dlg_change_name ;
+
+    dlg_change_name.SetId(GetId());
+    dlg_change_name.SetName(tool_name);
+
+    int dialogCode = dlg_change_name.exec();
+
+    if(dialogCode == QDialog::Accepted)
+    { // YesButton clicked
+        std::string change_name = dlg_change_name.GetName() ;
+
+        qDebug("Tool Change Name = %s", change_name.c_str()) ;
+		
+        if( !change_name.empty() )
+        {
+            EnsembleToolSetName(GetId(), change_name) ;
+        }
+
+        tool_name = EnsembleToolGetName(GetId()) ;
+        ui->label_name->setText(QString::fromUtf8(tool_name.c_str()));
+
+        qDebug("Tool Name = %s", tool_name.c_str()) ;
+		
+		emit UpdateToolName(QString::fromUtf8(tool_name.c_str())) ;
+    }
+}
+
+void DialogSetToolObject::OnButtonGetImage(void)
+{
+    //Get Base Job Image
+    unsigned char* get_job_image_data = NULL ;
+    int job_image_width = 0 ;
+    int job_image_height = 0 ;
+
+	const int image_type = IMAGE_RGB888 ;
+	
+    EnsembleToolGetImage(GetId(), image_type, &get_job_image_data, &job_image_width, &job_image_height)  ;
+
+    if( job_image_width > 0 && job_image_height > 0 )
+    {
+    	if( image_type == IMAGE_YUV420 )
+    	{
+	        //YUV420
+	        cv::Mat get_image(job_image_height + job_image_height / 2, job_image_width, CV_8UC1, get_job_image_data) ;
+
+	        CImgDec cls_image_decoder ;
+	        m_image = cls_image_decoder.Decoding(get_image) ;
+		}
+		else if( image_type == IMAGE_RGB888 )
+		{
+			cv::Mat get_image(job_image_height, job_image_width, CV_8UC3, get_job_image_data) ;
+			cv::cvtColor(get_image, m_image, cv::COLOR_BGR2RGB) ;
+		}
+		
+        updatePicture(m_image) ;
+    }
+	
+    if( get_job_image_data != NULL )
+    {
+        delete [] get_job_image_data ;
+        get_job_image_data = NULL ;
+    }
+}
+
+void DialogSetToolObject::updatePicture(cv::Mat image, cv::Rect rect_user)
+{
+    QImage qt_display_image = QImage((const unsigned char*)image.data, image.cols, image.rows, QImage::Format_RGB888);
+
+	//draw set rect
+	if( !rect_user.empty() )
+	{
+	    qDebug("%s : rect(%d,%d,%d,%d", __func__, rect_user.x, rect_user.y, rect_user.width, rect_user.height) ;
+
+		if( rect_user.width > 0 && rect_user.height > 0 )
+		{
+			QPainter qPainter(&qt_display_image);
+			qPainter.setBrush(Qt::NoBrush);
+			qPainter.setPen(Qt::red);
+			qPainter.drawRect(rect_user.x,rect_user.y,rect_user.width,rect_user.height);
+			bool bEnd = qPainter.end();
+		}
+	}
+
+    ui->label_image->setPixmap(QPixmap::fromImage(qt_display_image));
+}
+
+void DialogSetToolObject::OnSliderSetFeatureLevel(void)
+{
+    //get level
+    int level = ui->horizontalSlider_feature_level->value() ;
+
+	qDebug("%s : SetFeatureLevel = %d", __func__, level) ;
+	//set level
+    EnsembleToolSetFeatureLevel(GetId(), level);
+
+	//Update Image
+	qDebug("%s : GetImage", __func__) ;
+	OnButtonGetImage() ;
+
+	qDebug("%s : GetFeatureLevel", __func__) ;
+	
+	//Get Level 
+    int feature_level = EnsembleToolGetFeatureLevel(GetId());
+
+	qDebug("%s : GetFeatureLevel = %d", __func__, feature_level) ;
+	
+	//Set Slider
+	ui->horizontalSlider_feature_level->setValue(feature_level) ;
+	ui->label_feature_level->setText(QString::number(feature_level));
+
+	//Get Base Level
+	int base_feature_level = Ensemble_Job_Get_FeatureLevel(GetParentId());
+	//Set Slider
+	std::string str_base_feature_level ;
+	str_base_feature_level = "(Base: " + std::to_string(base_feature_level) + ")" ;
+	QString qstr_base_feature_level = QString::fromStdString(str_base_feature_level);
+	ui->label_feature_level_base->setText(qstr_base_feature_level);
+
+	//emit UpdateToolObjectImage();
+}
+
+void DialogSetToolObject::OnSliderMove(int value)
+{
+    ui->label_feature_level->setText(QString::number(value));
+}
+
+void DialogSetToolObject::OnButtonSelectObject(void)
+{
+	m_cls_set_user_region.SetStatus(SetBaseStatus::SET_OBJECT) ;
+}
+
+void DialogSetToolObject::OnButtonResetObject(void)
+{
+	//Ensemble_Job_Del_SelectObject(GetId()) ;
+	
+    OnButtonGetImage() ;
+}
+
+#if 1
+void DialogSetToolObject::mousePressEvent(QMouseEvent *event)
+{
+    qDebug("%s - %d", __func__, __LINE__) ;
+
+    if (event->button() == Qt::LeftButton && m_cls_set_user_region.GetStatus() > SetBaseStatus::NORMAL ) 
+	{
+        QPoint point = event->pos() ;
+        point.setX(point.x() - ui->label_image->x());
+        point.setY(point.y() - ui->label_image->y());
+
+		cv::Rect rect_user = m_cls_set_user_region.StartSetRegion(point.x(), point.y()) ;
+
+		updatePicture(m_image, rect_user) ;
+    }
+}
+
+void DialogSetToolObject::mouseMoveEvent(QMouseEvent *event)
+{
+    qDebug("%s - %d", __func__, __LINE__) ;
+
+    if ((event->buttons() & Qt::LeftButton) && m_cls_set_user_region.GetStatus() > SetBaseStatus::NORMAL)
+	{
+		QPoint point = event->pos() ;
+        point.setX(point.x() - ui->label_image->x());
+        point.setY(point.y() - ui->label_image->y());
+
+		cv::Rect rect_user = m_cls_set_user_region.MoveSetRegion(point.x(), point.y()) ;
+		        
+		updatePicture(m_image, rect_user) ;
+	}
+}
+
+void DialogSetToolObject::mouseReleaseEvent(QMouseEvent *event)
+{
+    //if (event->button() == Qt::LeftButton && scribbling) {
+    //    drawLineTo(event->pos());
+    //    scribbling = false;
+    //}
+
+	//Set
+	int set_status = m_cls_set_user_region.GetStatus() ;
+
+	qDebug("%s - %d : m_set_status(%d), event->buttons()=%d", __func__, __LINE__, set_status, event->buttons()) ;
+	
+    if (set_status > SetBaseStatus::NORMAL)
+	{
+		qDebug("%s - %d", __func__, __LINE__) ;
+		
+		float f_x = 0.0 ;
+		float f_y = 0.0 ;
+		float f_w = 0.0 ;
+		float f_h = 0.0 ;
+
+        int label_w = ui->label_image->width() ;
+        int label_h = ui->label_image->height() ;
+
+		cv::Rect rect_user = m_cls_set_user_region.EndSetRegion() ;
+	
+        f_x = (float)rect_user.x / (float)label_w ;
+        f_y = (float)rect_user.y / (float)label_h ;
+        f_w = (float)rect_user.width / (float)label_w ;
+        f_h = (float)rect_user.height / (float)label_h ;
+
+		qDebug("%s - %d : m_set_status(%d)", __func__, __LINE__, set_status) ;
+		
+        if( set_status == SetBaseStatus::SET_AREA )
+        {
+            //Ensemble_Job_Set_DetectArea(GetId(), f_x, f_y, f_w, f_h) ;
+
+            //emit UpdateToolObjectImage();
+        }
+        else if( set_status == SetBaseStatus::SET_ZOOM)
+        {
+            //Ensemble_Job_Set_Zoom(GetId(), f_x, f_y, f_w, f_h) ;
+        }
+		else if( set_status == SetBaseStatus::SET_MASK)
+        {
+            bool b_enable_inside = false ;
+            if (ui->checkBox_mask_enable_inside->isChecked())	b_enable_inside = false ;
+            else												b_enable_inside = true ;
+				
+            //Ensemble_Job_Set_MaskArea(GetId(), f_x, f_y, f_w, f_h, b_enable_inside) ;
+
+			//emit UpdateToolObjectImage();
+        }
+		else if( set_status == SetBaseStatus::SET_OBJECT)
+		{
+			//SelectObject
+            EnsembleToolSelectObject(GetId(), f_x, f_y, f_w, f_h) ;
+
+			emit UpdateToolObjectImage();
+		}
+		
+        OnButtonGetImage() ;
+	}
+
+	updatePicture(m_image) ;
+}
+
+#endif
+

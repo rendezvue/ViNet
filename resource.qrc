@@ -1,0 +1,11 @@
+<!DOCTYPE RCC>
+<RCC version="1.0">
+    <qresource prefix="/icons">
+        <file>image/icons/del.png</file>
+        <file>image/icons/opt.png</file>
+        <file>image/icons/set.png</file>
+        <file>image/icons/view.png</file>
+        <file>image/icons/calib.png</file>
+        <file>image/icons/chess.png</file>
+    </qresource>
+</RCC>
