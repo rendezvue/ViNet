@@ -24,7 +24,7 @@ void DialogSetToolInspectDistance::showEvent(QShowEvent *ev)
     QDialog::showEvent(ev) ;
 
     //Get Name
-    std::string tool_name = EnsembleToolGetName(GetId()) ;
+    std::string tool_name = Ensemble_Tool_Get_Name(GetId()) ;
     ui->label_name_distance->setText(QString::fromUtf8(tool_name.c_str()));
 
     qDebug("Tool Name = %s", tool_name.c_str()) ;

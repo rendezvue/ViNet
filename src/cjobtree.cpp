@@ -99,7 +99,7 @@ void CJobTree::dropEvent(QDropEvent *event)
 
         qDebug("dropEvent : project id = %s", str_target_id.c_str()) ;
 
-		if( EnsembleIsOnline() & ENSEMBLE_CONNECT_CONTROL_PORT )
+		if( Ensemble_Network_IsOnline() & ENSEMBLE_CONNECT_CONTROL_PORT )
 		{
 			if( item_to_type == JobType::JOB_TYPE_PROJECT )
 			{
@@ -142,7 +142,7 @@ void CJobTree::dropEvent(QDropEvent *event)
 				        QString parent_job_base_id = parent_item_user_data.toString() ;
 				        std::string str_parent_job_base_id = parent_job_base_id.toUtf8().constData() ;
 
-                        EnsembleToolInsert(str_parent_job_base_id, target_index, type) ;
+                        Ensemble_Tool_Insert(str_parent_job_base_id, target_index, type) ;
 
 						qDebug("call API : EnsembleInsertTool : Type Tool : parent id=%s, target_index=%d, type=%d", str_parent_job_base_id.c_str(), target_index, type) ;
 						
@@ -179,7 +179,7 @@ void CJobTree::dropEvent(QDropEvent *event)
         QTreeWidgetItem* item = this->itemAt(pos);
 		
 		//Move
-		if( EnsembleIsOnline() & ENSEMBLE_CONNECT_CONTROL_PORT )
+		if( Ensemble_Network_IsOnline() & ENSEMBLE_CONNECT_CONTROL_PORT )
 		{
 #if 0
 			if( item->type() == JobType::JOB_TYPE_TOOL )
@@ -231,7 +231,7 @@ void CJobTree::dropEvent(QDropEvent *event)
 
 			if( str_parent_job_base_id.size() > 0 )
 			{
-                EnsembleToolMove(str_parent_job_base_id, cur_index, target_index) ;
+                Ensemble_Tool_Move(str_parent_job_base_id, cur_index, target_index) ;
 			}
 #endif
 		}
@@ -384,7 +384,10 @@ void CJobTree::dragMoveEvent(QDragMoveEvent *event)
         {
         	//get type
         	#if 1
-	    	QByteArray itemData = event->mimeData()->data(CToolList::itemMimeType());
+	    	QByteArray itemData ;
+			if( event->mimeData()->hasFormat(CToolList::itemMimeType()) )		itemData = event->mimeData()->data(CToolList::itemMimeType());
+			else if( event->mimeData()->hasFormat(CJobTree::itemMimeType()) )	itemData = event->mimeData()->data(CJobTree::itemMimeType());
+			
 	        QDataStream dataStream(&itemData, QIODevice::ReadOnly);
 	        int item_from_type = -1;
 	        dataStream >> item_from_type;		

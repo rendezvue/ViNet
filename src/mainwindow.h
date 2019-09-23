@@ -81,7 +81,7 @@ protected:
                 m_mat_input_image = cv::Mat::zeros(DISPLAY_IMAGE_HEIGHT, DISPLAY_IMAGE_WIDTH, CV_8UC3) ;
             }
 
-            if( EnsembleIsOnline() & ENSEMBLE_CONNECT_CONTROL_PORT )
+            if( Ensemble_Network_IsOnline() & ENSEMBLE_CONNECT_CONTROL_PORT )
             {
                 unsigned char* get_data = NULL ;
                 int width = DISPLAY_IMAGE_WIDTH ;
@@ -99,12 +99,12 @@ protected:
                 }
                 else if( m_i_type == 2 )        //merge image = image + result
                 {
-                	EnsembleGetImage(GET_IMAGE_INPUT, image_type+IMAGE_ADD_TIME+IMAGE_ADD_SOURCE_INFO, &get_data, &width, &height) ;
+                	Ensemble_Source_Get_Image(GET_IMAGE_INPUT, image_type+IMAGE_ADD_TIME+IMAGE_ADD_SOURCE_INFO, &get_data, &width, &height) ;
                     Ensemble_Job_Get_ResultImage(m_str_id, image_type, &get_data_result, &width_result, &height_result) ;                    
                 }
                 else
                 {
-                    EnsembleGetImage(GET_IMAGE_INPUT, image_type+IMAGE_ADD_TIME+IMAGE_ADD_SOURCE_INFO, &get_data, &width, &height) ;
+                    Ensemble_Source_Get_Image(GET_IMAGE_INPUT, image_type+IMAGE_ADD_TIME+IMAGE_ADD_SOURCE_INFO, &get_data, &width, &height) ;
                 }
 
 

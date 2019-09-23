@@ -37,13 +37,13 @@ void DialogSetToolObject::showEvent(QShowEvent *ev)
     QDialog::showEvent(ev) ;
 
     //Get Name
-    std::string tool_name = EnsembleToolGetName(GetId()) ;
+    std::string tool_name = Ensemble_Tool_Get_Name(GetId()) ;
     ui->label_name->setText(QString::fromUtf8(tool_name.c_str()));
 
     qDebug("Tool Name = %s", tool_name.c_str()) ;
 	
 	//Get Level 
-    int feature_level = EnsembleToolGetFeatureLevel(GetId());
+    int feature_level = Ensemble_Tool_Get_FeatureLevel(GetId());
 	//Set Slider
 	ui->horizontalSlider_feature_level->setValue(feature_level) ;
 	ui->label_feature_level->setText(QString::number(feature_level));
@@ -62,7 +62,7 @@ void DialogSetToolObject::showEvent(QShowEvent *ev)
 
 void DialogSetToolObject::OnButtonNameChange(void)
 {
-    std::string tool_name = EnsembleToolGetName(GetId()) ;
+    std::string tool_name = Ensemble_Tool_Get_Name(GetId()) ;
 
     DialogChangeName dlg_change_name ;
 
@@ -79,10 +79,10 @@ void DialogSetToolObject::OnButtonNameChange(void)
 		
         if( !change_name.empty() )
         {
-            EnsembleToolSetName(GetId(), change_name) ;
+            Ensemble_Tool_Set_Name(GetId(), change_name) ;
         }
 
-        tool_name = EnsembleToolGetName(GetId()) ;
+        tool_name = Ensemble_Tool_Get_Name(GetId()) ;
         ui->label_name->setText(QString::fromUtf8(tool_name.c_str()));
 
         qDebug("Tool Name = %s", tool_name.c_str()) ;
@@ -100,7 +100,7 @@ void DialogSetToolObject::OnButtonGetImage(void)
 
 	const int image_type = IMAGE_RGB888 ;
 	
-    EnsembleToolGetImage(GetId(), image_type, &get_job_image_data, &job_image_width, &job_image_height)  ;
+    Ensemble_Tool_Get_Image(GetId(), image_type, &get_job_image_data, &job_image_width, &job_image_height)  ;
 
     if( job_image_width > 0 && job_image_height > 0 )
     {
@@ -157,7 +157,7 @@ void DialogSetToolObject::OnSliderSetFeatureLevel(void)
 
 	qDebug("%s : SetFeatureLevel = %d", __func__, level) ;
 	//set level
-    EnsembleToolSetFeatureLevel(GetId(), level);
+    Ensemble_Tool_Set_FeatureLevel(GetId(), level);
 
 	//Update Image
 	qDebug("%s : GetImage", __func__) ;
@@ -166,7 +166,7 @@ void DialogSetToolObject::OnSliderSetFeatureLevel(void)
 	qDebug("%s : GetFeatureLevel", __func__) ;
 	
 	//Get Level 
-    int feature_level = EnsembleToolGetFeatureLevel(GetId());
+    int feature_level = Ensemble_Tool_Get_FeatureLevel(GetId());
 
 	qDebug("%s : GetFeatureLevel = %d", __func__, feature_level) ;
 	
@@ -291,7 +291,7 @@ void DialogSetToolObject::mouseReleaseEvent(QMouseEvent *event)
 		else if( set_status == SetBaseStatus::SET_OBJECT)
 		{
 			//SelectObject
-            EnsembleToolSelectObject(GetId(), f_x, f_y, f_w, f_h) ;
+            Ensemble_Tool_Set_SelectObject(GetId(), f_x, f_y, f_w, f_h) ;
 
 			emit UpdateToolObjectImage();
 		}

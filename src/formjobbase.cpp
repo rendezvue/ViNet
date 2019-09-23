@@ -67,7 +67,7 @@ void FormJobBase::OnButtonDel(void)
 
 void FormJobBase::OnButtonRun(void)
 {
-	EnsembleJobRun(GetIdInfo()) ;
+	Ensemble_Job_Run(GetIdInfo()) ;
 
 	QString qstr_id = QString::fromStdString(GetIdInfo());
 	emit UpdateResultImage(qstr_id) ;

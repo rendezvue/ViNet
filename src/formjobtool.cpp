@@ -59,7 +59,7 @@ void FormJobTool::showEvent(QShowEvent *ev)
 
     //Set Initialize
     //Get Option Count
-    m_i_option_count = EnsembleToolGetOptionListCount(GetType()) ;
+    m_i_option_count = Ensemble_Tool_Get_OptionList_Count(GetType()) ;
 
 	OnUpdateImage() ;
 
@@ -199,7 +199,7 @@ void FormJobTool::OnUpdateList(void)
 
 void FormJobTool::OnButtonDel(void)
 {
-    EnsembleToolDel(GetIdInfo()) ;
+    Ensemble_Tool_Del(GetIdInfo()) ;
 	
 	OnUpdateList();
 }
@@ -337,7 +337,7 @@ void FormJobTool::OnUpdateImage(void)
     int object_image_height = 0 ;
 
 	const int image_type = IMAGE_RGB888 ;
-    EnsembleToolGetObjectImage(GetIdInfo(), image_type+IMAGE_ICON, &get_object_image_data, &object_image_width, &object_image_height)  ;
+    Ensemble_Tool_Get_ObjectImage(GetIdInfo(), image_type+IMAGE_ICON, &get_object_image_data, &object_image_width, &object_image_height)  ;
 
 	cv::Mat object_image ;
 	if( object_image_width > 0 && object_image_height > 0 )

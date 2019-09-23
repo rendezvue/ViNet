@@ -154,7 +154,7 @@ void FormToolOption::leaveEvent(QEvent * e)
 
 void FormToolOption::OnButtonDel(void)
 {
-    EnsembleToolDelOption(GetIdInfo()) ;
+    Ensemble_Tool_Del_Option(GetIdInfo()) ;
 
 	emit UpdateList() ;
 }
@@ -259,7 +259,7 @@ void FormToolOption::showEvent(QShowEvent *ev)
 	//Get Information
     if( GetType() == ToolTypeList::TOOL_TYPE_OPTION_INSPECT_CRACK )
     {
-        int inspect_crack_level = Ensemble_Tool_Option_Crack_GetInspectLevel(GetIdInfo());
+        int inspect_crack_level = Ensemble_Tool_Option_Crack_Get_InspectLevel(GetIdInfo());
 		str_info = "Crack Level : " + std::to_string(inspect_crack_level) ;		
     }
 

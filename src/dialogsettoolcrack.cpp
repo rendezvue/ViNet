@@ -28,7 +28,7 @@ void DialogSetToolCrack::showEvent(QShowEvent *ev)
     QDialog::showEvent(ev) ;
 
 	//Get Level 
-    int inspect_level = Ensemble_Tool_Option_Crack_GetInspectLevel(GetId());
+    int inspect_level = Ensemble_Tool_Option_Crack_Get_InspectLevel(GetId());
 	//Set Slider
 	ui->horizontalSlider_feature_level->setValue(inspect_level) ;
 	ui->label_feature_level->setText(QString::number(inspect_level));
@@ -41,12 +41,12 @@ void DialogSetToolCrack::OnSliderSetFeatureLevel(void)
 
 	qDebug("%s : SetInspectLevel = %d", __func__, level) ;
 	//set level
-    Ensemble_Tool_Option_Crack_SetInspectLevel(GetId(), level);
+    Ensemble_Tool_Option_Crack_Set_InspectLevel(GetId(), level);
 
 	qDebug("%s : GetInspectLevel", __func__) ;
 	
 	//Get Level 
-    int inspect_level = Ensemble_Tool_Option_Crack_GetInspectLevel(GetId());
+    int inspect_level = Ensemble_Tool_Option_Crack_Get_InspectLevel(GetId());
 
 	qDebug("%s : GetFeatureLevel = %d", __func__, inspect_level) ;
 	

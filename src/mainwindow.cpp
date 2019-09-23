@@ -122,7 +122,7 @@ void MainWindow::OnSourceListDClick(const QModelIndex &index)
     QString itemText = index.data(Qt::DisplayRole).toString();
 
     std::string str_source = itemText.toUtf8().constData() ;
-    EnsembleSetSource(str_source) ;
+    Ensemble_Source_Set(str_source) ;
 
     //tab : Result Image
     ui->tabWidget_image->setCurrentIndex(0);
@@ -184,7 +184,7 @@ void MainWindow::OnMenuConnect(void)
 
         qDebug("Connect Info : %s", str_ip_address.c_str()) ;
 
-        int ret = EnsembleConnect(str_ip_address.c_str());
+        int ret = Ensemble_Network_Connect(str_ip_address.c_str());
 
         qDebug("Connect Ensemble : %d", ret ) ;
 
@@ -198,7 +198,7 @@ void MainWindow::OnMenuConnect(void)
        
             qDebug(" - Success : Image Port") ;
 
-			std::string str_source_list_xml = EnsembleGetSourceList() ;
+			std::string str_source_list_xml = Ensemble_Source_Get_List() ;
 
 			//xml parsing
 			//XML Parsing
@@ -259,7 +259,7 @@ void MainWindow::OnMenuConnect(void)
 
 void MainWindow::UpdateToolsListFromDevice(QListWidget *listWidget) 
 {
-	std::string str_able_tools_list_xml = EnsembleGetToolList() ;
+	std::string str_able_tools_list_xml = Ensemble_Info_Get_ToolList() ;
 
 	qDebug("tools info xml = %s", str_able_tools_list_xml.c_str()) ;
 
@@ -532,13 +532,13 @@ void MainWindow::UpdateJobTree(void)
 
             //---
             //Set Informationupda
-            if( EnsembleIsOnline() & ENSEMBLE_CONNECT_CONTROL_PORT )
+            if( Ensemble_Network_IsOnline() & ENSEMBLE_CONNECT_CONTROL_PORT )
             {
                 unsigned char* get_data = NULL ;
                 int width = 0 ;
                 int height = 0 ;
 				const int image_type = IMAGE_RGB888 ;
-                EnsembleGetImage(GET_IMAGE_DEVICE_ICON, image_type, &get_data, &width, &height) ;
+                Ensemble_Source_Get_Image(GET_IMAGE_DEVICE_ICON, image_type, &get_data, &width, &height) ;
 
                 //qDebug("Get Image Size = %d x %d", width, height) ;
 
@@ -624,7 +624,7 @@ void MainWindow::UpdateJobTree(void)
                     int type = job.attribute("Type").as_int();
                     std::string str_name = job.attribute("Name").value();
 					
-					std::string str_tool_type_name = EnsembleGetToolTypeName(type) ;
+					std::string str_tool_type_name = Ensemble_Info_Get_ToolTypeName(type) ;
 					
                     qDebug("Job : Type=%d, TypeName=%s, Name=%s", type, str_tool_type_name.c_str(), str_name.c_str()) ;
 
@@ -654,7 +654,7 @@ void MainWindow::UpdateJobTree(void)
 	                    int type = tool.attribute("Type").as_int();
 	                    std::string str_name = tool.attribute("Name").value();
 						
-						std::string str_tool_type_name = EnsembleGetToolTypeName(type) ;
+						std::string str_tool_type_name = Ensemble_Info_Get_ToolTypeName(type) ;
 						
 	                    qDebug("Tool Type=%d, TypeName=%s, Name=%s", type, str_tool_type_name.c_str(), str_name.c_str()) ;
 
@@ -687,7 +687,7 @@ void MainWindow::UpdateJobTree(void)
 		                    int option_type = option.attribute("Type").as_int();
 		                    std::string str_option_name = option.attribute("Name").value();
 							
-							std::string str_tool_option_type_name = EnsembleGetToolTypeName(option_type) ;
+							std::string str_tool_option_type_name = Ensemble_Info_Get_ToolTypeName(option_type) ;
 							
 		                    qDebug("Tool Option Type=%d, TypeName=%s, Name=%s", option_type, str_tool_option_type_name.c_str(), str_option_name.c_str()) ;
 
