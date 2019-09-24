@@ -15,6 +15,8 @@ DialogSetCalibration::DialogSetCalibration(QWidget *parent) :
 	connect(ui->pushButton_del, SIGNAL(clicked()), this,  SLOT(OnButtonDelCalibrationInfo())) ;
 	connect(ui->pushButton_clear, SIGNAL(clicked()), this,  SLOT(OnButtonClearCalibrationInfo())) ;
 	connect(ui->pushButton_update, SIGNAL(clicked()), this,	SLOT(OnButtonUpdateCalibrationInfo())) ;	
+
+	connect(ui->pushButton_calibration_run, SIGNAL(clicked()), this, SLOT(OnButtonCalibrationRun())) ;	
 }
 
 DialogSetCalibration::~DialogSetCalibration()
@@ -150,7 +152,7 @@ void DialogSetCalibration::OnButtonUpdateCalibrationInfo(void)
 		Ensemble_Job_Calibration_GetRobotInfo(GetId(), i, &robot_x, &robot_y);
 
 		cv::Mat image;
-		cv::resize(calibration_image, image, cv::Size(160, 120));
+		cv::resize(calibration_image, image, cv::Size(120, 90));
 
 		//calibration_image.release() ;
 
@@ -161,5 +163,12 @@ void DialogSetCalibration::OnButtonUpdateCalibrationInfo(void)
 		//Add Image List
         ui->listWidget_calibration->addItem(new QListWidgetItem(QIcon(QPixmap::fromImage(qt_calibration_image)), str.c_str()));
 	}
+}
+
+void DialogSetCalibration::OnButtonCalibrationRun(void)
+{
+	Ensemble_Job_Calibration_Run(GetId());
+
+	//UpdateDataCalibrationRun();
 }
 

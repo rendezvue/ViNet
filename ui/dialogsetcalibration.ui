@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>980</width>
-    <height>752</height>
+    <width>950</width>
+    <height>760</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -43,7 +43,7 @@
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>40</y>
+     <y>240</y>
      <width>640</width>
      <height>480</height>
     </rect>
@@ -59,8 +59,8 @@
    <property name="geometry">
     <rect>
      <x>660</x>
-     <y>20</y>
-     <width>311</width>
+     <y>240</y>
+     <width>271</width>
      <height>191</height>
     </rect>
    </property>
@@ -70,7 +70,7 @@
    <widget class="QLabel" name="label">
     <property name="geometry">
      <rect>
-      <x>20</x>
+      <x>10</x>
       <y>40</y>
       <width>91</width>
       <height>25</height>
@@ -86,7 +86,7 @@
    <widget class="QLineEdit" name="lineEdit_chess_x_num">
     <property name="geometry">
      <rect>
-      <x>120</x>
+      <x>110</x>
       <y>40</y>
       <width>113</width>
       <height>25</height>
@@ -96,7 +96,7 @@
    <widget class="QLineEdit" name="lineEdit_chess_y_num">
     <property name="geometry">
      <rect>
-      <x>120</x>
+      <x>110</x>
       <y>70</y>
       <width>113</width>
       <height>25</height>
@@ -106,7 +106,7 @@
    <widget class="QLabel" name="label_2">
     <property name="geometry">
      <rect>
-      <x>20</x>
+      <x>10</x>
       <y>70</y>
       <width>91</width>
       <height>25</height>
@@ -122,7 +122,7 @@
    <widget class="QLabel" name="label_3">
     <property name="geometry">
      <rect>
-      <x>20</x>
+      <x>10</x>
       <y>100</y>
       <width>91</width>
       <height>25</height>
@@ -138,7 +138,7 @@
    <widget class="QLineEdit" name="lineEdit_chess_size">
     <property name="geometry">
      <rect>
-      <x>120</x>
+      <x>110</x>
       <y>100</y>
       <width>113</width>
       <height>25</height>
@@ -148,7 +148,7 @@
    <widget class="QLabel" name="label_4">
     <property name="geometry">
      <rect>
-      <x>240</x>
+      <x>230</x>
       <y>100</y>
       <width>31</width>
       <height>25</height>
@@ -192,7 +192,7 @@
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>530</y>
+     <y>730</y>
      <width>171</width>
      <height>25</height>
     </rect>
@@ -205,9 +205,9 @@
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>560</y>
+     <y>40</y>
      <width>641</width>
-     <height>181</height>
+     <height>191</height>
     </rect>
    </property>
    <property name="title">
@@ -222,10 +222,18 @@
       <height>121</height>
      </rect>
     </property>
+    <property name="font">
+     <font>
+      <pointsize>8</pointsize>
+     </font>
+    </property>
+    <property name="lineWidth">
+     <number>1</number>
+    </property>
     <property name="iconSize">
      <size>
-      <width>160</width>
-      <height>120</height>
+      <width>120</width>
+      <height>90</height>
      </size>
     </property>
     <property name="resizeMode">
@@ -384,6 +392,19 @@
      <string>Update List</string>
     </property>
    </widget>
+  </widget>
+  <widget class="QPushButton" name="pushButton_calibration_run">
+   <property name="geometry">
+    <rect>
+     <x>670</x>
+     <y>60</y>
+     <width>261</width>
+     <height>41</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Calibration Run</string>
+   </property>
   </widget>
  </widget>
  <resources/>

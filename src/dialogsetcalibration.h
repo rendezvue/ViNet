@@ -37,6 +37,7 @@ public slots:
 	void OnButtonDelCalibrationInfo(void) ;
 	void OnButtonClearCalibrationInfo(void) ;
 	void OnButtonUpdateCalibrationInfo(void) ;
+	void OnButtonCalibrationRun(void) ;
 
 
 };
