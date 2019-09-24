@@ -13,8 +13,8 @@ FormToolOption::FormToolOption(QWidget *parent) :
 	ui->pushButton_option_del->setVisible(false);
 	ui->pushButton_option_set->setVisible(false);
 	
-	ui->checkBox_run->setVisible(false);
-	ui->checkBox_view->setVisible(false);
+	//ui->checkBox_run->setVisible(false);
+	//ui->checkBox_view->setVisible(false);
 
 	//button
     connect(ui->pushButton_option_del, SIGNAL(clicked()), this,  SLOT(OnButtonDel())) ;
@@ -24,8 +24,8 @@ FormToolOption::FormToolOption(QWidget *parent) :
 	connect(&m_dlg_set_tool_crack, SIGNAL(UpdateInfo(QString)), this,  SLOT(OnBUpdateInfo(QString))) ;	
 
 	//check box
-	connect(ui->checkBox_run, SIGNAL(toggled(bool)), this, SLOT(OnRunCheckBoxToggled(bool)));
-	connect(ui->checkBox_view, SIGNAL(toggled(bool)), this, SLOT(OnViewCheckBoxToggled(bool)));
+	connect(ui->checkBox_run, SIGNAL(clicked(bool)), this, SLOT(OnRunCheckBoxToggled(bool)));
+	connect(ui->checkBox_view, SIGNAL(clicked(bool)), this, SLOT(OnViewCheckBoxToggled(bool)));
 
 }
 
@@ -103,8 +103,8 @@ void FormToolOption::hoverEnter(QHoverEvent * event)
 	ui->pushButton_option_del->setVisible(true);
 	ui->pushButton_option_set->setVisible(true);
 
-	ui->checkBox_run->setVisible(true);
-    ui->checkBox_view->setVisible(true);
+	//ui->checkBox_run->setVisible(true);
+    //ui->checkBox_view->setVisible(true);
 }
 
 void FormToolOption::hoverLeave(QHoverEvent * event)
@@ -112,8 +112,8 @@ void FormToolOption::hoverLeave(QHoverEvent * event)
 	ui->pushButton_option_del->setVisible(false);
 	ui->pushButton_option_set->setVisible(false);
 
-	ui->checkBox_run->setVisible(false);
-	ui->checkBox_view->setVisible(false);
+	//ui->checkBox_run->setVisible(false);
+	//ui->checkBox_view->setVisible(false);
 }
 
 void FormToolOption::hoverMove(QHoverEvent * event)

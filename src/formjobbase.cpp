@@ -15,9 +15,9 @@ FormJobBase::FormJobBase(QWidget *parent) :
     ui->pushButton_change->setVisible(false);
 	ui->pushButton_run->setVisible(false);
 	ui->pushButton_del->setVisible(false);
-
-	ui->checkBox_run->setVisible(false);
-	ui->checkBox_view->setVisible(false);
+	ui->pushButton_set_calib->setVisible(false);
+	//ui->checkBox_run->setVisible(false);
+	//ui->checkBox_view->setVisible(false);
 
 	//button
     connect(ui->pushButton_del, SIGNAL(clicked()), this,  SLOT(OnButtonDel())) ;
@@ -31,8 +31,8 @@ FormJobBase::FormJobBase(QWidget *parent) :
 	connect(ui->pushButton_set_calib, SIGNAL(clicked()), this, SLOT(OnButtonSetCalibration())) ;
 
 	//check box
-    connect(ui->checkBox_run, SIGNAL(toggled(bool)), this, SLOT(OnRunCheckBoxToggled(bool)));
-    connect(ui->checkBox_view, SIGNAL(toggled(bool)), this, SLOT(OnViewCheckBoxToggled(bool)));
+    connect(ui->checkBox_run, SIGNAL(clicked(bool)), this, SLOT(OnRunCheckBoxToggled(bool)));
+    connect(ui->checkBox_view, SIGNAL(clicked(bool)), this, SLOT(OnViewCheckBoxToggled(bool)));
 }
 
 FormJobBase::~FormJobBase()
@@ -258,9 +258,10 @@ void FormJobBase::hoverEnter(QHoverEvent * event)
     ui->pushButton_change->setVisible(true);
 	ui->pushButton_run->setVisible(true);
 	ui->pushButton_del->setVisible(true);
-
-	ui->checkBox_run->setVisible(true);
-	ui->checkBox_view->setVisible(true);
+	ui->pushButton_set_calib->setVisible(true);
+	
+	//ui->checkBox_run->setVisible(true);
+	//ui->checkBox_view->setVisible(true);
 
     //qDebug() << Q_FUNC_INFO << event->type();
 }
@@ -270,9 +271,10 @@ void FormJobBase::hoverLeave(QHoverEvent * event)
     ui->pushButton_change->setVisible(false);
 	ui->pushButton_run->setVisible(false);
 	ui->pushButton_del->setVisible(false);
+	ui->pushButton_set_calib->setVisible(false);
 
-	ui->checkBox_run->setVisible(false);
-	ui->checkBox_view->setVisible(false);
+	//ui->checkBox_run->setVisible(false);
+	//ui->checkBox_view->setVisible(false);
 	
     //qDebug() << Q_FUNC_INFO << event->type();
 }
@@ -289,6 +291,8 @@ int FormJobBase::GetType(void)
 
 void FormJobBase::OnRunCheckBoxToggled(bool checked)
 {
+	qDebug("Base Run Check = %d", checked) ;
+	
 	Ensemble_Task_Set_Run_Option(GetIdInfo(), checked) ;
 		
 	//run checkbox
@@ -301,6 +305,8 @@ void FormJobBase::OnRunCheckBoxToggled(bool checked)
 
 void FormJobBase::OnViewCheckBoxToggled(bool checked)
 {
+    qDebug("Base View Check = %d", checked) ;
+		
 	Ensemble_Task_Set_View_Option(GetIdInfo(), checked) ;
 		
 	//view checkbox

@@ -15,8 +15,8 @@ FormJobTool::FormJobTool(QWidget *parent) :
 	ui->pushButton_del->setVisible(false);
 	ui->pushButton_option->setVisible(false);
 
-	ui->checkBox_run->setVisible(false);
-	ui->checkBox_view->setVisible(false);
+	//ui->checkBox_run->setVisible(false);
+	//ui->checkBox_view->setVisible(false);
 	
 	//button
     connect(ui->pushButton_del, SIGNAL(clicked()), this,  SLOT(OnButtonDel())) ;
@@ -44,8 +44,8 @@ FormJobTool::FormJobTool(QWidget *parent) :
 
 	
 	//check box
-	connect(ui->checkBox_run, SIGNAL(toggled(bool)), this, SLOT(OnRunCheckBoxToggled(bool)));
-	connect(ui->checkBox_view, SIGNAL(toggled(bool)), this, SLOT(OnViewCheckBoxToggled(bool)));
+	connect(ui->checkBox_run, SIGNAL(clicked(bool)), this, SLOT(OnRunCheckBoxToggled(bool)));
+	connect(ui->checkBox_view, SIGNAL(clicked(bool)), this, SLOT(OnViewCheckBoxToggled(bool)));
 }
 
 FormJobTool::~FormJobTool()
@@ -306,8 +306,8 @@ void FormJobTool::hoverEnter(QHoverEvent * event)
 	ui->pushButton_del->setVisible(true);
 	if( m_i_option_count > 0 )	ui->pushButton_option->setVisible(true);
 
-	ui->checkBox_run->setVisible(true);
-	ui->checkBox_view->setVisible(true);
+	//ui->checkBox_run->setVisible(true);
+	//ui->checkBox_view->setVisible(true);
 
     //qDebug() << Q_FUNC_INFO << event->type();
 }
@@ -318,8 +318,8 @@ void FormJobTool::hoverLeave(QHoverEvent * event)
 	ui->pushButton_del->setVisible(false);
 	if( m_i_option_count > 0 )	ui->pushButton_option->setVisible(false);
 
-	ui->checkBox_run->setVisible(false);
-	ui->checkBox_view->setVisible(false);
+	//ui->checkBox_run->setVisible(false);
+	//ui->checkBox_view->setVisible(false);
 	
     //qDebug() << Q_FUNC_INFO << event->type();
 }
