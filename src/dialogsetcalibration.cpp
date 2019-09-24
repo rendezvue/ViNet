@@ -169,6 +169,38 @@ void DialogSetCalibration::OnButtonCalibrationRun(void)
 {
 	Ensemble_Job_Calibration_Run(GetId());
 
-	//UpdateDataCalibrationRun();
+	UpdateDataCalibrationRun(0.5, 0.5);
+}
+
+void DialogSetCalibration::UpdateDataCalibrationRun(float f_pixel_x, float f_pixel_y)
+{
+	//check calibration result
+	float robot_x = 0;
+	float robot_y = 0;
+	Ensemble_Job_Calibration_GetPoint(GetId(), f_pixel_x, f_pixel_y, &robot_x, &robot_y);
+
+	std::string str_info ;
+	char cstr_info[255] ;
+	sprintf(cstr_info, "(%d,%d)pixel -> (%.2f,%.2f)mm", (int)(640.0*f_pixel_x), (int)(480.0*f_pixel_y), robot_x, robot_y) ;
+	str_info = cstr_info ;
+	ui->label_calibration_info->setText(QString::fromUtf8(str_info.c_str()));
+}
+
+void DialogSetCalibration::mousePressEvent(QMouseEvent *event)
+{
+    if (event->button() == Qt::LeftButton ) 
+	{
+        QPoint point = event->pos() ;
+        point.setX(point.x() - ui->label_image->x());
+        point.setY(point.y() - ui->label_image->y());
+
+		int label_w = ui->label_image->width() ;
+        int label_h = ui->label_image->height() ;
+
+       	float pixel_x = (float)point.x() / (float)label_w ;
+        float pixel_y = (float)point.y() / (float)label_h ;
+
+		UpdateDataCalibrationRun(pixel_x, pixel_y) ;
+    }
 }
 

@@ -393,18 +393,60 @@
     </property>
    </widget>
   </widget>
-  <widget class="QPushButton" name="pushButton_calibration_run">
+  <widget class="QGroupBox" name="groupBox_4">
    <property name="geometry">
     <rect>
-     <x>670</x>
-     <y>60</y>
-     <width>261</width>
-     <height>41</height>
+     <x>660</x>
+     <y>40</y>
+     <width>271</width>
+     <height>191</height>
     </rect>
    </property>
-   <property name="text">
-    <string>Calibration Run</string>
+   <property name="title">
+    <string>Calibration</string>
    </property>
+   <widget class="QPushButton" name="pushButton_calibration_run">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>30</y>
+      <width>251</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Calibration Run</string>
+    </property>
+   </widget>
+   <widget class="QGroupBox" name="groupBox_5">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>70</y>
+      <width>251</width>
+      <height>111</height>
+     </rect>
+    </property>
+    <property name="title">
+     <string>Check Calibration Data</string>
+    </property>
+    <widget class="QLabel" name="label_calibration_info">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>30</y>
+       <width>231</width>
+       <height>71</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>(0,0)pixel -&gt; (0,0)mm</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+   </widget>
   </widget>
  </widget>
  <resources/>

@@ -2,6 +2,8 @@
 #define DIALOGSETCALIBRATION_H
 
 #include <QDialog>
+#include <QMouseEvent>
+
 
 //API
 #include "EnsembleAPI.h"
@@ -26,9 +28,11 @@ private:
     Ui::DialogSetCalibration *ui;
 
 	std::string m_str_id ;
-
+	void UpdateDataCalibrationRun(float f_pixel_x, float f_pixel_y) ;
+		
 protected :
 	void showEvent(QShowEvent *ev) override;
+	void mousePressEvent(QMouseEvent *event) override;
 
 public slots:
 	void OnButtonGetChessInfo(void) ;
