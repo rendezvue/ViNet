@@ -10,7 +10,11 @@ DialogSetCalibration::DialogSetCalibration(QWidget *parent) :
 	//button
 	connect(ui->pushButton_chess_get, SIGNAL(clicked()), this,  SLOT(OnButtonGetChessInfo())) ;
 	connect(ui->pushButton_get_calibration_image, SIGNAL(clicked()), this,  SLOT(OnButtonGetCalibrationImage())) ;
-	
+
+	connect(ui->pushButton_add, SIGNAL(clicked()), this,  SLOT(OnButtonAddCalibrationInfo())) ;
+	connect(ui->pushButton_del, SIGNAL(clicked()), this,  SLOT(OnButtonDelCalibrationInfo())) ;
+	connect(ui->pushButton_clear, SIGNAL(clicked()), this,  SLOT(OnButtonClearCalibrationInfo())) ;
+	connect(ui->pushButton_update, SIGNAL(clicked()), this,	SLOT(OnButtonUpdateCalibrationInfo())) ;	
 }
 
 DialogSetCalibration::~DialogSetCalibration()
@@ -39,6 +43,9 @@ void DialogSetCalibration::showEvent(QShowEvent *ev)
 	
 	//Get Chesboard information
 	OnButtonGetChessInfo() ;
+
+	//Update Information List
+	OnButtonUpdateCalibrationInfo() ;
 }
 
 void DialogSetCalibration::OnButtonGetChessInfo(void)
@@ -52,31 +59,6 @@ void DialogSetCalibration::OnButtonGetChessInfo(void)
 	ui->lineEdit_chess_x_num->setText(QString::number(chess_x_num));
 	ui->lineEdit_chess_y_num->setText(QString::number(chess_y_num));
 	ui->lineEdit_chess_size->setText(QString::number(chess_square_mm_size));
-
-	//calibration image list
-	int nCalibrationInfo = Ensemble_Job_Calibration_GetCount(GetId());
-
-	ui->listWidget_calibration->clear();
-	for (int i = 0; i < nCalibrationInfo; i++)
-	{
-		cv::Mat calibration_image = cv::Mat::zeros(cv::Size(640, 480), CV_8UC3);
-
-		int len = 640*480*3;
-		Ensemble_Job_Calibration_GetImage(GetId(), i, (char**)&calibration_image.data, &len);
-			
-		float robot_x = 0.0, robot_y = 0.0;
-		Ensemble_Job_Calibration_GetRobotInfo(GetId(), i, &robot_x, &robot_y);
-
-		cv::Mat image;
-		cv::resize(calibration_image, image, cv::Size(160, 120));
-
-		QImage qt_calibration_image = QImage((const unsigned char*)image.data, image.cols, image.rows, QImage::Format_RGB888);
-
-        std::string str ;
-        str = "Pos(" + std::to_string(robot_x) + "," + std::to_string(robot_y) + ")" ;
-		//Add Image List
-        ui->listWidget_calibration->addItem(new QListWidgetItem(QIcon(QPixmap::fromImage(qt_calibration_image)), str.c_str()));
-	}
 }
 
 void DialogSetCalibration::OnButtonGetCalibrationImage(void)
@@ -107,4 +89,77 @@ void DialogSetCalibration::OnButtonGetCalibrationImage(void)
 	ui->label_image->setPixmap(QPixmap::fromImage(qt_display_image));
 }
 
+void DialogSetCalibration::OnButtonAddCalibrationInfo(void)
+{
+	float f_robot_x = ui->lineEdit_robot_x->text().toFloat();
+	float f_robot_y = ui->lineEdit_robot_y->text().toFloat();
+	
+	Ensemble_Job_Calibration_Add(GetId(), f_robot_x, f_robot_y);
+
+	OnButtonUpdateCalibrationInfo();
+}
+
+void DialogSetCalibration::OnButtonDelCalibrationInfo(void)
+{
+	int select_index = ui->listWidget_calibration->currentRow() ;
+
+    Ensemble_Job_Calibration_Del(GetId(), select_index);
+
+    OnButtonUpdateCalibrationInfo();
+}
+
+void DialogSetCalibration::OnButtonClearCalibrationInfo(void)
+{
+    Ensemble_Job_Calibration_Clear(GetId());
+
+	OnButtonUpdateCalibrationInfo();
+}
+
+void DialogSetCalibration::OnButtonUpdateCalibrationInfo(void)
+{
+	ui->listWidget_calibration->clear();
+	
+	//calibration image list
+	int nCalibrationInfo = Ensemble_Job_Calibration_GetCount(GetId());
+
+    qDebug("Calibration count = %d", nCalibrationInfo) ;
+
+	for (int i = 0; i < nCalibrationInfo; i++)
+	{
+        unsigned char* get_data = NULL ;
+        int width = 640 ;
+        int height = 480 ;
+		const int image_type = IMAGE_RGB888 ;
+		
+		Ensemble_Job_Calibration_GetImage(GetId(), i, image_type, &get_data, &width, &height) ;
+
+		cv::Mat calibration_image ;
+        if( get_data != NULL )
+        {
+            if( width>0 && height >0 )
+            {
+                cv::Mat get_image(height, width, CV_8UC3, get_data) ;
+                cv::cvtColor(get_image, calibration_image, cv::COLOR_BGR2RGB) ;
+            }
+
+            delete [] get_data ;
+            get_data = NULL ;
+        }
+
+		float robot_x = 0.0, robot_y = 0.0;
+		Ensemble_Job_Calibration_GetRobotInfo(GetId(), i, &robot_x, &robot_y);
+
+		cv::Mat image;
+		cv::resize(calibration_image, image, cv::Size(160, 120));
+
+		//calibration_image.release() ;
+
+		QImage qt_calibration_image = QImage((const unsigned char*)image.data, image.cols, image.rows, QImage::Format_RGB888);
+
+        std::string str ;
+        str = "Pos(" + std::to_string(robot_x) + "," + std::to_string(robot_y) + ")" ;
+		//Add Image List
+        ui->listWidget_calibration->addItem(new QListWidgetItem(QIcon(QPixmap::fromImage(qt_calibration_image)), str.c_str()));
+	}
+}
 
