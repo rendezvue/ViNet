@@ -538,7 +538,7 @@ void MainWindow::UpdateJobTree(void)
                 int width = 0 ;
                 int height = 0 ;
 				const int image_type = IMAGE_RGB888 ;
-                Ensemble_Source_Get_Image(GET_IMAGE_DEVICE_ICON, image_type, &get_data, &width, &height) ;
+                Ensemble_Source_Get_Image(GET_IMAGE_DEVICE_ICON, std::string(), image_type, &get_data, &width, &height) ;
 
                 //qDebug("Get Image Size = %d x %d", width, height) ;
 

@@ -83,8 +83,25 @@ void DialogSetCalibration::OnButtonGetCalibrationImage(void)
 {
 	cv::Mat calib_image = cv::Mat::zeros(cv::Size(640, 480), CV_8UC3); //cv::imread("base.png");		//opencv mat for display
 
+	unsigned char* get_data = NULL ;
+    int width = 640 ;
+    int height = 480 ;
+
 	const int image_type = IMAGE_RGB888 ;
-	Ensemble_Source_Get_Image(GET_IMAGE_CALIBRATION_FEATURE, image_type, (unsigned char**)&calib_image.data, &calib_image.cols, &calib_image.rows) ;
+	
+    Ensemble_Source_Get_Image(GET_IMAGE_CALIBRATION_FEATURE, GetId(), image_type, &get_data, &width, &height) ;
+
+    if( get_data != NULL )
+    {
+        if( width>0 && height >0 )
+        {
+			cv::Mat get_image(height, width, CV_8UC3, get_data) ;
+			cv::cvtColor(get_image, calib_image, cv::COLOR_BGR2RGB) ;
+        }
+    	
+        delete [] get_data ;
+        get_data = NULL ;
+    }
 
 	QImage qt_display_image = QImage((const unsigned char*)calib_image.data, calib_image.cols, calib_image.rows, QImage::Format_RGB888);
 	ui->label_image->setPixmap(QPixmap::fromImage(qt_display_image));

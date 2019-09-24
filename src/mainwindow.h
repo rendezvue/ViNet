@@ -99,12 +99,12 @@ protected:
                 }
                 else if( m_i_type == 2 )        //merge image = image + result
                 {
-                	Ensemble_Source_Get_Image(GET_IMAGE_INPUT, image_type+IMAGE_ADD_TIME+IMAGE_ADD_SOURCE_INFO, &get_data, &width, &height) ;
+                    Ensemble_Source_Get_Image(GET_IMAGE_INPUT, std::string(), image_type+IMAGE_ADD_TIME+IMAGE_ADD_SOURCE_INFO, &get_data, &width, &height) ;
                     Ensemble_Job_Get_ResultImage(m_str_id, image_type, &get_data_result, &width_result, &height_result) ;                    
                 }
                 else
                 {
-                    Ensemble_Source_Get_Image(GET_IMAGE_INPUT, image_type+IMAGE_ADD_TIME+IMAGE_ADD_SOURCE_INFO, &get_data, &width, &height) ;
+                    Ensemble_Source_Get_Image(GET_IMAGE_INPUT, std::string(), image_type+IMAGE_ADD_TIME+IMAGE_ADD_SOURCE_INFO, &get_data, &width, &height) ;
                 }
 
 
