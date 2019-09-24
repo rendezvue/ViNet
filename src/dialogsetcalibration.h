@@ -32,6 +32,7 @@ protected :
 
 public slots:
 	void OnButtonGetChessInfo(void) ;
+	void OnButtonGetCalibrationImage(void) ;
 
 
 };

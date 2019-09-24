@@ -9,6 +9,8 @@ DialogSetCalibration::DialogSetCalibration(QWidget *parent) :
 
 	//button
 	connect(ui->pushButton_chess_get, SIGNAL(clicked()), this,  SLOT(OnButtonGetChessInfo())) ;
+	connect(ui->pushButton_get_calibration_image, SIGNAL(clicked()), this,  SLOT(OnButtonGetCalibrationImage())) ;
+	
 }
 
 DialogSetCalibration::~DialogSetCalibration()
@@ -32,6 +34,9 @@ void DialogSetCalibration::showEvent(QShowEvent *ev)
 {
     QDialog::showEvent(ev) ;
 
+	//Get Calibration Image
+	OnButtonGetCalibrationImage() ;
+	
 	//Get Chesboard information
 	OnButtonGetChessInfo() ;
 }
@@ -73,4 +78,16 @@ void DialogSetCalibration::OnButtonGetChessInfo(void)
         ui->listWidget_calibration->addItem(new QListWidgetItem(QIcon(QPixmap::fromImage(qt_calibration_image)), str.c_str()));
 	}
 }
+
+void DialogSetCalibration::OnButtonGetCalibrationImage(void)
+{
+	cv::Mat calib_image = cv::Mat::zeros(cv::Size(640, 480), CV_8UC3); //cv::imread("base.png");		//opencv mat for display
+
+	const int image_type = IMAGE_RGB888 ;
+	Ensemble_Source_Get_Image(GET_IMAGE_CALIBRATION_FEATURE, image_type, (unsigned char**)&calib_image.data, &calib_image.cols, &calib_image.rows) ;
+
+	QImage qt_display_image = QImage((const unsigned char*)calib_image.data, calib_image.cols, calib_image.rows, QImage::Format_RGB888);
+	ui->label_image->setPixmap(QPixmap::fromImage(qt_display_image));
+}
+
 
