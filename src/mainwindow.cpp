@@ -259,7 +259,7 @@ void MainWindow::OnMenuConnect(void)
 
 void MainWindow::UpdateToolsListFromDevice(QListWidget *listWidget) 
 {
-	std::string str_able_tools_list_xml = Ensemble_Info_Get_ToolList() ;
+	std::string str_able_tools_list_xml = Ensemble_Info_Type_Get_Tool_List_Xml() ;
 
 	qDebug("tools info xml = %s", str_able_tools_list_xml.c_str()) ;
 
@@ -340,7 +340,7 @@ void MainWindow::UpdateToolsListFromDevice(QListWidget *listWidget)
 
 void MainWindow::UpdateJobsListFromDevice(QListWidget *listWidget) 
 {
-	std::string str_able_tools_list_xml = Ensemble_Job_Type_Get_List_Xml() ;
+	std::string str_able_tools_list_xml = Ensemble_Info_Type_Get_Job_List_Xml() ;
 
 	qDebug("tools info xml = %s", str_able_tools_list_xml.c_str()) ;
 
