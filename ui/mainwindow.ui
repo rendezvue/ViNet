@@ -105,7 +105,7 @@
      <enum>QTabWidget::Rounded</enum>
     </property>
     <property name="currentIndex">
-     <number>0</number>
+     <number>1</number>
     </property>
     <widget class="QWidget" name="tab_image">
      <attribute name="title">
@@ -136,6 +136,33 @@
        <string/>
       </property>
      </widget>
+     <widget class="QLabel" name="image_bg">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>640</width>
+        <height>480</height>
+       </rect>
+      </property>
+      <property name="baseSize">
+       <size>
+        <width>640</width>
+        <height>480</height>
+       </size>
+      </property>
+      <property name="frameShape">
+       <enum>QFrame::Panel</enum>
+      </property>
+      <property name="lineWidth">
+       <number>0</number>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <zorder>image_bg</zorder>
+     <zorder>image</zorder>
     </widget>
     <widget class="QWidget" name="tab_result">
      <attribute name="title">
@@ -166,6 +193,33 @@
        <string/>
       </property>
      </widget>
+     <widget class="QLabel" name="result_bg">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>640</width>
+        <height>480</height>
+       </rect>
+      </property>
+      <property name="baseSize">
+       <size>
+        <width>640</width>
+        <height>480</height>
+       </size>
+      </property>
+      <property name="frameShape">
+       <enum>QFrame::Panel</enum>
+      </property>
+      <property name="lineWidth">
+       <number>0</number>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <zorder>result_bg</zorder>
+     <zorder>result</zorder>
     </widget>
     <widget class="QWidget" name="tab_merge">
      <attribute name="title">
@@ -196,6 +250,33 @@
        <string/>
       </property>
      </widget>
+     <widget class="QLabel" name="merge_bg">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>640</width>
+        <height>480</height>
+       </rect>
+      </property>
+      <property name="baseSize">
+       <size>
+        <width>640</width>
+        <height>480</height>
+       </size>
+      </property>
+      <property name="frameShape">
+       <enum>QFrame::Panel</enum>
+      </property>
+      <property name="lineWidth">
+       <number>0</number>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <zorder>merge_bg</zorder>
+     <zorder>merge</zorder>
     </widget>
    </widget>
    <widget class="QGroupBox" name="groupBox">

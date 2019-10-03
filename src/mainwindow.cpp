@@ -31,6 +31,11 @@ MainWindow::MainWindow(QWidget *parent) :
     //Source list
     connect(ui->listView_source, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(OnSourceListDClick(const QModelIndex &)));
 
+    //background color
+    ui->image_bg->setStyleSheet("QLabel { background-color : black; }");
+    ui->merge_bg->setStyleSheet("QLabel { background-color : black; }");
+    ui->result_bg->setStyleSheet("QLabel { background-color : black; }");
+
     //connect(ui->treeWidget_job, SIGNAL(itemEntered(QTreeWidgetItem*,int))
 
     //items
@@ -131,21 +136,80 @@ void MainWindow::OnSourceListDClick(const QModelIndex &index)
 
 void MainWindow::updatePicture(cv::Mat image)
 {
-    QImage qt_display_image = QImage((const unsigned char*)image.data, image.cols, image.rows, QImage::Format_RGB888);
-
     //ui->ui_label->setPixmap(QPixmap::fromImage(qt_display_image));
     int tab_index = ui->tabWidget_image->currentIndex() ;
 
     if( tab_index == 0 )
     {
+        const int draw_width = ui->image_bg->width();
+        const int draw_height = ui->image_bg->height();
+
+        float rescale_w = (float)draw_width / (float)image.cols ;
+        float rescale_h = (float)draw_height / (float)image.rows ;
+
+        float min_rescale = std::fmin(rescale_w, rescale_h) ;
+        if( min_rescale < 1.0 )
+        {
+            cv::resize(image, image, cv::Size(), min_rescale, min_rescale) ;
+        }
+
+        //fit image label by image isze
+        int pos_x = (int)((float)ui->image_bg->x() + (float)(draw_width - image.cols)/2.0) ;
+        int pos_y = (int)((float)ui->image_bg->y() + (float)(draw_height - image.rows)/2.0) ;
+
+        ui->image->setGeometry(pos_x, pos_y, image.cols, image.rows);
+
+        QImage qt_display_image = QImage((const unsigned char*)image.data, image.cols, image.rows, QImage::Format_RGB888);
         ui->image->setPixmap(QPixmap::fromImage(qt_display_image));
     }
     else if( tab_index == 1 )
     {
+        qDebug("ui->result image size : %d, %d", image.cols, image.rows) ;
+
+        const int draw_width = ui->result_bg->width();
+        const int draw_height = ui->result_bg->height();
+
+        float rescale_w = (float)draw_width / (float)image.cols ;
+        float rescale_h = (float)draw_height / (float)image.rows ;
+
+        float min_rescale = std::fmin(rescale_w, rescale_h) ;
+        if( min_rescale < 1.0 )
+        {
+            cv::resize(image, image, cv::Size(), min_rescale, min_rescale) ;
+        }
+
+        //fit image label by image isze
+        int pos_x = (int)((float)ui->result_bg->x() + (float)(draw_width - image.cols)/2.0) ;
+        int pos_y = (int)((float)ui->result_bg->y() + (float)(draw_height - image.rows)/2.0) ;
+
+        ui->result->setGeometry(pos_x, pos_y, image.cols, image.rows);
+
+        qDebug("ui->result : %d, %d, %d, %d", ui->result->x(), ui->result->y(), ui->result->width(), ui->result->height()) ;
+
+        QImage qt_display_image = QImage((const unsigned char*)image.data, image.cols, image.rows, QImage::Format_RGB888);
         ui->result->setPixmap(QPixmap::fromImage(qt_display_image));
     }
     else if( tab_index == 2 )
     {
+        const int draw_width = ui->merge_bg->width();
+        const int draw_height = ui->merge_bg->height();
+
+        float rescale_w = (float)draw_width / (float)image.cols ;
+        float rescale_h = (float)draw_height / (float)image.rows ;
+
+        float min_rescale = std::fmin(rescale_w, rescale_h) ;
+        if( min_rescale < 1.0 )
+        {
+            cv::resize(image, image, cv::Size(), min_rescale, min_rescale) ;
+        }
+
+        //fit image label by image isze
+        int pos_x = (int)((float)ui->merge_bg->x() + (float)(draw_width - image.cols)/2.0) ;
+        int pos_y = (int)((float)ui->merge_bg->y() + (float)(draw_height - image.rows)/2.0) ;
+
+        ui->merge->setGeometry(pos_x, pos_y, image.cols, image.rows);
+
+        QImage qt_display_image = QImage((const unsigned char*)image.data, image.cols, image.rows, QImage::Format_RGB888);
         ui->merge->setPixmap(QPixmap::fromImage(qt_display_image));
     }
 }
@@ -738,3 +802,10 @@ void MainWindow::OnButtonLoadAllTask(void)
 	UpdateJobTree() ;
 }
 
+void MainWindow::showEvent(QShowEvent *ev)
+{
+    QMainWindow::showEvent(ev) ;
+
+    //tab : Result Image
+    ui->tabWidget_image->setCurrentIndex(0);
+}

@@ -12,6 +12,8 @@
 #include <QStringListModel>
 #include <QAbstractItemView>
 
+#include <QEvent>
+
 #include "opencv2/opencv.hpp"
 
 //Dialog
@@ -96,6 +98,8 @@ protected:
                 if( m_i_type == 1 )        //result
                 {
                     Ensemble_Job_Get_ResultImage(m_str_id, image_type, &get_data_result, &width_result, &height_result) ;
+
+                    qDebug("Result Image Size = %d, %d", width_result, height_result) ;
                 }
                 else if( m_i_type == 2 )        //merge image = image + result
                 {
@@ -159,7 +163,7 @@ protected:
                     	}
 						else if( image_type == IMAGE_RGB888 )
 						{
-							cv::Mat get_image(height, width, CV_8UC3, get_data_result) ;
+                            cv::Mat get_image(height_result, width_result, CV_8UC3, get_data_result) ;
 							cv::cvtColor(get_image, m_mat_result_image, cv::COLOR_BGR2RGB) ;
 						}
                     }
@@ -181,9 +185,12 @@ protected:
 
 				//qDebug("Get Image Mege") ;
 				
-				//merge
 				if( m_i_type == 1 )        //result
                 {
+                    //cv::imshow("result", m_mat_result_image) ;
+                    //cv::waitKey(1) ;
+                    qDebug("input result image size = %d, %d", m_mat_result_image.cols, m_mat_result_image.rows) ;
+
                 	m_mat_result_image.copyTo(m_mat_input_image );
 				}
 				else if( m_i_type == 2 )		//merge
@@ -250,6 +257,9 @@ private:
     void UpdateJobsListFromDevice(QListWidget *listWidget) ;
 
     QStringListModel *m_source_list_model ;
+
+protected :
+    void showEvent(QShowEvent *ev) override;
 
 public slots:
     void updatePicture(cv::Mat image);
