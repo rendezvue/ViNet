@@ -47,6 +47,9 @@ DialogSetToolColor::DialogSetToolColor(QWidget *parent) :
 	ui->comboBox_preset->addItem("50");
 
     connect(ui->comboBox_preset, SIGNAL(currentIndexChanged(int)), SLOT(OnComboGetPreset(int)));
+
+    //background color
+    ui->label_image_bg->setStyleSheet("QLabel { background-color : black; }");
 	
 }
 
@@ -251,6 +254,24 @@ void DialogSetToolColor::OnButtonGetBlueHistogramImage(void)
 
 void DialogSetToolColor::updatePicture(cv::Mat image)
 {
+    const int draw_width = ui->label_image_bg->width();
+    const int draw_height = ui->label_image_bg->height();
+
+    float rescale_w = (float)draw_width / (float)image.cols ;
+    float rescale_h = (float)draw_height / (float)image.rows ;
+
+    float min_rescale = std::fmin(rescale_w, rescale_h) ;
+    if( min_rescale < 1.0 )
+    {
+        cv::resize(image, image, cv::Size(), min_rescale, min_rescale) ;
+    }
+
+    //fit image label by image isze
+    int pos_x = (int)((float)ui->label_image_bg->x() + (float)(draw_width - image.cols)/2.0) ;
+    int pos_y = (int)((float)ui->label_image_bg->y() + (float)(draw_height - image.rows)/2.0) ;
+
+    ui->label_image->setGeometry(pos_x, pos_y, image.cols, image.rows);
+
 	CMat2QImage cls_mat_2_qimage ;
 	QImage qt_display_image = cls_mat_2_qimage.cvtMat2QImage(image, ui->label_image->width(), ui->label_image->height()) ;
 	

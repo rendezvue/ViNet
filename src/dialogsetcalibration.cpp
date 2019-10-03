@@ -17,6 +17,9 @@ DialogSetCalibration::DialogSetCalibration(QWidget *parent) :
 	connect(ui->pushButton_update, SIGNAL(clicked()), this,	SLOT(OnButtonUpdateCalibrationInfo())) ;	
 
 	connect(ui->pushButton_calibration_run, SIGNAL(clicked()), this, SLOT(OnButtonCalibrationRun())) ;	
+
+    //background color
+    ui->label_image_bg->setStyleSheet("QLabel { background-color : black; }");
 }
 
 DialogSetCalibration::~DialogSetCalibration()
@@ -86,6 +89,24 @@ void DialogSetCalibration::OnButtonGetCalibrationImage(void)
         delete [] get_data ;
         get_data = NULL ;
     }
+
+    const int draw_width = ui->label_image_bg->width();
+    const int draw_height = ui->label_image_bg->height();
+
+    float rescale_w = (float)draw_width / (float)calib_image.cols ;
+    float rescale_h = (float)draw_height / (float)calib_image.rows ;
+
+    float min_rescale = std::fmin(rescale_w, rescale_h) ;
+    if( min_rescale < 1.0 )
+    {
+        cv::resize(calib_image, calib_image, cv::Size(), min_rescale, min_rescale) ;
+    }
+
+    //fit image label by image isze
+    int pos_x = (int)((float)ui->label_image_bg->x() + (float)(draw_width - calib_image.cols)/2.0) ;
+    int pos_y = (int)((float)ui->label_image_bg->y() + (float)(draw_height - calib_image.rows)/2.0) ;
+
+    ui->label_image->setGeometry(pos_x, pos_y, calib_image.cols, calib_image.rows);
 
 	QImage qt_display_image = QImage((const unsigned char*)calib_image.data, calib_image.cols, calib_image.rows, QImage::Format_RGB888);
 	ui->label_image->setPixmap(QPixmap::fromImage(qt_display_image));

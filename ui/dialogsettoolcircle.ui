@@ -550,6 +550,31 @@
     <string>Get Base Image</string>
    </property>
   </widget>
+  <widget class="QLabel" name="label_image_bg">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>60</y>
+     <width>640</width>
+     <height>480</height>
+    </rect>
+   </property>
+   <property name="frameShape">
+    <enum>QFrame::Box</enum>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <zorder>label_image_bg</zorder>
+  <zorder>groupBox_7</zorder>
+  <zorder>groupBox_8</zorder>
+  <zorder>label_image</zorder>
+  <zorder>layoutWidget_line</zorder>
+  <zorder>groupBox_5</zorder>
+  <zorder>groupBox</zorder>
+  <zorder>layoutWidget</zorder>
+  <zorder>pushButton_get_base_image</zorder>
  </widget>
  <resources/>
  <connections/>

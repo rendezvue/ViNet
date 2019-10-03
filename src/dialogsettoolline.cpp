@@ -20,6 +20,9 @@ DialogSetToolLine::DialogSetToolLine(QWidget *parent) :
 	//slider
     connect(ui->horizontalSlider_feature_level_line, SIGNAL(sliderReleased()), this, SLOT(OnSliderSetFeatureLevel()));
     connect(ui->horizontalSlider_feature_level_line, SIGNAL(sliderMoved(int)), this, SLOT(OnSliderMove(int)));
+
+    //background color
+    ui->label_image_bg->setStyleSheet("QLabel { background-color : black; }");
 }
 
 DialogSetToolLine::~DialogSetToolLine()
@@ -131,6 +134,24 @@ void DialogSetToolLine::OnButtonGetImage(void)
 
 void DialogSetToolLine::updatePicture(cv::Mat image, cv::Rect rect_user)
 {
+    const int draw_width = ui->label_image_bg->width();
+    const int draw_height = ui->label_image_bg->height();
+
+    float rescale_w = (float)draw_width / (float)image.cols ;
+    float rescale_h = (float)draw_height / (float)image.rows ;
+
+    float min_rescale = std::fmin(rescale_w, rescale_h) ;
+    if( min_rescale < 1.0 )
+    {
+        cv::resize(image, image, cv::Size(), min_rescale, min_rescale) ;
+    }
+
+    //fit image label by image isze
+    int pos_x = (int)((float)ui->label_image_bg->x() + (float)(draw_width - image.cols)/2.0) ;
+    int pos_y = (int)((float)ui->label_image_bg->y() + (float)(draw_height - image.rows)/2.0) ;
+
+    ui->label_image->setGeometry(pos_x, pos_y, image.cols, image.rows);
+
     QImage qt_display_image = QImage((const unsigned char*)image.data, image.cols, image.rows, QImage::Format_RGB888);
 
 	//draw set rect

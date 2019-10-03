@@ -13,6 +13,9 @@ DialogSetToolAngle::DialogSetToolAngle(QWidget *parent) :
 
 	//get calc angle
 	connect(ui->pushButton_get_calc_angle, SIGNAL(clicked()), this,  SLOT(OnButtonGetCalcAngle())) ;
+
+    //background color
+    ui->label_image_bg->setStyleSheet("QLabel { background-color : black; }");
 }
 
 DialogSetToolAngle::~DialogSetToolAngle()
@@ -85,6 +88,24 @@ void DialogSetToolAngle::OnButtonGetImage(void)
 
 void DialogSetToolAngle::updatePicture(cv::Mat image)
 {
+    const int draw_width = ui->label_image_bg->width();
+    const int draw_height = ui->label_image_bg->height();
+
+    float rescale_w = (float)draw_width / (float)image.cols ;
+    float rescale_h = (float)draw_height / (float)image.rows ;
+
+    float min_rescale = std::fmin(rescale_w, rescale_h) ;
+    if( min_rescale < 1.0 )
+    {
+        cv::resize(image, image, cv::Size(), min_rescale, min_rescale) ;
+    }
+
+    //fit image label by image isze
+    int pos_x = (int)((float)ui->label_image_bg->x() + (float)(draw_width - image.cols)/2.0) ;
+    int pos_y = (int)((float)ui->label_image_bg->y() + (float)(draw_height - image.rows)/2.0) ;
+
+    ui->label_image->setGeometry(pos_x, pos_y, image.cols, image.rows);
+
     QImage qt_display_image = QImage((const unsigned char*)image.data, image.cols, image.rows, QImage::Format_RGB888);
 
     ui->label_image->setPixmap(QPixmap::fromImage(qt_display_image));

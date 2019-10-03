@@ -947,6 +947,27 @@
     </property>
    </widget>
   </widget>
+  <widget class="QLabel" name="label_image_bg">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>40</y>
+     <width>640</width>
+     <height>480</height>
+    </rect>
+   </property>
+   <property name="frameShape">
+    <enum>QFrame::Box</enum>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <zorder>label_image_bg</zorder>
+  <zorder>layoutWidget_2</zorder>
+  <zorder>groupBox_color</zorder>
+  <zorder>label_image</zorder>
+  <zorder>groupBox</zorder>
  </widget>
  <resources/>
  <connections/>

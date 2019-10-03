@@ -448,6 +448,29 @@
     </widget>
    </widget>
   </widget>
+  <widget class="QLabel" name="label_image_bg">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>240</y>
+     <width>640</width>
+     <height>480</height>
+    </rect>
+   </property>
+   <property name="frameShape">
+    <enum>QFrame::Box</enum>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+  </widget>
+  <zorder>label_image_bg</zorder>
+  <zorder>layoutWidget_line</zorder>
+  <zorder>label_image</zorder>
+  <zorder>groupBox</zorder>
+  <zorder>pushButton_get_calibration_image</zorder>
+  <zorder>groupBox_2</zorder>
+  <zorder>groupBox_4</zorder>
  </widget>
  <resources/>
  <connections/>
