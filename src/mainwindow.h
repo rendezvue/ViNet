@@ -99,7 +99,7 @@ protected:
                 {
                     Ensemble_Job_Get_ResultImage(m_str_id, image_type, &get_data_result, &width_result, &height_result) ;
 
-                    qDebug("Result Image Size = %d, %d", width_result, height_result) ;
+                    //qDebug("Result Image Size = %d, %d", width_result, height_result) ;
                 }
                 else if( m_i_type == 2 )        //merge image = image + result
                 {
@@ -189,7 +189,7 @@ protected:
                 {
                     //cv::imshow("result", m_mat_result_image) ;
                     //cv::waitKey(1) ;
-                    qDebug("input result image size = %d, %d", m_mat_result_image.cols, m_mat_result_image.rows) ;
+                    //qDebug("input result image size = %d, %d", m_mat_result_image.cols, m_mat_result_image.rows) ;
 
                 	m_mat_result_image.copyTo(m_mat_input_image );
 				}

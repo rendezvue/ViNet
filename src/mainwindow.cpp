@@ -164,7 +164,7 @@ void MainWindow::updatePicture(cv::Mat image)
     }
     else if( tab_index == 1 )
     {
-        qDebug("ui->result image size : %d, %d", image.cols, image.rows) ;
+        //qDebug("ui->result image size : %d, %d", image.cols, image.rows) ;
 
         const int draw_width = ui->result_bg->width();
         const int draw_height = ui->result_bg->height();
