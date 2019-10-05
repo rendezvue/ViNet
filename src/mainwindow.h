@@ -89,7 +89,7 @@ protected:
                 m_mat_input_image = cv::Mat::zeros(DISPLAY_IMAGE_HEIGHT, DISPLAY_IMAGE_WIDTH, CV_8UC3) ;
             }
 
-            if( Ensemble_Network_IsOnline() & ENSEMBLE_CONNECT_CONTROL_PORT )
+            //if( Ensemble_Network_IsOnline() & ENSEMBLE_CONNECT_CONTROL_PORT )
             {
                 unsigned char* get_data = NULL ;
                 int width = DISPLAY_IMAGE_WIDTH ;
@@ -273,20 +273,20 @@ protected:
     {
         while(1)
         {
-            if( !Ensemble_Network_IsOnline() )
+            if( !m_str_ip_address.empty() )
             {
-                qDebug("Try Re-Connect = %s 1", m_str_ip_address.c_str()) ;
-                //try re-connect
-                Ensemble_Network_Disconnect() ;
+                if( !Ensemble_Network_IsOnline() )
+                {
+                    qDebug("Try Re-Connect = %s", m_str_ip_address.c_str()) ;
+                    //try re-connect
+                    Ensemble_Network_Disconnect() ;
+                    Ensemble_Network_Connect(m_str_ip_address.c_str()) ;
 
-                qDebug("Try Re-Connect = %s 2", m_str_ip_address.c_str()) ;
-
-                Ensemble_Network_Connect(m_str_ip_address.c_str()) ;
-
+                }
             }
 
             QThread::yieldCurrentThread() ;
-            QThread::usleep(1000) ;
+            QThread::sleep(1) ;     //1sec
         }
     }
 
@@ -310,6 +310,7 @@ private:
     QTimer *m_p_timer;
 
     CGetImageThread* m_p_cls_getimage ;
+    CCheckNetwork* m_p_cls_check_network ;
 
 	//tree
 	void AddTreeRoot(QString name, QString description);

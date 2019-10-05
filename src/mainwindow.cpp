@@ -4,7 +4,8 @@
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
-    m_p_cls_getimage(NULL)
+    m_p_cls_getimage(NULL) ,
+    m_p_cls_check_network(NULL)
 {
     ui->setupUi(this);
 
@@ -85,6 +86,9 @@ MainWindow::MainWindow(QWidget *parent) :
     m_p_cls_getimage = new CGetImageThread(this) ;
     connect(m_p_cls_getimage, SIGNAL(Done(cv::Mat)), this, SLOT(updatePicture(cv::Mat))) ;
     m_p_cls_getimage->start();
+
+    m_p_cls_check_network = new CCheckNetwork(this) ;
+    m_p_cls_check_network->start() ;
 #endif
 
     //drop on tree
@@ -97,6 +101,12 @@ MainWindow::~MainWindow()
     {
         delete m_p_cls_getimage ;
         m_p_cls_getimage = NULL ;
+    }
+
+    if( m_p_cls_check_network != NULL )
+    {
+        delete m_p_cls_check_network ;
+        m_p_cls_check_network = NULL ;
     }
 
     if( m_source_list_model != NULL )
@@ -224,7 +234,7 @@ void MainWindow::OnMenuConnect(void)
 
         if( ret & ENSEMBLE_CONNECT_CONTROL_PORT )
         {
-            m_p_cls_getimage->SetIPAddress(m_str_ip_address) ;
+            m_p_cls_check_network->SetIPAddress(m_str_ip_address) ;
 
             qDebug(" - Success : Control Port") ;
 
@@ -567,7 +577,7 @@ void MainWindow::UpdateJobTree(void)
 
             //---
             //Set Informationupda
-            if( Ensemble_Network_IsOnline() & ENSEMBLE_CONNECT_CONTROL_PORT )
+            //if( Ensemble_Network_IsOnline() & ENSEMBLE_CONNECT_CONTROL_PORT )
             {
                 unsigned char* get_data = NULL ;
                 int width = 0 ;

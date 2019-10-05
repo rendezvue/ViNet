@@ -99,7 +99,7 @@ void CJobTree::dropEvent(QDropEvent *event)
 
         qDebug("dropEvent : project id = %s", str_target_id.c_str()) ;
 
-		if( Ensemble_Network_IsOnline() & ENSEMBLE_CONNECT_CONTROL_PORT )
+        //if( Ensemble_Network_IsOnline() & ENSEMBLE_CONNECT_CONTROL_PORT )
 		{
 			if( item_to_type == JobType::JOB_TYPE_PROJECT )
 			{
@@ -179,7 +179,7 @@ void CJobTree::dropEvent(QDropEvent *event)
         QTreeWidgetItem* item = this->itemAt(pos);
 		
 		//Move
-		if( Ensemble_Network_IsOnline() & ENSEMBLE_CONNECT_CONTROL_PORT )
+        //if( Ensemble_Network_IsOnline() & ENSEMBLE_CONNECT_CONTROL_PORT )
 		{
 #if 0
 			if( item->type() == JobType::JOB_TYPE_TOOL )
