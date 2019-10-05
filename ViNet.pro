@@ -73,7 +73,9 @@ HEADERS += \
     src/formproject.h \
     src/formtoollist.h \
     src/formtooloption.h \
-    src/mainwindow.h
+    src/mainwindow.h \
+    module/PacketEthComm/EthernetClientControlData.h \
+    module/PacketEthComm/EthernetGetInfo.h
 
 SOURCES += \
     module/EnsembleAPI/src/Interface.cpp \
@@ -115,7 +117,9 @@ SOURCES += \
     src/formtoollist.cpp \
     src/formtooloption.cpp \
     src/main.cpp \
-    src/mainwindow.cpp
+    src/mainwindow.cpp \
+    module/PacketEthComm/EthernetClientControlData.cpp \
+    module/PacketEthComm/EthernetGetInfo.cpp
 
 FORMS += \
     ui/cdialogconnect.ui \

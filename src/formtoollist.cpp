@@ -7,7 +7,7 @@ FormToolList::FormToolList(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    ui->frame_border->setStyleSheet(".QFrame{border: 1px solid black; border-radius: 3px;}");
+    //ui->frame_border->setStyleSheet(".QFrame{border: 1px solid black; border-radius: 3px;}");
 }
 
 FormToolList::~FormToolList()
@@ -70,8 +70,8 @@ void FormToolList::SetTypeNumber(const int typenumber)
         cv::resize(icon_image, icon_image, cv::Size(image_width, image_height)) ;
     }
 
-    QImage qt_display_image = QImage((const unsigned char*)icon_image.data, icon_image.cols, icon_image.rows, QImage::Format_RGB888);
-
+    CMat2QImage cls_mat_2_qimage ;
+    QImage qt_display_image = cls_mat_2_qimage.cvtMat2QImage(icon_image, ui->label_icon->width(), ui->label_icon->height()) ;
     ui->label_icon->setPixmap(QPixmap::fromImage(qt_display_image));
 }
 

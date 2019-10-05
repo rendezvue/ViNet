@@ -285,7 +285,7 @@
       <x>1240</x>
       <y>0</y>
       <width>271</width>
-      <height>341</height>
+      <height>251</height>
      </rect>
     </property>
     <property name="title">
@@ -297,7 +297,7 @@
        <x>10</x>
        <y>30</y>
        <width>251</width>
-       <height>251</height>
+       <height>171</height>
       </rect>
      </property>
      <property name="dragEnabled">
@@ -314,9 +314,9 @@
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>290</y>
+       <y>210</y>
        <width>251</width>
-       <height>41</height>
+       <height>31</height>
       </rect>
      </property>
      <property name="text">
@@ -328,13 +328,13 @@
     <property name="geometry">
      <rect>
       <x>1240</x>
-      <y>340</y>
+      <y>270</y>
       <width>271</width>
-      <height>341</height>
+      <height>461</height>
      </rect>
     </property>
     <property name="title">
-     <string>Tool</string>
+     <string>Vision Tool</string>
     </property>
     <widget class="CToolList" name="listWidget_items">
      <property name="geometry">
@@ -342,7 +342,7 @@
        <x>10</x>
        <y>30</y>
        <width>251</width>
-       <height>251</height>
+       <height>381</height>
       </rect>
      </property>
      <property name="dragEnabled">
@@ -359,9 +359,9 @@
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>290</y>
+       <y>420</y>
        <width>251</width>
-       <height>41</height>
+       <height>31</height>
       </rect>
      </property>
      <property name="text">

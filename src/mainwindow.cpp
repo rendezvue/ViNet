@@ -139,60 +139,29 @@ void MainWindow::updatePicture(cv::Mat image)
     //ui->ui_label->setPixmap(QPixmap::fromImage(qt_display_image));
     int tab_index = ui->tabWidget_image->currentIndex() ;
 
+    QLabel *p_image_label_bg = NULL ;
+    QLabel *p_image_label = NULL ;
+
     if( tab_index == 0 )
     {
-        const int draw_width = ui->image_bg->width();
-        const int draw_height = ui->image_bg->height();
-
-        float rescale_w = (float)draw_width / (float)image.cols ;
-        float rescale_h = (float)draw_height / (float)image.rows ;
-
-        float min_rescale = std::fmin(rescale_w, rescale_h) ;
-        if( min_rescale < 1.0 )
-        {
-            cv::resize(image, image, cv::Size(), min_rescale, min_rescale) ;
-        }
-
-        //fit image label by image isze
-        int pos_x = (int)((float)ui->image_bg->x() + (float)(draw_width - image.cols)/2.0) ;
-        int pos_y = (int)((float)ui->image_bg->y() + (float)(draw_height - image.rows)/2.0) ;
-
-        ui->image->setGeometry(pos_x, pos_y, image.cols, image.rows);
-
-        QImage qt_display_image = QImage((const unsigned char*)image.data, image.cols, image.rows, QImage::Format_RGB888);
-        ui->image->setPixmap(QPixmap::fromImage(qt_display_image));
+        p_image_label = ui->image ;
+        p_image_label_bg = ui->image_bg ;
     }
     else if( tab_index == 1 )
     {
-        //qDebug("ui->result image size : %d, %d", image.cols, image.rows) ;
-
-        const int draw_width = ui->result_bg->width();
-        const int draw_height = ui->result_bg->height();
-
-        float rescale_w = (float)draw_width / (float)image.cols ;
-        float rescale_h = (float)draw_height / (float)image.rows ;
-
-        float min_rescale = std::fmin(rescale_w, rescale_h) ;
-        if( min_rescale < 1.0 )
-        {
-            cv::resize(image, image, cv::Size(), min_rescale, min_rescale) ;
-        }
-
-        //fit image label by image isze
-        int pos_x = (int)((float)ui->result_bg->x() + (float)(draw_width - image.cols)/2.0) ;
-        int pos_y = (int)((float)ui->result_bg->y() + (float)(draw_height - image.rows)/2.0) ;
-
-        ui->result->setGeometry(pos_x, pos_y, image.cols, image.rows);
-
-        qDebug("ui->result : %d, %d, %d, %d", ui->result->x(), ui->result->y(), ui->result->width(), ui->result->height()) ;
-
-        QImage qt_display_image = QImage((const unsigned char*)image.data, image.cols, image.rows, QImage::Format_RGB888);
-        ui->result->setPixmap(QPixmap::fromImage(qt_display_image));
+        p_image_label = ui->result ;
+        p_image_label_bg = ui->result_bg ;
     }
     else if( tab_index == 2 )
     {
-        const int draw_width = ui->merge_bg->width();
-        const int draw_height = ui->merge_bg->height();
+        p_image_label = ui->merge ;
+        p_image_label_bg = ui->merge_bg ;
+    }
+
+    if( p_image_label && p_image_label_bg )
+    {
+        const int draw_width = p_image_label_bg->width();
+        const int draw_height = p_image_label_bg->height();
 
         float rescale_w = (float)draw_width / (float)image.cols ;
         float rescale_h = (float)draw_height / (float)image.rows ;
@@ -204,13 +173,13 @@ void MainWindow::updatePicture(cv::Mat image)
         }
 
         //fit image label by image isze
-        int pos_x = (int)((float)ui->merge_bg->x() + (float)(draw_width - image.cols)/2.0) ;
-        int pos_y = (int)((float)ui->merge_bg->y() + (float)(draw_height - image.rows)/2.0) ;
+        int pos_x = (int)((float)p_image_label_bg->x() + (float)(draw_width - image.cols)/2.0) ;
+        int pos_y = (int)((float)p_image_label_bg->y() + (float)(draw_height - image.rows)/2.0) ;
 
-        ui->merge->setGeometry(pos_x, pos_y, image.cols, image.rows);
+        p_image_label->setGeometry(pos_x, pos_y, image.cols, image.rows);
 
         QImage qt_display_image = QImage((const unsigned char*)image.data, image.cols, image.rows, QImage::Format_RGB888);
-        ui->merge->setPixmap(QPixmap::fromImage(qt_display_image));
+        p_image_label->setPixmap(QPixmap::fromImage(qt_display_image));
     }
 }
 
@@ -385,7 +354,7 @@ void MainWindow::UpdateToolsListFromDevice(QListWidget *listWidget)
 
             //Making sure that the listWidgetItem has the same size as the TheWidgetItem
             QSize item_size = theWidgetItem->size() ;
-            qDebug("theWidgetItem size = %d, %d", item_size.width(), item_size.height()) ;
+            qDebug("UpdateToolsListFromDevice theWidgetItem size = %d, %d", item_size.width(), item_size.height()) ;
 
             //QSize list_size = listWidget->sizeHint() ;
             //listWidgetItem->setSizeHint();
@@ -466,7 +435,7 @@ void MainWindow::UpdateJobsListFromDevice(QListWidget *listWidget)
 
             //Making sure that the listWidgetItem has the same size as the TheWidgetItem
             QSize item_size = theWidgetItem->size() ;
-            qDebug("theWidgetItem size = %d, %d", item_size.width(), item_size.height()) ;
+            qDebug("UpdateJobsListFromDevice theWidgetItem size = %d, %d", item_size.width(), item_size.height()) ;
 
             //QSize list_size = listWidget->sizeHint() ;
             //listWidgetItem->setSizeHint();

@@ -451,8 +451,8 @@ void DialogSetToolColor::OnButtonSetBlueHistogramRange(void)
 
 	//check
     OnButtonGetBlueHistogramRange() ;
-
 	OnButtonGetBlueHistogramImage() ;
+
 	OnButtonGetImage() ;
 
 	OnButtonGetBasePixelCount() ;

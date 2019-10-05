@@ -6,6 +6,7 @@
 
 #include "opencv2/opencv.hpp"
 #include "EnsembleCommon.h"
+#include "cmat2qimage.h"
 
 namespace Ui {
 class FormToolList;
