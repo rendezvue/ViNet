@@ -72,11 +72,6 @@ public:
         m_i_type = type ;
     }
 
-    void SetIPAddress(std::string str_ip)
-    {
-        m_str_ip_address = str_ip;
-    }
-
 protected:
     void run()
     {
@@ -89,7 +84,7 @@ protected:
                 m_mat_input_image = cv::Mat::zeros(DISPLAY_IMAGE_HEIGHT, DISPLAY_IMAGE_WIDTH, CV_8UC3) ;
             }
 
-            //if( Ensemble_Network_IsOnline() & ENSEMBLE_CONNECT_CONTROL_PORT )
+            if( Ensemble_Network_IsOnline()  )
             {
                 unsigned char* get_data = NULL ;
                 int width = DISPLAY_IMAGE_WIDTH ;
@@ -234,7 +229,6 @@ private:
 	cv::Mat m_mat_result_image ;
     int m_i_type ;
 	std::string m_str_id ;
-    std::string m_str_ip_address ;
 
 signals:
     void Done(cv::Mat image);
@@ -260,17 +254,22 @@ public:
 protected:
     void run()
     {
+        int retry_count = 0 ;
+
         while(1)
         {
             if( !m_str_ip_address.empty() )
             {
                 if( !Ensemble_Network_IsOnline() )
                 {
-                    qDebug("Try Re-Connect = %s", m_str_ip_address.c_str()) ;
+                    qDebug("(%d) Try Re-Connect = %s", retry_count++, m_str_ip_address.c_str()) ;
                     //try re-connect
                     Ensemble_Network_Disconnect() ;
                     Ensemble_Network_Connect(m_str_ip_address.c_str()) ;
-
+                }
+                else
+                {
+                    retry_count = 0 ;
                 }
             }
 
