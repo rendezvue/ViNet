@@ -119,17 +119,6 @@ protected:
                     ret = Ensemble_Source_Get_Image(GET_IMAGE_INPUT, std::string(), image_type+IMAGE_ADD_TIME+IMAGE_ADD_SOURCE_INFO, &get_data, &width, &height) ;
                 }
 
-                if( ret < 0 )       //network error
-                {
-                    qDebug("(%d) Try Re-Connect = %s 1", ret, m_str_ip_address.c_str()) ;
-                    //try re-connect
-                    Ensemble_Network_Disconnect() ;
-
-                    qDebug("(%d) Try Re-Connect = %s 2", ret, m_str_ip_address.c_str()) ;
-
-                    Ensemble_Network_Connect(m_str_ip_address.c_str()) ;
-
-                }
                 //qDebug("Network return = %d", ret) ;
                 //qDebug("Get Image Size = %d x %d", width, height) ;
 				//Check Get Data(Input Image)
