@@ -213,17 +213,19 @@ void MainWindow::OnMenuConnect(void)
         //m_p_cls_dlg_connect->ui->lineEdit_ip_address->
         qDebug("Aceept") ;
 
-        std::string str_ip_address = dlg_connect.GetIpAddress() ;
+        m_str_ip_address = dlg_connect.GetIpAddress() ;
 
-        qDebug("Connect Info : %s", str_ip_address.c_str()) ;
+        qDebug("Connect Info : %s", m_str_ip_address.c_str()) ;
 
-        int ret = Ensemble_Network_Connect(str_ip_address.c_str());
+        int ret = Ensemble_Network_Connect(m_str_ip_address.c_str());
 
         qDebug("Connect Ensemble : %d", ret ) ;
 
 
         if( ret & ENSEMBLE_CONNECT_CONTROL_PORT )
         {
+            m_p_cls_getimage->SetIPAddress(m_str_ip_address) ;
+
             qDebug(" - Success : Control Port") ;
 
 			UpdateToolsListFromDevice(ui->listWidget_items) ;
@@ -266,7 +268,7 @@ void MainWindow::OnMenuConnect(void)
 
         //ini
         boost::property_tree::ptree pt;
-        pt.put("network.ip", str_ip_address);
+        pt.put("network.ip", m_str_ip_address);
         boost::property_tree::ini_parser::write_ini( ".run.ini" , pt );
 
         UpdateJobTree() ;

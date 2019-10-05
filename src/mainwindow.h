@@ -71,6 +71,12 @@ public:
     {
         m_i_type = type ;
     }
+
+    void SetIPAddress(std::string str_ip)
+    {
+        m_str_ip_address = str_ip;
+    }
+
 protected:
     void run()
     {
@@ -95,23 +101,36 @@ protected:
 
 				const int image_type = IMAGE_RGB888 ;
 				
+                int ret = 0 ;
+
                 if( m_i_type == 1 )        //result
                 {
-                    Ensemble_Job_Get_ResultImage(m_str_id, image_type, &get_data_result, &width_result, &height_result) ;
+                    ret = Ensemble_Job_Get_ResultImage(m_str_id, image_type, &get_data_result, &width_result, &height_result) ;
 
                     //qDebug("Result Image Size = %d, %d", width_result, height_result) ;
                 }
                 else if( m_i_type == 2 )        //merge image = image + result
                 {
-                    Ensemble_Source_Get_Image(GET_IMAGE_INPUT, std::string(), image_type+IMAGE_ADD_TIME+IMAGE_ADD_SOURCE_INFO, &get_data, &width, &height) ;
-                    Ensemble_Job_Get_ResultImage(m_str_id, image_type, &get_data_result, &width_result, &height_result) ;                    
+                    ret = Ensemble_Source_Get_Image(GET_IMAGE_INPUT, std::string(), image_type+IMAGE_ADD_TIME+IMAGE_ADD_SOURCE_INFO, &get_data, &width, &height) ;
+                    ret += Ensemble_Job_Get_ResultImage(m_str_id, image_type, &get_data_result, &width_result, &height_result) ;
                 }
                 else
                 {
-                    Ensemble_Source_Get_Image(GET_IMAGE_INPUT, std::string(), image_type+IMAGE_ADD_TIME+IMAGE_ADD_SOURCE_INFO, &get_data, &width, &height) ;
+                    ret = Ensemble_Source_Get_Image(GET_IMAGE_INPUT, std::string(), image_type+IMAGE_ADD_TIME+IMAGE_ADD_SOURCE_INFO, &get_data, &width, &height) ;
                 }
 
+                if( ret < 0 )       //network error
+                {
+                    qDebug("(%d) Try Re-Connect = %s 1", ret, m_str_ip_address.c_str()) ;
+                    //try re-connect
+                    Ensemble_Network_Disconnect() ;
 
+                    qDebug("(%d) Try Re-Connect = %s 2", ret, m_str_ip_address.c_str()) ;
+
+                    Ensemble_Network_Connect(m_str_ip_address.c_str()) ;
+
+                }
+                //qDebug("Network return = %d", ret) ;
                 //qDebug("Get Image Size = %d x %d", width, height) ;
 				//Check Get Data(Input Image)
                 if( get_data != NULL )
@@ -226,9 +245,53 @@ private:
 	cv::Mat m_mat_result_image ;
     int m_i_type ;
 	std::string m_str_id ;
+    std::string m_str_ip_address ;
 
 signals:
     void Done(cv::Mat image);
+};
+
+class CCheckNetwork : public QThread
+{
+    Q_OBJECT
+
+public:
+    explicit CCheckNetwork(QObject *parent = 0):
+            QThread(parent)
+    {
+    }
+    ~CCheckNetwork() {}
+public:
+
+    void SetIPAddress(std::string str_ip)
+    {
+        m_str_ip_address = str_ip;
+    }
+
+protected:
+    void run()
+    {
+        while(1)
+        {
+            if( !Ensemble_Network_IsOnline() )
+            {
+                qDebug("Try Re-Connect = %s 1", m_str_ip_address.c_str()) ;
+                //try re-connect
+                Ensemble_Network_Disconnect() ;
+
+                qDebug("Try Re-Connect = %s 2", m_str_ip_address.c_str()) ;
+
+                Ensemble_Network_Connect(m_str_ip_address.c_str()) ;
+
+            }
+
+            QThread::yieldCurrentThread() ;
+            QThread::usleep(1000) ;
+        }
+    }
+
+private:
+    std::string m_str_ip_address ;
 
 };
 
@@ -257,6 +320,8 @@ private:
     void UpdateJobsListFromDevice(QListWidget *listWidget) ;
 
     QStringListModel *m_source_list_model ;
+
+    std::string m_str_ip_address ;
 
 protected :
     void showEvent(QShowEvent *ev) override;
