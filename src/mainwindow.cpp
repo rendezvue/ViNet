@@ -224,6 +224,7 @@ void MainWindow::OnMenuConnect(void)
         qDebug("Aceept") ;
 
         m_str_ip_address = dlg_connect.GetIpAddress() ;
+        m_p_cls_check_network->SetIPAddress(m_str_ip_address) ;
 
         qDebug("Connect Info : %s", m_str_ip_address.c_str()) ;
 
@@ -231,11 +232,8 @@ void MainWindow::OnMenuConnect(void)
 
         qDebug("Connect Ensemble : %d", ret ) ;
 
-
-        if( ret & ENSEMBLE_CONNECT_CONTROL_PORT )
+        if( Ensemble_Network_IsOnline() )
         {
-            m_p_cls_check_network->SetIPAddress(m_str_ip_address) ;
-
             qDebug(" - Success : Control Port") ;
 
 			UpdateToolsListFromDevice(ui->listWidget_items) ;
@@ -252,6 +250,7 @@ void MainWindow::OnMenuConnect(void)
 
 		    if (!result)
 		    {
+
 		        qDebug("xml parsing error") ;
 		    }
 		    else
@@ -304,6 +303,8 @@ void MainWindow::OnMenuConnect(void)
 
 void MainWindow::UpdateToolsListFromDevice(QListWidget *listWidget) 
 {
+    qDebug("test1") ;
+
 	std::string str_able_tools_list_xml = Ensemble_Info_Type_Get_Tool_List_Xml() ;
 
 	qDebug("tools info xml = %s", str_able_tools_list_xml.c_str()) ;
