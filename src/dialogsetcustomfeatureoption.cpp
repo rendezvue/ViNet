@@ -6,6 +6,9 @@ DialogSetCustomFeatureOption::DialogSetCustomFeatureOption(QWidget *parent) :
     ui(new Ui::DialogSetCustomFeatureOption)
 {
     ui->setupUi(this);
+
+    //button
+    //pushButton_get
 }
 
 DialogSetCustomFeatureOption::~DialogSetCustomFeatureOption()
