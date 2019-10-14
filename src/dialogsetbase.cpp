@@ -448,4 +448,12 @@ void DialogSetBase::OnButtonGetDetectOptionCount(void)
 void DialogSetBase::OnCheckFeatureUseCustomOption(bool checked)
 {
     qDebug("Check = %d : Use Custom Feature", checked) ;
+
+	if( checked )
+	{	
+		DialogSetCustomFeatureOption dlg_set_custom_feature_option ;
+		dlg_set_custom_feature_option.SetId(GetId()) ;
+	
+	   int dialogCode = dlg_set_custom_feature_option.exec();
+	}
 }

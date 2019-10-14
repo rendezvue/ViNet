@@ -20,6 +20,7 @@
 #include <boost/thread/detail/thread.hpp>
 
 #include "dialogchangename.h"
+#include "dialogsetcustomfeatureoption.h"
 
 #include "csetuserregion.h"
 
