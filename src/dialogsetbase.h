@@ -82,6 +82,8 @@ public slots:
     void OnButtonGetDetectOptionThreshold(void) ;
     void OnButtonGetDetectOptionCount(void) ;
 
+    void OnCheckFeatureUseCustomOption(bool checked) ;
+
 signals:
 	void UpdateBaseImage(void);
 	void UpdateBaseName(QString name) ;

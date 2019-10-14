@@ -358,6 +358,19 @@
       <string>-1:</string>
      </property>
     </widget>
+    <widget class="QCheckBox" name="checkBox_use_custom_feature">
+     <property name="geometry">
+      <rect>
+       <x>170</x>
+       <y>60</y>
+       <width>92</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Custom</string>
+     </property>
+    </widget>
    </widget>
    <widget class="QPushButton" name="pushButton_select_object">
     <property name="geometry">

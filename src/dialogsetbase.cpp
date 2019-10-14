@@ -37,6 +37,9 @@ DialogSetBase::DialogSetBase(QWidget *parent) :
     connect(ui->pushButton_detect_threshold_get, SIGNAL(clicked()), this,  SLOT(OnButtonGetDetectOptionThreshold())) ;
     connect(ui->pushButton_detect_count_get, SIGNAL(clicked()), this,  SLOT(OnButtonGetDetectOptionCount())) ;
 
+    //feature (custom) check box
+    connect(ui->checkBox_use_custom_feature, SIGNAL(clicked(bool)), this,  SLOT(OnCheckFeatureUseCustomOption(bool))) ;
+
     //background color
     ui->label_image_bg->setStyleSheet("QLabel { background-color : black; }");
 }
@@ -440,4 +443,9 @@ void DialogSetBase::OnButtonGetDetectOptionCount(void)
     //Get Detect Option Value
     int detect_option_count = Ensemble_Job_Get_DetectOption(GetId(), DetectOption::DETECT_OPTION_COUNT) ;
     ui->lineEdit_detect_count->setText(QString::number(detect_option_count)) ;
+}
+
+void DialogSetBase::OnCheckFeatureUseCustomOption(bool checked)
+{
+    qDebug("Check = %d : Use Custom Feature", checked) ;
 }
