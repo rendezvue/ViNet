@@ -57,6 +57,24 @@ void DialogSetBase::showEvent(QShowEvent *ev)
     std::string base_name = Ensemble_Job_Get_Name(GetId()) ;
     ui->label_name->setText(QString::fromUtf8(base_name.c_str()));
 
+	//use custom
+	int use_custom_feature = Ensemble_Job_Get_UseCustomFeatureOption(GetId()) ;
+	if( use_custom_feature )
+	{
+		//checked and disable level ctrl.	
+		ui->checkBox_use_custom_feature->setChecked(1);
+
+        ui->horizontalSlider_feature_level->setEnabled(false) ;
+	}
+	else
+	{
+		//un-checked
+		ui->checkBox_use_custom_feature->setChecked(0);
+
+        ui->horizontalSlider_feature_level->setEnabled(true) ;
+	}
+	
+	
 	//Get Level 
 	int feature_level = Ensemble_Job_Get_FeatureLevel(GetId());
 	//Set Slider
@@ -67,6 +85,7 @@ void DialogSetBase::showEvent(QShowEvent *ev)
     OnButtonGetDetectOptionMargin() ;
     OnButtonGetDetectOptionThreshold(); ;
     OnButtonGetDetectOptionCount() ;
+	
 #if 0
 	int detect_option_margin = Ensemble_Job_Get_DetectOption(GetId(), DetectOption::DETECT_OPTION_MARGIN) ;
 	float detect_option_threshold = Ensemble_Job_Get_DetectOption(GetId(), DetectOption::DETECT_OPTION_THRESHOLD) ;
@@ -449,11 +468,26 @@ void DialogSetBase::OnCheckFeatureUseCustomOption(bool checked)
 {
     qDebug("Check = %d : Use Custom Feature", checked) ;
 
-	if( checked )
+	Ensemble_Job_Set_UseCustomFeatureOption(GetId(), checked) ;
+	int use_custom_feature = Ensemble_Job_Get_UseCustomFeatureOption(GetId()) ;
+	
+	if( use_custom_feature )
 	{	
+		//checked and disable level ctrl.	
+		ui->checkBox_use_custom_feature->setChecked(1);
+
+		//disable feature slider
+        ui->horizontalSlider_feature_level->setEnabled(false) ;
+
+		//open set dialog for custom value
 		DialogSetCustomFeatureOption dlg_set_custom_feature_option ;
 		dlg_set_custom_feature_option.SetId(GetId()) ;
 	
 	   int dialogCode = dlg_set_custom_feature_option.exec();
+	   
+	}
+	else
+	{
+        ui->horizontalSlider_feature_level->setEnabled(true) ;
 	}
 }
