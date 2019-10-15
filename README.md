@@ -26,4 +26,4 @@ $git submodule update</code></pre>
 ![Room Control Detect and Inspect](https://github.com/rendezvue/ViNet/blob/master/doc/sample_2.png)
 
 3. Smart Cooking
-![Cooking](https://github.com/rendezvue/ViNet/blob/master/doc/sample_1.png)
+![Cooking](https://github.com/rendezvue/ViNet/blob/master/doc/sample_1.jpg)
