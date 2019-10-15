@@ -46,6 +46,7 @@ private:
     std::string m_str_id ;
 
     void updatePicture(cv::Mat image, cv::Rect rect_user=cv::Rect()) ;
+	void updatePictureCenterLine(cv::Mat image, cv::Point pt_user=cv::Point()) ;
 	cv::Mat m_image ;
 
 	CSetUserRegion m_cls_set_user_region ;
@@ -75,6 +76,9 @@ public slots:
     void OnSliderMove(int value) ;
 	void OnButtonSelectObject(void) ;
 	void OnButtonResetObject(void) ;
+	//ref point
+	void OnButtonSelectRefPoint(void) ;
+	void OnButtonResetRefPoint(void) ;
 
     void OnButtonSetDetectOptionMargin(void) ;
     void OnButtonSetDetectOptionThreshold(void) ;
