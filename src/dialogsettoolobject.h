@@ -13,6 +13,7 @@
 #include "EnsembleAPI.h"
 
 #include "dialogchangename.h"
+#include "dialogsetcustomfeatureoption.h"
 
 #include "csetuserregion.h"
 
@@ -55,6 +56,8 @@ public slots:
 	void mousePressEvent(QMouseEvent *event) override;
     void mouseMoveEvent(QMouseEvent *event) override;
     void mouseReleaseEvent(QMouseEvent *event) override;
+
+	void OnCheckFeatureUseCustomOption(bool checked) ;
 
 signals:
 	void UpdateToolName(QString name) ;

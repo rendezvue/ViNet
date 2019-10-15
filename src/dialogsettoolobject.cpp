@@ -20,6 +20,9 @@ DialogSetToolObject::DialogSetToolObject(QWidget *parent) :
 	connect(ui->horizontalSlider_feature_level, SIGNAL(sliderReleased()), this, SLOT(OnSliderSetFeatureLevel()));
 	connect(ui->horizontalSlider_feature_level, SIGNAL(sliderMoved(int)), this, SLOT(OnSliderMove(int)));
 
+	//feature (custom) check box
+    connect(ui->checkBox_use_custom_feature, SIGNAL(clicked(bool)), this,  SLOT(OnCheckFeatureUseCustomOption(bool))) ;
+	
     //background color
     ui->label_image_bg->setStyleSheet("QLabel { background-color : black; }");
 }
@@ -59,6 +62,24 @@ void DialogSetToolObject::showEvent(QShowEvent *ev)
 	QString qstr_base_feature_level = QString::fromStdString(str_base_feature_level);
 	ui->label_feature_level_base->setText(qstr_base_feature_level);
 
+	int use_custom_feature = Ensemble_Tool_Get_UseCustomFeatureOption(GetId());
+	if( use_custom_feature )
+	{
+		//checked and disable level ctrl.	
+		ui->checkBox_use_custom_feature->setChecked(1);
+
+		//disable feature slider
+        ui->horizontalSlider_feature_level->setEnabled(false) ;
+	}
+	else
+	{
+		//checked and disable level ctrl.	
+		ui->checkBox_use_custom_feature->setChecked(0);
+
+		//disable feature slider
+        ui->horizontalSlider_feature_level->setEnabled(true) ;
+	}
+	
 	//Image
 	OnButtonGetImage() ;
 }
@@ -324,4 +345,32 @@ void DialogSetToolObject::mouseReleaseEvent(QMouseEvent *event)
 }
 
 #endif
+
+void DialogSetToolObject::OnCheckFeatureUseCustomOption(bool checked)
+{
+    qDebug("Tool Check = %d : Use Custom Feature", checked) ;
+
+	Ensemble_Tool_Set_UseCustomFeatureOption(GetId(), checked) ;
+	int use_custom_feature = Ensemble_Tool_Get_UseCustomFeatureOption(GetId()) ;
+	
+	if( use_custom_feature )
+	{	
+		//checked and disable level ctrl.	
+		ui->checkBox_use_custom_feature->setChecked(1);
+
+		//disable feature slider
+        ui->horizontalSlider_feature_level->setEnabled(false) ;
+
+		//open set dialog for custom value
+		DialogSetCustomFeatureOption dlg_set_custom_feature_option ;
+		dlg_set_custom_feature_option.SetId(GetId()) ;
+	
+	   int dialogCode = dlg_set_custom_feature_option.exec();
+	   
+	}
+	else
+	{
+        ui->horizontalSlider_feature_level->setEnabled(true) ;
+	}
+}
 
