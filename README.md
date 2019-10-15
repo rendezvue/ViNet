@@ -16,3 +16,14 @@ $cd ViNet
 $git submodule update</code></pre>
 6. Open "ViNet.pro" and Compile using QT Creator
 7. Enjoy!
+
+* * *
+## Application
+1. Smart Factory : Gasket Detect and Inspect
+![Gasket Detect and Inspect](https://github.com/rendezvue/ViNet/blob/master/doc/sample_3.png)
+
+2. Smart Factory : Room Control Detect and Inspect
+![Room Control Detect and Inspect](https://github.com/rendezvue/ViNet/blob/master/doc/sample_2.png)
+
+3. Smart Cooking
+![Cooking](https://github.com/rendezvue/ViNet/blob/master/doc/sample_1.png)
