@@ -292,6 +292,9 @@ void DialogSetBase::OnButtonSelectRefPoint(void)
 
 void DialogSetBase::OnButtonResetRefPoint(void)
 {
+	Ensemble_Job_Del_Ref_Point(GetId()) ;
+	
+    OnButtonGetImage() ;
 }
 
 
@@ -471,6 +474,21 @@ void DialogSetBase::mouseReleaseEvent(QMouseEvent *event)
 		{
 			//SelectObject
 			Ensemble_Job_Set_SelectObject(GetId(), f_x, f_y, f_w, f_h) ;
+
+			emit UpdateBaseImage();
+		}
+		else if( set_status == SetBaseStatus::SET_REF_POINT)
+		{
+			QPoint point = event->pos() ;
+	        point.setX(point.x() - ui->label_image->x());
+	        point.setY(point.y() - ui->label_image->y());
+
+			f_x = (float)point.x() / (float)label_w ;
+        	f_y = (float)point.y() / (float)label_h ;
+		
+			//SelectObject
+			//Ensemble_Job_Set_SelectObject(GetId(), f_x, f_y, f_w, f_h) ;
+            Ensemble_Job_Set_Ref_Point(GetId(), f_x, f_y) ;
 
 			emit UpdateBaseImage();
 		}
