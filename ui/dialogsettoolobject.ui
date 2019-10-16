@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>970</width>
-    <height>690</height>
+    <height>730</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -50,7 +50,7 @@
    <property name="geometry">
     <rect>
      <x>670</x>
-     <y>150</y>
+     <y>100</y>
      <width>291</width>
      <height>211</height>
     </rect>
@@ -156,8 +156,8 @@
   <widget class="QPushButton" name="pushButton_get_base_image">
    <property name="geometry">
     <rect>
-     <x>670</x>
-     <y>10</y>
+     <x>360</x>
+     <y>550</y>
      <width>291</width>
      <height>41</height>
     </rect>
@@ -175,6 +175,9 @@
      <height>480</height>
     </rect>
    </property>
+   <property name="mouseTracking">
+    <bool>true</bool>
+   </property>
    <property name="frameShape">
     <enum>QFrame::Box</enum>
    </property>
@@ -186,7 +189,7 @@
    <property name="geometry">
     <rect>
      <x>670</x>
-     <y>370</y>
+     <y>320</y>
      <width>291</width>
      <height>191</height>
     </rect>
@@ -341,7 +344,7 @@
    <property name="geometry">
     <rect>
      <x>670</x>
-     <y>60</y>
+     <y>10</y>
      <width>291</width>
      <height>80</height>
     </rect>
@@ -406,7 +409,7 @@
    <property name="geometry">
     <rect>
      <x>670</x>
-     <y>570</y>
+     <y>610</y>
      <width>291</width>
      <height>111</height>
     </rect>
@@ -535,7 +538,7 @@
    <property name="geometry">
     <rect>
      <x>660</x>
-     <y>830</y>
+     <y>750</y>
      <width>291</width>
      <height>111</height>
     </rect>
@@ -669,12 +672,54 @@
      <height>480</height>
     </rect>
    </property>
+   <property name="mouseTracking">
+    <bool>true</bool>
+   </property>
    <property name="frameShape">
     <enum>QFrame::Box</enum>
    </property>
    <property name="text">
     <string/>
    </property>
+  </widget>
+  <widget class="QGroupBox" name="groupBox_7">
+   <property name="geometry">
+    <rect>
+     <x>670</x>
+     <y>520</y>
+     <width>291</width>
+     <height>81</height>
+    </rect>
+   </property>
+   <property name="title">
+    <string>Set Reference Point</string>
+   </property>
+   <widget class="QPushButton" name="pushButton_ref_point_select">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>30</y>
+      <width>131</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Select Point</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton_ref_point_reset">
+    <property name="geometry">
+     <rect>
+      <x>150</x>
+      <y>30</y>
+      <width>131</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Reset Point</string>
+    </property>
+   </widget>
   </widget>
   <zorder>label_image_bg</zorder>
   <zorder>layoutWidget</zorder>
@@ -686,6 +731,7 @@
   <zorder>layoutWidget_2</zorder>
   <zorder>groupBox_6</zorder>
   <zorder>groupBox_9</zorder>
+  <zorder>groupBox_7</zorder>
  </widget>
  <resources/>
  <connections/>

@@ -15,6 +15,9 @@ DialogSetToolObject::DialogSetToolObject(QWidget *parent) :
 	connect(ui->pushButton_select_object, SIGNAL(clicked()), this,  SLOT(OnButtonSelectObject())) ;
 	connect(ui->pushButton_reset_object, SIGNAL(clicked()), this,  SLOT(OnButtonResetObject())) ;
 
+	//reference point
+	connect(ui->pushButton_ref_point_select, SIGNAL(clicked()), this,  SLOT(OnButtonSelectRefPoint())) ;
+	connect(ui->pushButton_ref_point_reset, SIGNAL(clicked()), this,  SLOT(OnButtonResetRefPoint())) ;
 	
 	//slider
 	connect(ui->horizontalSlider_feature_level, SIGNAL(sliderReleased()), this, SLOT(OnSliderSetFeatureLevel()));
@@ -192,6 +195,46 @@ void DialogSetToolObject::updatePicture(cv::Mat image, cv::Rect rect_user)
     ui->label_image->setPixmap(QPixmap::fromImage(qt_display_image));
 }
 
+void DialogSetToolObject::updatePictureCenterLine(cv::Mat image, cv::Point pt_user)
+{
+	const int draw_width = ui->label_image_bg->width();
+    const int draw_height = ui->label_image_bg->height();
+
+    float rescale_w = (float)draw_width / (float)image.cols ;
+    float rescale_h = (float)draw_height / (float)image.rows ;
+
+    float min_rescale = std::fmin(rescale_w, rescale_h) ;
+    if( min_rescale < 1.0 )
+    {
+        cv::resize(image, image, cv::Size(), min_rescale, min_rescale) ;
+    }
+
+    //fit image label by image isze
+    int pos_x = (int)((float)ui->label_image_bg->x() + (float)(draw_width - image.cols)/2.0) ;
+    int pos_y = (int)((float)ui->label_image_bg->y() + (float)(draw_height - image.rows)/2.0) ;
+
+    ui->label_image->setGeometry(pos_x, pos_y, image.cols, image.rows);
+
+    QImage qt_display_image = QImage((const unsigned char*)image.data, image.cols, image.rows, QImage::Format_RGB888);
+
+    //draw set rect
+    qDebug("%s : point(%d,%d)", __func__, pt_user.x, pt_user.y) ;
+
+    if( pt_user.x > 0 && pt_user.y > 0 )
+    {
+        QPainter qPainter(&qt_display_image);
+        qPainter.setBrush(Qt::NoBrush);
+        qPainter.setPen(Qt::red);
+
+        qPainter.drawLine(pt_user.x,0,pt_user.x,image.rows);
+        qPainter.drawLine(0,pt_user.y,image.cols,pt_user.y);
+
+        bool bEnd = qPainter.end();
+    }
+
+    ui->label_image->setPixmap(QPixmap::fromImage(qt_display_image));
+}
+
 void DialogSetToolObject::OnSliderSetFeatureLevel(void)
 {
     //get level
@@ -265,15 +308,25 @@ void DialogSetToolObject::mouseMoveEvent(QMouseEvent *event)
 {
     qDebug("%s - %d", __func__, __LINE__) ;
 
-    if ((event->buttons() & Qt::LeftButton) && m_cls_set_user_region.GetStatus() > SetBaseStatus::NORMAL)
+   if ( m_cls_set_user_region.GetStatus() > SetBaseStatus::NORMAL)
 	{
 		QPoint point = event->pos() ;
         point.setX(point.x() - ui->label_image->x());
         point.setY(point.y() - ui->label_image->y());
 
-		cv::Rect rect_user = m_cls_set_user_region.MoveSetRegion(point.x(), point.y()) ;
-		        
-		updatePicture(m_image, rect_user) ;
+		if( m_cls_set_user_region.GetStatus() == SetBaseStatus::SET_REF_POINT )
+		{
+			updatePictureCenterLine(m_image, cv::Point(point.x(), point.y())) ;
+		}
+		else
+		{
+			if( (event->buttons() & Qt::LeftButton) )
+			{
+				cv::Rect rect_user = m_cls_set_user_region.MoveSetRegion(point.x(), point.y()) ;
+
+				updatePicture(m_image, rect_user) ;
+			}
+		}
 	}
 }
 
@@ -337,6 +390,21 @@ void DialogSetToolObject::mouseReleaseEvent(QMouseEvent *event)
 
 			emit UpdateToolObjectImage();
 		}
+		else if( set_status == SetBaseStatus::SET_REF_POINT)
+		{
+			QPoint point = event->pos() ;
+	        point.setX(point.x() - ui->label_image->x());
+	        point.setY(point.y() - ui->label_image->y());
+
+			f_x = (float)point.x() / (float)label_w ;
+        	f_y = (float)point.y() / (float)label_h ;
+		
+			//SelectObject
+			//Ensemble_Job_Set_SelectObject(GetId(), f_x, f_y, f_w, f_h) ;
+            Ensemble_Tool_Set_Ref_Point(GetId(), f_x, f_y) ;
+
+			emit UpdateBaseImage();
+		}
 		
         OnButtonGetImage() ;
 	}
@@ -373,4 +441,17 @@ void DialogSetToolObject::OnCheckFeatureUseCustomOption(bool checked)
         ui->horizontalSlider_feature_level->setEnabled(true) ;
 	}
 }
+
+void DialogSetToolObject::OnButtonSelectRefPoint(void)
+{
+	m_cls_set_user_region.SetStatus(SetBaseStatus::SET_REF_POINT) ;
+}
+
+void DialogSetToolObject::OnButtonResetRefPoint(void)
+{
+	Ensemble_Tool_Del_Ref_Point(GetId()) ;
+	
+    OnButtonGetImage() ;
+}
+
 

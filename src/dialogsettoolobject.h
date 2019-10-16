@@ -40,6 +40,7 @@ private:
     Ui::DialogSetToolObject *ui;
 	
 	void updatePicture(cv::Mat image, cv::Rect rect_user=cv::Rect()) ;
+	void updatePictureCenterLine(cv::Mat image, cv::Point pt_user=cv::Point()) ;
 	cv::Mat m_image ;
 
 	CSetUserRegion m_cls_set_user_region ;
@@ -57,6 +58,10 @@ public slots:
     void mouseMoveEvent(QMouseEvent *event) override;
     void mouseReleaseEvent(QMouseEvent *event) override;
 
+	//ref point
+	void OnButtonSelectRefPoint(void) ;
+	void OnButtonResetRefPoint(void) ;
+	
 	void OnCheckFeatureUseCustomOption(bool checked) ;
 
 signals:
