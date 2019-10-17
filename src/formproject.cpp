@@ -15,6 +15,8 @@ FormProject::FormProject(QWidget *parent) :
 
 	connect(ui->pushButton_change, SIGNAL(clicked()), this,  SLOT(OnButtonSetName())) ;
 	connect(ui->pushButton_del, SIGNAL(clicked()), this,  SLOT(OnButtonDel())) ;
+
+	connect(ui->pushButton_run, SIGNAL(clicked()), this,  SLOT(OnButtonRun())) ;
 }
 
 FormProject::~FormProject()
@@ -138,5 +140,13 @@ void FormProject::OnButtonDel(void)
     Ensemble_Project_Del(GetIdInfo()) ;
 	
 	emit UpdateList();
+}
+
+void FormProject::OnButtonRun(void)
+{
+	Ensemble_Poject_Run(GetIdInfo()) ;
+
+	QString qstr_id = QString::fromStdString(GetIdInfo());
+	emit UpdateResultImage(qstr_id) ;
 }
 

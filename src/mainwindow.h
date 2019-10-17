@@ -107,7 +107,8 @@ protected:
                 else if( m_i_type == 2 )        //merge image = image + result
                 {
                     ret = Ensemble_Source_Get_Image(GET_IMAGE_INPUT, std::string(), image_type+IMAGE_ADD_TIME+IMAGE_ADD_SOURCE_INFO, &get_data, &width, &height) ;
-                    ret += Ensemble_Job_Get_ResultImage(m_str_id, image_type, &get_data_result, &width_result, &height_result) ;
+                    //ret += Ensemble_Job_Get_ResultImage(m_str_id, image_type, &get_data_result, &width_result, &height_result) ;
+                    ret += Ensemble_Result_Get_Image(m_str_id, image_type, &get_data_result, &width_result, &height_result) ;
                 }
                 else
                 {

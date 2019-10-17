@@ -45,10 +45,12 @@ private:
 signals:
 	void UpdateList(void);
 	void UpdateResultImage(QString id) ;
+	
 
 public slots:
 	void OnButtonDel(void);
 	void OnButtonSetName(void) ;
+	void OnButtonRun(void) ;
 
 
 };
