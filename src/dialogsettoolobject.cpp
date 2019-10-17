@@ -403,7 +403,7 @@ void DialogSetToolObject::mouseReleaseEvent(QMouseEvent *event)
 			//Ensemble_Job_Set_SelectObject(GetId(), f_x, f_y, f_w, f_h) ;
             Ensemble_Tool_Set_Ref_Point(GetId(), f_x, f_y) ;
 
-			emit UpdateBaseImage();
+            emit UpdateToolObjectImage();
 		}
 		
         OnButtonGetImage() ;
