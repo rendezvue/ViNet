@@ -100,7 +100,8 @@ protected:
 
                 if( m_i_type == 1 )        //result
                 {
-                    ret = Ensemble_Job_Get_ResultImage(m_str_id, image_type, &get_data_result, &width_result, &height_result) ;
+                    //ret = Ensemble_Job_Get_ResultImage(m_str_id, image_type, &get_data_result, &width_result, &height_result) ;
+                    ret += Ensemble_Result_Get_Image(m_str_id, image_type, &get_data_result, &width_result, &height_result) ;
 
                     //qDebug("Result Image Size = %d, %d", width_result, height_result) ;
                 }

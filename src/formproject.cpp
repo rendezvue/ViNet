@@ -144,7 +144,9 @@ void FormProject::OnButtonDel(void)
 
 void FormProject::OnButtonRun(void)
 {
-	Ensemble_Poject_Run(GetIdInfo()) ;
+	std::string str_result_xml = Ensemble_Poject_Run(GetIdInfo()) ;
+
+	qDebug("Project Result = %s", str_result_xml.c_str()) ;
 
 	QString qstr_id = QString::fromStdString(GetIdInfo());
 	emit UpdateResultImage(qstr_id) ;
