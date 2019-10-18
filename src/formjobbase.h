@@ -47,6 +47,8 @@ public:
 
 	void SetObjectImage(cv::Mat image) ;
 
+	void SetInfo(const std::string info) ;
+	
 protected:
 	void showEvent(QShowEvent *ev);
     void enterEvent(QEvent *);
@@ -61,6 +63,7 @@ private:
     Ui::FormJobBase *ui;
 
     const int m_type ;
+	std::string m_str_info ;
 
 	DialogSetBase m_dlg_setbase ;
 	DialogSetCalibration m_dlg_set_calibration ;
@@ -78,7 +81,7 @@ public slots:
 	void OnRunCheckBoxToggled(bool checked) ;
 	void OnViewCheckBoxToggled(bool checked) ;
 	void OnButtonSetCalibration(void) ;
-	void UpdateInfo(QString info) ;
+	void UpdateInfo(void) ;
 };
 
 #endif // FORMJOBBASE_H

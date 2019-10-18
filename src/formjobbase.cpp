@@ -330,9 +330,19 @@ void FormJobBase::OnButtonSetCalibration(void)
     }
 }
 
-void FormJobBase::UpdateInfo(QString info)
+void FormJobBase::UpdateInfo(void)
 {
-	ui->label_info->setText(info);
+	QString qstr_info = QString::fromStdString(m_str_info);
+
+	qDebug("Update Info = %s", m_str_info.c_str()) ;
+	
+	ui->label_info->setText(qstr_info);
 }
+
+void FormJobBase::SetInfo(const std::string info)
+{
+	m_str_info = info ;
+}
+
 
 

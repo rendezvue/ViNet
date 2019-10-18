@@ -320,7 +320,7 @@ protected :
     void showEvent(QShowEvent *ev) override;
 
 signals:
-    void UpdateInfoJob(QString info);
+    void UpdateFormInfo(void);
 
 public slots:
     void updatePicture(cv::Mat image);

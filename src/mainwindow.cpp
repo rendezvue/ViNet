@@ -619,20 +619,22 @@ void MainWindow::UpdateResult(QString qstr_xml)
 				if( item )
 				{
 					qDebug("Search Item") ;
-					
-					FormJobBase* p_FromJobBase = (FormJobBase*)item ;
-					
-					if( p_FromJobBase )
-					{
-						qDebug("Item is Job") ;
-						
-						std::string str_info = "Find=" + std::to_string(jobs_find_count) ;
-						QString qstr_info = QString::fromUtf8(str_info.c_str());
-						emit UpdateInfoJob(qstr_info) ;
-					}
+
+                    FormJobBase* p_FromJobBase = dynamic_cast<FormJobBase*>(ui->treeWidget_job->itemWidget(item, 0));
+                
+                    if( p_FromJobBase )
+                    {
+                        qDebug("Item is Job") ;
+
+                        std::string str_info = "Find Count : " + std::to_string(jobs_find_count) ;
+
+                        p_FromJobBase->SetInfo(str_info) ;
+                    }
 				}				
 			}
 		}
+
+		emit UpdateFormInfo() ;
 	}
 }
 
@@ -790,7 +792,7 @@ void MainWindow::UpdateJobTree(void)
 				
 					connect(theWidgetItem, SIGNAL(UpdateList()), this, SLOT(UpdateJobTree())) ;
 					connect(theWidgetItem, SIGNAL(UpdateResultImage(QString)), this, SLOT(UpdateResultImage(QString))) ;
-					connect(this, SIGNAL(UpdateInfoJob(QString)), theWidgetItem, SLOT(UpdateInfo(QString))) ;		//mainwindow(UpdateInfoJob) --> FormJobBase(UpdateInfo)
+					connect(this, SIGNAL(UpdateFormInfo()), theWidgetItem, SLOT(UpdateInfo())) ;		//mainwindow(UpdateInfoJob) --> FormJobBase(UpdateInfo)
 					
                     QSize item_size = theWidgetItem->size() ;
                     treeJobItem->setSizeHint(0, item_size);
@@ -823,6 +825,7 @@ void MainWindow::UpdateJobTree(void)
 						theWidgetItem->SetType(type) ;
 
 						connect(theWidgetItem, SIGNAL(UpdateList()), this, SLOT(UpdateJobTree())) ;
+						connect(this, SIGNAL(UpdateFormInfo()), theWidgetItem, SLOT(UpdateInfo())) ;		//mainwindow(UpdateInfoJob) --> FormJobBase(UpdateInfo)
 						//connect(theWidgetItem, SIGNAL(UpdateResultImage(QString)), this, SLOT(UpdateResultImage(QString))) ;
 						
 	                    QSize item_size = theWidgetItem->size() ;
@@ -856,6 +859,7 @@ void MainWindow::UpdateJobTree(void)
 							theWidgetItem->SetType(option_type) ;
 
 							connect(theWidgetItem, SIGNAL(UpdateList()), this, SLOT(UpdateJobTree())) ;
+							connect(this, SIGNAL(UpdateFormInfo()), theWidgetItem, SLOT(UpdateInfo())) ;		//mainwindow(UpdateInfoJob) --> FormJobBase(UpdateInfo)
 							//connect(theWidgetItem, SIGNAL(UpdateResultImage(QString)), this, SLOT(UpdateResultImage(QString))) ;
 							
 		                    QSize item_size = theWidgetItem->size() ;
