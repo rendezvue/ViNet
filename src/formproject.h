@@ -45,6 +45,7 @@ private:
 signals:
 	void UpdateList(void);
 	void UpdateResultImage(QString id) ;
+	void UpdateResult(QString qstr_result_xml) ;
 	
 
 public slots:

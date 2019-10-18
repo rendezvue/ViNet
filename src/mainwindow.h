@@ -323,6 +323,7 @@ public slots:
     void UpdateJobsList(void) ;
     void UpdateJobTree(void) ;
 	void UpdateResultImage(QString id) ;
+	void UpdateResult(QString qstr_xml) ;
     void OnMenuConnect(void);
     void OnButtonNewProject(void) ;
     void DropEventDoneOnTree(void) ;

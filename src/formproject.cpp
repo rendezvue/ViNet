@@ -149,6 +149,8 @@ void FormProject::OnButtonRun(void)
 	qDebug("Project Result = %s", str_result_xml.c_str()) ;
 
 	QString qstr_id = QString::fromStdString(GetIdInfo());
+
 	emit UpdateResultImage(qstr_id) ;
+	emit UpdateResult(QString::fromStdString(str_result_xml)) ;
 }
 

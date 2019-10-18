@@ -532,6 +532,10 @@ void MainWindow::UpdateResultImage(QString id)
     ui->tabWidget_image->setCurrentIndex(1);
 }
 
+void MainWindow::UpdateResult(QString qstr_xml)
+{
+	qDebug("UpdateResult : xml = %s", qUtf8Printable(qstr_xml)) ;
+}
 
 void MainWindow::UpdateJobTree(void)
 {
@@ -651,6 +655,7 @@ void MainWindow::UpdateJobTree(void)
 
 				connect(theWidgetItem, SIGNAL(UpdateList()), this, SLOT(UpdateJobTree())) ;
 				connect(theWidgetItem, SIGNAL(UpdateResultImage(QString)), this, SLOT(UpdateResultImage(QString))) ;
+				connect(theWidgetItem, SIGNAL(UpdateResult(QString)), this, SLOT(UpdateResult(QString))) ;
 				
                 theWidgetItem->SetNameInfo(str_prj_name);
                 theWidgetItem->SetIdInfo(str_prj_id);
