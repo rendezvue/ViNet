@@ -78,6 +78,7 @@ public slots:
 	void OnRunCheckBoxToggled(bool checked) ;
 	void OnViewCheckBoxToggled(bool checked) ;
 	void OnButtonSetCalibration(void) ;
+	void UpdateInfo(QString info) ;
 };
 
 #endif // FORMJOBBASE_H

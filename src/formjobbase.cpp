@@ -120,7 +120,6 @@ void FormJobBase::SetObjectImage(cv::Mat image)
     ui->label_image_2->setPixmap(QPixmap::fromImage(qt_display_image));
 }
 
-
 void FormJobBase::OnButtonSetBase(void)
 {
     //DialogSetBase dlg_setbase ;
@@ -330,4 +329,10 @@ void FormJobBase::OnButtonSetCalibration(void)
     {
     }
 }
+
+void FormJobBase::UpdateInfo(QString info)
+{
+	ui->label_info->setText(info);
+}
+
 

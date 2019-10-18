@@ -41,6 +41,7 @@ protected:
 
 private:
     Ui::FormProject *ui;
+	std::string m_str_id ;
 
 signals:
 	void UpdateList(void);

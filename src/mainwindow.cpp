@@ -535,6 +535,105 @@ void MainWindow::UpdateResultImage(QString id)
 void MainWindow::UpdateResult(QString qstr_xml)
 {
 	qDebug("UpdateResult : xml = %s", qUtf8Printable(qstr_xml)) ;
+
+	/*
+	//Example
+	<?xml version="1.0" encoding="UTF-8" standalone="no" ?>	
+	<Result ID='20191018125524_Myic8212'>
+		<Jobs ID='20191018125526_eDEe2175' TYPE='30000' FindCount='1'>    
+			<Job>        
+				<Pose CenterX='494.000000' CenterY='143.000000' Angle='0' Roi_TL_X='413.000000' Roi_TL_Y='40.000000' Roi_TR_X='575.000000' Roi_TR_Y='40.000000' Roi_BR_X='575.000000' Roi_BR_Y='247.000000' Roi_BL_X='413.000000' Roi_BL_Y='247.000000' />        
+				<Matching Score='1.000000'/>        
+				<Specific>        
+				</Specific>        
+				<Tools>        
+				</Tools>    
+			</Job>
+		</Jobs>
+		<Jobs ID='20191018125535_wOUZ1363' TYPE='30000' FindCount='1'>    
+			<Job>        
+				<Pose CenterX='208.000000' CenterY='316.000000' Angle='0' Roi_TL_X='125.000000' Roi_TL_Y='225.000000' Roi_TR_X='292.000000' Roi_TR_Y='225.000000' Roi_BR_X='292.000000' Roi_BR_Y='408.000000' Roi_BL_X='125.000000' Roi_BL_Y='408.000000' />        
+				<Matching Score='1.000000'/>        
+				<Specific>        
+				</Specific>        
+				<Tools>        
+				</Tools>    
+			</Job>
+		</Jobs>	
+	</Result>
+	*/
+
+	std::string str_xml = qstr_xml.toStdString();
+
+	//XML Parsing
+    pugi::xml_document doc;
+    pugi::xml_parse_result result_xml_parsing = doc.load_string((char *)(str_xml.c_str()));
+	
+	if (!result_xml_parsing)
+	{
+		qDebug("xml parsing error") ;
+	}
+	else
+	{
+		for (pugi::xml_node result : doc.children("Result") )
+        {
+        	std::string str_project_id = result.attribute("ID").value() ;
+
+			qDebug("xml parsing : project id =%s", str_project_id.c_str()) ;
+
+			for (pugi::xml_node jobs: result.children("Jobs"))
+            {
+            	std::string str_jobs_id = jobs.attribute("ID").value() ;
+				int jobs_type = jobs.attribute("TYPE").as_int() ;
+				int jobs_find_count = jobs.attribute("FindCount").as_int() ;
+
+				qDebug("Job ID=%s, TYPE=%d, FindCount=%d", str_jobs_id.c_str(), jobs_type, jobs_find_count) ;
+				
+				int job_count = 0 ;
+				for (pugi::xml_node job: jobs.children("Job"))
+            	{
+            		float center_x = job.child("Pose").attribute("CenterX").as_float() ;
+					float center_y = job.child("Pose").attribute("CenterY").as_float() ;
+					float angle = job.child("Pose").attribute("Angle").as_float() ;
+					float score = job.child("Matching").attribute("Score").as_float() ;
+					
+					float roi_tl_x = job.child("Pose").attribute("Roi_TL_X").as_float() ;
+					float roi_tl_y = job.child("Pose").attribute("Roi_TL_Y").as_float() ;
+					float roi_tr_x = job.child("Pose").attribute("Roi_TR_X").as_float() ;
+					float roi_tr_y = job.child("Pose").attribute("Roi_TR_Y").as_float() ;
+					float roi_br_x = job.child("Pose").attribute("Roi_BR_X").as_float() ;
+					float roi_br_y = job.child("Pose").attribute("Roi_BR_Y").as_float() ;
+					float roi_bl_x = job.child("Pose").attribute("Roi_BL_X").as_float() ;
+					float roi_bl_y = job.child("Pose").attribute("Roi_BL_Y").as_float() ;
+					
+                    qDebug("[%d] Center(%.2f, %.2f), Angle(%.2f), Score(%.2f)", job_count,center_x,center_y, angle, score) ;
+					qDebug("    - ROI : (%.2f, %.2f), (%.2f, %.2f), (%.2f, %.2f), (%.2f, %.2f)", roi_tl_x,roi_tl_y,roi_tr_x,roi_tr_y,roi_br_x,roi_br_y,roi_bl_x,roi_bl_y) ;
+
+					job_count++ ;
+				}
+
+				//Find Job in List				
+				qDebug("Update Job Form : Find %s item", str_jobs_id.c_str()) ;
+				CSearchTreeItem cls_search_tree_item ;
+				QTreeWidgetItem *item = cls_search_tree_item.GetItem(ui->treeWidget_job, str_jobs_id) ;
+				if( item )
+				{
+					qDebug("Search Item") ;
+					
+					FormJobBase* p_FromJobBase = (FormJobBase*)item ;
+					
+					if( p_FromJobBase )
+					{
+						qDebug("Item is Job") ;
+						
+						std::string str_info = "Find=" + std::to_string(jobs_find_count) ;
+						QString qstr_info = QString::fromUtf8(str_info.c_str());
+						emit UpdateInfoJob(qstr_info) ;
+					}
+				}				
+			}
+		}
+	}
 }
 
 void MainWindow::UpdateJobTree(void)
@@ -691,6 +790,7 @@ void MainWindow::UpdateJobTree(void)
 				
 					connect(theWidgetItem, SIGNAL(UpdateList()), this, SLOT(UpdateJobTree())) ;
 					connect(theWidgetItem, SIGNAL(UpdateResultImage(QString)), this, SLOT(UpdateResultImage(QString))) ;
+					connect(this, SIGNAL(UpdateInfoJob(QString)), theWidgetItem, SLOT(UpdateInfo(QString))) ;		//mainwindow(UpdateInfoJob) --> FormJobBase(UpdateInfo)
 					
                     QSize item_size = theWidgetItem->size() ;
                     treeJobItem->setSizeHint(0, item_size);

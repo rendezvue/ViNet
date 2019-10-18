@@ -36,6 +36,8 @@
 #include "cmat2qimage.h"
 
 
+#include "csearchtreeitem.h"
+
 
 //boost
 #include <boost/property_tree/ptree.hpp>
@@ -316,6 +318,9 @@ private:
 
 protected :
     void showEvent(QShowEvent *ev) override;
+
+signals:
+    void UpdateInfoJob(QString info);
 
 public slots:
     void updatePicture(cv::Mat image);

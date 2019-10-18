@@ -40,16 +40,24 @@ std::string FormProject::GetNameInfo(void)
 
 void FormProject::SetIdInfo(const std::string id)
 {
+	m_str_id = id ;
+	
     ui->label_id->setText(QString::fromUtf8(id.c_str()));
 }
 
 std::string FormProject::GetIdInfo(void)
 {
+#if 0
+	qDebug("Call FormProject::GetIdInfo") ;
+	
     QString id = ui->label_id->text() ;
 
     std::string str_id = id.toUtf8().constData();
 
-    return str_id ;
+	qDebug("Call FormProject::GetIdInfo ID = %s", str_id.c_str()) ;
+#endif
+
+    return m_str_id ;
 }
 
 bool FormProject::event(QEvent * e)
