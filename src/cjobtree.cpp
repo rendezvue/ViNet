@@ -119,6 +119,10 @@ void CJobTree::dropEvent(QDropEvent *event)
 					Ensemble_Tool_Add_New(str_target_id, item_from_type) ;
 				}
 			}
+			else if( item_to_type >= JobType::JOB_TYPE_TOOL && item_to_type < JobType::JOB_TYPE_TOOL+10000 )
+			{
+				//Insert
+			}
 
 #if 0			
 			else if( item->type() == JobType::JOB_TYPE_BASE )
@@ -410,6 +414,8 @@ void CJobTree::dragMoveEvent(QDragMoveEvent *event)
 	        {
 	            str_candidate_text = "-> Move Here" ;
 	        }
+
+			delCandidateItem() ;
 			
             if( !item->parent())
             {
@@ -422,13 +428,14 @@ void CJobTree::dragMoveEvent(QDragMoveEvent *event)
             }
             else
             {
-            	bool b_enable_insert_item = false ;
+            	int enable_insert_item = 0 ;
+
 				if( (item_to_type / JobType::JOB_TYPE_PROJECT) == 1 && (item_to_type % JobType::JOB_TYPE_PROJECT) == 0  )
 				{
 					if( item_from_type >= JobType::JOB_TYPE_BASE && item_from_type < JobType::JOB_TYPE_BASE + 10000)
 					{
 						qDebug("From Base To Project") ;
-						b_enable_insert_item = true ;
+						enable_insert_item = 1 ;
 					}
 				}
 				else if( (item_to_type / JobType::JOB_TYPE_BASE) == 1 && (item_to_type % JobType::JOB_TYPE_BASE) == 0  )
@@ -436,14 +443,22 @@ void CJobTree::dragMoveEvent(QDragMoveEvent *event)
 					if( item_from_type >= JobType::JOB_TYPE_TOOL && item_from_type < JobType::JOB_TYPE_TOOL + 10000)
 					{
 						qDebug("From Tool To Base") ;
-						b_enable_insert_item = true ;
+						enable_insert_item = 1 ;
 					}
 				}
+				else if( item_to_type >= JobType::JOB_TYPE_TOOL && item_to_type < JobType::JOB_TYPE_TOOL + 10000)
+				{
+					if( item_from_type >= JobType::JOB_TYPE_TOOL && item_from_type < JobType::JOB_TYPE_TOOL + 10000)
+					{
+						qDebug("From Tool To Base") ;
+						enable_insert_item = 2;
+					}
+				}
+				
 
+				qDebug("b_enable_insert_item = %d", enable_insert_item) ;
 				
-				qDebug("b_enable_insert_item = %d", b_enable_insert_item) ;
-				
-                if(  b_enable_insert_item && visualRect(indexFromItem(item)).adjusted(-1, -1, 1, 1).contains(pos, false) ) //&& item->type() == JobType::JOB_TYPE_BASE )
+                if(  enable_insert_item && visualRect(indexFromItem(item)).adjusted(-1, -1, 1, 1).contains(pos, false) ) //&& item->type() == JobType::JOB_TYPE_BASE )
                 {
                     //qDebug("%s, visual rect true", __func__) ;
 
@@ -478,6 +493,121 @@ void CJobTree::dragMoveEvent(QDragMoveEvent *event)
                         m_dropIndicatorRect = QRect() ;
                     }
 
+					if( enable_insert_item == 1 )	//Candidate is Last(New Add)
+					{
+						//new candidate item
+                        QTreeWidgetItem *treeChileItem = new QTreeWidgetItem(JobType::JOB_TYPE_CANDIDATE);
+
+                        FormCandidateTool *theWidgetItem = new FormCandidateTool;
+                        QSize item_size = theWidgetItem->size() ;
+                        treeChileItem->setSizeHint(0, item_size);
+
+                        if( event->mimeData()->hasFormat(CToolList::itemMimeType()))
+                        {
+                            item->addChild(treeChileItem);
+                        }
+                        else if( event->mimeData()->hasFormat(CJobTree::itemMimeType()) )
+                        {
+                            item->insertChild( 0, treeChileItem );
+
+                        }
+
+                        item->setExpanded(true);
+
+                        theWidgetItem->SetText(str_candidate_text);
+
+                        this->setItemWidget(treeChileItem, 0, theWidgetItem);
+
+                        //link
+                        m_p_item_candidate = treeChileItem ;
+					}
+					else if( enable_insert_item == 2 )		//Candidate is Next(Insert)
+					{
+						
+						QTreeWidgetItem* parent = item->parent();
+					
+						if( parent != nullptr )
+						{
+							//qDebug("Parent");
+
+							if( parent->type() == JobType::JOB_TYPE_BASE )
+							{
+								//qDebug("Parent is BASE");
+
+								int index = parent->indexOfChild(item);
+
+								QTreeWidgetItem* next_child = parent->child(index+1);
+								QModelIndex next_child_index = QModelIndex() ;
+								
+								bool b_new_candidate = true ;
+								if( next_child != nullptr )
+								{
+									//check
+									if( next_child->type() == JobType::JOB_TYPE_CANDIDATE )
+									{
+										//qDebug("Tool Candidate : Next Child is Candidate item");
+										b_new_candidate = false ;
+									}
+									else
+									{
+										delCandidateItem() ;
+									}
+
+									next_child_index = indexFromItem(next_child) ;
+								}
+
+								if( m_drag_countrow_for_redorder >= 0 )
+								{
+									//int cur_index = countRow(item_index) ;
+									//int next_index = countRow(next_child_index) ;
+									int cur_index = item_index.row() ;
+									int next_index = next_child_index.row() ;
+									
+									if( cur_index > 0 )
+									{
+										//qDebug("%s : m_drag_countrow_for_redorder(%d), cur_index(%d), next_index(%d)", __func__, m_drag_countrow_for_redorder, cur_index, next_index) ;
+										
+										//The position to move is now your own position.
+										if( m_drag_countrow_for_redorder == cur_index || m_drag_countrow_for_redorder == next_index)
+										{
+											b_new_candidate = false;
+
+											delCandidateItem() ;
+										}
+									}
+								}
+
+								if( b_new_candidate )
+								{
+									//new candidate item
+									QTreeWidgetItem *treeChileItem = new QTreeWidgetItem(JobType::JOB_TYPE_CANDIDATE);
+									//parent->addChild(treeChileItem);
+									//parent->insertChild( index+1, treeChileItem );
+									//parent->insertChild(index+1, treeChileItem);
+									//item->setExpanded(true);
+
+									FormCandidateTool *theWidgetItem = new FormCandidateTool;
+									QSize item_size = theWidgetItem->size() ;
+									treeChileItem->setSizeHint(0, item_size);
+
+									theWidgetItem->SetText(str_candidate_text);
+
+									parent->insertChild( index+1, treeChileItem );
+
+									this->setItemWidget(treeChileItem, 0, theWidgetItem);
+
+									//link
+									m_p_item_candidate = treeChileItem ;
+
+									//parent->insertChild(index-1, child);
+									//delCandidateItem() ;
+								}
+
+							}
+						}
+					}
+
+#if 0				
 					//check sub at last
                     int child_count = item->childCount() ;
                     int candidate_index = -1 ;
@@ -548,7 +678,8 @@ void CJobTree::dragMoveEvent(QDragMoveEvent *event)
 
                         //link
                         m_p_item_candidate = treeChileItem ;
-                    }					
+                    }	
+#endif					
 
 #if 0
 					if( item->type() == JobType::JOB_TYPE_PROJECT )
