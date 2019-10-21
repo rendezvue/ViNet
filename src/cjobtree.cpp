@@ -122,6 +122,26 @@ void CJobTree::dropEvent(QDropEvent *event)
 			else if( item_to_type >= JobType::JOB_TYPE_TOOL && item_to_type < JobType::JOB_TYPE_TOOL+10000 )
 			{
 				//Insert
+				//int Ensemble_Tool_Insert(const std::string parent_id, const int index, const int tool_type)
+				qDebug("call API : EnsembleInsertTool : Type Tool") ;
+				
+				//parent
+				QTreeWidgetItem* parent_item = item->parent() ;
+
+				if( parent_item != nullptr )
+                {
+                    if( parent_item->type() == JobType::JOB_TYPE_BASE )
+                    {
+						QVariant parent_item_user_data = parent_item->data(0, Qt::UserRole+1) ;
+				        QString parent_job_base_id = parent_item_user_data.toString() ;
+				        std::string str_parent_job_base_id = parent_job_base_id.toUtf8().constData() ;
+
+                        Ensemble_Tool_Insert(str_parent_job_base_id, target_index, item_from_type) ;
+
+						qDebug("call API : EnsembleInsertTool : Type Tool : parent id=%s, target_index=%d, type=%d", str_parent_job_base_id.c_str(), target_index, item_from_type) ;
+						
+                	}
+				}
 			}
 
 #if 0			
