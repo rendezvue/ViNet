@@ -255,7 +255,8 @@ void CJobTree::dropEvent(QDropEvent *event)
 
 			if( str_parent_job_base_id.size() > 0 )
 			{
-                Ensemble_Tool_Move(str_parent_job_base_id, cur_index, target_index) ;
+				qDebug("Move Item : ID(%s), %d -> %d", str_parent_job_base_id.c_str(), cur_index, target_index) ;
+                Ensemble_Tool_Move(str_parent_job_base_id, cur_index, target_index-1) ;
 			}
 #endif
 		}
@@ -474,6 +475,14 @@ void CJobTree::dragMoveEvent(QDragMoveEvent *event)
 						enable_insert_item = 2;
 					}
 				}
+				else if( event->mimeData()->hasFormat(CJobTree::itemMimeType()) )
+		        {
+		            if( item_from_type >= JobType::JOB_TYPE_TOOL && item_from_type < JobType::JOB_TYPE_TOOL + 10000)
+					{
+						qDebug("From Tool To Base") ;
+						enable_insert_item = 2;
+					}
+		        }
 				
 
 				qDebug("b_enable_insert_item = %d", enable_insert_item) ;
@@ -1142,10 +1151,16 @@ void CJobTree::startDrag(Qt::DropActions /*supportedActions*/)
     }
 
 #if 1
-    QVariant item_user_data = item->data(0, Qt::UserRole+1) ;
+   //QVariant item_user_data = item->data(0, Qt::UserRole+1) ;
+   QVariant item_user_data = item->type() ;
+   int type = item_user_data.toInt() ;
 
-    //dataStream << str_text << type ;
-    dataStream << item_user_data.toString() ;
+   //dataStream << str_text << type ;
+   //dataStream << type << pixmap ;
+   dataStream << type  ;
+   
+    //QVariant item_user_data = item->data(0, Qt::UserRole+1) ;
+    //dataStream << item_user_data.toString() ;
 	
 #endif
 
