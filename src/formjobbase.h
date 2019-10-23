@@ -14,6 +14,7 @@
 //dialog
 #include "dialogsetbase.h"
 #include "dialogsetcalibration.h"
+#include "dialogresultinfo.h"
 
 
 #include "ImgDec.h"
@@ -48,6 +49,7 @@ public:
 	void SetObjectImage(cv::Mat image) ;
 
 	void SetInfo(const std::string info) ;
+	void SetResultString(const std::string str_result) ;
 	
 protected:
 	void showEvent(QShowEvent *ev);
@@ -64,6 +66,7 @@ private:
 
     const int m_type ;
 	std::string m_str_info ;
+	std::string m_str_result ;
 
 	DialogSetBase m_dlg_setbase ;
 	DialogSetCalibration m_dlg_set_calibration ;
@@ -81,6 +84,7 @@ public slots:
 	void OnRunCheckBoxToggled(bool checked) ;
 	void OnViewCheckBoxToggled(bool checked) ;
 	void OnButtonSetCalibration(void) ;
+	void OnButtonResultInfo(void) ;
 	void UpdateInfo(void) ;
 };
 

@@ -79,7 +79,8 @@ HEADERS += \
     module/PacketEthComm/EthernetClientControlData.h \
     module/PacketEthComm/EthernetGetInfo.h \
     src/dialogsetcustomfeatureoption.h \
-    src/csearchtreeitem.h
+    src/csearchtreeitem.h \
+    src/dialogresultinfo.h
 
 SOURCES += \
     module/EnsembleAPI/src/Interface.cpp \
@@ -125,7 +126,8 @@ SOURCES += \
     module/PacketEthComm/EthernetClientControlData.cpp \
     module/PacketEthComm/EthernetGetInfo.cpp \
     src/dialogsetcustomfeatureoption.cpp \
-    src/csearchtreeitem.cpp
+    src/csearchtreeitem.cpp \
+    src/dialogresultinfo.cpp
 
 FORMS += \
     ui/cdialogconnect.ui \
@@ -153,5 +155,6 @@ FORMS += \
     ui/formtoollist.ui \
     ui/formtooloption.ui \
     ui/mainwindow.ui \
-    ui/dialogsetcustomfeatureoption.ui
+    ui/dialogsetcustomfeatureoption.ui \
+    ui/dialogresultinfo.ui
 

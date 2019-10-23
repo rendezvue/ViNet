@@ -33,6 +33,11 @@ FormJobBase::FormJobBase(QWidget *parent) :
 	//check box
     connect(ui->checkBox_run, SIGNAL(clicked(bool)), this, SLOT(OnRunCheckBoxToggled(bool)));
     connect(ui->checkBox_view, SIGNAL(clicked(bool)), this, SLOT(OnViewCheckBoxToggled(bool)));
+
+    //QSize size_result_bt =  ui->pushButton_result_more->sizeHint();
+    //ui->pushButton_result_more->resize(20, size_result_bt.height());
+    connect(ui->pushButton_result_more, SIGNAL(clicked()), this, SLOT(OnButtonResultInfo())) ;
+	
 }
 
 FormJobBase::~FormJobBase()
@@ -330,6 +335,21 @@ void FormJobBase::OnButtonSetCalibration(void)
     }
 }
 
+void FormJobBase::OnButtonResultInfo(void)
+{
+	DialogResultInfo dlg_result_info ;
+
+	dlg_result_info.SetIdInfo(GetIdInfo()) ;
+	dlg_result_info.SetNameInfo(GetNameInfo()) ;
+    dlg_result_info.SetResultString(m_str_result) ;
+
+    int dialogCode = dlg_result_info.exec();
+
+    if(dialogCode == QDialog::Accepted)
+    {
+    }
+}
+
 void FormJobBase::UpdateInfo(void)
 {
 	QString qstr_info = QString::fromStdString(m_str_info);
@@ -344,5 +364,9 @@ void FormJobBase::SetInfo(const std::string info)
 	m_str_info = info ;
 }
 
+void FormJobBase::SetResultString(const std::string str_result)
+{
+	m_str_result = str_result ;
+}
 
 

@@ -587,9 +587,12 @@ void MainWindow::UpdateResult(QString qstr_xml)
 				int jobs_type = jobs.attribute("TYPE").as_int() ;
 				int jobs_find_count = jobs.attribute("FindCount").as_int() ;
 
+				std::string str_result ;
 				qDebug("Job ID=%s, TYPE=%d, FindCount=%d", str_jobs_id.c_str(), jobs_type, jobs_find_count) ;
+				str_result = "<p><strong> Job ID=" + str_jobs_id + ", TYPE=" + std::to_string(jobs_type) + ", FindCount=" + std::to_string(jobs_find_count) + "</strong></p>" ;
 				
 				int job_count = 0 ;
+				str_result += "<ul>" ;
 				for (pugi::xml_node job: jobs.children("Job"))
             	{
             		float center_x = job.child("Pose").attribute("CenterX").as_float() ;
@@ -609,8 +612,11 @@ void MainWindow::UpdateResult(QString qstr_xml)
                     qDebug("[%d] Center(%.2f, %.2f), Angle(%.2f), Score(%.2f)", job_count,center_x,center_y, angle, score) ;
 					qDebug("    - ROI : (%.2f, %.2f), (%.2f, %.2f), (%.2f, %.2f), (%.2f, %.2f)", roi_tl_x,roi_tl_y,roi_tr_x,roi_tr_y,roi_br_x,roi_br_y,roi_bl_x,roi_bl_y) ;
 
+					str_result +=   "<li>[" + std::to_string(job_count) + "] Center(" + std::to_string(center_x) + ", " + std::to_string(center_y) + "), Angle(" + std::to_string(angle) + "), Score(" + std::to_string(score) + ")</li>" ;
+					
 					job_count++ ;
 				}
+				str_result += "</ul>" ;
 
 				//Find Job in List				
 				qDebug("Update Job Form : Find %s item", str_jobs_id.c_str()) ;
@@ -629,6 +635,8 @@ void MainWindow::UpdateResult(QString qstr_xml)
                         std::string str_info = "Find Count : " + std::to_string(jobs_find_count) ;
 
                         p_FromJobBase->SetInfo(str_info) ;
+						p_FromJobBase->SetResultString(str_result) ;
+						
                     }
 				}				
 			}
