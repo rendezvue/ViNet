@@ -18,6 +18,7 @@
 #include "dialogsettoolangleinspect.h"
 #include "dialogsettooldiameterinspect.h"
 
+#include <QPropertyAnimation>
 
 
 namespace Ui {
@@ -51,6 +52,8 @@ public:
 	cv::Mat GetObjectImage(void) ;	
 
 	void UpdateInformationString(QString str_info) ;
+
+	void SetAlarm(const bool b_on_off) ;
 	
 protected:
 	void showEvent(QShowEvent *ev) override;

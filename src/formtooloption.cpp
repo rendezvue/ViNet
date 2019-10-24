@@ -281,7 +281,7 @@ void FormToolOption::OnBUpdateInfo(QString info)
 
 void FormToolOption::UpdateInformationString(QString str_info)
 {
-	ui->label_info->setText(str_info);
+	//ui->label_info->setText(str_info);
 }
 
 void FormToolOption::OnRunCheckBoxToggled(bool checked)
@@ -307,4 +307,25 @@ void FormToolOption::OnViewCheckBoxToggled(bool checked)
 	QString qstr_id = QString::fromStdString(GetParentIdInfo());
 	//emit UpdateResultImage(qstr_id) ;
 }
+
+void FormToolOption::SetAlarm(const bool b_on_off)
+{
+	if( b_on_off )
+	{
+        ui->label_bg->setStyleSheet(QString("background-color: rgb(255, 0, 0);"));
+		
+        qDebug("%s : Tool Option Alarm Set!", GetIdInfo().c_str()) ;
+#if 0
+		QPropertyAnimation *animation = new QPropertyAnimation(ui->label_bg, "color");
+		animation->setDuration(2000);
+		animation->setStartValue(QColor(0, 0, 0));
+		animation->setEndValue(QColor(240, 240, 240));
+		animation->start();
+#endif		
+	}
+	else
+	{
+	}
+}
+
 

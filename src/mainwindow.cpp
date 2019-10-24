@@ -575,6 +575,7 @@ void MainWindow::UpdateResult(QString qstr_xml)
 	}
 	else
 	{
+        std::vector<std::string> vec_result_change_color_id ;
 		for (pugi::xml_node result : doc.children("Result") )
         {
         	std::string str_project_id = result.attribute("ID").value() ;
@@ -586,6 +587,11 @@ void MainWindow::UpdateResult(QString qstr_xml)
             	std::string str_jobs_id = jobs.attribute("ID").value() ;
 				int jobs_type = jobs.attribute("TYPE").as_int() ;
 				int jobs_find_count = jobs.attribute("FindCount").as_int() ;
+
+				if( jobs_find_count <= 0 )
+				{
+					vec_result_change_color_id.push_back(str_jobs_id) ;
+				}
 
 				std::string str_result ;
 				qDebug("Job ID=%s, TYPE=%d, FindCount=%d", str_jobs_id.c_str(), jobs_type, jobs_find_count) ;
@@ -613,6 +619,74 @@ void MainWindow::UpdateResult(QString qstr_xml)
 					qDebug("    - ROI : (%.2f, %.2f), (%.2f, %.2f), (%.2f, %.2f), (%.2f, %.2f)", roi_tl_x,roi_tl_y,roi_tr_x,roi_tr_y,roi_br_x,roi_br_y,roi_bl_x,roi_bl_y) ;
 
 					str_result +=   "<li>[" + std::to_string(job_count) + "] Center(" + std::to_string(center_x) + ", " + std::to_string(center_y) + "), Angle(" + std::to_string(angle) + "), Score(" + std::to_string(score) + ")</li>" ;
+
+					//---------------------------------------------------------------------------------------
+					//Result Tool 
+					str_result += "<ul>" ;
+					for (pugi::xml_node tools: job.children("Tools"))
+            		{
+            			for (pugi::xml_node tool: tools.children("Tool"))
+            			{
+            				std::string str_tool_id = tool.attribute("ID").value() ;
+							int tool_type = tool.attribute("TYPE").as_int() ;
+
+							qDebug("Tool ID=%s, TYPE=%d", str_tool_id.c_str(), tool_type) ;
+
+							float center_x = tool.child("Pose").attribute("CenterX").as_float() ;
+							float center_y = tool.child("Pose").attribute("CenterY").as_float() ;
+							float angle = tool.child("Pose").attribute("Angle").as_float() ;
+							float score = tool.child("Matching").attribute("Score").as_float() ;
+							
+							float roi_tl_x = tool.child("Pose").attribute("Roi_TL_X").as_float() ;
+							float roi_tl_y = tool.child("Pose").attribute("Roi_TL_Y").as_float() ;
+							float roi_tr_x = tool.child("Pose").attribute("Roi_TR_X").as_float() ;
+							float roi_tr_y = tool.child("Pose").attribute("Roi_TR_Y").as_float() ;
+							float roi_br_x = tool.child("Pose").attribute("Roi_BR_X").as_float() ;
+							float roi_br_y = tool.child("Pose").attribute("Roi_BR_Y").as_float() ;
+							float roi_bl_x = tool.child("Pose").attribute("Roi_BL_X").as_float() ;
+							float roi_bl_y = tool.child("Pose").attribute("Roi_BL_Y").as_float() ;
+							
+		                    qDebug("    - Center(%.2f, %.2f), Angle(%.2f), Score(%.2f)", center_x,center_y, angle, score) ;
+							qDebug("    - ROI : (%.2f, %.2f), (%.2f, %.2f), (%.2f, %.2f), (%.2f, %.2f)", roi_tl_x,roi_tl_y,roi_tr_x,roi_tr_y,roi_br_x,roi_br_y,roi_bl_x,roi_bl_y) ;
+
+							//CSearchTreeItem cls_search_tree_item ;
+							//QTreeWidgetItem *item = cls_search_tree_item.GetItem(ui->treeWidget_job, str_tool_id) ;
+							str_result +=   "<li>[Tool ID=" + str_tool_id + " Type=" + std::to_string(tool_type) + "] Center(" + std::to_string(center_x) + ", " + std::to_string(center_y) + "), Angle(" + std::to_string(angle) + "), Score(" + std::to_string(score) + ")</li>" ;
+
+							//---------------------------------------------------------------------------------------
+							//Result Option
+							str_result += "<ul>" ;
+							for (pugi::xml_node options: tool.children("Options"))
+		            		{
+		            			for (pugi::xml_node option: options.children("Option"))
+		            			{
+                                    std::string str_option_id = option.attribute("ID").value() ;
+                                    int option_type = option.attribute("TYPE").as_int() ;
+
+									//specific
+                                    int option_specific_pass = option.child("Specific").child("Pass").text().as_int() ;
+											
+                                    qDebug("Option ID=%s, TYPE=%d", str_option_id.c_str(), option_type) ;
+
+                                    std::string str_result_style = "style='color:black;background-color:white;'" ;
+									if( option_specific_pass == 0 )
+									{
+										//fail
+										str_result_style = "style='color:red;background-color:white;'" ;
+
+										vec_result_change_color_id.push_back(str_option_id) ;
+									}
+                                    str_result +=   "<li " + str_result_style + ">[Option ID=" + str_option_id + " Type=" + std::to_string(option_type) + "] Inspect Pass(" + std::to_string(option_specific_pass) + ")</li>" ;
+		            			}
+							}
+							str_result += "</ul>" ;
+							//Result Option
+							//---------------------------------------------------------------------------------------						
+            			}
+					}
+					str_result += "</ul>" ;
+					//Result Tool 
+					//---------------------------------------------------------------------------------------
 					
 					job_count++ ;
 				}
@@ -640,6 +714,32 @@ void MainWindow::UpdateResult(QString qstr_xml)
                     }
 				}				
 			}
+		}
+
+		int size_alarm = vec_result_change_color_id.size() ;
+		for( int i=0 ; i<size_alarm ; i++ )
+		{
+			CSearchTreeItem cls_search_tree_item ;
+			QTreeWidgetItem *item = cls_search_tree_item.GetItem(ui->treeWidget_job, vec_result_change_color_id[i]) ;
+			if( item )
+			{
+                FormJobBase* p_FromJobBase = dynamic_cast<FormJobBase*>(ui->treeWidget_job->itemWidget(item, 0));
+				FormJobTool* p_FromJobTool = dynamic_cast<FormJobTool*>(ui->treeWidget_job->itemWidget(item, 0));
+				FormToolOption* p_FromJobToolOption = dynamic_cast<FormToolOption*>(ui->treeWidget_job->itemWidget(item, 0));
+            
+                if( p_FromJobBase )
+                {		
+                	p_FromJobBase->SetAlarm(true) ;
+                }
+				else if( p_FromJobTool )
+				{
+					p_FromJobTool->SetAlarm(true) ;
+				}
+				else if( p_FromJobToolOption )
+				{
+					p_FromJobToolOption->SetAlarm(true) ;
+				}
+			}				
 		}
 
 		emit UpdateFormInfo() ;

@@ -369,4 +369,7 @@ void FormJobBase::SetResultString(const std::string str_result)
 	m_str_result = str_result ;
 }
 
+void FormJobBase::SetAlarm(const bool b_on_off)
+{
+}
 

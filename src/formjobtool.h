@@ -54,6 +54,8 @@ public:
     std::string GetParentIdInfo(void) ;
 
 	void SetObjectImage(cv::Mat image) ;
+
+	void SetAlarm(const bool b_on_off) ;
 	
 protected:
 	void showEvent(QShowEvent *ev);

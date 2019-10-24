@@ -50,6 +50,8 @@ public:
 
 	void SetInfo(const std::string info) ;
 	void SetResultString(const std::string str_result) ;
+
+	void SetAlarm(const bool b_on_off) ;
 	
 protected:
 	void showEvent(QShowEvent *ev);

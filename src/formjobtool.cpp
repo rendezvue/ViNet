@@ -408,3 +408,7 @@ void FormJobTool::OnViewCheckBoxToggled(bool checked)
 }
 
 
+void FormJobTool::SetAlarm(const bool b_on_off)
+{
+}
+

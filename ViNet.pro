@@ -80,7 +80,8 @@ HEADERS += \
     module/PacketEthComm/EthernetGetInfo.h \
     src/dialogsetcustomfeatureoption.h \
     src/csearchtreeitem.h \
-    src/dialogresultinfo.h
+    src/dialogresultinfo.h \
+    src/canimatedlabel.h
 
 SOURCES += \
     module/EnsembleAPI/src/Interface.cpp \
@@ -127,7 +128,8 @@ SOURCES += \
     module/PacketEthComm/EthernetGetInfo.cpp \
     src/dialogsetcustomfeatureoption.cpp \
     src/csearchtreeitem.cpp \
-    src/dialogresultinfo.cpp
+    src/dialogresultinfo.cpp \
+    src/canimatedlabel.cpp
 
 FORMS += \
     ui/cdialogconnect.ui \
