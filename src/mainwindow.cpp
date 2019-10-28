@@ -188,7 +188,8 @@ void MainWindow::updatePicture(cv::Mat image)
 
         p_image_label->setGeometry(pos_x, pos_y, image.cols, image.rows);
 
-        QImage qt_display_image = QImage((const unsigned char*)image.data, image.cols, image.rows, QImage::Format_RGB888);
+		CMat2QImage cls_mat_2_qimage ;
+		QImage qt_display_image = cls_mat_2_qimage.cvtMat2QImage(image, p_image_label->width(), p_image_label->height()) ;
         p_image_label->setPixmap(QPixmap::fromImage(qt_display_image));
     }
 }
