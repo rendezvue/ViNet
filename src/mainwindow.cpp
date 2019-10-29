@@ -244,6 +244,8 @@ void MainWindow::OnMenuConnect(void)
 
 			std::string str_source_list_xml = Ensemble_Source_Get_List() ;
 
+			qDebug(" - Get Source List : %s", str_source_list_xml.c_str()) ;
+			
 			//xml parsing
 			//XML Parsing
 		    pugi::xml_document doc;
