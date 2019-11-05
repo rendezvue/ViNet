@@ -52,6 +52,14 @@ public slots:
 	void OnButtonGainSet(void) ;
 	void OnButtonFocusSet(void) ;
 
+	//slider
+	void OnSliderSetExposure(void) ;
+    //void OnSliderMoveExposure(int value) ;
+	void OnSliderSetGain(void) ;
+    //void OnSliderMoveGain(int value) ;
+	void OnSliderSetFocus(void) ;
+    //void OnSliderMoveFocus(int value) ;
+
 
 };
 

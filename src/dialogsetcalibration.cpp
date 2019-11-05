@@ -27,6 +27,16 @@ DialogSetCalibration::DialogSetCalibration(QWidget *parent) :
 	connect(ui->pushButton_gain_set, SIGNAL(clicked()), this, SLOT(OnButtonGainSet())) ;	
 	connect(ui->pushButton_focus_set, SIGNAL(clicked()), this, SLOT(OnButtonFocusSet())) ;	
 
+	//slider
+    connect(ui->horizontalSlider_exposure, SIGNAL(sliderReleased()), this, SLOT(OnSliderSetExposure()));
+    //connect(ui->horizontalSlider_exposure, SIGNAL(sliderMoved(int)), this, SLOT(OnSliderMoveExposure(int)));
+
+	connect(ui->horizontalSlider_gain, SIGNAL(sliderReleased()), this, SLOT(OnSliderSetGain()));
+    //connect(ui->horizontalSlider_gain, SIGNAL(sliderMoved(int)), this, SLOT(OnSliderMoveGain(int)));
+
+	connect(ui->horizontalSlider_focus, SIGNAL(sliderReleased()), this, SLOT(OnSliderSetFocus()));
+    //connect(ui->horizontalSlider_focus, SIGNAL(sliderMoved(int)), this, SLOT(OnSliderMoveFocus(int)));
+	
     //background color
     ui->label_image_bg->setStyleSheet("QLabel { background-color : black; }");
 }
@@ -329,4 +339,37 @@ void DialogSetCalibration::OnButtonFocusSet(void)
 	OnButtonFocusGet() ;
 }
 
+void DialogSetCalibration::OnSliderSetExposure(void)
+{
+	//get value form slider
+    int value = ui->horizontalSlider_exposure->value() ;
+
+	//set value
+	Ensemble_Job_Camera_Set_Manual_Exposure_Value(GetId(), value);
+
+	OnButtonExposureGet() ;
+}
+
+void DialogSetCalibration::OnSliderSetGain(void) 
+{
+	//get value form slider
+    int value = ui->horizontalSlider_gain->value() ;
+
+	//set value
+	Ensemble_Job_Camera_Set_Manual_Gain_Value(GetId(), value);
+
+	OnButtonGainGet() ;
+}
+
+
+void DialogSetCalibration::OnSliderSetFocus(void) 
+{
+	//get value form slider
+    int value = ui->horizontalSlider_focus->value() ;
+
+	//set value
+	Ensemble_Job_Camera_Set_Manual_Focus_Value(GetId(), value);
+
+	OnButtonFocusGet() ;
+}
 
