@@ -36,13 +36,24 @@ DialogSetCalibration::DialogSetCalibration(QWidget *parent) :
 
 	connect(ui->horizontalSlider_focus, SIGNAL(sliderReleased()), this, SLOT(OnSliderSetFocus()));
     //connect(ui->horizontalSlider_focus, SIGNAL(sliderMoved(int)), this, SLOT(OnSliderMoveFocus(int)));
+
+	//list update
+	connect(ui->pushButton_calibration_list_update, SIGNAL(clicked()), this, SLOT(OnButtonCalibrationCopyListUpdate())) ;		
 	
     //background color
     ui->label_image_bg->setStyleSheet("QLabel { background-color : black; }");
+
+	m_calibration_copy_list_model = new QStringListModel(this); ;
 }
 
 DialogSetCalibration::~DialogSetCalibration()
 {
+	if( m_calibration_copy_list_model != NULL )
+    {
+        delete m_calibration_copy_list_model ;
+        m_calibration_copy_list_model = NULL ;
+    }
+	
     delete ui;
 }
 
@@ -110,7 +121,9 @@ void DialogSetCalibration::showEvent(QShowEvent *ev)
 	int check_auto_focus = Ensemble_Job_Camera_Get_Auto_Focus_OnOff(GetId()) ;
 	if( check_auto_focus )		ui->checkBox_auto_focus->setChecked(true) ;
 	else						ui->checkBox_auto_focus->setChecked(false) ;
+
 	//
+	OnButtonCalibrationCopyListUpdate() ;
 }
 
 void DialogSetCalibration::OnButtonGetChessInfo(void)
@@ -373,3 +386,70 @@ void DialogSetCalibration::OnSliderSetFocus(void)
 	OnButtonFocusGet() ;
 }
 
+void DialogSetCalibration::OnButtonCalibrationCopyListUpdate(void)
+{
+	//clear list data
+    ui->listView_list_calibration_copy->reset();
+	
+	//Get Parent Tree Info.
+	std::string str_xml = Ensemble_Task_Get_Parent_Tree(GetId()) ;
+	
+	//XML Parsing and Find Project ID string
+    pugi::xml_document doc;
+    pugi::xml_parse_result result = doc.load_string((char *)(str_xml.c_str()));
+
+	std::string str_projct_id ;
+	
+    if (!result)
+    {
+        qDebug("DialogSetCalibration::OnButtonCalibrationCopyListUpdate - xml parsing error") ;
+    }
+    else
+    {
+        for (pugi::xml_node project: doc.child("Root").children("Project"))
+        {
+        	std::string str_prj_id = project.attribute("ID").value();
+			
+			for (pugi::xml_node me: project.children("Me"))
+        	{
+				str_projct_id = str_prj_id ;
+				break ;
+    	    }	
+        }
+    }
+
+	if( !str_projct_id.empty() )
+	{
+		std::string str_xml_has_job_info = Ensemble_Project_Get_Has_Job_Info(str_projct_id) ;
+	
+		//XML Parsing and Find Project ID string
+		pugi::xml_document doc;
+		pugi::xml_parse_result result = doc.load_string((char *)(str_xml_has_job_info.c_str()));
+
+		if (!result)
+	    {
+	        qDebug("DialogSetCalibration::OnButtonCalibrationCopyListUpdate - str_xml_has_job_info parsing error") ;
+	    }
+	    else
+	    {
+	    	QStringList stringListSource;
+			
+			for (pugi::xml_node job: doc.child("Jobs").children("Job"))
+			{
+				std::string str_job_id = job.attribute("ID").value();
+
+				if( Ensemble_Job_Calibration_isOK(str_job_id) )		//check calibration 
+				{
+                    stringListSource << str_job_id.c_str() ;
+				}
+			}
+		
+	        // Create model
+	        m_calibration_copy_list_model->setStringList(stringListSource);
+
+	        // Glue model and view together
+	        ui->listView_list_calibration_copy->setModel(m_calibration_copy_list_model);
+	    }
+	}
+	
+}

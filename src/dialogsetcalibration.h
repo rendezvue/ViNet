@@ -3,11 +3,16 @@
 
 #include <QDialog>
 #include <QMouseEvent>
+#include <QStringList>
+#include <QStringListModel>
+
 
 #include "cmat2qimage.h"
 
 //API
 #include "EnsembleAPI.h"
+
+#include "pugixml.hpp"
 
 
 namespace Ui {
@@ -30,6 +35,8 @@ private:
 
 	std::string m_str_id ;
 	void UpdateDataCalibrationRun(float f_pixel_x, float f_pixel_y) ;
+
+	QStringListModel *m_calibration_copy_list_model ;
 		
 protected :
 	void showEvent(QShowEvent *ev) override;
@@ -59,6 +66,8 @@ public slots:
     //void OnSliderMoveGain(int value) ;
 	void OnSliderSetFocus(void) ;
     //void OnSliderMoveFocus(int value) ;
+
+	void OnButtonCalibrationCopyListUpdate(void) ;
 
 
 };
