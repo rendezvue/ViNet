@@ -4,6 +4,7 @@
 #include <QDialog>
 #include <QMouseEvent>
 
+#include "cmat2qimage.h"
 
 //API
 #include "EnsembleAPI.h"

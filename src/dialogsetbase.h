@@ -9,6 +9,8 @@
 #include "ImgDec.h"
 #include "EnsembleCommon.h"
 
+#include "cmat2qimage.h"
+
 //API
 #include "EnsembleAPI.h"
 

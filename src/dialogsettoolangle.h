@@ -6,6 +6,7 @@
 #include <QMouseEvent>
 #include <QPainter>
 
+#include "cmat2qimage.h"
 
 #include "ImgDec.h"
 

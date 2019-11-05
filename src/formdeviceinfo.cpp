@@ -48,5 +48,8 @@ void FormDeviceInfo::SetIconInfo(QImage image)
 
     QImage icon = image.scaled(label_icon_size.width(), label_icon_size.height(), Qt::KeepAspectRatio ) ;
 
+	//CMat2QImage cls_mat_2_qimage ;
+	//QImage qt_display_image = cls_mat_2_qimage.cvtMat2QImage(image, ui->label_icon->width(), ui->label_icon->height()) ;
+	
     ui->label_icon->setPixmap(QPixmap::fromImage(icon));
 }

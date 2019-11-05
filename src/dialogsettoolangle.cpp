@@ -106,7 +106,9 @@ void DialogSetToolAngle::updatePicture(cv::Mat image)
 
     ui->label_image->setGeometry(pos_x, pos_y, image.cols, image.rows);
 
-    QImage qt_display_image = QImage((const unsigned char*)image.data, image.cols, image.rows, QImage::Format_RGB888);
+    //QImage qt_display_image = QImage((const unsigned char*)image.data, image.cols, image.rows, QImage::Format_RGB888);
+    CMat2QImage cls_mat_2_qimage ;
+	QImage qt_display_image = cls_mat_2_qimage.cvtMat2QImage(image, ui->label_image->width(), ui->label_image->height()) ;
 
     ui->label_image->setPixmap(QPixmap::fromImage(qt_display_image));
 }
