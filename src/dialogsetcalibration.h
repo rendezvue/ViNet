@@ -43,6 +43,14 @@ public slots:
 	void OnButtonUpdateCalibrationInfo(void) ;
 	void OnButtonCalibrationRun(void) ;
 
+	void OnButtonExposureGet(void) ;
+	void OnButtonGainGet(void) ;
+	void OnButtonFocusGet(void) ;
+	
+	void OnButtonExposureSet(void) ;
+	void OnButtonGainSet(void) ;
+	void OnButtonFocusSet(void) ;
+
 
 };
 

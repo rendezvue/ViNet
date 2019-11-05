@@ -18,6 +18,15 @@ DialogSetCalibration::DialogSetCalibration(QWidget *parent) :
 
 	connect(ui->pushButton_calibration_run, SIGNAL(clicked()), this, SLOT(OnButtonCalibrationRun())) ;	
 
+	//Camera Config 
+	connect(ui->pushButton_exposure_get, SIGNAL(clicked()), this, SLOT(OnButtonExposureGet())) ;	
+	connect(ui->pushButton_gain_get, SIGNAL(clicked()), this, SLOT(OnButtonGainGet())) ;	
+	connect(ui->pushButton_focus_get, SIGNAL(clicked()), this, SLOT(OnButtonFocusGet())) ;	
+
+	connect(ui->pushButton_exposure_set, SIGNAL(clicked()), this, SLOT(OnButtonExposureSet())) ;	
+	connect(ui->pushButton_gain_set, SIGNAL(clicked()), this, SLOT(OnButtonGainSet())) ;	
+	connect(ui->pushButton_focus_set, SIGNAL(clicked()), this, SLOT(OnButtonFocusSet())) ;	
+
     //background color
     ui->label_image_bg->setStyleSheet("QLabel { background-color : black; }");
 }
@@ -51,6 +60,47 @@ void DialogSetCalibration::showEvent(QShowEvent *ev)
 
 	//Update Information List
 	OnButtonUpdateCalibrationInfo() ;
+
+	//Update Camera Information
+	//exposure min/max value
+	const int exposure_min = Ensemble_Job_Camera_Get_Min_Exposure_Value(GetId()) ;
+	const int exposure_max = Ensemble_Job_Camera_Get_Max_Exposure_Value(GetId()) ;
+
+	//gain min/max value
+	const int gain_min = Ensemble_Job_Camera_Get_Min_Gain_Value(GetId()) ;
+	const int gain_max = Ensemble_Job_Camera_Get_Max_Gain_Value(GetId()) ;
+
+	//focus min/max value
+	const int focus_min = Ensemble_Job_Camera_Get_Min_Focus_Value(GetId()) ;
+	const int focus_max = Ensemble_Job_Camera_Get_Max_Focus_Value(GetId()) ;
+
+	ui->label_exposure_min->setText(QString::number(exposure_min)) ;
+	ui->label_exposure_max->setText(QString::number(exposure_max)) ;
+
+	ui->label_gain_min->setText(QString::number(gain_min)) ;
+	ui->label_gain_max->setText(QString::number(gain_max)) ;
+
+	ui->label_focus_min->setText(QString::number(focus_min)) ;
+	ui->label_focus_max->setText(QString::number(focus_max)) ;
+
+	//Set Range
+	ui->horizontalSlider_exposure->setRange(exposure_min, exposure_max) ;
+	ui->horizontalSlider_gain->setRange(exposure_min, exposure_max) ;
+	ui->horizontalSlider_focus->setRange(focus_min, focus_max) ;
+	
+	OnButtonExposureGet() ;
+	OnButtonGainGet() ;
+	OnButtonFocusGet() ;
+
+	//Checkbox
+	int check_auto_exposure = Ensemble_Job_Camera_Get_Auto_Exposure_OnOff(GetId()) ;
+	if( check_auto_exposure )	ui->checkBox_auto_exposure->setChecked(true) ;
+	else						ui->checkBox_auto_exposure->setChecked(false) ;
+
+	int check_auto_focus = Ensemble_Job_Camera_Get_Auto_Focus_OnOff(GetId()) ;
+	if( check_auto_focus )		ui->checkBox_auto_focus->setChecked(true) ;
+	else						ui->checkBox_auto_focus->setChecked(false) ;
+	//
 }
 
 void DialogSetCalibration::OnButtonGetChessInfo(void)
@@ -224,4 +274,56 @@ void DialogSetCalibration::mousePressEvent(QMouseEvent *event)
 		UpdateDataCalibrationRun(pixel_x, pixel_y) ;
     }
 }
+
+void DialogSetCalibration::OnButtonExposureGet(void)
+{
+	int exposure_value = Ensemble_Job_Camera_Get_Manual_Exposure_Value(GetId()) ;
+
+	ui->lineEdit_exposure->setText(QString::number(exposure_value));
+
+	ui->horizontalSlider_exposure->setValue(exposure_value) ;
+}
+
+void DialogSetCalibration::OnButtonGainGet(void)
+{
+	int gain_value = Ensemble_Job_Camera_Get_Manual_Gain_Value(GetId()) ;
+
+	ui->lineEdit_gain->setText(QString::number(gain_value));
+
+	ui->horizontalSlider_gain->setValue(gain_value) ;
+}
+
+void DialogSetCalibration::OnButtonFocusGet(void)
+{
+	int focus_value = Ensemble_Job_Camera_Get_Manual_Focus_Value(GetId()) ;
+
+	ui->lineEdit_focus->setText(QString::number(focus_value));
+
+	ui->horizontalSlider_focus->setValue(focus_value) ;
+}
+
+void DialogSetCalibration::OnButtonExposureSet(void)
+{
+    int value = ui->lineEdit_exposure->text().toInt() ;
+    Ensemble_Job_Camera_Set_Manual_Exposure_Value(GetId(), value) ;
+	
+	OnButtonExposureGet() ;
+}
+
+void DialogSetCalibration::OnButtonGainSet(void)
+{
+    int value = ui->lineEdit_gain->text().toInt() ;
+    Ensemble_Job_Camera_Set_Manual_Gain_Value(GetId(), value) ;
+
+	OnButtonGainGet() ;
+}
+
+void DialogSetCalibration::OnButtonFocusSet(void)
+{
+    int value = ui->lineEdit_focus->text().toInt() ;
+    Ensemble_Job_Camera_Set_Manual_Focus_Value(GetId(), value) ;
+
+	OnButtonFocusGet() ;
+}
+
 

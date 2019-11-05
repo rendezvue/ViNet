@@ -476,7 +476,7 @@
    <property name="title">
     <string>Camera Config</string>
    </property>
-   <widget class="QCheckBox" name="checkBox">
+   <widget class="QCheckBox" name="checkBox_auto_exposure">
     <property name="geometry">
      <rect>
       <x>10</x>
@@ -501,7 +501,7 @@
     <property name="title">
      <string>Exposure</string>
     </property>
-    <widget class="QLineEdit" name="lineEdit">
+    <widget class="QLineEdit" name="lineEdit_exposure">
      <property name="geometry">
       <rect>
        <x>10</x>
@@ -511,7 +511,7 @@
       </rect>
      </property>
     </widget>
-    <widget class="QPushButton" name="pushButton">
+    <widget class="QPushButton" name="pushButton_exposure_get">
      <property name="geometry">
       <rect>
        <x>170</x>
@@ -524,7 +524,7 @@
       <string>get</string>
      </property>
     </widget>
-    <widget class="QPushButton" name="pushButton_2">
+    <widget class="QPushButton" name="pushButton_exposure_set">
      <property name="geometry">
       <rect>
        <x>210</x>
@@ -537,7 +537,7 @@
       <string>set</string>
      </property>
     </widget>
-    <widget class="QSlider" name="horizontalSlider">
+    <widget class="QSlider" name="horizontalSlider_exposure">
      <property name="geometry">
       <rect>
        <x>10</x>
@@ -550,7 +550,7 @@
       <enum>Qt::Horizontal</enum>
      </property>
     </widget>
-    <widget class="QLabel" name="label_9">
+    <widget class="QLabel" name="label_exposure_min">
      <property name="geometry">
       <rect>
        <x>10</x>
@@ -563,7 +563,7 @@
       <string>0</string>
      </property>
     </widget>
-    <widget class="QLabel" name="label_10">
+    <widget class="QLabel" name="label_exposure_max">
      <property name="geometry">
       <rect>
        <x>170</x>
@@ -592,7 +592,7 @@
     <property name="title">
      <string>Gain</string>
     </property>
-    <widget class="QLineEdit" name="lineEdit_3">
+    <widget class="QLineEdit" name="lineEdit_gain">
      <property name="geometry">
       <rect>
        <x>10</x>
@@ -602,7 +602,7 @@
       </rect>
      </property>
     </widget>
-    <widget class="QPushButton" name="pushButton_5">
+    <widget class="QPushButton" name="pushButton_gain_get">
      <property name="geometry">
       <rect>
        <x>170</x>
@@ -615,7 +615,7 @@
       <string>get</string>
      </property>
     </widget>
-    <widget class="QPushButton" name="pushButton_6">
+    <widget class="QPushButton" name="pushButton_gain_set">
      <property name="geometry">
       <rect>
        <x>210</x>
@@ -628,7 +628,7 @@
       <string>set</string>
      </property>
     </widget>
-    <widget class="QSlider" name="horizontalSlider_3">
+    <widget class="QSlider" name="horizontalSlider_gain">
      <property name="geometry">
       <rect>
        <x>10</x>
@@ -641,7 +641,7 @@
       <enum>Qt::Horizontal</enum>
      </property>
     </widget>
-    <widget class="QLabel" name="label_13">
+    <widget class="QLabel" name="label_gain_min">
      <property name="geometry">
       <rect>
        <x>10</x>
@@ -654,7 +654,7 @@
       <string>0</string>
      </property>
     </widget>
-    <widget class="QLabel" name="label_15">
+    <widget class="QLabel" name="label_gain_max">
      <property name="geometry">
       <rect>
        <x>170</x>
@@ -683,7 +683,7 @@
     <property name="title">
      <string>Focus</string>
     </property>
-    <widget class="QLineEdit" name="lineEdit_5">
+    <widget class="QLineEdit" name="lineEdit_focus">
      <property name="geometry">
       <rect>
        <x>10</x>
@@ -693,7 +693,7 @@
       </rect>
      </property>
     </widget>
-    <widget class="QPushButton" name="pushButton_9">
+    <widget class="QPushButton" name="pushButton_focus_get">
      <property name="geometry">
       <rect>
        <x>170</x>
@@ -706,7 +706,7 @@
       <string>get</string>
      </property>
     </widget>
-    <widget class="QPushButton" name="pushButton_10">
+    <widget class="QPushButton" name="pushButton_focus_set">
      <property name="geometry">
       <rect>
        <x>210</x>
@@ -719,7 +719,7 @@
       <string>set</string>
      </property>
     </widget>
-    <widget class="QSlider" name="horizontalSlider_5">
+    <widget class="QSlider" name="horizontalSlider_focus">
      <property name="geometry">
       <rect>
        <x>10</x>
@@ -732,7 +732,7 @@
       <enum>Qt::Horizontal</enum>
      </property>
     </widget>
-    <widget class="QLabel" name="label_18">
+    <widget class="QLabel" name="label_focus_min">
      <property name="geometry">
       <rect>
        <x>10</x>
@@ -745,7 +745,7 @@
       <string>0</string>
      </property>
     </widget>
-    <widget class="QLabel" name="label_19">
+    <widget class="QLabel" name="label_focus_max">
      <property name="geometry">
       <rect>
        <x>170</x>
@@ -762,7 +762,7 @@
      </property>
     </widget>
    </widget>
-   <widget class="QCheckBox" name="checkBox_2">
+   <widget class="QCheckBox" name="checkBox_auto_focus">
     <property name="geometry">
      <rect>
       <x>10</x>
