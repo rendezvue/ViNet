@@ -1261,6 +1261,9 @@
       <height>171</height>
      </rect>
     </property>
+    <property name="editTriggers">
+     <set>QAbstractItemView::NoEditTriggers</set>
+    </property>
    </widget>
    <widget class="QPushButton" name="pushButton_calibration_copy">
     <property name="geometry">

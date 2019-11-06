@@ -50,6 +50,9 @@ DialogSetCalibration::DialogSetCalibration(QWidget *parent) :
 
 	//list update
 	connect(ui->pushButton_calibration_list_update, SIGNAL(clicked()), this, SLOT(OnButtonCalibrationCopyListUpdate())) ;		
+	connect(ui->pushButton_calibration_copy, SIGNAL(clicked()), this, SLOT(OnButtonCalibrationCopy())) ;		
+
+	
 	
     //background color
     ui->label_image_bg->setStyleSheet("QLabel { background-color : black; }");
@@ -92,6 +95,9 @@ void DialogSetCalibration::showEvent(QShowEvent *ev)
 
 	//Update Information List
 	OnButtonUpdateCalibrationInfo() ;
+
+	//
+	OnButtonCalibrationCopyListUpdate() ;
 
 	//Update Camera Information
 	//exposure min/max value
@@ -178,8 +184,6 @@ void DialogSetCalibration::showEvent(QShowEvent *ev)
 	if( check_auto_focus )		ui->checkBox_auto_focus->setChecked(true) ;
 	else						ui->checkBox_auto_focus->setChecked(false) ;
 
-	//
-	OnButtonCalibrationCopyListUpdate() ;
 }
 
 void DialogSetCalibration::OnButtonGetChessInfo(void)
@@ -649,3 +653,23 @@ void DialogSetCalibration::OnButtonCalibrationCopyListUpdate(void)
 	}
 	
 }
+
+void DialogSetCalibration::OnButtonCalibrationCopy(void)
+{
+	QModelIndex index = ui->listView_list_calibration_copy->currentIndex();
+	QString itemText = index.data(Qt::DisplayRole).toString();
+
+	std::string str_item_text = itemText.toUtf8().constData();
+
+	Ensemble_Job_Calibration_Copy(GetId(), str_item_text) ;
+
+	//Get Chesboard information
+	OnButtonGetChessInfo() ;
+
+	//Update Information List
+	OnButtonUpdateCalibrationInfo() ;	
+
+	//
+	OnButtonCalibrationCopyListUpdate() ;
+}
+

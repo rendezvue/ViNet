@@ -82,6 +82,7 @@ public slots:
 	void OnSliderSetShutterSpeed(void) ;
 
 	void OnButtonCalibrationCopyListUpdate(void) ;
+	void OnButtonCalibrationCopy(void) ;
 
 
 };
