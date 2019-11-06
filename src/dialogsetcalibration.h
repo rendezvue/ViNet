@@ -54,18 +54,32 @@ public slots:
 	void OnButtonExposureGet(void) ;
 	void OnButtonGainGet(void) ;
 	void OnButtonFocusGet(void) ;
+
+	void OnButtonBrightnessGet(void) ;
+	void OnButtonSharpnessGet(void) ;
+	void OnButtonContrastGet(void) ;
+	void OnButtonISOGet(void) ;
+	void OnButtonShutterSpeedGet(void) ;
 	
 	void OnButtonExposureSet(void) ;
 	void OnButtonGainSet(void) ;
 	void OnButtonFocusSet(void) ;
 
+	void OnButtonBrightnessSet(void) ;
+	void OnButtonSharpnessSet(void) ;
+	void OnButtonContrastSet(void) ;
+	void OnButtonISOSet(void) ;
+	void OnButtonShutterSpeedSet(void) ;
+
 	//slider
 	void OnSliderSetExposure(void) ;
-    //void OnSliderMoveExposure(int value) ;
 	void OnSliderSetGain(void) ;
-    //void OnSliderMoveGain(int value) ;
 	void OnSliderSetFocus(void) ;
-    //void OnSliderMoveFocus(int value) ;
+	void OnSliderSetBrightness(void) ;
+	void OnSliderSetSharpness(void) ;
+	void OnSliderSetContrast(void) ;
+	void OnSliderSetISO(void) ;
+	void OnSliderSetShutterSpeed(void) ;
 
 	void OnButtonCalibrationCopyListUpdate(void) ;
 
