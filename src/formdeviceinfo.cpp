@@ -6,6 +6,8 @@ FormDeviceInfo::FormDeviceInfo(QWidget *parent) :
     ui(new Ui::FormDeviceInfo)
 {
     ui->setupUi(this);
+
+	connect(ui->pushButton_camera_config, SIGNAL(clicked()), this, SLOT(OnButtonBaseCameraConfig())) ;	
 }
 
 FormDeviceInfo::~FormDeviceInfo()
@@ -53,3 +55,16 @@ void FormDeviceInfo::SetIconInfo(QImage image)
 	
     ui->label_icon->setPixmap(QPixmap::fromImage(icon));
 }
+
+void FormDeviceInfo::OnButtonBaseCameraConfig(void)
+{
+	 //New Job Dialog
+    DialogBaseCameraConfig dlg_camera_config_dialog ;
+
+    int dialogCode = dlg_camera_config_dialog.exec();
+
+    if(dialogCode == QDialog::Accepted)
+    { 
+    }
+}
+

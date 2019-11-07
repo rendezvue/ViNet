@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>501</width>
+    <width>530</width>
     <height>60</height>
    </rect>
   </property>
@@ -55,12 +55,12 @@
     <string/>
    </property>
   </widget>
-  <widget class="QPushButton" name="pushButton_update">
+  <widget class="QPushButton" name="pushButton">
    <property name="geometry">
     <rect>
-     <x>400</x>
+     <x>390</x>
      <y>14</y>
-     <width>89</width>
+     <width>90</width>
      <height>31</height>
     </rect>
    </property>
@@ -68,7 +68,26 @@
     <string>Update</string>
    </property>
   </widget>
+  <widget class="QPushButton" name="pushButton_camera_config">
+   <property name="geometry">
+    <rect>
+     <x>490</x>
+     <y>14</y>
+     <width>31</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="icon">
+    <iconset resource="../resource.qrc">
+     <normaloff>:/icons/image/icons/camera.png</normaloff>:/icons/image/icons/camera.png</iconset>
+   </property>
+  </widget>
  </widget>
- <resources/>
+ <resources>
+  <include location="../resource.qrc"/>
+ </resources>
  <connections/>
 </ui>

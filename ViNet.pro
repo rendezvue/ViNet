@@ -81,7 +81,8 @@ HEADERS += \
     src/dialogsetcustomfeatureoption.h \
     src/csearchtreeitem.h \
     src/dialogresultinfo.h \
-    src/canimatedlabel.h
+    src/canimatedlabel.h \
+    src/dialogbasecameraconfig.h
 
 SOURCES += \
     module/EnsembleAPI/src/Interface.cpp \
@@ -129,7 +130,8 @@ SOURCES += \
     src/dialogsetcustomfeatureoption.cpp \
     src/csearchtreeitem.cpp \
     src/dialogresultinfo.cpp \
-    src/canimatedlabel.cpp
+    src/canimatedlabel.cpp \
+    src/dialogbasecameraconfig.cpp
 
 FORMS += \
     ui/cdialogconnect.ui \
@@ -158,5 +160,6 @@ FORMS += \
     ui/formtooloption.ui \
     ui/mainwindow.ui \
     ui/dialogsetcustomfeatureoption.ui \
-    ui/dialogresultinfo.ui
+    ui/dialogresultinfo.ui \
+    ui/dialogbasecameraconfig.ui
 

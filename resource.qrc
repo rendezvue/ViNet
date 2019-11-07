@@ -7,5 +7,6 @@
         <file>image/icons/view.png</file>
         <file>image/icons/calib.png</file>
         <file>image/icons/chess.png</file>
+        <file>image/icons/camera.png</file>
     </qresource>
 </RCC>

@@ -4,6 +4,9 @@
 #include <QWidget>
 #include <QImage>
 
+#include "dialogbasecameraconfig.h"
+
+
 namespace Ui {
 class FormDeviceInfo;
 }
@@ -26,6 +29,10 @@ public:
 
 private:
     Ui::FormDeviceInfo *ui;
+
+public slots:
+	void OnButtonBaseCameraConfig(void) ;
+
 };
 
 #endif // FORMDEVICEINFO_H
