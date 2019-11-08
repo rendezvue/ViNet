@@ -2,6 +2,8 @@
 #define DIALOGBASECAMERACONFIG_H
 
 #include <QDialog>
+#include <QMouseEvent>
+#include <QPainter>
 
 //API
 #include "EnsembleAPI.h"
@@ -9,12 +11,13 @@
 #include "cgetimagethread.h"
 #include "cmat2qimage.h"
 
+#include "csetuserregion.h"
 
 namespace Ui {
 class DialogBaseCameraConfig;
 }
 
-class DialogBaseCameraConfig : public QDialog
+class DialogBaseCameraConfig : public QDialog, public CSetUserRegion
 {
     Q_OBJECT
 
@@ -27,12 +30,19 @@ public:
 
 protected :
 	void showEvent(QShowEvent *ev) override;
+	void mousePressEvent(QMouseEvent *event) override;
+	void mouseMoveEvent(QMouseEvent *event) override;
+	void mouseReleaseEvent(QMouseEvent *event) override;
 
 private:
     Ui::DialogBaseCameraConfig *ui;
 	std::string m_str_id ;
 
 	CGetImageThread* m_p_cls_getimage ;
+
+	CSetUserRegion m_cls_set_user_region ;
+
+	cv::Rect m_rect_user ;
 
 public slots:
 	void updatePicture(cv::Mat image);
@@ -46,6 +56,9 @@ public slots:
 	void OnButtonContrastGet(void) ;
 	void OnButtonISOGet(void) ;
 	void OnButtonShutterSpeedGet(void) ;
+
+	void OnButtonSetAutoFocusSelectArea(void) ;
+	void OnButtonSetAutoFocusAllArea(void) ;
 	
 	void OnButtonExposureSet(void) ;
 	void OnButtonGainSet(void) ;
@@ -60,7 +73,11 @@ public slots:
 	void OnButtonSetAutoExposuer(void) ;
 	void OnButtonSetAutoFocus(void) ;
 
+	void OnButtonSetImageFlip_V(void) ;
+	void OnButtonSetImageFlip_H(void) ;
+
 	void OnButtonReset(void) ;
+	void OnButtonSetCamera(void) ;
 
 	//slider
 	void OnSliderSetExposure(void) ;

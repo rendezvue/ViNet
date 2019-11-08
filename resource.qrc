@@ -8,5 +8,9 @@
         <file>image/icons/calib.png</file>
         <file>image/icons/chess.png</file>
         <file>image/icons/camera.png</file>
+        <file>image/icons/refresh.png</file>
+        <file>image/icons/plus.png</file>
+        <file>image/icons/save.png</file>
+        <file>image/icons/load.png</file>
     </qresource>
 </RCC>

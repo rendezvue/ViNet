@@ -17,6 +17,10 @@ DialogBaseCameraConfig::DialogBaseCameraConfig(QWidget *parent) :
 	connect(ui->pushButton_contrast_get, SIGNAL(clicked()), this, SLOT(OnButtonContrastGet())) ;	
 	connect(ui->pushButton_iso_get, SIGNAL(clicked()), this, SLOT(OnButtonISOGet())) ;	
 	connect(ui->pushButton_shutter_speed_get, SIGNAL(clicked()), this, SLOT(OnButtonShutterSpeedGet())) ;	
+
+	//Auto Focus Area
+	connect(ui->pushButton_auto_focus_select_area, SIGNAL(clicked()), this, SLOT(OnButtonSetAutoFocusSelectArea())) ;	
+	connect(ui->pushButton_auto_focus_all_area, SIGNAL(clicked()), this, SLOT(OnButtonSetAutoFocusAllArea())) ;	
 	
 	connect(ui->pushButton_exposure_set, SIGNAL(clicked()), this, SLOT(OnButtonExposureSet())) ;	
 	connect(ui->pushButton_gain_set, SIGNAL(clicked()), this, SLOT(OnButtonGainSet())) ;	
@@ -31,6 +35,10 @@ DialogBaseCameraConfig::DialogBaseCameraConfig(QWidget *parent) :
 	connect(ui->checkBox_auto_exposure, SIGNAL(clicked()), this, SLOT(OnButtonSetAutoExposuer())) ;	
 	connect(ui->checkBox_auto_focus, SIGNAL(clicked()), this, SLOT(OnButtonSetAutoFocus())) ;	
 
+	connect(ui->checkBox_image_flip_v, SIGNAL(clicked()), this, SLOT(OnButtonSetImageFlip_V())) ;	
+	connect(ui->checkBox_image_flip_h, SIGNAL(clicked()), this, SLOT(OnButtonSetImageFlip_H())) ;	
+
+
 	//slider
     connect(ui->horizontalSlider_exposure, SIGNAL(sliderReleased()), this, SLOT(OnSliderSetExposure()));
 	connect(ui->horizontalSlider_gain, SIGNAL(sliderReleased()), this, SLOT(OnSliderSetGain()));
@@ -44,6 +52,9 @@ DialogBaseCameraConfig::DialogBaseCameraConfig(QWidget *parent) :
 	
 	//reset
 	connect(ui->pushButton_reset, SIGNAL(clicked()), this, SLOT(OnButtonReset()));
+
+	//Set
+	connect(ui->pushButton_set_camera, SIGNAL(clicked()), this, SLOT(OnButtonSetCamera())) ;	
 
 	//Image Thread
 	m_p_cls_getimage = new CGetImageThread(this) ;
@@ -152,8 +163,23 @@ void DialogBaseCameraConfig::showEvent(QShowEvent *ev)
 	OnButtonISOGet() ;
 	OnButtonShutterSpeedGet() ;
 
-	OnButtonSetAutoExposuer() ;
-	OnButtonSetAutoFocus() ;
+	//Checkbox
+	int check_auto_exposure = Ensemble_Camera_Get_Auto_Exposure_OnOff(GetId()) ;
+	if( check_auto_exposure )	ui->checkBox_auto_exposure->setChecked(true) ;
+	else						ui->checkBox_auto_exposure->setChecked(false) ;
+	
+	int check_auto_focus = Ensemble_Camera_Get_Auto_Focus_OnOff(GetId()) ;
+	if( check_auto_focus )		ui->checkBox_auto_focus->setChecked(true) ;
+	else						ui->checkBox_auto_focus->setChecked(false) ;
+
+	//image flip
+	int check_image_flip_v = Ensemble_Camera_Get_Flip_V(GetId()) ;
+	if( check_image_flip_v )	ui->checkBox_image_flip_v->setChecked(true) ;
+	else						ui->checkBox_image_flip_v->setChecked(false) ;
+	
+	int check_image_flip_h = Ensemble_Camera_Get_Flip_H(GetId()) ;
+	if( check_image_flip_h )	ui->checkBox_image_flip_h->setChecked(true) ;
+	else						ui->checkBox_image_flip_h->setChecked(false) ;
 	
 }
 
@@ -314,6 +340,26 @@ void DialogBaseCameraConfig::OnButtonSetAutoFocus(void)
 	else						ui->checkBox_auto_focus->setChecked(false) ;
 }
 
+void DialogBaseCameraConfig::OnButtonSetImageFlip_V(void)
+{
+	if (ui->checkBox_image_flip_v->isChecked())	Ensemble_Camera_Set_Flip_V(GetId(), true) ;
+	else										Ensemble_Camera_Set_Flip_V(GetId(), false) ;
+	
+	int check_image_flip_v = Ensemble_Camera_Get_Flip_V(GetId()) ;
+	if( check_image_flip_v )	ui->checkBox_image_flip_v->setChecked(true) ;
+	else						ui->checkBox_image_flip_v->setChecked(false) ;
+}
+
+void DialogBaseCameraConfig::OnButtonSetImageFlip_H(void) 
+{
+	if (ui->checkBox_image_flip_h->isChecked())	Ensemble_Camera_Set_Flip_H(GetId(), true) ;
+	else										Ensemble_Camera_Set_Flip_H(GetId(), false) ;
+	
+	int check_image_flip_h = Ensemble_Camera_Get_Flip_H(GetId()) ;
+	if( check_image_flip_h )	ui->checkBox_image_flip_h->setChecked(true) ;
+	else						ui->checkBox_image_flip_h->setChecked(false) ;
+}
+
 void DialogBaseCameraConfig::OnSliderSetExposure(void)
 {
 	//get value form slider
@@ -421,6 +467,11 @@ void DialogBaseCameraConfig::OnButtonReset(void)
 	OnButtonSetAutoFocus() ;
 }
 
+void DialogBaseCameraConfig::OnButtonSetCamera(void)
+{
+	Ensemble_Camera_Set_Config_Run(GetId()) ;
+}
+
 void DialogBaseCameraConfig::SetId(const std::string id)
 {
     m_str_id = id ;
@@ -471,7 +522,147 @@ void DialogBaseCameraConfig::updatePicture(cv::Mat image)
 
 		CMat2QImage cls_mat_2_qimage ;
 		QImage qt_display_image = cls_mat_2_qimage.cvtMat2QImage(image, p_image_label->width(), p_image_label->height()) ;
+
+		//Set Rect
+		float auto_focus_area_x = 0 ;
+		float auto_focus_area_y = 0 ;
+		float auto_focus_area_width = 0 ;
+		float auto_focus_area_height = 0 ;
+		Ensemble_Camera_Get_Auto_Focus_Area(GetId(), &auto_focus_area_x, &auto_focus_area_y, &auto_focus_area_width, &auto_focus_area_height ) ;
+
+	
+		//update to ini about auto value
+		int check_auto_exposure = Ensemble_Camera_Get_Auto_Exposure_OnOff(GetId()) ;
+		if( check_auto_exposure )	OnButtonExposureGet() ;
+	
+		int check_auto_focus = Ensemble_Camera_Get_Auto_Focus_OnOff(GetId()) ;
+        if( check_auto_focus )		OnButtonFocusGet() ;
+	
+		int i_auto_focus_area_x = auto_focus_area_x * image.cols ;
+		int i_auto_focus_area_y = auto_focus_area_y * image.rows ;
+		int i_auto_focus_area_width = auto_focus_area_width * image.cols ;
+		int i_auto_focus_area_height = auto_focus_area_height * image.rows ;
+		if( i_auto_focus_area_width > 0 && i_auto_focus_area_height > 0 )
+		{
+			QPainter qPainter(&qt_display_image);
+			qPainter.setBrush(Qt::NoBrush);
+			qPainter.setPen(Qt::green);
+			
+			qPainter.drawRect(i_auto_focus_area_x,i_auto_focus_area_y,i_auto_focus_area_width,i_auto_focus_area_height);
+
+			bool bEnd = qPainter.end();
+		}
+		
+		if( !m_rect_user.empty() )
+		{
+			if( m_rect_user.width > 0 && m_rect_user.height > 0 )
+			{
+				QPainter qPainter(&qt_display_image);
+				qPainter.setBrush(Qt::NoBrush);
+				qPainter.setPen(Qt::red);
+				
+				qPainter.drawRect(m_rect_user.x,m_rect_user.y,m_rect_user.width,m_rect_user.height);
+
+				bool bEnd = qPainter.end();
+			}
+		}
+			
         p_image_label->setPixmap(QPixmap::fromImage(qt_display_image));
     }
+}
+
+void DialogBaseCameraConfig::OnButtonSetAutoFocusSelectArea(void)
+{
+	m_cls_set_user_region.SetStatus(SetBaseStatus::SET_AREA) ;
+}
+
+void DialogBaseCameraConfig::OnButtonSetAutoFocusAllArea(void)
+{
+	//All 
+	
+	int check_auto_focus = Ensemble_Camera_Get_Auto_Focus_OnOff(GetId()) ;
+
+	//Set Focus Area
+	Ensemble_Camera_Set_Auto_Focus_OnOff(GetId(), check_auto_focus, 0, 0, -1, -1) ;
+}
+
+void DialogBaseCameraConfig::mousePressEvent(QMouseEvent *event)
+{
+    qDebug("%s - %d", __func__, __LINE__) ;
+
+    if (event->button() == Qt::LeftButton && m_cls_set_user_region.GetStatus() > SetBaseStatus::NORMAL ) 
+	{
+        QPoint point = event->pos() ;
+        point.setX(point.x() - ui->label_image->x());
+        point.setY(point.y() - ui->label_image->y());
+
+		m_rect_user = m_cls_set_user_region.StartSetRegion(point.x(), point.y()) ;
+
+		//updatePicture(m_image, rect_user) ;
+    }
+}
+
+void DialogBaseCameraConfig::mouseMoveEvent(QMouseEvent *event)
+{
+    qDebug("%s - %d", __func__, __LINE__) ;
+
+    if ( m_cls_set_user_region.GetStatus() > SetBaseStatus::NORMAL)
+	{
+		QPoint point = event->pos() ;
+        point.setX(point.x() - ui->label_image->x());
+        point.setY(point.y() - ui->label_image->y());
+
+		if( (event->buttons() & Qt::LeftButton) )
+		{
+			m_rect_user = m_cls_set_user_region.MoveSetRegion(point.x(), point.y()) ;
+
+			//updatePicture(m_image, rect_user) ;
+		}
+	}
+}
+
+void DialogBaseCameraConfig::mouseReleaseEvent(QMouseEvent *event)
+{
+    //if (event->button() == Qt::LeftButton && scribbling) {
+    //    drawLineTo(event->pos());
+    //    scribbling = false;
+    //}
+
+	//Set
+	int set_status = m_cls_set_user_region.GetStatus() ;
+
+	qDebug("%s - %d : m_set_status(%d), event->buttons()=%d", __func__, __LINE__, set_status, event->buttons()) ;
+	
+    if (set_status > SetBaseStatus::NORMAL)
+	{
+		qDebug("%s - %d", __func__, __LINE__) ;
+		
+		float f_x = 0.0 ;
+		float f_y = 0.0 ;
+		float f_w = 0.0 ;
+		float f_h = 0.0 ;
+
+        int label_w = ui->label_image->width() ;
+        int label_h = ui->label_image->height() ;
+
+		m_rect_user = m_cls_set_user_region.EndSetRegion() ;
+	
+        f_x = (float)m_rect_user.x / (float)label_w ;
+        f_y = (float)m_rect_user.y / (float)label_h ;
+        f_w = (float)m_rect_user.width / (float)label_w ;
+        f_h = (float)m_rect_user.height / (float)label_h ;
+
+		qDebug("%s - %d : m_set_status(%d)", __func__, __LINE__, set_status) ;
+		
+        if( set_status == SetBaseStatus::SET_AREA )
+        {
+        	int check_auto_focus = Ensemble_Camera_Get_Auto_Focus_OnOff(GetId()) ;
+
+			//Set Focus Area
+			Ensemble_Camera_Set_Auto_Focus_OnOff(GetId(), check_auto_focus, f_x, f_y, f_w, f_h) ;
+        }
+
+		m_rect_user = cv::Rect() ;
+	}
 }
 
