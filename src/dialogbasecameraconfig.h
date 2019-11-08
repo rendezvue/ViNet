@@ -57,6 +57,9 @@ public slots:
 	void OnButtonISOSet(void) ;
 	void OnButtonShutterSpeedSet(void) ;
 
+	void OnButtonSetAutoExposuer(void) ;
+	void OnButtonSetAutoFocus(void) ;
+
 	void OnButtonReset(void) ;
 
 	//slider

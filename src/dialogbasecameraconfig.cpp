@@ -17,7 +17,7 @@ DialogBaseCameraConfig::DialogBaseCameraConfig(QWidget *parent) :
 	connect(ui->pushButton_contrast_get, SIGNAL(clicked()), this, SLOT(OnButtonContrastGet())) ;	
 	connect(ui->pushButton_iso_get, SIGNAL(clicked()), this, SLOT(OnButtonISOGet())) ;	
 	connect(ui->pushButton_shutter_speed_get, SIGNAL(clicked()), this, SLOT(OnButtonShutterSpeedGet())) ;	
-
+	
 	connect(ui->pushButton_exposure_set, SIGNAL(clicked()), this, SLOT(OnButtonExposureSet())) ;	
 	connect(ui->pushButton_gain_set, SIGNAL(clicked()), this, SLOT(OnButtonGainSet())) ;	
 	connect(ui->pushButton_focus_set, SIGNAL(clicked()), this, SLOT(OnButtonFocusSet())) ;	
@@ -26,6 +26,10 @@ DialogBaseCameraConfig::DialogBaseCameraConfig(QWidget *parent) :
 	connect(ui->pushButton_contrast_set, SIGNAL(clicked()), this, SLOT(OnButtonContrastSet())) ;	
 	connect(ui->pushButton_iso_set, SIGNAL(clicked()), this, SLOT(OnButtonISOSet())) ;	
 	connect(ui->pushButton_shutter_speed_set, SIGNAL(clicked()), this, SLOT(OnButtonShutterSpeedSet())) ;	
+
+	//Checkbox
+	connect(ui->checkBox_auto_exposure, SIGNAL(clicked()), this, SLOT(OnButtonSetAutoExposuer())) ;	
+	connect(ui->checkBox_auto_focus, SIGNAL(clicked()), this, SLOT(OnButtonSetAutoFocus())) ;	
 
 	//slider
     connect(ui->horizontalSlider_exposure, SIGNAL(sliderReleased()), this, SLOT(OnSliderSetExposure()));
@@ -37,7 +41,7 @@ DialogBaseCameraConfig::DialogBaseCameraConfig(QWidget *parent) :
 	connect(ui->horizontalSlider_contrast, SIGNAL(sliderReleased()), this, SLOT(OnSliderSetContrast()));
 	connect(ui->horizontalSlider_iso, SIGNAL(sliderReleased()), this, SLOT(OnSliderSetISO()));
 	connect(ui->horizontalSlider_shutter_speed, SIGNAL(sliderReleased()), this, SLOT(OnSliderSetShutterSpeed()));
-
+	
 	//reset
 	connect(ui->pushButton_reset, SIGNAL(clicked()), this, SLOT(OnButtonReset()));
 
@@ -148,15 +152,9 @@ void DialogBaseCameraConfig::showEvent(QShowEvent *ev)
 	OnButtonISOGet() ;
 	OnButtonShutterSpeedGet() ;
 
-	//Checkbox
-	int check_auto_exposure = Ensemble_Camera_Get_Auto_Exposure_OnOff(GetId()) ;
-	if( check_auto_exposure )	ui->checkBox_auto_exposure->setChecked(true) ;
-	else						ui->checkBox_auto_exposure->setChecked(false) ;
-
-	int check_auto_focus = Ensemble_Camera_Get_Auto_Focus_OnOff(GetId()) ;
-	if( check_auto_focus )		ui->checkBox_auto_focus->setChecked(true) ;
-	else						ui->checkBox_auto_focus->setChecked(false) ;
-
+	OnButtonSetAutoExposuer() ;
+	OnButtonSetAutoFocus() ;
+	
 }
 
 void DialogBaseCameraConfig::OnButtonExposureGet(void)
@@ -295,11 +293,32 @@ void DialogBaseCameraConfig::OnButtonShutterSpeedSet(void)
 	OnButtonShutterSpeedGet() ;
 }
 
+void DialogBaseCameraConfig::OnButtonSetAutoExposuer(void)
+{
+	if (ui->checkBox_auto_exposure->isChecked())	Ensemble_Camera_Set_Auto_Exposure_OnOff(GetId(), true) ;
+	else											Ensemble_Camera_Set_Auto_Exposure_OnOff(GetId(), false) ;
+		
+	//Checkbox
+	int check_auto_exposure = Ensemble_Camera_Get_Auto_Exposure_OnOff(GetId()) ;
+	if( check_auto_exposure )	ui->checkBox_auto_exposure->setChecked(true) ;
+	else						ui->checkBox_auto_exposure->setChecked(false) ;
+}
+
+void DialogBaseCameraConfig::OnButtonSetAutoFocus(void) 
+{
+	if (ui->checkBox_auto_focus->isChecked())	Ensemble_Camera_Set_Auto_Focus_OnOff(GetId(), true) ;
+	else										Ensemble_Camera_Set_Auto_Focus_OnOff(GetId(), false) ;
+	
+	int check_auto_focus = Ensemble_Camera_Get_Auto_Focus_OnOff(GetId()) ;
+	if( check_auto_focus )		ui->checkBox_auto_focus->setChecked(true) ;
+	else						ui->checkBox_auto_focus->setChecked(false) ;
+}
+
 void DialogBaseCameraConfig::OnSliderSetExposure(void)
 {
 	//get value form slider
     int value = ui->horizontalSlider_exposure->value() ;
-
+ 
 	//set value
 	Ensemble_Camera_Set_Manual_Exposure_Value(GetId(), value);
 
@@ -398,13 +417,8 @@ void DialogBaseCameraConfig::OnButtonReset(void)
 	OnButtonShutterSpeedGet() ;
 
 	//Checkbox
-	int check_auto_exposure = Ensemble_Camera_Get_Auto_Exposure_OnOff(GetId()) ;
-	if( check_auto_exposure )	ui->checkBox_auto_exposure->setChecked(true) ;
-	else						ui->checkBox_auto_exposure->setChecked(false) ;
-
-	int check_auto_focus = Ensemble_Camera_Get_Auto_Focus_OnOff(GetId()) ;
-	if( check_auto_focus )		ui->checkBox_auto_focus->setChecked(true) ;
-	else						ui->checkBox_auto_focus->setChecked(false) ;
+	OnButtonSetAutoExposuer() ;
+	OnButtonSetAutoFocus() ;
 }
 
 void DialogBaseCameraConfig::SetId(const std::string id)
