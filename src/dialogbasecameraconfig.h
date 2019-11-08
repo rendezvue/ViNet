@@ -6,6 +6,9 @@
 //API
 #include "EnsembleAPI.h"
 
+#include "cgetimagethread.h"
+#include "cmat2qimage.h"
+
 
 namespace Ui {
 class DialogBaseCameraConfig;
@@ -29,7 +32,11 @@ private:
     Ui::DialogBaseCameraConfig *ui;
 	std::string m_str_id ;
 
+	CGetImageThread* m_p_cls_getimage ;
+
 public slots:
+	void updatePicture(cv::Mat image);
+
 	void OnButtonExposureGet(void) ;
 	void OnButtonGainGet(void) ;
 	void OnButtonFocusGet(void) ;

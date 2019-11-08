@@ -2,6 +2,7 @@
 #include "ui_dialogbasecameraconfig.h"
 
 DialogBaseCameraConfig::DialogBaseCameraConfig(QWidget *parent) :
+	m_p_cls_getimage(NULL),
     QDialog(parent),
     ui(new Ui::DialogBaseCameraConfig)
 {
@@ -39,10 +40,31 @@ DialogBaseCameraConfig::DialogBaseCameraConfig(QWidget *parent) :
 
 	//reset
 	connect(ui->pushButton_reset, SIGNAL(clicked()), this, SLOT(OnButtonReset()));
+
+	//Image Thread
+	m_p_cls_getimage = new CGetImageThread(this) ;
+	m_p_cls_getimage->SetSourceType(0);
+    connect(m_p_cls_getimage, SIGNAL(Done(cv::Mat)), this, SLOT(updatePicture(cv::Mat))) ;
+	m_p_cls_getimage->m_thread_run = true ;
+    m_p_cls_getimage->start();
 }
 
 DialogBaseCameraConfig::~DialogBaseCameraConfig()
 {
+	if( m_p_cls_getimage != NULL )
+    {
+    	m_p_cls_getimage->m_thread_run = false ;
+
+		while( m_p_cls_getimage->isFinished() == false )
+		{
+		} ;
+		
+    	m_p_cls_getimage->quit();
+		
+        delete m_p_cls_getimage ;
+        m_p_cls_getimage = NULL ;
+    }
+	
     delete ui;
 }
 
@@ -389,11 +411,53 @@ void DialogBaseCameraConfig::SetId(const std::string id)
 {
     m_str_id = id ;
 
-    ui->label_id->setText(QString::fromUtf8(m_str_id.c_str()));
+	if( m_str_id == "ini" )
+	{
+		ui->label_id->setText("Ensemble Camera Device") ;
+	}
+	else
+	{
+	    ui->label_id->setText(QString::fromUtf8(m_str_id.c_str()));
+	}
 }
 
 std::string DialogBaseCameraConfig::GetId(void)
 {
     return m_str_id ;
+}
+
+void DialogBaseCameraConfig::updatePicture(cv::Mat image)
+{
+    //ui->ui_label->setPixmap(QPixmap::fromImage(qt_display_image));
+    QLabel *p_image_label_bg = NULL ;
+    QLabel *p_image_label = NULL ;
+
+    p_image_label = ui->label_image ;
+    p_image_label_bg = ui->label_image_bg ;
+
+    if( p_image_label && p_image_label_bg )
+    {
+        const int draw_width = p_image_label_bg->width();
+        const int draw_height = p_image_label_bg->height();
+
+        float rescale_w = (float)draw_width / (float)image.cols ;
+        float rescale_h = (float)draw_height / (float)image.rows ;
+
+        float min_rescale = std::fmin(rescale_w, rescale_h) ;
+        if( min_rescale < 1.0 )
+        {
+            cv::resize(image, image, cv::Size(), min_rescale, min_rescale) ;
+        }
+
+        //fit image label by image isze
+        int pos_x = (int)((float)p_image_label_bg->x() + (float)(draw_width - image.cols)/2.0) ;
+        int pos_y = (int)((float)p_image_label_bg->y() + (float)(draw_height - image.rows)/2.0) ;
+
+        p_image_label->setGeometry(pos_x, pos_y, image.cols, image.rows);
+
+		CMat2QImage cls_mat_2_qimage ;
+		QImage qt_display_image = cls_mat_2_qimage.cvtMat2QImage(image, p_image_label->width(), p_image_label->height()) ;
+        p_image_label->setPixmap(QPixmap::fromImage(qt_display_image));
+    }
 }
 

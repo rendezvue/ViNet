@@ -850,6 +850,9 @@
     </rect>
    </property>
    <layout class="QHBoxLayout" name="horizontalLayout_2">
+    <property name="sizeConstraint">
+     <enum>QLayout::SetFixedSize</enum>
+    </property>
     <item>
      <widget class="QLabel" name="label">
       <property name="text">

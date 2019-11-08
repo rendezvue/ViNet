@@ -84,6 +84,8 @@ MainWindow::MainWindow(QWidget *parent) :
     //Get Image Thread
 #if 1
     m_p_cls_getimage = new CGetImageThread(this) ;
+	m_p_cls_getimage->m_thread_run = true ;
+
     connect(m_p_cls_getimage, SIGNAL(Done(cv::Mat)), this, SLOT(updatePicture(cv::Mat))) ;
     m_p_cls_getimage->start();
 
@@ -99,6 +101,14 @@ MainWindow::~MainWindow()
 {
     if( m_p_cls_getimage != NULL )
     {
+    	m_p_cls_getimage->m_thread_run = false ;
+		
+    	while( m_p_cls_getimage->isFinished() == false )
+		{
+		} ;
+		
+    	m_p_cls_getimage->quit();
+		
         delete m_p_cls_getimage ;
         m_p_cls_getimage = NULL ;
     }

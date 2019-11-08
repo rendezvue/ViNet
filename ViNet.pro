@@ -82,7 +82,8 @@ HEADERS += \
     src/csearchtreeitem.h \
     src/dialogresultinfo.h \
     src/canimatedlabel.h \
-    src/dialogbasecameraconfig.h
+    src/dialogbasecameraconfig.h \
+    src/cgetimagethread.h
 
 SOURCES += \
     module/EnsembleAPI/src/Interface.cpp \
@@ -131,7 +132,8 @@ SOURCES += \
     src/csearchtreeitem.cpp \
     src/dialogresultinfo.cpp \
     src/canimatedlabel.cpp \
-    src/dialogbasecameraconfig.cpp
+    src/dialogbasecameraconfig.cpp \
+    src/cgetimagethread.cpp
 
 FORMS += \
     ui/cdialogconnect.ui \
