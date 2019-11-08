@@ -680,7 +680,7 @@
       <x>10</x>
       <y>250</y>
       <width>251</width>
-      <height>141</height>
+      <height>101</height>
      </rect>
     </property>
     <property name="title">
@@ -690,7 +690,7 @@
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>70</y>
+       <y>30</y>
        <width>151</width>
        <height>25</height>
       </rect>
@@ -700,7 +700,7 @@
      <property name="geometry">
       <rect>
        <x>170</x>
-       <y>70</y>
+       <y>30</y>
        <width>31</width>
        <height>25</height>
       </rect>
@@ -713,7 +713,7 @@
      <property name="geometry">
       <rect>
        <x>210</x>
-       <y>70</y>
+       <y>30</y>
        <width>31</width>
        <height>25</height>
       </rect>
@@ -726,7 +726,7 @@
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>100</y>
+       <y>60</y>
        <width>231</width>
        <height>16</height>
       </rect>
@@ -739,7 +739,7 @@
      <property name="geometry">
       <rect>
        <x>10</x>
-       <y>120</y>
+       <y>80</y>
        <width>67</width>
        <height>17</height>
       </rect>
@@ -752,7 +752,7 @@
      <property name="geometry">
       <rect>
        <x>170</x>
-       <y>120</y>
+       <y>80</y>
        <width>67</width>
        <height>17</height>
       </rect>
@@ -781,32 +781,6 @@
      </property>
      <property name="text">
       <string>Auto</string>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="pushButton_focus_select_area">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>30</y>
-       <width>111</width>
-       <height>25</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Select Area</string>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="pushButton_focus_reset_area">
-     <property name="geometry">
-      <rect>
-       <x>130</x>
-       <y>30</y>
-       <width>111</width>
-       <height>25</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Reset Area</string>
      </property>
     </widget>
    </widget>
