@@ -52,36 +52,36 @@ void DialogBaseCameraConfig::showEvent(QShowEvent *ev)
 
 	//Update Camera Information
 	//exposure min/max value
-	const int exposure_min = Ensemble_Camera_Get_Min_Exposure_Value() ;
-	const int exposure_max = Ensemble_Camera_Get_Max_Exposure_Value() ;
+	const int exposure_min = Ensemble_Camera_Get_Min_Exposure_Value(GetId()) ;
+	const int exposure_max = Ensemble_Camera_Get_Max_Exposure_Value(GetId()) ;
 
 	//gain min/max value
-	const int gain_min = Ensemble_Camera_Get_Min_Gain_Value() ;
-	const int gain_max = Ensemble_Camera_Get_Max_Gain_Value() ;
+	const int gain_min = Ensemble_Camera_Get_Min_Gain_Value(GetId()) ;
+	const int gain_max = Ensemble_Camera_Get_Max_Gain_Value(GetId()) ;
 
 	//focus min/max value
-	const int focus_min = Ensemble_Camera_Get_Min_Focus_Value() ;
-	const int focus_max = Ensemble_Camera_Get_Max_Focus_Value() ;
+	const int focus_min = Ensemble_Camera_Get_Min_Focus_Value(GetId()) ;
+	const int focus_max = Ensemble_Camera_Get_Max_Focus_Value(GetId()) ;
 
 	//brightness min/max value
-	const int brightness_min = Ensemble_Camera_Get_Min_Brightness_Value() ;
-	const int brightness_max = Ensemble_Camera_Get_Max_Brightness_Value() ;
+	const int brightness_min = Ensemble_Camera_Get_Min_Brightness_Value(GetId()) ;
+	const int brightness_max = Ensemble_Camera_Get_Max_Brightness_Value(GetId()) ;
 
 	//sharpness min/max value
-	const int sharpness_min = Ensemble_Camera_Get_Min_Sharpness_Value() ;
-	const int sharpness_max = Ensemble_Camera_Get_Max_Sharpness_Value() ;
+	const int sharpness_min = Ensemble_Camera_Get_Min_Sharpness_Value(GetId()) ;
+	const int sharpness_max = Ensemble_Camera_Get_Max_Sharpness_Value(GetId()) ;
 
 	//contrast min/max value
-	const int contrast_min = Ensemble_Camera_Get_Min_Contrast_Value() ;
-	const int contrast_max = Ensemble_Camera_Get_Max_Contrast_Value() ;
+	const int contrast_min = Ensemble_Camera_Get_Min_Contrast_Value(GetId()) ;
+	const int contrast_max = Ensemble_Camera_Get_Max_Contrast_Value(GetId()) ;
 
 	//iso min/max value
-	const int iso_min = Ensemble_Camera_Get_Min_ISO_Value() ;
-	const int iso_max = Ensemble_Camera_Get_Max_ISO_Value() ;
+	const int iso_min = Ensemble_Camera_Get_Min_ISO_Value(GetId()) ;
+	const int iso_max = Ensemble_Camera_Get_Max_ISO_Value(GetId()) ;
 
 	//shutter speed min/max value
-	const int shutter_speed_min = Ensemble_Camera_Get_Min_Shutter_Speed_Value() ;
-	const int shutter_speed_max = Ensemble_Camera_Get_Max_Shutter_Speed_Value() ;
+	const int shutter_speed_min = Ensemble_Camera_Get_Min_Shutter_Speed_Value(GetId()) ;
+	const int shutter_speed_max = Ensemble_Camera_Get_Max_Shutter_Speed_Value(GetId()) ;
 
 	ui->label_exposure_min->setText(QString::number(exposure_min)) ;
 	ui->label_exposure_max->setText(QString::number(exposure_max)) ;
@@ -127,11 +127,11 @@ void DialogBaseCameraConfig::showEvent(QShowEvent *ev)
 	OnButtonShutterSpeedGet() ;
 
 	//Checkbox
-	int check_auto_exposure = Ensemble_Camera_Get_Auto_Exposure_OnOff() ;
+	int check_auto_exposure = Ensemble_Camera_Get_Auto_Exposure_OnOff(GetId()) ;
 	if( check_auto_exposure )	ui->checkBox_auto_exposure->setChecked(true) ;
 	else						ui->checkBox_auto_exposure->setChecked(false) ;
 
-	int check_auto_focus = Ensemble_Camera_Get_Auto_Focus_OnOff() ;
+	int check_auto_focus = Ensemble_Camera_Get_Auto_Focus_OnOff(GetId()) ;
 	if( check_auto_focus )		ui->checkBox_auto_focus->setChecked(true) ;
 	else						ui->checkBox_auto_focus->setChecked(false) ;
 
@@ -139,7 +139,7 @@ void DialogBaseCameraConfig::showEvent(QShowEvent *ev)
 
 void DialogBaseCameraConfig::OnButtonExposureGet(void)
 {
-	int exposure_value = Ensemble_Camera_Get_Manual_Exposure_Value() ;
+	int exposure_value = Ensemble_Camera_Get_Manual_Exposure_Value(GetId()) ;
 
 	ui->lineEdit_exposure->setText(QString::number(exposure_value));
 
@@ -148,7 +148,7 @@ void DialogBaseCameraConfig::OnButtonExposureGet(void)
 
 void DialogBaseCameraConfig::OnButtonGainGet(void)
 {
-	int gain_value = Ensemble_Camera_Get_Manual_Gain_Value() ;
+	int gain_value = Ensemble_Camera_Get_Manual_Gain_Value(GetId()) ;
 
 	ui->lineEdit_gain->setText(QString::number(gain_value));
 
@@ -157,7 +157,7 @@ void DialogBaseCameraConfig::OnButtonGainGet(void)
 
 void DialogBaseCameraConfig::OnButtonFocusGet(void)
 {
-	int focus_value = Ensemble_Camera_Get_Manual_Focus_Value() ;
+	int focus_value = Ensemble_Camera_Get_Manual_Focus_Value(GetId()) ;
 
 	ui->lineEdit_focus->setText(QString::number(focus_value));
 
@@ -166,7 +166,7 @@ void DialogBaseCameraConfig::OnButtonFocusGet(void)
 
 void DialogBaseCameraConfig::OnButtonBrightnessGet(void)
 {
-	int brightness_value = Ensemble_Camera_Get_Manual_Brightness_Value() ;
+	int brightness_value = Ensemble_Camera_Get_Manual_Brightness_Value(GetId()) ;
 
 	ui->lineEdit_brightness->setText(QString::number(brightness_value));
 
@@ -175,7 +175,7 @@ void DialogBaseCameraConfig::OnButtonBrightnessGet(void)
 
 void DialogBaseCameraConfig::OnButtonSharpnessGet(void)
 {
-	int sharpness_value = Ensemble_Camera_Get_Manual_Sharpness_Value() ;
+	int sharpness_value = Ensemble_Camera_Get_Manual_Sharpness_Value(GetId()) ;
 
 	ui->lineEdit_sharpness->setText(QString::number(sharpness_value));
 
@@ -184,7 +184,7 @@ void DialogBaseCameraConfig::OnButtonSharpnessGet(void)
 
 void DialogBaseCameraConfig::OnButtonContrastGet(void)
 {
-	int contrast_value = Ensemble_Camera_Get_Manual_Contrast_Value() ;
+	int contrast_value = Ensemble_Camera_Get_Manual_Contrast_Value(GetId()) ;
 
 	ui->lineEdit_contrast->setText(QString::number(contrast_value));
 
@@ -193,7 +193,7 @@ void DialogBaseCameraConfig::OnButtonContrastGet(void)
 
 void DialogBaseCameraConfig::OnButtonISOGet(void)
 {
-	int iso_value = Ensemble_Camera_Get_Manual_ISO_Value() ;
+	int iso_value = Ensemble_Camera_Get_Manual_ISO_Value(GetId()) ;
 
 	ui->lineEdit_iso->setText(QString::number(iso_value));
 
@@ -202,7 +202,7 @@ void DialogBaseCameraConfig::OnButtonISOGet(void)
 
 void DialogBaseCameraConfig::OnButtonShutterSpeedGet(void)
 {
-	int shutter_speed_value = Ensemble_Camera_Get_Manual_Shutter_Speed_Value() ;
+	int shutter_speed_value = Ensemble_Camera_Get_Manual_Shutter_Speed_Value(GetId()) ;
 
 	ui->lineEdit_shutter_speed->setText(QString::number(shutter_speed_value));
 
@@ -212,7 +212,7 @@ void DialogBaseCameraConfig::OnButtonShutterSpeedGet(void)
 void DialogBaseCameraConfig::OnButtonExposureSet(void)
 {
     int value = ui->lineEdit_exposure->text().toInt() ;
-    Ensemble_Camera_Set_Manual_Exposure_Value(value) ;
+    Ensemble_Camera_Set_Manual_Exposure_Value(GetId(), value) ;
 	
 	OnButtonExposureGet() ;
 }
@@ -220,7 +220,7 @@ void DialogBaseCameraConfig::OnButtonExposureSet(void)
 void DialogBaseCameraConfig::OnButtonGainSet(void)
 {
     int value = ui->lineEdit_gain->text().toInt() ;
-    Ensemble_Camera_Set_Manual_Gain_Value(value) ;
+    Ensemble_Camera_Set_Manual_Gain_Value(GetId(), value) ;
 
 	OnButtonGainGet() ;
 }
@@ -228,7 +228,7 @@ void DialogBaseCameraConfig::OnButtonGainSet(void)
 void DialogBaseCameraConfig::OnButtonFocusSet(void)
 {
     int value = ui->lineEdit_focus->text().toInt() ;
-    Ensemble_Camera_Set_Manual_Focus_Value(value) ;
+    Ensemble_Camera_Set_Manual_Focus_Value(GetId(), value) ;
 
 	OnButtonFocusGet() ;
 }
@@ -236,7 +236,7 @@ void DialogBaseCameraConfig::OnButtonFocusSet(void)
 void DialogBaseCameraConfig::OnButtonBrightnessSet(void)
 {
 	int value = ui->lineEdit_brightness->text().toInt() ;
-    Ensemble_Camera_Set_Manual_Brightness_Value(value) ;
+    Ensemble_Camera_Set_Manual_Brightness_Value(GetId(), value) ;
 
 	OnButtonBrightnessGet() ;
 }
@@ -244,7 +244,7 @@ void DialogBaseCameraConfig::OnButtonBrightnessSet(void)
 void DialogBaseCameraConfig::OnButtonSharpnessSet(void)
 {
 	int value = ui->lineEdit_sharpness->text().toInt() ;
-    Ensemble_Camera_Set_Manual_Sharpness_Value(value) ;
+    Ensemble_Camera_Set_Manual_Sharpness_Value(GetId(), value) ;
 
 	OnButtonSharpnessGet() ;
 }
@@ -252,7 +252,7 @@ void DialogBaseCameraConfig::OnButtonSharpnessSet(void)
 void DialogBaseCameraConfig::OnButtonContrastSet(void)
 {
 	int value = ui->lineEdit_contrast->text().toInt() ;
-    Ensemble_Camera_Set_Manual_Contrast_Value(value) ;
+    Ensemble_Camera_Set_Manual_Contrast_Value(GetId(), value) ;
 
 	OnButtonContrastGet() ;
 }
@@ -260,7 +260,7 @@ void DialogBaseCameraConfig::OnButtonContrastSet(void)
 void DialogBaseCameraConfig::OnButtonISOSet(void)
 {
 	int value = ui->lineEdit_iso->text().toInt() ;
-    Ensemble_Camera_Set_Manual_ISO_Value(value) ;
+    Ensemble_Camera_Set_Manual_ISO_Value(GetId(), value) ;
 
 	OnButtonISOGet() ;
 }
@@ -268,7 +268,7 @@ void DialogBaseCameraConfig::OnButtonISOSet(void)
 void DialogBaseCameraConfig::OnButtonShutterSpeedSet(void)
 {
 	int value = ui->lineEdit_shutter_speed->text().toInt() ;
-    Ensemble_Camera_Set_Manual_Shutter_Speed_Value(value) ;
+    Ensemble_Camera_Set_Manual_Shutter_Speed_Value(GetId(), value) ;
 
 	OnButtonShutterSpeedGet() ;
 }
@@ -279,7 +279,7 @@ void DialogBaseCameraConfig::OnSliderSetExposure(void)
     int value = ui->horizontalSlider_exposure->value() ;
 
 	//set value
-	Ensemble_Camera_Set_Manual_Exposure_Value(value);
+	Ensemble_Camera_Set_Manual_Exposure_Value(GetId(), value);
 
 	OnButtonExposureGet() ;
 }
@@ -290,7 +290,7 @@ void DialogBaseCameraConfig::OnSliderSetGain(void)
     int value = ui->horizontalSlider_gain->value() ;
 
 	//set value
-	Ensemble_Camera_Set_Manual_Gain_Value(value);
+	Ensemble_Camera_Set_Manual_Gain_Value(GetId() ,value);
 
 	OnButtonGainGet() ;
 }
@@ -302,7 +302,7 @@ void DialogBaseCameraConfig::OnSliderSetFocus(void)
     int value = ui->horizontalSlider_focus->value() ;
 
 	//set value
-	Ensemble_Camera_Set_Manual_Focus_Value(value);
+	Ensemble_Camera_Set_Manual_Focus_Value(GetId(), value);
 
 	OnButtonFocusGet() ;
 }
@@ -313,7 +313,7 @@ void DialogBaseCameraConfig::OnSliderSetBrightness(void)
     int value = ui->horizontalSlider_brightness->value() ;
 
 	//set value
-	Ensemble_Camera_Set_Manual_Brightness_Value(value);
+	Ensemble_Camera_Set_Manual_Brightness_Value(GetId(), value);
 
 	OnButtonBrightnessGet() ;
 }
@@ -324,7 +324,7 @@ void DialogBaseCameraConfig::OnSliderSetSharpness(void)
     int value = ui->horizontalSlider_sharpness->value() ;
 
 	//set value
-	Ensemble_Camera_Set_Manual_Sharpness_Value(value);
+	Ensemble_Camera_Set_Manual_Sharpness_Value(GetId(), value);
 
 	OnButtonSharpnessGet() ;
 }
@@ -335,7 +335,7 @@ void DialogBaseCameraConfig::OnSliderSetContrast(void)
     int value = ui->horizontalSlider_contrast->value() ;
 
 	//set value
-	Ensemble_Camera_Set_Manual_Contrast_Value(value);
+	Ensemble_Camera_Set_Manual_Contrast_Value(GetId(), value);
 
 	OnButtonContrastGet() ;
 }
@@ -346,7 +346,7 @@ void DialogBaseCameraConfig::OnSliderSetISO(void)
     int value = ui->horizontalSlider_iso->value() ;
 
 	//set value
-	Ensemble_Camera_Set_Manual_ISO_Value(value);
+	Ensemble_Camera_Set_Manual_ISO_Value(GetId(), value);
 
 	OnButtonISOGet() ;
 }
@@ -357,14 +357,14 @@ void DialogBaseCameraConfig::OnSliderSetShutterSpeed(void)
     int value = ui->horizontalSlider_shutter_speed->value() ;
 
 	//set value
-	Ensemble_Camera_Set_Manual_Shutter_Speed_Value(value);
+	Ensemble_Camera_Set_Manual_Shutter_Speed_Value(GetId(), value);
 
 	OnButtonShutterSpeedGet() ;
 }
 
 void DialogBaseCameraConfig::OnButtonReset(void)
 {
-    Ensemble_Camera_Set_Factory_Reset() ;
+    Ensemble_Camera_Set_Factory_Reset(GetId()) ;
 
 	OnButtonExposureGet() ;
 	OnButtonGainGet() ;
@@ -376,12 +376,24 @@ void DialogBaseCameraConfig::OnButtonReset(void)
 	OnButtonShutterSpeedGet() ;
 
 	//Checkbox
-	int check_auto_exposure = Ensemble_Camera_Get_Auto_Exposure_OnOff() ;
+	int check_auto_exposure = Ensemble_Camera_Get_Auto_Exposure_OnOff(GetId()) ;
 	if( check_auto_exposure )	ui->checkBox_auto_exposure->setChecked(true) ;
 	else						ui->checkBox_auto_exposure->setChecked(false) ;
 
-	int check_auto_focus = Ensemble_Camera_Get_Auto_Focus_OnOff() ;
+	int check_auto_focus = Ensemble_Camera_Get_Auto_Focus_OnOff(GetId()) ;
 	if( check_auto_focus )		ui->checkBox_auto_focus->setChecked(true) ;
 	else						ui->checkBox_auto_focus->setChecked(false) ;
+}
+
+void DialogBaseCameraConfig::SetId(const std::string id)
+{
+    m_str_id = id ;
+
+    ui->label_id->setText(QString::fromUtf8(m_str_id.c_str()));
+}
+
+std::string DialogBaseCameraConfig::GetId(void)
+{
+    return m_str_id ;
 }
 

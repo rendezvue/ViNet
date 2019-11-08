@@ -14,6 +14,8 @@
 
 #include "pugixml.hpp"
 
+#include "dialogbasecameraconfig.h"
+
 
 namespace Ui {
 class DialogSetCalibration;
@@ -51,38 +53,10 @@ public slots:
 	void OnButtonUpdateCalibrationInfo(void) ;
 	void OnButtonCalibrationRun(void) ;
 
-	void OnButtonExposureGet(void) ;
-	void OnButtonGainGet(void) ;
-	void OnButtonFocusGet(void) ;
-
-	void OnButtonBrightnessGet(void) ;
-	void OnButtonSharpnessGet(void) ;
-	void OnButtonContrastGet(void) ;
-	void OnButtonISOGet(void) ;
-	void OnButtonShutterSpeedGet(void) ;
-	
-	void OnButtonExposureSet(void) ;
-	void OnButtonGainSet(void) ;
-	void OnButtonFocusSet(void) ;
-
-	void OnButtonBrightnessSet(void) ;
-	void OnButtonSharpnessSet(void) ;
-	void OnButtonContrastSet(void) ;
-	void OnButtonISOSet(void) ;
-	void OnButtonShutterSpeedSet(void) ;
-
-	//slider
-	void OnSliderSetExposure(void) ;
-	void OnSliderSetGain(void) ;
-	void OnSliderSetFocus(void) ;
-	void OnSliderSetBrightness(void) ;
-	void OnSliderSetSharpness(void) ;
-	void OnSliderSetContrast(void) ;
-	void OnSliderSetISO(void) ;
-	void OnSliderSetShutterSpeed(void) ;
-
 	void OnButtonCalibrationCopyListUpdate(void) ;
 	void OnButtonCalibrationCopy(void) ;
+
+	void OnButtonCameraConfig(void) ;
 
 
 };

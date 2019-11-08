@@ -61,6 +61,8 @@ void FormDeviceInfo::OnButtonBaseCameraConfig(void)
 	 //New Job Dialog
     DialogBaseCameraConfig dlg_camera_config_dialog ;
 
+	dlg_camera_config_dialog.SetId("ini") ;
+	
     int dialogCode = dlg_camera_config_dialog.exec();
 
     if(dialogCode == QDialog::Accepted)

@@ -19,11 +19,15 @@ public:
     explicit DialogBaseCameraConfig(QWidget *parent = 0);
     ~DialogBaseCameraConfig();
 
+	void SetId(const std::string id) ;
+    std::string GetId(void) ;
+
 protected :
 	void showEvent(QShowEvent *ev) override;
 
 private:
     Ui::DialogBaseCameraConfig *ui;
+	std::string m_str_id ;
 
 public slots:
 	void OnButtonExposureGet(void) ;
