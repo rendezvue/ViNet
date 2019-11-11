@@ -19,6 +19,11 @@ DialogSetToolObject::DialogSetToolObject(QWidget *parent) :
 	connect(ui->pushButton_ref_point_select, SIGNAL(clicked()), this,  SLOT(OnButtonSelectRefPoint())) ;
 	connect(ui->pushButton_ref_point_reset, SIGNAL(clicked()), this,  SLOT(OnButtonResetRefPoint())) ;
 
+	//mask
+    connect(ui->pushButton_mask_push, SIGNAL(clicked()), this,  SLOT(OnButtonMaskPush())) ;
+    connect(ui->pushButton_mask_pop, SIGNAL(clicked()), this,  SLOT(OnButtonMaskPop())) ;
+    connect(ui->pushButton_mask_clear, SIGNAL(clicked()), this,  SLOT(OnButtonMaskClear())) ;
+	
 	//constraint angle
 	connect(ui->pushButton_constraint_angle_get, SIGNAL(clicked()), this,  SLOT(OnButtonGetConstraintAngle())) ;
 	connect(ui->pushButton_constraint_angle_set, SIGNAL(clicked()), this,  SLOT(OnButtonSetConstraintAngle())) ;
@@ -389,9 +394,9 @@ void DialogSetToolObject::mouseReleaseEvent(QMouseEvent *event)
             if (ui->checkBox_mask_enable_inside->isChecked())	b_enable_inside = false ;
             else												b_enable_inside = true ;
 				
-            //Ensemble_Job_Set_MaskArea(GetId(), f_x, f_y, f_w, f_h, b_enable_inside) ;
+            Ensemble_Tool_Set_MaskArea(GetId(), f_x, f_y, f_w, f_h, b_enable_inside) ;
 
-			//emit UpdateToolObjectImage();
+			emit UpdateToolObjectImage();
         }
 		else if( set_status == SetBaseStatus::SET_OBJECT)
 		{
@@ -485,5 +490,28 @@ void DialogSetToolObject::OnButtonSetConstraintAngle(void)
     Ensemble_Tool_Set_DetectOption(GetId(), DetectOption::DETECT_OPTION_CONSTRAINT_ANGLE_MAX, qstr_detect_option_constraint_angle_max.toFloat()) ;
 
     OnButtonGetConstraintAngle() ;
+}
+
+void DialogSetToolObject::OnButtonMaskPush(void)
+{
+	m_cls_set_user_region.SetStatus(SetBaseStatus::SET_MASK) ;
+}
+
+void DialogSetToolObject::OnButtonMaskPop(void)
+{
+	Ensemble_Tool_Undo_MaskArea(GetId()) ;
+
+	OnButtonGetImage() ;
+
+	emit UpdateToolObjectImage();
+}
+
+void DialogSetToolObject::OnButtonMaskClear(void)
+{
+	Ensemble_Tool_Del_MaskArea(GetId()) ;
+
+	OnButtonGetImage() ;
+
+	emit UpdateToolObjectImage();
 }
 

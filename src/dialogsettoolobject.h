@@ -54,6 +54,11 @@ public slots:
 	void OnButtonSelectObject(void) ;
 	void OnButtonResetObject(void) ;
 
+	//mask
+    void OnButtonMaskPush(void) ;
+    void OnButtonMaskPop(void) ;
+    void OnButtonMaskClear(void) ;
+	
 	void OnButtonGetConstraintAngle(void) ;
 	void OnButtonSetConstraintAngle(void) ;
 
