@@ -18,6 +18,10 @@ DialogSetToolObject::DialogSetToolObject(QWidget *parent) :
 	//reference point
 	connect(ui->pushButton_ref_point_select, SIGNAL(clicked()), this,  SLOT(OnButtonSelectRefPoint())) ;
 	connect(ui->pushButton_ref_point_reset, SIGNAL(clicked()), this,  SLOT(OnButtonResetRefPoint())) ;
+
+	//constraint angle
+	connect(ui->pushButton_constraint_angle_get, SIGNAL(clicked()), this,  SLOT(OnButtonGetConstraintAngle())) ;
+	connect(ui->pushButton_constraint_angle_set, SIGNAL(clicked()), this,  SLOT(OnButtonSetConstraintAngle())) ;
 	
 	//slider
 	connect(ui->horizontalSlider_feature_level, SIGNAL(sliderReleased()), this, SLOT(OnSliderSetFeatureLevel()));
@@ -85,6 +89,8 @@ void DialogSetToolObject::showEvent(QShowEvent *ev)
 	
 	//Image
 	OnButtonGetImage() ;
+	
+	OnButtonGetConstraintAngle() ;
 }
 
 void DialogSetToolObject::OnButtonNameChange(void)
@@ -458,4 +464,26 @@ void DialogSetToolObject::OnButtonResetRefPoint(void)
     OnButtonGetImage() ;
 }
 
+
+void DialogSetToolObject::OnButtonGetConstraintAngle(void)
+{
+	//Get Detect Option Value
+    int detect_option_constraint_angle_min = Ensemble_Tool_Get_DetectOption(GetId(), DetectOption::DETECT_OPTION_CONSTRAINT_ANGLE_MIN) ;
+	int detect_option_constraint_angle_max = Ensemble_Tool_Get_DetectOption(GetId(), DetectOption::DETECT_OPTION_CONSTRAINT_ANGLE_MAX) ;
+	
+    ui->lineEdit_constraint_angle_min->setText(QString::number(detect_option_constraint_angle_min)) ;
+	ui->lineEdit_constraint_angle_max->setText(QString::number(detect_option_constraint_angle_max)) ;
+}
+
+void DialogSetToolObject::OnButtonSetConstraintAngle(void)
+{
+	 //Set Detect Option Value
+    QString qstr_detect_option_constraint_angle_min = ui->lineEdit_constraint_angle_min->text() ;
+    Ensemble_Tool_Set_DetectOption(GetId(), DetectOption::DETECT_OPTION_CONSTRAINT_ANGLE_MIN, qstr_detect_option_constraint_angle_min.toFloat()) ;
+
+	QString qstr_detect_option_constraint_angle_max = ui->lineEdit_constraint_angle_max->text() ;
+    Ensemble_Tool_Set_DetectOption(GetId(), DetectOption::DETECT_OPTION_CONSTRAINT_ANGLE_MAX, qstr_detect_option_constraint_angle_max.toFloat()) ;
+
+    OnButtonGetConstraintAngle() ;
+}
 

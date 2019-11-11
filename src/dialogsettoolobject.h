@@ -54,6 +54,9 @@ public slots:
 	void OnButtonSelectObject(void) ;
 	void OnButtonResetObject(void) ;
 
+	void OnButtonGetConstraintAngle(void) ;
+	void OnButtonSetConstraintAngle(void) ;
+
 	void mousePressEvent(QMouseEvent *event) override;
     void mouseMoveEvent(QMouseEvent *event) override;
     void mouseReleaseEvent(QMouseEvent *event) override;
