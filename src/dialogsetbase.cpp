@@ -40,6 +40,9 @@ DialogSetBase::DialogSetBase(QWidget *parent) :
     connect(ui->pushButton_detect_margin_get, SIGNAL(clicked()), this,  SLOT(OnButtonGetDetectOptionMargin())) ;
     connect(ui->pushButton_detect_threshold_get, SIGNAL(clicked()), this,  SLOT(OnButtonGetDetectOptionThreshold())) ;
     connect(ui->pushButton_detect_count_get, SIGNAL(clicked()), this,  SLOT(OnButtonGetDetectOptionCount())) ;
+	//constraint angle
+	connect(ui->pushButton_constraint_angle_get, SIGNAL(clicked()), this,  SLOT(OnButtonGetConstraintAngle())) ;
+	connect(ui->pushButton_constraint_angle_set, SIGNAL(clicked()), this,  SLOT(OnButtonSetConstraintAngle())) ;
 
     //feature (custom) check box
     connect(ui->checkBox_use_custom_feature, SIGNAL(clicked(bool)), this,  SLOT(OnCheckFeatureUseCustomOption(bool))) ;
@@ -89,6 +92,7 @@ void DialogSetBase::showEvent(QShowEvent *ev)
     OnButtonGetDetectOptionMargin() ;
     OnButtonGetDetectOptionThreshold(); ;
     OnButtonGetDetectOptionCount() ;
+	OnButtonGetConstraintAngle() ;
 	
 #if 0
 	int detect_option_margin = Ensemble_Job_Get_DetectOption(GetId(), DetectOption::DETECT_OPTION_MARGIN) ;
@@ -579,3 +583,26 @@ void DialogSetBase::OnCheckFeatureUseCustomOption(bool checked)
         ui->horizontalSlider_feature_level->setEnabled(true) ;
 	}
 }
+
+void DialogSetBase::OnButtonGetConstraintAngle(void)
+{
+	//Get Detect Option Value
+    int detect_option_constraint_angle_min = Ensemble_Job_Get_DetectOption(GetId(), DetectOption::DETECT_OPTION_CONSTRAINT_ANGLE_MIN) ;
+	int detect_option_constraint_angle_max = Ensemble_Job_Get_DetectOption(GetId(), DetectOption::DETECT_OPTION_CONSTRAINT_ANGLE_MAX) ;
+	
+    ui->lineEdit_constraint_angle_min->setText(QString::number(detect_option_constraint_angle_min)) ;
+	ui->lineEdit_constraint_angle_max->setText(QString::number(detect_option_constraint_angle_max)) ;
+}
+
+void DialogSetBase::OnButtonSetConstraintAngle(void)
+{
+	 //Set Detect Option Value
+    QString qstr_detect_option_constraint_angle_min = ui->lineEdit_constraint_angle_min->text() ;
+    Ensemble_Job_Set_DetectOption(GetId(), DetectOption::DETECT_OPTION_CONSTRAINT_ANGLE_MIN, qstr_detect_option_constraint_angle_min.toFloat()) ;
+
+	QString qstr_detect_option_constraint_angle_max = ui->lineEdit_constraint_angle_max->text() ;
+    Ensemble_Job_Set_DetectOption(GetId(), DetectOption::DETECT_OPTION_CONSTRAINT_ANGLE_MAX, qstr_detect_option_constraint_angle_max.toFloat()) ;
+
+    OnButtonGetConstraintAngle() ;
+}
+

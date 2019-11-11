@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>970</width>
-    <height>755</height>
+    <height>810</height>
    </rect>
   </property>
   <property name="mouseTracking">
@@ -64,8 +64,8 @@
   <widget class="QGroupBox" name="groupBox">
    <property name="geometry">
     <rect>
-     <x>670</x>
-     <y>90</y>
+     <x>310</x>
+     <y>600</y>
      <width>291</width>
      <height>211</height>
     </rect>
@@ -171,8 +171,8 @@
   <widget class="QGroupBox" name="groupBox_3">
    <property name="geometry">
     <rect>
-     <x>670</x>
-     <y>0</y>
+     <x>10</x>
+     <y>600</y>
      <width>291</width>
      <height>80</height>
     </rect>
@@ -270,7 +270,7 @@
    <property name="geometry">
     <rect>
      <x>670</x>
-     <y>310</y>
+     <y>60</y>
      <width>291</width>
      <height>191</height>
     </rect>
@@ -409,9 +409,9 @@
    <property name="geometry">
     <rect>
      <x>670</x>
-     <y>600</y>
+     <y>350</y>
      <width>291</width>
-     <height>151</height>
+     <height>281</height>
     </rect>
    </property>
    <property name="title">
@@ -591,6 +591,132 @@
      <string>Get</string>
     </property>
    </widget>
+   <widget class="QGroupBox" name="groupBox_8">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>160</y>
+      <width>271</width>
+      <height>111</height>
+     </rect>
+    </property>
+    <property name="title">
+     <string>Constraint</string>
+    </property>
+    <widget class="QGroupBox" name="groupBox_10">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>30</y>
+       <width>251</width>
+       <height>71</height>
+      </rect>
+     </property>
+     <property name="title">
+      <string>Angle</string>
+     </property>
+     <widget class="QLineEdit" name="lineEdit_constraint_angle_min">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>30</y>
+        <width>40</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>-180</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_18">
+      <property name="geometry">
+       <rect>
+        <x>55</x>
+        <y>30</y>
+        <width>16</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>º</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_19">
+      <property name="geometry">
+       <rect>
+        <x>125</x>
+        <y>30</y>
+        <width>16</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>º</string>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="lineEdit_constraint_angle_max">
+      <property name="geometry">
+       <rect>
+        <x>80</x>
+        <y>30</y>
+        <width>40</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>180</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="pushButton_constraint_angle_set">
+      <property name="geometry">
+       <rect>
+        <x>150</x>
+        <y>30</y>
+        <width>41</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Set</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="pushButton_constraint_angle_get">
+      <property name="geometry">
+       <rect>
+        <x>200</x>
+        <y>30</y>
+        <width>41</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Get</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_20">
+      <property name="geometry">
+       <rect>
+        <x>60</x>
+        <y>30</y>
+        <width>16</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>~</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+     </widget>
+    </widget>
+   </widget>
   </widget>
   <widget class="QLabel" name="label_image_bg">
    <property name="geometry">
@@ -615,7 +741,7 @@
    <property name="geometry">
     <rect>
      <x>670</x>
-     <y>510</y>
+     <y>260</y>
      <width>291</width>
      <height>81</height>
     </rect>

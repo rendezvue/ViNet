@@ -82,6 +82,9 @@ public slots:
 	void OnButtonSelectRefPoint(void) ;
 	void OnButtonResetRefPoint(void) ;
 
+	void OnButtonGetConstraintAngle(void) ;
+	void OnButtonSetConstraintAngle(void) ;
+
     void OnButtonSetDetectOptionMargin(void) ;
     void OnButtonSetDetectOptionThreshold(void) ;
     void OnButtonSetDetectOptionCount(void) ;
