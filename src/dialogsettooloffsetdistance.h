@@ -15,6 +15,7 @@
 
 #include "dialogchangename.h"
 
+#include "csetuserregion.h"
 #include "csettoolinfo.h"
 
 
@@ -22,7 +23,7 @@ namespace Ui {
 class DialogSetToolOffsetDistance;
 }
 
-class DialogSetToolOffsetDistance : public QDialog, public CSetToolInfo
+class DialogSetToolOffsetDistance : public QDialog, public CSetUserRegion, public CSetToolInfo
 {
     Q_OBJECT
 
@@ -34,8 +35,10 @@ public:
 
 private:
     Ui::DialogSetToolOffsetDistance *ui;
-	void updatePicture(cv::Mat image) ;
+	void updatePicture(cv::Mat image, cv::Rect rect_user=cv::Rect()) ;
 	cv::Mat m_image ;
+
+	CSetUserRegion m_cls_set_user_region ;
 
 protected :
 	void showEvent(QShowEvent *ev) override;
@@ -44,8 +47,17 @@ public slots:
 	void OnButtonGetImage(void) ;
 	void OnButtonNameChange(void) ;
 
+	void OnButtonSelectObject(void) ;
+	void OnButtonResetObject(void) ;
+
+	//mouse event
+	void mousePressEvent(QMouseEvent *event) override;
+    void mouseMoveEvent(QMouseEvent *event) override;
+    void mouseReleaseEvent(QMouseEvent *event) override;
+
 signals:
 	void UpdateToolName(QString name) ;
+	void UpdateToolObjectImage(void);
 
 };
 

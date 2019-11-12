@@ -32,8 +32,8 @@ public slots:
 	void OnSliderSetFeatureLevel(void) ;
     void OnSliderMove(int value) ;
 
-signals:
-	void UpdateInfo(QString info) ;
+//signals:
+//	void UpdateInfo(QString info) ;
 
 };
 

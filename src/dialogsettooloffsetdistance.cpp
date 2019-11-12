@@ -7,6 +7,10 @@ DialogSetToolOffsetDistance::DialogSetToolOffsetDistance(QWidget *parent) :
 {
     ui->setupUi(this);
 
+	//Object
+	connect(ui->pushButton_select_object, SIGNAL(clicked()), this,	SLOT(OnButtonSelectObject())) ;
+	connect(ui->pushButton_reset_object, SIGNAL(clicked()), this,  SLOT(OnButtonResetObject())) ;
+	
 	//button
 	connect(ui->pushButton_get_base_image, SIGNAL(clicked()), this,  SLOT(OnButtonGetImage())) ;
     connect(ui->pushButton_name_change, SIGNAL(clicked()), this,  SLOT(OnButtonNameChange())) ;
@@ -78,7 +82,7 @@ void DialogSetToolOffsetDistance::OnButtonGetImage(void)
     }
 }
 
-void DialogSetToolOffsetDistance::updatePicture(cv::Mat image)
+void DialogSetToolOffsetDistance::updatePicture(cv::Mat image, cv::Rect rect_user)
 {
     const int draw_width = ui->label_image_bg->width();
     const int draw_height = ui->label_image_bg->height();
@@ -101,9 +105,25 @@ void DialogSetToolOffsetDistance::updatePicture(cv::Mat image)
     //QImage qt_display_image = QImage((const unsigned char*)image.data, image.cols, image.rows, QImage::Format_RGB888);
     CMat2QImage cls_mat_2_qimage ;
 	QImage qt_display_image = cls_mat_2_qimage.cvtMat2QImage(image, ui->label_image->width(), ui->label_image->height()) ;
+	
+	//draw set rect
+	if( !rect_user.empty() )
+	{
+	    qDebug("%s : rect(%d,%d,%d,%d", __func__, rect_user.x, rect_user.y, rect_user.width, rect_user.height) ;
+
+		if( rect_user.width > 0 && rect_user.height > 0 )
+		{
+			QPainter qPainter(&qt_display_image);
+			qPainter.setBrush(Qt::NoBrush);
+			qPainter.setPen(Qt::red);
+			qPainter.drawRect(rect_user.x,rect_user.y,rect_user.width,rect_user.height);
+			bool bEnd = qPainter.end();
+		}
+	}
 
     ui->label_image->setPixmap(QPixmap::fromImage(qt_display_image));
 }
+
 
 void DialogSetToolOffsetDistance::OnButtonNameChange(void)
 {
@@ -136,4 +156,136 @@ void DialogSetToolOffsetDistance::OnButtonNameChange(void)
     }
 }
 
+void DialogSetToolOffsetDistance::OnButtonSelectObject(void)
+{
+	m_cls_set_user_region.SetStatus(SetBaseStatus::SET_OBJECT) ;
+}
+
+void DialogSetToolOffsetDistance::OnButtonResetObject(void)
+{
+	//Ensemble_Job_Del_SelectObject(GetId()) ;
+	
+    OnButtonGetImage() ;
+}
+
+void DialogSetToolOffsetDistance::mousePressEvent(QMouseEvent *event)
+{
+    qDebug("%s - %d", __func__, __LINE__) ;
+
+    if (event->button() == Qt::LeftButton && m_cls_set_user_region.GetStatus() > SetBaseStatus::NORMAL ) 
+	{
+        QPoint point = event->pos() ;
+        point.setX(point.x() - ui->label_image->x());
+        point.setY(point.y() - ui->label_image->y());
+
+		cv::Rect rect_user = m_cls_set_user_region.StartSetRegion(point.x(), point.y()) ;
+
+		updatePicture(m_image, rect_user) ;
+    }
+}
+
+void DialogSetToolOffsetDistance::mouseMoveEvent(QMouseEvent *event)
+{
+    qDebug("%s - %d", __func__, __LINE__) ;
+
+   if ( m_cls_set_user_region.GetStatus() > SetBaseStatus::NORMAL)
+	{
+		QPoint point = event->pos() ;
+        point.setX(point.x() - ui->label_image->x());
+        point.setY(point.y() - ui->label_image->y());
+
+        if( (event->buttons() & Qt::LeftButton) )
+        {
+            cv::Rect rect_user = m_cls_set_user_region.MoveSetRegion(point.x(), point.y()) ;
+
+            updatePicture(m_image, rect_user) ;
+        }
+	}
+}
+
+void DialogSetToolOffsetDistance::mouseReleaseEvent(QMouseEvent *event)
+{
+    //if (event->button() == Qt::LeftButton && scribbling) {
+    //    drawLineTo(event->pos());
+    //    scribbling = false;
+    //}
+
+	//Set
+	int set_status = m_cls_set_user_region.GetStatus() ;
+
+	qDebug("%s - %d : m_set_status(%d), event->buttons()=%d", __func__, __LINE__, set_status, event->buttons()) ;
+	
+    if (set_status > SetBaseStatus::NORMAL)
+	{
+		qDebug("%s - %d", __func__, __LINE__) ;
+		
+		float f_x = 0.0 ;
+		float f_y = 0.0 ;
+		float f_w = 0.0 ;
+		float f_h = 0.0 ;
+
+        int label_w = ui->label_image->width() ;
+        int label_h = ui->label_image->height() ;
+
+		cv::Rect rect_user = m_cls_set_user_region.EndSetRegion() ;
+	
+        f_x = (float)rect_user.x / (float)label_w ;
+        f_y = (float)rect_user.y / (float)label_h ;
+        f_w = (float)rect_user.width / (float)label_w ;
+        f_h = (float)rect_user.height / (float)label_h ;
+
+		qDebug("%s - %d : m_set_status(%d)", __func__, __LINE__, set_status) ;
+		
+        if( set_status == SetBaseStatus::SET_AREA )
+        {
+            //Ensemble_Job_Set_DetectArea(GetId(), f_x, f_y, f_w, f_h) ;
+
+            //emit UpdateToolObjectImage();
+        }
+        else if( set_status == SetBaseStatus::SET_ZOOM)
+        {
+            //Ensemble_Job_Set_Zoom(GetId(), f_x, f_y, f_w, f_h) ;
+        }
+		else if( set_status == SetBaseStatus::SET_MASK)
+        {
+        	#if 0
+            bool b_enable_inside = false ;
+            if (ui->checkBox_mask_enable_inside->isChecked())	b_enable_inside = false ;
+            else												b_enable_inside = true ;
+				
+            Ensemble_Tool_Set_MaskArea(GetId(), f_x, f_y, f_w, f_h, b_enable_inside) ;
+
+			emit UpdateToolObjectImage();
+			#endif
+        }
+		else if( set_status == SetBaseStatus::SET_OBJECT)
+		{
+			//SelectObject
+            Ensemble_Tool_Set_SelectObject(GetId(), f_x, f_y, f_w, f_h) ;
+
+			emit UpdateToolObjectImage();
+		}
+		else if( set_status == SetBaseStatus::SET_REF_POINT)
+		{
+			#if 0
+			QPoint point = event->pos() ;
+	        point.setX(point.x() - ui->label_image->x());
+	        point.setY(point.y() - ui->label_image->y());
+
+			f_x = (float)point.x() / (float)label_w ;
+        	f_y = (float)point.y() / (float)label_h ;
+		
+			//SelectObject
+			//Ensemble_Job_Set_SelectObject(GetId(), f_x, f_y, f_w, f_h) ;
+            Ensemble_Tool_Set_Ref_Point(GetId(), f_x, f_y) ;
+
+            emit UpdateToolObjectImage();
+			#endif
+		}
+		
+        OnButtonGetImage() ;
+	}
+
+	updatePicture(m_image) ;
+}
 

@@ -40,6 +40,7 @@ FormJobTool::FormJobTool(QWidget *parent) :
 	connect(&m_dlg_set_tool_distance, SIGNAL(UpdateToolName(QString)), this, SLOT(OnUpdateName(QString))) ;
 
 	//offset distance
+	connect(&m_dlg_set_tool_offset_distance, SIGNAL(UpdateToolObjectImage()), this, SLOT(OnUpdateImage())) ;
 	connect(&m_dlg_set_tool_offset_distance, SIGNAL(UpdateToolName(QString)), this, SLOT(OnUpdateName(QString))) ;
 
 	//update list

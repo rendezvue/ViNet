@@ -724,7 +724,7 @@ void MainWindow::UpdateResult(QString qstr_xml)
 			}				
 		}
 
-		emit UpdateFormInfo() ;
+		//emit UpdateFormInfo() ;
 	}
 }
 
@@ -882,7 +882,7 @@ void MainWindow::UpdateJobTree(void)
 				
 					connect(theWidgetItem, SIGNAL(UpdateList()), this, SLOT(UpdateJobTree())) ;
 					connect(theWidgetItem, SIGNAL(UpdateResultImage(QString)), this, SLOT(UpdateResultImage(QString))) ;
-					connect(this, SIGNAL(UpdateFormInfo()), theWidgetItem, SLOT(UpdateInfo())) ;		//mainwindow(UpdateInfoJob) --> FormJobBase(UpdateInfo)
+					//connect(this, SIGNAL(UpdateFormInfo()), theWidgetItem, SLOT(UpdateInfo())) ;		//mainwindow(UpdateInfoJob) --> FormJobBase(UpdateInfo)
 					
                     QSize item_size = theWidgetItem->size() ;
                     treeJobItem->setSizeHint(0, item_size);
@@ -949,7 +949,7 @@ void MainWindow::UpdateJobTree(void)
 							theWidgetItem->SetType(option_type) ;
 
 							connect(theWidgetItem, SIGNAL(UpdateList()), this, SLOT(UpdateJobTree())) ;
-							connect(this, SIGNAL(UpdateFormInfo()), theWidgetItem, SLOT(UpdateInfo())) ;		//mainwindow(UpdateInfoJob) --> FormJobBase(UpdateInfo)
+							//connect(this, SIGNAL(UpdateFormInfo()), theWidgetItem, SLOT(UpdateInfo())) ;		//mainwindow(UpdateInfoJob) --> FormJobBase(UpdateInfo)
 							//connect(theWidgetItem, SIGNAL(UpdateResultImage(QString)), this, SLOT(UpdateResultImage(QString))) ;
 							
 		                    QSize item_size = theWidgetItem->size() ;

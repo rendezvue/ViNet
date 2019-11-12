@@ -130,8 +130,8 @@ private:
 protected :
     void showEvent(QShowEvent *ev) override;
 
-signals:
-    void UpdateFormInfo(void);
+//signals:
+//    void UpdateFormInfo(void);
 
 public slots:
     void updatePicture(cv::Mat image);

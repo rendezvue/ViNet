@@ -350,6 +350,7 @@ void FormJobBase::OnButtonResultInfo(void)
     }
 }
 
+/*
 void FormJobBase::UpdateInfo(void)
 {
 	QString qstr_info = QString::fromStdString(m_str_info);
@@ -358,6 +359,7 @@ void FormJobBase::UpdateInfo(void)
 	
 	ui->label_info->setText(qstr_info);
 }
+*/
 
 void FormJobBase::SetInfo(const std::string info)
 {

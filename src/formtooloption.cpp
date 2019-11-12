@@ -21,7 +21,7 @@ FormToolOption::FormToolOption(QWidget *parent) :
 	connect(ui->pushButton_option_set, SIGNAL(clicked()), this,  SLOT(OnButtonSet())) ;	
 
 	//dialog crack signal
-	connect(&m_dlg_set_tool_crack, SIGNAL(UpdateInfo(QString)), this,  SLOT(OnBUpdateInfo(QString))) ;	
+	//connect(&m_dlg_set_tool_crack, SIGNAL(UpdateInfo(QString)), this,  SLOT(OnBUpdateInfo(QString))) ;	
 
 	//check box
 	connect(ui->checkBox_run, SIGNAL(clicked(bool)), this, SLOT(OnRunCheckBoxToggled(bool)));
@@ -274,10 +274,12 @@ void FormToolOption::showEvent(QShowEvent *ev)
 	ui->checkBox_view->setChecked(view_option);
 }
 
+/*
 void FormToolOption::OnBUpdateInfo(QString info)
 {
 	UpdateInformationString(info) ;
 }
+*/
 
 void FormToolOption::UpdateInformationString(QString str_info)
 {

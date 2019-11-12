@@ -56,7 +56,7 @@ void DialogSetToolCrack::OnSliderSetFeatureLevel(void)
 
 	//emit UpdateToolObjectImage();
 	std::string	str_info = "Crack Level : " + std::to_string(inspect_level) ;		
-	emit UpdateInfo(QString::fromUtf8(str_info.c_str())) ;
+	//emit UpdateInfo(QString::fromUtf8(str_info.c_str())) ;
 }
 
 void DialogSetToolCrack::OnSliderMove(int value)

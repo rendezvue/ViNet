@@ -69,7 +69,7 @@ protected:
 public slots:
 	void OnButtonDel(void);
 	void OnButtonSet(void) ;
-	void OnBUpdateInfo(QString info) ;
+	//void OnBUpdateInfo(QString info) ;
 	void OnRunCheckBoxToggled(bool checked) ;
 	void OnViewCheckBoxToggled(bool checked) ;
 

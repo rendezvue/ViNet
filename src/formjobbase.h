@@ -87,7 +87,7 @@ public slots:
 	void OnViewCheckBoxToggled(bool checked) ;
 	void OnButtonSetCalibration(void) ;
 	void OnButtonResultInfo(void) ;
-	void UpdateInfo(void) ;
+	//void UpdateInfo(void) ;
 };
 
 #endif // FORMJOBBASE_H
