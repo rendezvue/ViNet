@@ -26,6 +26,8 @@ MainWindow::MainWindow(QWidget *parent) :
 	connect(ui->pushButton_task_save, SIGNAL(clicked()), this,  SLOT(OnButtonSaveAllTask())) ;
 	connect(ui->pushButton_task_load, SIGNAL(clicked()), this,  SLOT(OnButtonLoadAllTask())) ;
 
+	connect(ui->pushButton_update_source_list, SIGNAL(clicked()), this,  SLOT(OnButtonUpdateSourceList())) ;
+		
     //Menu
     connect(ui->actionConnect, SIGNAL(triggered()), this, SLOT(OnMenuConnect()));
 
@@ -252,40 +254,7 @@ void MainWindow::OnMenuConnect(void)
        
             qDebug(" - Success : Image Port") ;
 
-			std::string str_source_list_xml = Ensemble_Source_Get_List() ;
-
-			qDebug(" - Get Source List : %s", str_source_list_xml.c_str()) ;
-			
-			//xml parsing
-			//XML Parsing
-		    pugi::xml_document doc;
-		    pugi::xml_parse_result result = doc.load_string((char *)(str_source_list_xml.c_str()));
-
-		    if (!result)
-		    {
-
-		        qDebug("xml parsing error") ;
-		    }
-		    else
-		    {
-                ui->listView_source->reset();
-
-				QStringList stringListSource;
-                stringListSource << "[CAMERA]" ;
-	            for (pugi::xml_node job: doc.child("Ensemble").children("Image"))
-	            {
-                    std::string str_path = job.child("PATH").text().get();
-                    std::string str_path2 = str_path ;
-
-                    stringListSource << str_path2.c_str() ;
-		        }
-
-                // Create model
-                m_source_list_model->setStringList(stringListSource);
-
-                // Glue model and view together
-                ui->listView_source->setModel(m_source_list_model);
-		    }
+			OnButtonUpdateSourceList() ;
         }
 
         //ini
@@ -1021,3 +990,42 @@ void MainWindow::showEvent(QShowEvent *ev)
     //tab : Result Image
     ui->tabWidget_image->setCurrentIndex(0);
 }
+
+void MainWindow::OnButtonUpdateSourceList(void)
+{
+	std::string str_source_list_xml = Ensemble_Source_Get_List() ;
+
+	qDebug(" - Get Source List : %s", str_source_list_xml.c_str()) ;
+	
+	//xml parsing
+	//XML Parsing
+    pugi::xml_document doc;
+    pugi::xml_parse_result result = doc.load_string((char *)(str_source_list_xml.c_str()));
+
+    if (!result)
+    {
+
+        qDebug("xml parsing error") ;
+    }
+    else
+    {
+        ui->listView_source->reset();
+
+		QStringList stringListSource;
+        stringListSource << "[CAMERA]" ;
+        for (pugi::xml_node job: doc.child("Ensemble").children("Image"))
+        {
+            std::string str_path = job.child("PATH").text().get();
+            std::string str_path2 = str_path ;
+
+            stringListSource << str_path2.c_str() ;
+        }
+
+        // Create model
+        m_source_list_model->setStringList(stringListSource);
+
+        // Glue model and view together
+        ui->listView_source->setModel(m_source_list_model);
+    }
+}
+

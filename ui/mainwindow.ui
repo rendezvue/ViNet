@@ -18,9 +18,9 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>530</y>
+      <y>550</y>
       <width>641</width>
-      <height>201</height>
+      <height>181</height>
      </rect>
     </property>
     <property name="editTriggers">
@@ -431,6 +431,23 @@
        <normaloff>:/icons/image/icons/load.png</normaloff>:/icons/image/icons/load.png</iconset>
      </property>
     </widget>
+   </widget>
+   <widget class="QPushButton" name="pushButton_update_source_list">
+    <property name="geometry">
+     <rect>
+      <x>630</x>
+      <y>530</y>
+      <width>20</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+    <property name="icon">
+     <iconset resource="../resource.qrc">
+      <normaloff>:/icons/image/icons/refresh.png</normaloff>:/icons/image/icons/refresh.png</iconset>
+    </property>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menuBar">

@@ -148,6 +148,7 @@ public slots:
     void tabSelected(void) ;
 	void OnButtonSaveAllTask(void) ;
 	void OnButtonLoadAllTask(void) ;
+	void OnButtonUpdateSourceList(void) ;
 };
 
 #endif // MAINWINDOW_H
