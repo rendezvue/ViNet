@@ -83,7 +83,8 @@ HEADERS += \
     src/dialogresultinfo.h \
     src/canimatedlabel.h \
     src/dialogbasecameraconfig.h \
-    src/cgetimagethread.h
+    src/cgetimagethread.h \
+    src/dialogsettooloffsetdistance.h
 
 SOURCES += \
     module/EnsembleAPI/src/Interface.cpp \
@@ -133,7 +134,8 @@ SOURCES += \
     src/dialogresultinfo.cpp \
     src/canimatedlabel.cpp \
     src/dialogbasecameraconfig.cpp \
-    src/cgetimagethread.cpp
+    src/cgetimagethread.cpp \
+    src/dialogsettooloffsetdistance.cpp
 
 FORMS += \
     ui/cdialogconnect.ui \
@@ -163,5 +165,6 @@ FORMS += \
     ui/mainwindow.ui \
     ui/dialogsetcustomfeatureoption.ui \
     ui/dialogresultinfo.ui \
-    ui/dialogbasecameraconfig.ui
+    ui/dialogbasecameraconfig.ui \
+    ui/dialogsettooloffsetdistance.ui
 

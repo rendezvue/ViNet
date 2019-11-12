@@ -915,7 +915,7 @@ void MainWindow::UpdateJobTree(void)
 						theWidgetItem->SetType(type) ;
 
 						connect(theWidgetItem, SIGNAL(UpdateList()), this, SLOT(UpdateJobTree())) ;
-						connect(this, SIGNAL(UpdateFormInfo()), theWidgetItem, SLOT(UpdateInfo())) ;		//mainwindow(UpdateInfoJob) --> FormJobBase(UpdateInfo)
+                        //connect(this, SIGNAL(UpdateFormInfo()), theWidgetItem, SLOT(UpdateInfo())) ;		//mainwindow(UpdateInfoJob) --> FormJobBase(UpdateInfo)
 						//connect(theWidgetItem, SIGNAL(UpdateResultImage(QString)), this, SLOT(UpdateResultImage(QString))) ;
 						
 	                    QSize item_size = theWidgetItem->size() ;

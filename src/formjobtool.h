@@ -17,6 +17,7 @@
 #include "dialogsettoolangle.h"
 #include "dialogsettoolinspectdistance.h"
 #include "dialogselecttooloption.h"
+#include "dialogsettooloffsetdistance.h"
 
 #include "ImgDec.h"
 
@@ -87,6 +88,8 @@ private:
 	DialogSetToolAngle m_dlg_set_tool_angle ;	
 	//Set Dialog : Inspect Distance
 	DialogSetToolInspectDistance m_dlg_set_tool_inspect_distance ;	
+	//Set Dialog : Offset Distance
+	DialogSetToolOffsetDistance m_dlg_set_tool_offset_distance ;
 
 	//Select Option Dialog
     DialogSelectToolOption m_dlg_select_option ;

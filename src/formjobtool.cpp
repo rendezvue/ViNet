@@ -39,6 +39,9 @@ FormJobTool::FormJobTool(QWidget *parent) :
 	//distance
 	connect(&m_dlg_set_tool_distance, SIGNAL(UpdateToolName(QString)), this, SLOT(OnUpdateName(QString))) ;
 
+	//offset distance
+	connect(&m_dlg_set_tool_offset_distance, SIGNAL(UpdateToolName(QString)), this, SLOT(OnUpdateName(QString))) ;
+
 	//update list
 	connect(&m_dlg_select_option, SIGNAL(UpdateList()), this, SLOT(OnUpdateList())) ;
 
@@ -161,6 +164,20 @@ void FormJobTool::OnButtonSetBase(void)
 	    {
 	    }
 	}
+	else if( type == ToolTypeList::TOOL_TYPE_OFFSET_DISTANCE )
+	{
+		qDebug("Offset Distance Set") ;
+		
+	    m_dlg_set_tool_offset_distance.SetParentId(GetParentIdInfo());
+	    m_dlg_set_tool_offset_distance.SetToolId(GetIdInfo());
+
+	    int dialogCode = m_dlg_set_tool_offset_distance.exec();
+
+	    if(dialogCode == QDialog::Accepted)
+	    {
+	    }
+	}
+	
 #if 0
     else if( type == ToolTypeList::TOOL_TYPE_INSPECT_DISTANCE )
 	{
