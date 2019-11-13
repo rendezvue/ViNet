@@ -31,10 +31,6 @@ DialogBaseCameraConfig::DialogBaseCameraConfig(QWidget *parent) :
 	connect(ui->pushButton_iso_set, SIGNAL(clicked()), this, SLOT(OnButtonISOSet())) ;	
 	connect(ui->pushButton_shutter_speed_set, SIGNAL(clicked()), this, SLOT(OnButtonShutterSpeedSet())) ;	
 
-	//Checkbox
-	connect(ui->checkBox_auto_exposure, SIGNAL(clicked()), this, SLOT(OnButtonSetAutoExposuer())) ;	
-	connect(ui->checkBox_auto_focus, SIGNAL(clicked()), this, SLOT(OnButtonSetAutoFocus())) ;	
-
 	connect(ui->checkBox_image_flip_v, SIGNAL(clicked()), this, SLOT(OnButtonSetImageFlip_V())) ;	
 	connect(ui->checkBox_image_flip_h, SIGNAL(clicked()), this, SLOT(OnButtonSetImageFlip_H())) ;	
 
@@ -162,15 +158,6 @@ void DialogBaseCameraConfig::showEvent(QShowEvent *ev)
 	OnButtonContrastGet() ;
 	OnButtonISOGet() ;
 	OnButtonShutterSpeedGet() ;
-
-	//Checkbox
-	int check_auto_exposure = Ensemble_Camera_Get_Auto_Exposure_OnOff(GetId()) ;
-	if( check_auto_exposure )	ui->checkBox_auto_exposure->setChecked(true) ;
-	else						ui->checkBox_auto_exposure->setChecked(false) ;
-	
-	int check_auto_focus = Ensemble_Camera_Get_Auto_Focus_OnOff(GetId()) ;
-	if( check_auto_focus )		ui->checkBox_auto_focus->setChecked(true) ;
-	else						ui->checkBox_auto_focus->setChecked(false) ;
 
 	//image flip
 	int check_image_flip_v = Ensemble_Camera_Get_Flip_V(GetId()) ;
@@ -319,27 +306,6 @@ void DialogBaseCameraConfig::OnButtonShutterSpeedSet(void)
 	OnButtonShutterSpeedGet() ;
 }
 
-void DialogBaseCameraConfig::OnButtonSetAutoExposuer(void)
-{
-	if (ui->checkBox_auto_exposure->isChecked())	Ensemble_Camera_Set_Auto_Exposure_OnOff(GetId(), true) ;
-	else											Ensemble_Camera_Set_Auto_Exposure_OnOff(GetId(), false) ;
-		
-	//Checkbox
-	int check_auto_exposure = Ensemble_Camera_Get_Auto_Exposure_OnOff(GetId()) ;
-	if( check_auto_exposure )	ui->checkBox_auto_exposure->setChecked(true) ;
-	else						ui->checkBox_auto_exposure->setChecked(false) ;
-}
-
-void DialogBaseCameraConfig::OnButtonSetAutoFocus(void) 
-{
-	if (ui->checkBox_auto_focus->isChecked())	Ensemble_Camera_Set_Auto_Focus_OnOff(GetId(), true) ;
-	else										Ensemble_Camera_Set_Auto_Focus_OnOff(GetId(), false) ;
-	
-	int check_auto_focus = Ensemble_Camera_Get_Auto_Focus_OnOff(GetId()) ;
-	if( check_auto_focus )		ui->checkBox_auto_focus->setChecked(true) ;
-	else						ui->checkBox_auto_focus->setChecked(false) ;
-}
-
 void DialogBaseCameraConfig::OnButtonSetImageFlip_V(void)
 {
 	if (ui->checkBox_image_flip_v->isChecked())	Ensemble_Camera_Set_Flip_V(GetId(), true) ;
@@ -461,10 +427,6 @@ void DialogBaseCameraConfig::OnButtonReset(void)
 	OnButtonContrastGet() ;
 	OnButtonISOGet() ;
 	OnButtonShutterSpeedGet() ;
-
-	//Checkbox
-	OnButtonSetAutoExposuer() ;
-	OnButtonSetAutoFocus() ;
 }
 
 void DialogBaseCameraConfig::OnButtonSetCamera(void)
@@ -530,15 +492,7 @@ void DialogBaseCameraConfig::updatePicture(cv::Mat image)
 		float auto_focus_area_height = 0 ;
 		Ensemble_Camera_Get_Auto_Focus_Area(GetId(), &auto_focus_area_x, &auto_focus_area_y, &auto_focus_area_width, &auto_focus_area_height ) ;
 
-	
-		//update to ini about auto value
-		int check_auto_exposure = Ensemble_Camera_Get_Auto_Exposure_OnOff(GetId()) ;
-		if( check_auto_exposure )	OnButtonExposureGet() ;
-	
-		int check_auto_focus = Ensemble_Camera_Get_Auto_Focus_OnOff(GetId()) ;
-        if( check_auto_focus )		OnButtonFocusGet() ;
-	
-		int i_auto_focus_area_x = auto_focus_area_x * image.cols ;
+        int i_auto_focus_area_x = auto_focus_area_x * image.cols ;
 		int i_auto_focus_area_y = auto_focus_area_y * image.rows ;
 		int i_auto_focus_area_width = auto_focus_area_width * image.cols ;
 		int i_auto_focus_area_height = auto_focus_area_height * image.rows ;
@@ -579,11 +533,8 @@ void DialogBaseCameraConfig::OnButtonSetAutoFocusSelectArea(void)
 void DialogBaseCameraConfig::OnButtonSetAutoFocusAllArea(void)
 {
 	//All 
-	
-	int check_auto_focus = Ensemble_Camera_Get_Auto_Focus_OnOff(GetId()) ;
-
 	//Set Focus Area
-	Ensemble_Camera_Set_Auto_Focus_OnOff(GetId(), check_auto_focus, 0, 0, -1, -1) ;
+    int ret = Ensemble_Camera_Set_Auto_Focus(GetId(), 0, 0, -1, -1) ;
 }
 
 void DialogBaseCameraConfig::mousePressEvent(QMouseEvent *event)
@@ -656,10 +607,8 @@ void DialogBaseCameraConfig::mouseReleaseEvent(QMouseEvent *event)
 		
         if( set_status == SetBaseStatus::SET_AREA )
         {
-        	int check_auto_focus = Ensemble_Camera_Get_Auto_Focus_OnOff(GetId()) ;
-
 			//Set Focus Area
-			Ensemble_Camera_Set_Auto_Focus_OnOff(GetId(), check_auto_focus, f_x, f_y, f_w, f_h) ;
+            int ret = Ensemble_Camera_Set_Auto_Focus(GetId(), f_x, f_y, f_w, f_h) ;
         }
 
 		m_rect_user = cv::Rect() ;

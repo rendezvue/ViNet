@@ -70,9 +70,6 @@ public slots:
 	void OnButtonISOSet(void) ;
 	void OnButtonShutterSpeedSet(void) ;
 
-	void OnButtonSetAutoExposuer(void) ;
-	void OnButtonSetAutoFocus(void) ;
-
 	void OnButtonSetImageFlip_V(void) ;
 	void OnButtonSetImageFlip_H(void) ;
 
