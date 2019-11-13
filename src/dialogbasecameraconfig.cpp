@@ -18,6 +18,9 @@ DialogBaseCameraConfig::DialogBaseCameraConfig(QWidget *parent) :
 	connect(ui->pushButton_iso_get, SIGNAL(clicked()), this, SLOT(OnButtonISOGet())) ;	
 	connect(ui->pushButton_shutter_speed_get, SIGNAL(clicked()), this, SLOT(OnButtonShutterSpeedGet())) ;	
 
+	//Auto Exposure
+	connect(ui->pushButton_auto_exposure, SIGNAL(clicked()), this, SLOT(OnButtonSetAutoExposure())) ;	
+	
 	//Auto Focus Area
 	connect(ui->pushButton_auto_focus_select_area, SIGNAL(clicked()), this, SLOT(OnButtonSetAutoFocusSelectArea())) ;	
 	connect(ui->pushButton_auto_focus_all_area, SIGNAL(clicked()), this, SLOT(OnButtonSetAutoFocusAllArea())) ;	
@@ -535,7 +538,18 @@ void DialogBaseCameraConfig::OnButtonSetAutoFocusAllArea(void)
 	//All 
 	//Set Focus Area
     int ret = Ensemble_Camera_Set_Auto_Focus(GetId(), 0, 0, -1, -1) ;
+
+	OnButtonFocusGet() ;
 }
+
+void DialogBaseCameraConfig::OnButtonSetAutoExposure(void)
+{
+	int ret = Ensemble_Camera_Set_Auto_Exposure(GetId()) ;
+
+	//Set Text
+	OnButtonExposureGet() ;
+}
+
 
 void DialogBaseCameraConfig::mousePressEvent(QMouseEvent *event)
 {
@@ -609,6 +623,8 @@ void DialogBaseCameraConfig::mouseReleaseEvent(QMouseEvent *event)
         {
 			//Set Focus Area
             int ret = Ensemble_Camera_Set_Auto_Focus(GetId(), f_x, f_y, f_w, f_h) ;
+
+			OnButtonFocusGet() ;
         }
 
 		m_rect_user = cv::Rect() ;

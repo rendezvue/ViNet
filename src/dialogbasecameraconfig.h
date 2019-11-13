@@ -57,6 +57,8 @@ public slots:
 	void OnButtonISOGet(void) ;
 	void OnButtonShutterSpeedGet(void) ;
 
+	void OnButtonSetAutoExposure(void) ;
+
 	void OnButtonSetAutoFocusSelectArea(void) ;
 	void OnButtonSetAutoFocusAllArea(void) ;
 	
