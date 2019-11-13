@@ -47,6 +47,11 @@ public slots:
 	void OnButtonGetImage(void) ;
 	void OnButtonNameChange(void) ;
 
+	void OnButtonRegionGet(void) ;
+	void OnButtonRegionSet(void) ;
+
+	void OnButtonChangeDirection(void) ;
+
 	void OnButtonSelectObject(void) ;
 	void OnButtonResetObject(void) ;
 

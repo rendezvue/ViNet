@@ -15,6 +15,17 @@ DialogSetToolOffsetDistance::DialogSetToolOffsetDistance(QWidget *parent) :
 	connect(ui->pushButton_get_base_image, SIGNAL(clicked()), this,  SLOT(OnButtonGetImage())) ;
     connect(ui->pushButton_name_change, SIGNAL(clicked()), this,  SLOT(OnButtonNameChange())) ;
 
+	//region get/set
+	connect(ui->pushButton_region_set, SIGNAL(clicked()), this,  SLOT(OnButtonRegionSet())) ;
+	connect(ui->pushButton_region_get, SIGNAL(clicked()), this,  SLOT(OnButtonRegionGet())) ;
+	
+	//radio button
+	connect(ui->radioButton_1, SIGNAL(clicked()), this,  SLOT(OnButtonChangeDirection())) ;
+	connect(ui->radioButton_2, SIGNAL(clicked()), this,  SLOT(OnButtonChangeDirection())) ;
+	connect(ui->radioButton_3, SIGNAL(clicked()), this,  SLOT(OnButtonChangeDirection())) ;
+	connect(ui->radioButton_4, SIGNAL(clicked()), this,  SLOT(OnButtonChangeDirection())) ;
+		
+
     //background color
     ui->label_image_bg->setStyleSheet("QLabel { background-color : black; }");
 }
@@ -40,7 +51,15 @@ void DialogSetToolOffsetDistance::showEvent(QShowEvent *ev)
 
     qDebug("Tool Name = %s", tool_name.c_str()) ;
 
+	int direction = Ensemble_Tool_Offset_Distance_Get_Direction(GetId()) ;
 
+	if( direction == 0 ) 		ui->radioButton_1->setChecked(true) ;
+	else if( direction == 1 ) 	ui->radioButton_2->setChecked(true) ;
+	else if( direction == 2 ) 	ui->radioButton_3->setChecked(true) ;
+	else if( direction == 3 ) 	ui->radioButton_4->setChecked(true) ;
+
+	OnButtonRegionGet() ;
+	
 	//Image
 	OnButtonGetImage() ;
 }
@@ -263,6 +282,8 @@ void DialogSetToolOffsetDistance::mouseReleaseEvent(QMouseEvent *event)
 			//SelectObject
             Ensemble_Tool_Set_SelectObject(GetId(), f_x, f_y, f_w, f_h) ;
 
+			OnButtonRegionGet() ;
+			
 			emit UpdateToolObjectImage();
 		}
 		else if( set_status == SetBaseStatus::SET_REF_POINT)
@@ -287,5 +308,65 @@ void DialogSetToolOffsetDistance::mouseReleaseEvent(QMouseEvent *event)
 	}
 
 	updatePicture(m_image) ;
+}
+
+void DialogSetToolOffsetDistance::OnButtonChangeDirection(void)
+{
+	QButtonGroup group;
+    QList<QRadioButton *> allButtons = ui->groupBox->findChildren<QRadioButton *>();
+
+    for(int i = 0; i < allButtons.size(); ++i)
+    {
+        group.addButton(allButtons[i],i);
+    }
+
+    int index = group.checkedId() ;
+
+	Ensemble_Tool_Offset_Distance_Set_Direction(GetId(), index) ;
+
+	int direction = Ensemble_Tool_Offset_Distance_Get_Direction(GetId()) ;
+
+	if( direction == 0 ) 		ui->radioButton_1->setChecked(true) ;
+	else if( direction == 1 ) 	ui->radioButton_2->setChecked(true) ;
+	else if( direction == 2 ) 	ui->radioButton_3->setChecked(true) ;
+	else if( direction == 3 ) 	ui->radioButton_4->setChecked(true) ;
+	
+#if 0
+    group.checkedButton()->setChecked(true);
+
+    foreach(QAbstractButton* button, allButtons)
+    {
+        if (id(button) == _id)
+        {
+            button->setChecked(true);
+            break;
+        }
+    }
+#endif	
+
+	OnButtonGetImage() ;
+}
+
+void DialogSetToolOffsetDistance::OnButtonRegionGet(void)
+{
+	float x=0,y=0,width=0,height=0 ; 
+	Ensemble_Tool_Offset_Distance_Get_Region(GetId(), &x, &y, &width, &height) ;
+
+	ui->lineEdit_region_x->setText(QString::number(x));
+	ui->lineEdit_region_y->setText(QString::number(y));
+	ui->lineEdit_region_width->setText(QString::number(width));
+	ui->lineEdit_region_height->setText(QString::number(height));
+}
+
+void DialogSetToolOffsetDistance::OnButtonRegionSet(void)
+{
+	int region_x = ui->lineEdit_region_x->text().toInt() ;
+	int region_y = ui->lineEdit_region_y->text().toInt() ;
+	int region_width = ui->lineEdit_region_width->text().toInt() ;
+	int region_height = ui->lineEdit_region_height->text().toInt() ;
+
+	Ensemble_Tool_Offset_Distance_Set_Region(GetId(), region_x, region_y, region_width, region_height) ;
+
+	OnButtonGetImage() ;
 }
 
