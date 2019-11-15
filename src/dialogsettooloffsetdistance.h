@@ -52,6 +52,10 @@ public slots:
 
 	void OnButtonChangeDirection(void) ;
 
+	void OnButtonGetInspectionBaseInfo(void) ;
+	void OnButtonGetInspectionToleranceInfo(void) ;
+	void OnButtonSetInspectionToleranceInfo(void) ;
+
 	void OnButtonSelectObject(void) ;
 	void OnButtonResetObject(void) ;
 

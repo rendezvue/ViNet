@@ -119,6 +119,9 @@ void FormJobBase::SetImage(cv::Mat image)
 
 void FormJobBase::SetObjectImage(cv::Mat image)
 {
+	//cv::imshow("base object image", image) ;
+	//cv::waitKey(1) ;
+	
 	CMat2QImage cls_mat_2_qimage ;
 	QImage qt_display_image = cls_mat_2_qimage.cvtMat2QImage(image, ui->label_image_2->width(), ui->label_image_2->height()) ;
 	

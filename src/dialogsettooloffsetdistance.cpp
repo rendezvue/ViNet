@@ -24,7 +24,11 @@ DialogSetToolOffsetDistance::DialogSetToolOffsetDistance(QWidget *parent) :
 	connect(ui->radioButton_2, SIGNAL(clicked()), this,  SLOT(OnButtonChangeDirection())) ;
 	connect(ui->radioButton_3, SIGNAL(clicked()), this,  SLOT(OnButtonChangeDirection())) ;
 	connect(ui->radioButton_4, SIGNAL(clicked()), this,  SLOT(OnButtonChangeDirection())) ;
-		
+
+	//inspection button
+	connect(ui->pushButton_offset_object_get_info, SIGNAL(clicked()), this,  SLOT(OnButtonGetInspectionBaseInfo())) ;	
+	connect(ui->pushButton_offset_object_get_tolerance, SIGNAL(clicked()), this,  SLOT(OnButtonGetInspectionToleranceInfo())) ;	
+	connect(ui->pushButton_offset_object_set_tolerance, SIGNAL(clicked()), this,  SLOT(OnButtonSetInspectionToleranceInfo())) ;	
 
     //background color
     ui->label_image_bg->setStyleSheet("QLabel { background-color : black; }");
@@ -59,6 +63,9 @@ void DialogSetToolOffsetDistance::showEvent(QShowEvent *ev)
 	else if( direction == 3 ) 	ui->radioButton_4->setChecked(true) ;
 
 	OnButtonRegionGet() ;
+
+	OnButtonGetInspectionBaseInfo() ;
+	OnButtonGetInspectionToleranceInfo() ;
 	
 	//Image
 	OnButtonGetImage() ;
@@ -185,6 +192,9 @@ void DialogSetToolOffsetDistance::OnButtonResetObject(void)
 	//Ensemble_Job_Del_SelectObject(GetId()) ;
 	
     OnButtonGetImage() ;
+
+	OnButtonGetInspectionBaseInfo() ;
+	OnButtonGetInspectionToleranceInfo() ;
 }
 
 void DialogSetToolOffsetDistance::mousePressEvent(QMouseEvent *event)
@@ -305,6 +315,9 @@ void DialogSetToolOffsetDistance::mouseReleaseEvent(QMouseEvent *event)
 		}
 		
         OnButtonGetImage() ;
+
+		OnButtonGetInspectionBaseInfo() ;
+		OnButtonGetInspectionToleranceInfo() ;
 	}
 
 	updatePicture(m_image) ;
@@ -345,6 +358,10 @@ void DialogSetToolOffsetDistance::OnButtonChangeDirection(void)
 #endif	
 
 	OnButtonGetImage() ;
+
+	OnButtonGetInspectionBaseInfo() ;
+	OnButtonGetInspectionToleranceInfo() ;
+
 }
 
 void DialogSetToolOffsetDistance::OnButtonRegionGet(void)
@@ -368,5 +385,41 @@ void DialogSetToolOffsetDistance::OnButtonRegionSet(void)
 	Ensemble_Tool_Offset_Distance_Set_Region(GetId(), region_x, region_y, region_width, region_height) ;
 
 	OnButtonGetImage() ;
+
+	OnButtonGetInspectionBaseInfo() ;
+	OnButtonGetInspectionToleranceInfo() ;
+}
+
+void DialogSetToolOffsetDistance::OnButtonGetInspectionBaseInfo(void)
+{
+	float distance=0,angle=0 ; 
+	Ensemble_Tool_Offset_Distance_Get_Inspection_Base_Info(GetId(), &distance, &angle) ;
+
+	ui->lineEdit_base_info_distance->setText(QString::number(distance));
+	ui->lineEdit_base_info_angle->setText(QString::number(angle));
+}
+
+void DialogSetToolOffsetDistance::OnButtonGetInspectionToleranceInfo(void)
+{
+	float distance_min=0,distance_max=0, angle_min=0, angle_max=0 ; 
+	Ensemble_Tool_Offset_Distance_Get_Inspection_Tolerance_Info(GetId(), &distance_min, &distance_max, &angle_min, &angle_max) ;
+
+	ui->lineEdit_tol_info_distance_min->setText(QString::number(distance_min));
+	ui->lineEdit_tol_info_distance_max->setText(QString::number(distance_max));
+
+	ui->lineEdit_tol_info_angle_min->setText(QString::number(angle_min));
+	ui->lineEdit_tol_info_angle_max->setText(QString::number(angle_max));
+}
+
+void DialogSetToolOffsetDistance::OnButtonSetInspectionToleranceInfo(void)
+{
+	float tol_distance_min = ui->lineEdit_tol_info_distance_min->text().toFloat() ;
+	float tol_distance_max = ui->lineEdit_tol_info_distance_max->text().toFloat() ;
+	float tol_angle_min = ui->lineEdit_tol_info_angle_min->text().toFloat() ;
+	float tol_angle_max = ui->lineEdit_tol_info_angle_max->text().toFloat() ;
+
+	Ensemble_Tool_Offset_Distance_Set_Inspection_Tolerance_Info(GetId(), tol_distance_min, tol_distance_max, tol_angle_min, tol_angle_max) ;
+
+	OnButtonGetInspectionToleranceInfo() ;
 }
 
