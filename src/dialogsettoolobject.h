@@ -59,6 +59,14 @@ public slots:
     void OnButtonMaskPop(void) ;
     void OnButtonMaskClear(void) ;
 	
+	void OnButtonSetDetectOptionMargin(void) ;
+	void OnButtonSetDetectOptionThreshold(void) ;
+	void OnButtonGetDetectOptionMargin(void) ;
+	void OnButtonGetDetectOptionThreshold(void) ;
+
+	void OnButtonSetDetectInspectionToleranceInfo(void) ;
+	void OnButtonGetDetectInspectionToleranceInfo(void) ;
+	
 	void OnButtonGetConstraintAngle(void) ;
 	void OnButtonSetConstraintAngle(void) ;
 

@@ -443,7 +443,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>2</string>
+     <string>-</string>
     </property>
     <property name="alignment">
      <set>Qt::AlignCenter</set>
@@ -475,7 +475,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>0.35</string>
+     <string>-</string>
     </property>
     <property name="alignment">
      <set>Qt::AlignCenter</set>
@@ -718,6 +718,90 @@
     </property>
    </widget>
   </widget>
+  <widget class="QGroupBox" name="groupBox_9">
+   <property name="geometry">
+    <rect>
+     <x>670</x>
+     <y>600</y>
+     <width>291</width>
+     <height>151</height>
+    </rect>
+   </property>
+   <property name="title">
+    <string>Detect Inspect</string>
+   </property>
+   <widget class="QGroupBox" name="groupBox_11">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>30</y>
+      <width>271</width>
+      <height>111</height>
+     </rect>
+    </property>
+    <property name="title">
+     <string>Tolerance(Pass Condition)</string>
+    </property>
+    <widget class="QLineEdit" name="lineEdit_detect_inspection_threshold">
+     <property name="geometry">
+      <rect>
+       <x>130</x>
+       <y>30</y>
+       <width>111</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>-</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_8">
+     <property name="geometry">
+      <rect>
+       <x>30</x>
+       <y>30</y>
+       <width>91</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Score Pass ≥</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="pushButton_detect_inspection_tolerance_set">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>70</y>
+       <width>111</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Set</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="pushButton_detect_inspection_tolerance_get">
+     <property name="geometry">
+      <rect>
+       <x>140</x>
+       <y>70</y>
+       <width>111</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Get</string>
+     </property>
+    </widget>
+   </widget>
+  </widget>
   <zorder>label_image_bg</zorder>
   <zorder>layoutWidget</zorder>
   <zorder>groupBox</zorder>
@@ -728,6 +812,7 @@
   <zorder>layoutWidget_2</zorder>
   <zorder>groupBox_6</zorder>
   <zorder>groupBox_7</zorder>
+  <zorder>groupBox_9</zorder>
  </widget>
  <resources/>
  <connections/>

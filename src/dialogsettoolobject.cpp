@@ -23,6 +23,16 @@ DialogSetToolObject::DialogSetToolObject(QWidget *parent) :
     connect(ui->pushButton_mask_push, SIGNAL(clicked()), this,  SLOT(OnButtonMaskPush())) ;
     connect(ui->pushButton_mask_pop, SIGNAL(clicked()), this,  SLOT(OnButtonMaskPop())) ;
     connect(ui->pushButton_mask_clear, SIGNAL(clicked()), this,  SLOT(OnButtonMaskClear())) ;
+
+	//detect option button
+    connect(ui->pushButton_detect_margin_set, SIGNAL(clicked()), this,  SLOT(OnButtonSetDetectOptionMargin())) ;
+    connect(ui->pushButton_detect_threshold_set, SIGNAL(clicked()), this,  SLOT(OnButtonSetDetectOptionThreshold())) ;
+    connect(ui->pushButton_detect_margin_get, SIGNAL(clicked()), this,  SLOT(OnButtonGetDetectOptionMargin())) ;
+    connect(ui->pushButton_detect_threshold_get, SIGNAL(clicked()), this,  SLOT(OnButtonGetDetectOptionThreshold())) ;
+
+	//inspect
+	connect(ui->pushButton_detect_inspection_tolerance_set, SIGNAL(clicked()), this,  SLOT(OnButtonSetDetectInspectionToleranceInfo())) ;
+	connect(ui->pushButton_detect_inspection_tolerance_get, SIGNAL(clicked()), this,  SLOT(OnButtonGetDetectInspectionToleranceInfo())) ;
 	
 	//constraint angle
 	connect(ui->pushButton_constraint_angle_get, SIGNAL(clicked()), this,  SLOT(OnButtonGetConstraintAngle())) ;
@@ -94,8 +104,12 @@ void DialogSetToolObject::showEvent(QShowEvent *ev)
 	
 	//Image
 	OnButtonGetImage() ;
-	
+
+	//Get Detect Option Value
+    OnButtonGetDetectOptionMargin() ;
+    OnButtonGetDetectOptionThreshold(); ;
 	OnButtonGetConstraintAngle() ;
+	OnButtonGetDetectInspectionToleranceInfo() ;
 }
 
 void DialogSetToolObject::OnButtonNameChange(void)
@@ -513,5 +527,53 @@ void DialogSetToolObject::OnButtonMaskClear(void)
 	OnButtonGetImage() ;
 
 	emit UpdateToolObjectImage();
+}
+
+void DialogSetToolObject::OnButtonSetDetectOptionMargin(void)
+{
+    //Set Detect Option Value
+    QString text_value = ui->lineEdit_detect_margin->text() ;
+    Ensemble_Tool_Set_DetectOption(GetId(), DetectOption::DETECT_OPTION_MARGIN, text_value.toFloat()) ;
+
+    OnButtonGetDetectOptionMargin() ;
+}
+
+void DialogSetToolObject::OnButtonSetDetectOptionThreshold(void)
+{
+    //Set Detect Option Value
+    QString text_value = ui->lineEdit_detect_threshold->text() ;
+    Ensemble_Tool_Set_DetectOption(GetId(), DetectOption::DETECT_OPTION_THRESHOLD, text_value.toFloat()) ;
+
+    OnButtonGetDetectOptionThreshold() ;
+}
+
+void DialogSetToolObject::OnButtonGetDetectOptionMargin(void)
+{
+    //Get Detect Option Value
+    int detect_option_margin = Ensemble_Tool_Get_DetectOption(GetId(), DetectOption::DETECT_OPTION_MARGIN) ;
+    ui->lineEdit_detect_margin->setText(QString::number(detect_option_margin)) ;
+}
+
+void DialogSetToolObject::OnButtonGetDetectOptionThreshold(void)
+{
+    //Get Detect Option Value
+    float detect_option_threshold = Ensemble_Tool_Get_DetectOption(GetId(), DetectOption::DETECT_OPTION_THRESHOLD) ;
+    ui->lineEdit_detect_threshold->setText(QString("%2").arg(detect_option_threshold)) ;
+}
+
+void DialogSetToolObject::OnButtonSetDetectInspectionToleranceInfo(void) 
+{
+	float tol_distance_min = ui->lineEdit_detect_inspection_threshold->text().toFloat() ;
+    Ensemble_Tool_Detect_Object_Set_Inspection_Tolerance_Info(GetId(), tol_distance_min) ;
+
+    OnButtonGetDetectInspectionToleranceInfo() ;
+}
+
+void DialogSetToolObject::OnButtonGetDetectInspectionToleranceInfo(void)
+{
+	//Get Detect Option Value
+	float detect_inspect_threshold = 0 ;
+    Ensemble_Tool_Detect_Object_Get_Inspection_Tolerance_Info(GetId(), &detect_inspect_threshold) ;
+    ui->lineEdit_detect_inspection_threshold->setText(QString("%2").arg(detect_inspect_threshold)) ;
 }
 
