@@ -11,7 +11,8 @@ enum SetBaseStatus
     SET_ZOOM ,
     SET_MASK ,
     SET_OBJECT,
-    SET_REF_POINT
+    SET_REF_POINT ,    
+	SET_ERASE
 };
 
 typedef struct _UserRegionRect

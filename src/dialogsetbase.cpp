@@ -20,6 +20,10 @@ DialogSetBase::DialogSetBase(QWidget *parent) :
 	connect(ui->pushButton_select_object, SIGNAL(clicked()), this,  SLOT(OnButtonSelectObject())) ;
 	connect(ui->pushButton_reset_object, SIGNAL(clicked()), this,  SLOT(OnButtonResetObject())) ;
 
+	//erase
+	connect(ui->pushButton_select_erase, SIGNAL(clicked()), this,  SLOT(OnButtonSelectErase())) ;
+	connect(ui->pushButton_reset_erase, SIGNAL(clicked()), this,  SLOT(OnButtonResetErase())) ;
+			
 	//reference point
 	connect(ui->pushButton_ref_point_select, SIGNAL(clicked()), this,  SLOT(OnButtonSelectRefPoint())) ;
 	connect(ui->pushButton_ref_point_reset, SIGNAL(clicked()), this,  SLOT(OnButtonResetRefPoint())) ;
@@ -409,18 +413,13 @@ void DialogSetBase::mouseMoveEvent(QMouseEvent *event)
         point.setX(point.x() - ui->label_image->x());
         point.setY(point.y() - ui->label_image->y());
 
-		if( m_cls_set_user_region.GetStatus() == SetBaseStatus::SET_REF_POINT )
+		updatePictureCenterLine(m_image, cv::Point(point.x(), point.y())) ;
+			
+		if( (event->buttons() & Qt::LeftButton) )
 		{
-			updatePictureCenterLine(m_image, cv::Point(point.x(), point.y())) ;
-		}
-		else
-		{
-			if( (event->buttons() & Qt::LeftButton) )
-			{
-				cv::Rect rect_user = m_cls_set_user_region.MoveSetRegion(point.x(), point.y()) ;
+			cv::Rect rect_user = m_cls_set_user_region.MoveSetRegion(point.x(), point.y()) ;
 
-				updatePicture(m_image, rect_user) ;
-			}
+			updatePicture(m_image, rect_user) ;
 		}
 	}
 }
@@ -500,7 +499,14 @@ void DialogSetBase::mouseReleaseEvent(QMouseEvent *event)
 
 			emit UpdateBaseImage();
 		}
-		
+		else if( set_status == SetBaseStatus::SET_REF_POINT)
+		{
+			//SelectObject
+			Ensemble_Job_Set_SelectObject(GetId(), f_x, f_y, f_w, f_h) ;
+
+			emit UpdateBaseImage();
+		}
+	
         OnButtonGetImage() ;
 	}
 
@@ -604,5 +610,14 @@ void DialogSetBase::OnButtonSetConstraintAngle(void)
     Ensemble_Job_Set_DetectOption(GetId(), DetectOption::DETECT_OPTION_CONSTRAINT_ANGLE_MAX, qstr_detect_option_constraint_angle_max.toFloat()) ;
 
     OnButtonGetConstraintAngle() ;
+}
+
+void DialogSetBase::OnButtonSelectErase(void)
+{
+	m_cls_set_user_region.SetStatus(SetBaseStatus::SET_ERASE) ;
+}
+
+void DialogSetBase::OnButtonResetErase(void)
+{
 }
 

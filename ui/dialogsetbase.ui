@@ -272,7 +272,7 @@
      <x>670</x>
      <y>60</y>
      <width>291</width>
-     <height>191</height>
+     <height>271</height>
     </rect>
    </property>
    <property name="title">
@@ -404,12 +404,38 @@
      <string>Reset Object</string>
     </property>
    </widget>
+   <widget class="QPushButton" name="pushButton_select_erase">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>200</y>
+      <width>131</width>
+      <height>51</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Erase Feature</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton_reset_erase">
+    <property name="geometry">
+     <rect>
+      <x>150</x>
+      <y>200</y>
+      <width>131</width>
+      <height>51</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Reset Erase</string>
+    </property>
+   </widget>
   </widget>
   <widget class="QGroupBox" name="groupBox_6">
    <property name="geometry">
     <rect>
      <x>670</x>
-     <y>350</y>
+     <y>450</y>
      <width>291</width>
      <height>281</height>
     </rect>
@@ -741,7 +767,7 @@
    <property name="geometry">
     <rect>
      <x>670</x>
-     <y>260</y>
+     <y>350</y>
      <width>291</width>
      <height>81</height>
     </rect>

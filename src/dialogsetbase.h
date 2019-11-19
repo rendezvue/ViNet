@@ -78,6 +78,8 @@ public slots:
     void OnSliderMove(int value) ;
 	void OnButtonSelectObject(void) ;
 	void OnButtonResetObject(void) ;
+	void OnButtonSelectErase(void) ;
+	void OnButtonResetErase(void) ;
 	//ref point
 	void OnButtonSelectRefPoint(void) ;
 	void OnButtonResetRefPoint(void) ;

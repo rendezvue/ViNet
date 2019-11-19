@@ -188,7 +188,7 @@ void FormJobBase::OnUpdateImage(void)
     int object_image_width = 0 ;
     int object_image_height = 0 ;
 	
-	Ensemble_Job_Get_ObjectImage(GetIdInfo(), image_type+IMAGE_THUMBNAIL, &get_object_image_data, &object_image_width, &object_image_height)  ;
+	int object_image_size = Ensemble_Job_Get_ObjectImage(GetIdInfo(), image_type+IMAGE_THUMBNAIL, &get_object_image_data, &object_image_width, &object_image_height)  ;
 
 	qDebug("%s - %d 4", __func__, __LINE__) ;
 
@@ -204,17 +204,43 @@ void FormJobBase::OnUpdateImage(void)
 
 		        CImgDec cls_image_decoder ;
 		        object_image = cls_image_decoder.Decoding(get_image) ;
+				
+                qDebug("yuv 420") ;
 			}
 			else if( image_type == IMAGE_RGB888 )
 			{
+				qDebug("object_image_size=%d", object_image_size) ;
+					
                 cv::Mat get_image(object_image_height, object_image_width, CV_8UC3, get_object_image_data) ;
+				//cv::Mat get_image = cv::Mat(object_image_height, object_image_width,CV_8UC3,get_object_image_data).clone(); // make a copy						
+				
+				//cv::Mat get_image(object_image_height, object_image_width, CV_8UC3) ;
+				//get_image.data = get_object_image_data;
+
+                //cv::Mat get_image = cv::Mat(object_image_height, object_image_width,CV_8UC3,get_object_image_data,cv::Mat::AUTO_STEP).clone();
+				
+
+                //std::vector<unsigned char> vectordata(get_object_image_data, get_object_image_data + object_image_size);
+                //cv::Mat data_mat(vectordata,true);
+                //cv::Mat get_image(cv::imdecode(data_mat,1)); //put 0 if you want greyscale
+				//cv::Mat get_image(object_image_height, object_image_width,CV_8UC3,const_cast<char*>(get_object_image_data));
+
 				cv::cvtColor(get_image, object_image, cv::COLOR_BGR2RGB) ;
+
+                qDebug("rgb 888 : w=%d, h=%d", object_image_width, object_image_height) ;
+                qDebug("get_image : w=%d, h=%d", get_image.cols, get_image.rows) ;
+                qDebug("object_image : w=%d, h=%d", object_image.cols, object_image.rows) ;
+
+                //cv::imshow("test1", get_image) ;
+                //cv::imshow("test2", object_image) ;
+                //cv::waitKey(0) ;
 			}
 		}
     
         delete [] get_object_image_data ;
         get_object_image_data = NULL ;
 
+		
         SetObjectImage(object_image) ;
     }
 
