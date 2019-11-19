@@ -145,7 +145,7 @@ void DialogBaseCameraConfig::showEvent(QShowEvent *ev)
 
 	//Set Range
 	ui->horizontalSlider_exposure->setRange(exposure_min, exposure_max) ;
-	ui->horizontalSlider_gain->setRange(exposure_min, exposure_max) ;
+    ui->horizontalSlider_gain->setRange(gain_min, gain_max) ;
 	ui->horizontalSlider_focus->setRange(focus_min, focus_max) ;
 	ui->horizontalSlider_brightness->setRange(brightness_min, brightness_max) ;
 	ui->horizontalSlider_sharpness->setRange(sharpness_min, sharpness_max) ;
