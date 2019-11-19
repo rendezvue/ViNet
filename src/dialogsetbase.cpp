@@ -499,10 +499,10 @@ void DialogSetBase::mouseReleaseEvent(QMouseEvent *event)
 
 			emit UpdateBaseImage();
 		}
-		else if( set_status == SetBaseStatus::SET_REF_POINT)
+		else if( set_status == SetBaseStatus::SET_ERASE)
 		{
 			//SelectObject
-			Ensemble_Job_Set_SelectObject(GetId(), f_x, f_y, f_w, f_h) ;
+			Ensemble_Job_Set_Erase(GetId(), f_x, f_y, f_w, f_h) ;
 
 			emit UpdateBaseImage();
 		}
@@ -619,5 +619,6 @@ void DialogSetBase::OnButtonSelectErase(void)
 
 void DialogSetBase::OnButtonResetErase(void)
 {
+	Ensemble_Job_Del_Erase(GetId()) ;
 }
 
