@@ -145,6 +145,10 @@ void DialogSetToolLine::updatePicture(cv::Mat image, cv::Rect rect_user)
     {
         cv::resize(image, image, cv::Size(), min_rescale, min_rescale) ;
     }
+	else
+	{
+		min_rescale = 1.0 ;
+	}
 
     //fit image label by image isze
     int pos_x = (int)((float)ui->label_image_bg->x() + (float)(draw_width - image.cols)/2.0) ;
@@ -188,13 +192,12 @@ void DialogSetToolLine::updatePicture(cv::Mat image, cv::Rect rect_user)
 			cv::Point2f pt_line_4 ;
 			
 			QString text_value = ui->lineEdit_detect_roi_margin_line->text() ;
-			const int min_line_margin = text_value.toInt() ;
 #if 1
 			float radian = atan(dy/dx) - (CV_PI/2.0) ;
 			float distance = sqrt(dx*dx + dy*dy) ;
 			float degree = (float)(180.0/CV_PI*radian);
 			
-			cv::RotatedRect rotatedRectangle(center_2pt, cv::Size(min_line_margin*2, distance), degree);
+			cv::RotatedRect rotatedRectangle(center_2pt, cv::Size(text_value.toInt()*2.0, distance), degree);
 
 		    // We take the edges that OpenCV calculated for us
 		    cv::Point2f vertices2f[4];
@@ -406,39 +409,38 @@ void DialogSetToolLine::mouseReleaseEvent(QMouseEvent *event)
 			//float radian = (CV_PI/2.0) - atan(dy/dx);
 			//float radian = atan(dy/dx);
 
-			cv::Point2f pt_line_1 ;
-			cv::Point2f pt_line_2 ;
-			cv::Point2f pt_line_3 ;
-			cv::Point2f pt_line_4 ;
+			cv::Point2f pt_rotated_roi_1 ;
+			cv::Point2f pt_rotated_roi_2 ;
+			cv::Point2f pt_rotated_roi_3 ;
+			cv::Point2f pt_rotated_roi_4 ;
 
-			QString text_value = ui->lineEdit_detect_roi_margin_line->text() ;
-			const int min_line_margin = text_value.toInt() ;
 #if 1
 			float radian = atan(dy/dx) - (CV_PI/2.0) ;
 			float distance = sqrt(dx*dx + dy*dy) ;
 			float degree = (float)(180.0/CV_PI*radian);
-			
-			cv::RotatedRect rotatedRectangle(center_2pt, cv::Size(min_line_margin*2, distance), degree);
+
+			QString text_value = ui->lineEdit_detect_roi_margin_line->text() ;
+			cv::RotatedRect rotatedRectangle(center_2pt, cv::Size(text_value.toInt()*2, distance), degree);
 
 		    // We take the edges that OpenCV calculated for us
 		    cv::Point2f vertices2f[4];
 		    rotatedRectangle.points(vertices2f);
 			
 		    // Convert them so we can use them in a fillConvexPoly
-		    pt_line_1 = vertices2f[0] ;
-			pt_line_2 = vertices2f[1] ;
-			pt_line_3 = vertices2f[2] ;
-			pt_line_4 = vertices2f[3] ;
+		    pt_rotated_roi_1 = vertices2f[0] ;
+			pt_rotated_roi_2 = vertices2f[1] ;
+			pt_rotated_roi_3 = vertices2f[2] ;
+			pt_rotated_roi_4 = vertices2f[3] ;
 			
 
-			pt_line_1.x /= (float)label_w ;
-	        pt_line_1.y /= (float)label_h ;
-			pt_line_2.x /= (float)label_w ;
-	        pt_line_2.y /= (float)label_h ;
-			pt_line_3.x /= (float)label_w ;
-	        pt_line_3.y /= (float)label_h ;
-			pt_line_4.x /= (float)label_w ;
-	        pt_line_4.y /= (float)label_h ;
+			pt_rotated_roi_1.x /= (float)label_w ;
+	        pt_rotated_roi_1.y /= (float)label_h ;
+			pt_rotated_roi_2.x /= (float)label_w ;
+	        pt_rotated_roi_2.y /= (float)label_h ;
+			pt_rotated_roi_3.x /= (float)label_w ;
+	        pt_rotated_roi_3.y /= (float)label_h ;
+			pt_rotated_roi_4.x /= (float)label_w ;
+	        pt_rotated_roi_4.y /= (float)label_h ;			
 #else	
 			
 			float radian = atan(dy/dx) - (CV_PI/2.0) ;			
@@ -458,8 +460,23 @@ void DialogSetToolLine::mouseReleaseEvent(QMouseEvent *event)
 			pt_line_4.x = ( min_line_margin *  cos( radian + CV_PI ) ) + (rect_user.x + rect_user.width);
 			pt_line_4.y = ( min_line_margin * sin( radian + CV_PI ) ) + (rect_user.y + rect_user.height);
 #endif
-			
-            Ensemble_Tool_Set_SelectObject(GetId(), pt_line_1.x, pt_line_1.y, pt_line_2.x, pt_line_2.y, pt_line_3.x, pt_line_3.y, pt_line_4.x, pt_line_4.y, min_line_margin) ;
+			cv::Point2f pt_line_1 = m_pt_start ;
+			cv::Point2f pt_line_2 = m_pt_end ;
+
+			pt_line_1.x /= (float)label_w ;
+			pt_line_1.y /= (float)label_h ;
+
+			pt_line_2.x /= (float)label_w ;
+			pt_line_2.y /= (float)label_h ;
+
+            //Ensemble_Tool_Set_SelectObject(GetId(), pt_line_1.x, pt_line_1.y, pt_line_2.x, pt_line_2.y, pt_line_3.x, pt_line_3.y, pt_line_4.x, pt_line_4.y) ;
+            Ensemble_Tool_Detect_Line_Set_SelectObject(GetId(),
+                                                        pt_line_1.x, pt_line_1.y,
+                                                        pt_line_2.x, pt_line_2.y,
+                                                        pt_rotated_roi_1.x, pt_rotated_roi_1.y,
+                                                        pt_rotated_roi_2.x, pt_rotated_roi_2.y,
+                                                        pt_rotated_roi_3.x, pt_rotated_roi_3.y,
+                                                        pt_rotated_roi_4.x, pt_rotated_roi_4.y)  ;
 
 			emit UpdateToolObjectImage();
 		}

@@ -190,10 +190,10 @@
    <widget class="QLabel" name="label_15">
     <property name="geometry">
      <rect>
-      <x>70</x>
-      <y>135</y>
+      <x>30</x>
+      <y>130</y>
       <width>91</width>
-      <height>20</height>
+      <height>31</height>
      </rect>
     </property>
     <property name="text">
@@ -206,7 +206,7 @@
    <widget class="QLineEdit" name="lineEdit_detect_roi_margin_line">
     <property name="geometry">
      <rect>
-      <x>170</x>
+      <x>130</x>
       <y>130</y>
       <width>71</width>
       <height>31</height>
@@ -217,6 +217,19 @@
     </property>
     <property name="alignment">
      <set>Qt::AlignCenter</set>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label">
+    <property name="geometry">
+     <rect>
+      <x>210</x>
+      <y>130</y>
+      <width>67</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>pixel</string>
     </property>
    </widget>
   </widget>
