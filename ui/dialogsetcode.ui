@@ -249,6 +249,12 @@
     </property>
    </widget>
   </widget>
+  <zorder>label_image_bg</zorder>
+  <zorder>layoutWidget_2</zorder>
+  <zorder>label_image</zorder>
+  <zorder>pushButton_get_base_image</zorder>
+  <zorder>layoutWidget</zorder>
+  <zorder>groupBox</zorder>
  </widget>
  <resources/>
  <connections/>
