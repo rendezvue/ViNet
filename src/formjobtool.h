@@ -18,6 +18,8 @@
 #include "dialogsettoolinspectdistance.h"
 #include "dialogselecttooloption.h"
 #include "dialogsettooloffsetdistance.h"
+#include "dialogsetcode.h"
+
 
 #include "ImgDec.h"
 
@@ -82,6 +84,8 @@ private:
 	DialogSetToolLine m_dlg_set_tool_line ;	
 	//Set Dialog : Circle
 	DialogSetToolCircle m_dlg_set_tool_circle ;	
+	//Set Dialog : Circle
+	DialogSetCode m_dlg_set_code ;	
 	//Set Dialog : Distance
 	DialogSetToolDistance m_dlg_set_tool_distance ;	
 	//Set Dialog : Angle

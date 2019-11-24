@@ -36,6 +36,9 @@ FormJobTool::FormJobTool(QWidget *parent) :
 	connect(&m_dlg_set_tool_circle, SIGNAL(UpdateToolObjectImage()), this, SLOT(OnUpdateImage())) ;
 	connect(&m_dlg_set_tool_circle, SIGNAL(UpdateToolName(QString)), this, SLOT(OnUpdateName(QString))) ;
 
+	//code
+	connect(&m_dlg_set_code, SIGNAL(UpdateToolName(QString)), this, SLOT(OnUpdateName(QString))) ;
+	
 	//distance
 	connect(&m_dlg_set_tool_distance, SIGNAL(UpdateToolName(QString)), this, SLOT(OnUpdateName(QString))) ;
 
@@ -134,6 +137,19 @@ void FormJobTool::OnButtonSetBase(void)
 	    m_dlg_set_tool_circle.SetToolId(GetIdInfo());
 
 	    int dialogCode = m_dlg_set_tool_circle.exec();
+
+	    if(dialogCode == QDialog::Accepted)
+	    {
+	    }
+	}
+	else if( type == ToolTypeList::TOOL_TYPE_DETECT_CODE )		//circle
+   	{
+   		qDebug("Code Set") ;
+		
+	    m_dlg_set_code.SetParentId(GetParentIdInfo());
+	    m_dlg_set_code.SetToolId(GetIdInfo());
+
+	    int dialogCode = m_dlg_set_code.exec();
 
 	    if(dialogCode == QDialog::Accepted)
 	    {
