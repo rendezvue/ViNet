@@ -11,6 +11,10 @@ DialogSetCode::DialogSetCode(QWidget *parent) :
 	//button
 	connect(ui->pushButton_get_base_image, SIGNAL(clicked()), this,  SLOT(OnButtonGetImage())) ;
 	connect(ui->pushButton_name_change, SIGNAL(clicked()), this,  SLOT(OnButtonNameChange())) ;
+
+	//background color
+    ui->label_image_bg->setStyleSheet("QLabel { background-color : black; }");
+	ui->label_image_bg_code->setStyleSheet("QLabel { background-color : black; }");
 }
 
 DialogSetCode::~DialogSetCode()
@@ -45,7 +49,7 @@ void DialogSetCode::OnButtonGetImage(void)
     int job_image_width = 0 ;
     int job_image_height = 0 ;
 
-	const int image_type = IMAGE_RGB888 ;
+    int image_type = IMAGE_RGB888 ;
 	
     Ensemble_Tool_Get_Image(GetId(), image_type, &get_job_image_data, &job_image_width, &job_image_height)  ;
 
@@ -72,6 +76,41 @@ void DialogSetCode::OnButtonGetImage(void)
     {
         delete [] get_job_image_data ;
         get_job_image_data = NULL ;
+    }
+
+	//object image : code imae
+    unsigned char* get_object_image_data = NULL ;
+    int object_image_width = 0 ;
+    int object_image_height = 0 ;
+
+    image_type = IMAGE_RGB888 ;
+    Ensemble_Tool_Get_ObjectImage(GetId(), image_type, &get_object_image_data, &object_image_width, &object_image_height)  ;
+
+	cv::Mat object_image ;
+	if( object_image_width > 0 && object_image_height > 0 )
+	{
+		if( image_type == IMAGE_YUV420 )
+		{
+			//YUV420 
+	        cv::Mat get_image(object_image_height + object_image_height / 2, object_image_width, CV_8UC1, get_object_image_data) ;
+
+	        CImgDec cls_image_decoder ;
+	        object_image = cls_image_decoder.Decoding(get_image) ;
+
+		}
+		else if( image_type == IMAGE_RGB888 )
+		{
+			cv::Mat get_image(object_image_height, object_image_width, CV_8UC3, get_object_image_data) ;
+			cv::cvtColor(get_image, object_image, cv::COLOR_BGR2RGB) ;
+		}
+
+		SetObjectImage(object_image) ;
+	}
+
+    if( get_object_image_data != NULL )
+    {
+        delete [] get_object_image_data ;
+        get_object_image_data = NULL ;
     }
 }
 
@@ -101,6 +140,34 @@ void DialogSetCode::updatePicture(cv::Mat image, cv::Rect rect_user)
 
     ui->label_image->setPixmap(QPixmap::fromImage(qt_display_image));
 }
+
+void DialogSetCode::SetObjectImage(cv::Mat image)
+{
+    const int draw_width = ui->label_image_bg_code->width();
+    const int draw_height = ui->label_image_bg_code->height();
+
+    float rescale_w = (float)draw_width / (float)image.cols ;
+    float rescale_h = (float)draw_height / (float)image.rows ;
+
+    float min_rescale = std::fmin(rescale_w, rescale_h) ;
+    if( min_rescale < 1.0 )
+    {
+        cv::resize(image, image, cv::Size(), min_rescale, min_rescale) ;
+    }
+
+    //fit image label by image isze
+    int pos_x = (int)((float)ui->label_image_bg_code->x() + (float)(draw_width - image.cols)/2.0) ;
+    int pos_y = (int)((float)ui->label_image_bg_code->y() + (float)(draw_height - image.rows)/2.0) ;
+
+    ui->label_image_code->setGeometry(pos_x, pos_y, image.cols, image.rows);
+
+    //QImage qt_display_image = QImage((const unsigned char*)image.data, image.cols, image.rows, QImage::Format_RGB888);
+    CMat2QImage cls_mat_2_qimage ;
+	QImage qt_display_image = cls_mat_2_qimage.cvtMat2QImage(image, ui->label_image_code->width(), ui->label_image_code->height()) ;
+
+    ui->label_image_code->setPixmap(QPixmap::fromImage(qt_display_image));
+}
+
 
 void DialogSetCode::OnButtonNameChange(void)
 {

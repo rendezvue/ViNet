@@ -13,6 +13,9 @@
 //API
 #include "EnsembleAPI.h"
 
+#include "EnsembleCommon.h"
+
+
 #include "dialogchangename.h"
 
 #include "csettoolinfo.h"
@@ -39,6 +42,7 @@ private:
     Ui::DialogSetCode *ui;
 
 	void updatePicture(cv::Mat image, cv::Rect rect_user=cv::Rect()) ;
+	void SetObjectImage(cv::Mat image) ;
 	cv::Mat m_image ;
 
 public slots:
