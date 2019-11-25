@@ -40,16 +40,6 @@ void DialogSetCode::showEvent(QShowEvent *ev)
 
 	//Image
 	OnButtonGetImage() ;
-
-	//Get Code Info
-	std::string str_code_type = Ensemble_Tool_Detect_Code_Get_Ref_CodeType(GetId()) ;
-	std::string str_code_data = Ensemble_Tool_Detect_Code_Get_Ref_CodeData(GetId()) ;
-
-	std::string str_code_info ;
-	str_code_info += "(" + str_code_type + ")" ;
-	str_code_info += str_code_data ;
-	
-    ui->label_code->setText(QString::fromUtf8(str_code_info.c_str()));
 }
 
 void DialogSetCode::OnButtonGetImage(void)
@@ -121,6 +111,8 @@ void DialogSetCode::OnButtonGetImage(void)
 		}
 
 		SetObjectImage(object_image) ;
+
+		emit UpdateToolObjectImage();
 	}
 
     if( get_object_image_data != NULL )
@@ -128,6 +120,17 @@ void DialogSetCode::OnButtonGetImage(void)
         delete [] get_object_image_data ;
         get_object_image_data = NULL ;
     }
+
+	//Get Code Info
+	std::string str_code_type = Ensemble_Tool_Detect_Code_Get_Ref_CodeType(GetId()) ;
+	std::string str_code_data = Ensemble_Tool_Detect_Code_Get_Ref_CodeData(GetId()) ;
+
+	std::string str_code_info ;
+	str_code_info += "(" + str_code_type + ")" ;
+	str_code_info += str_code_data ;
+	
+    ui->label_code->setText(QString::fromUtf8(str_code_info.c_str()));
+	
 }
 
 void DialogSetCode::updatePicture(cv::Mat image, cv::Rect rect_user)

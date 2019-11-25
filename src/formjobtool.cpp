@@ -37,7 +37,8 @@ FormJobTool::FormJobTool(QWidget *parent) :
 	connect(&m_dlg_set_tool_circle, SIGNAL(UpdateToolName(QString)), this, SLOT(OnUpdateName(QString))) ;
 
 	//code
-	connect(&m_dlg_set_code, SIGNAL(UpdateToolName(QString)), this, SLOT(OnUpdateName(QString))) ;
+	connect(&m_dlg_set_code, SIGNAL(UpdateToolName(QString)), this, SLOT(OnUpdateName(QString))) ;	
+	connect(&m_dlg_set_code, SIGNAL(UpdateToolObjectImage()), this, SLOT(OnUpdateImage())) ;
 	
 	//distance
 	connect(&m_dlg_set_tool_distance, SIGNAL(UpdateToolName(QString)), this, SLOT(OnUpdateName(QString))) ;

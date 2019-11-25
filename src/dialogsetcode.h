@@ -51,6 +51,7 @@ public slots:
 
 signals:
 	void UpdateToolName(QString name) ;
+	void UpdateToolObjectImage(void);
 
 };
 
