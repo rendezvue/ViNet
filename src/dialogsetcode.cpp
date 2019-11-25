@@ -37,9 +37,19 @@ void DialogSetCode::showEvent(QShowEvent *ev)
     ui->label_name->setText(QString::fromUtf8(tool_name.c_str()));
 
     qDebug("Tool Name = %s", tool_name.c_str()) ;
-		
+
 	//Image
 	OnButtonGetImage() ;
+
+	//Get Code Info
+	std::string str_code_type = Ensemble_Tool_Detect_Code_Get_Ref_CodeType(GetId()) ;
+	std::string str_code_data = Ensemble_Tool_Detect_Code_Get_Ref_CodeData(GetId()) ;
+
+	std::string str_code_info ;
+	str_code_info += "(" + str_code_type + ")" ;
+	str_code_info += str_code_data ;
+	
+    ui->label_code->setText(QString::fromUtf8(str_code_info.c_str()));
 }
 
 void DialogSetCode::OnButtonGetImage(void)
@@ -84,12 +94,15 @@ void DialogSetCode::OnButtonGetImage(void)
     int object_image_height = 0 ;
 
     image_type = IMAGE_RGB888 ;
-    Ensemble_Tool_Get_ObjectImage(GetId(), image_type, &get_object_image_data, &object_image_width, &object_image_height)  ;
+    image_type += IMAGE_ORI_SIZE ;
+    int ret_image_size = Ensemble_Tool_Get_ObjectImage(GetId(), image_type, &get_object_image_data, &object_image_width, &object_image_height)  ;
 
 	cv::Mat object_image ;
 	if( object_image_width > 0 && object_image_height > 0 )
 	{
-		if( image_type == IMAGE_YUV420 )
+        qDebug("object image test : object_image_width(%d), object_image_height(%d), ret_image_size(%d)", object_image_width, object_image_height, ret_image_size) ;
+
+        if( image_type & IMAGE_YUV420 )
 		{
 			//YUV420 
 	        cv::Mat get_image(object_image_height + object_image_height / 2, object_image_width, CV_8UC1, get_object_image_data) ;
@@ -98,9 +111,12 @@ void DialogSetCode::OnButtonGetImage(void)
 	        object_image = cls_image_decoder.Decoding(get_image) ;
 
 		}
-		else if( image_type == IMAGE_RGB888 )
+        else if( image_type & IMAGE_RGB888 )
 		{
-			cv::Mat get_image(object_image_height, object_image_width, CV_8UC3, get_object_image_data) ;
+            //cv::Mat get_image(object_image_height, object_image_width, CV_8UC3, get_object_image_data) ;
+            cv::Mat get_image(object_image_height, object_image_width, CV_8UC3) ;
+            get_image.data = get_object_image_data ;
+
 			cv::cvtColor(get_image, object_image, cv::COLOR_BGR2RGB) ;
 		}
 
@@ -143,7 +159,7 @@ void DialogSetCode::updatePicture(cv::Mat image, cv::Rect rect_user)
 
 void DialogSetCode::SetObjectImage(cv::Mat image)
 {
-    const int draw_width = ui->label_image_bg_code->width();
+   	const int draw_width = ui->label_image_bg_code->width();
     const int draw_height = ui->label_image_bg_code->height();
 
     float rescale_w = (float)draw_width / (float)image.cols ;
