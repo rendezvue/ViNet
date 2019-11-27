@@ -372,12 +372,13 @@ void FormJobTool::OnUpdateImage(void)
     int object_image_height = 0 ;
 
 	const int image_type = IMAGE_RGB888 ;
-    Ensemble_Tool_Get_ObjectImage(GetIdInfo(), image_type+IMAGE_ICON, &get_object_image_data, &object_image_width, &object_image_height)  ;
+    int get_image_type = 0 ;
+    Ensemble_Tool_Get_ObjectImage(GetIdInfo(), image_type+IMAGE_ICON, &get_object_image_data, &object_image_width, &object_image_height, &get_image_type)  ;
 
 	cv::Mat object_image ;
 	if( object_image_width > 0 && object_image_height > 0 )
 	{
-		if( image_type == IMAGE_YUV420 )
+        if( get_image_type == IMAGE_YUV420 )
 		{
 			//YUV420 
 	        cv::Mat get_image(object_image_height + object_image_height / 2, object_image_width, CV_8UC1, get_object_image_data) ;
@@ -386,11 +387,16 @@ void FormJobTool::OnUpdateImage(void)
 	        object_image = cls_image_decoder.Decoding(get_image) ;
 
 		}
-		else if( image_type == IMAGE_RGB888 )
+        else if( get_image_type == IMAGE_RGB888 )
 		{
 			cv::Mat get_image(object_image_height, object_image_width, CV_8UC3, get_object_image_data) ;
 			cv::cvtColor(get_image, object_image, cv::COLOR_BGR2RGB) ;
 		}
+        else if( get_image_type == ImageTypeOption::IMAGE_JPG)
+        {
+            cv::Mat get_image = cv::imdecode(cv::Mat(1, object_image_width*object_image_height, CV_8UC1, get_object_image_data), cv::IMREAD_UNCHANGED) ;
+            cv::cvtColor(get_image, object_image, cv::COLOR_BGR2RGB) ;
+        }
 	}
 
     if( get_object_image_data != NULL )

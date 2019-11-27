@@ -50,12 +50,12 @@ void DialogSetCode::OnButtonGetImage(void)
     int job_image_height = 0 ;
 
     int image_type = IMAGE_RGB888 ;
-	
-    Ensemble_Tool_Get_Image(GetId(), image_type, &get_job_image_data, &job_image_width, &job_image_height)  ;
+    int get_image_type = 0 ;
+    Ensemble_Tool_Get_Image(GetId(), image_type, &get_job_image_data, &job_image_width, &job_image_height, &get_image_type)  ;
 
     if( job_image_width > 0 && job_image_height > 0 )
     {
-    	if( image_type == IMAGE_YUV420 )
+        if( get_image_type == IMAGE_YUV420 )
     	{
 	        //YUV420
 	        cv::Mat get_image(job_image_height + job_image_height / 2, job_image_width, CV_8UC1, get_job_image_data) ;
@@ -63,11 +63,16 @@ void DialogSetCode::OnButtonGetImage(void)
 	        CImgDec cls_image_decoder ;
 	        m_image = cls_image_decoder.Decoding(get_image) ;
 		}
-		else if( image_type == IMAGE_RGB888 )
+        else if( get_image_type == IMAGE_RGB888 )
 		{
 			cv::Mat get_image(job_image_height, job_image_width, CV_8UC3, get_job_image_data) ;
 			cv::cvtColor(get_image, m_image, cv::COLOR_BGR2RGB) ;
 		}
+        else if( get_image_type == IMAGE_JPG )
+        {
+            cv::Mat get_image = cv::imdecode(cv::Mat(1, job_image_height*job_image_width, CV_8UC1, get_job_image_data), cv::IMREAD_UNCHANGED) ;
+            cv::cvtColor(get_image, m_image, cv::COLOR_BGR2RGB) ;
+        }
 		
         updatePicture(m_image) ;
     }
@@ -85,14 +90,15 @@ void DialogSetCode::OnButtonGetImage(void)
 
     image_type = IMAGE_RGB888 ;
     image_type += IMAGE_ORI_SIZE ;
-    int ret_image_size = Ensemble_Tool_Get_ObjectImage(GetId(), image_type, &get_object_image_data, &object_image_width, &object_image_height)  ;
+    get_image_type = 0 ;
+    int ret_image_size = Ensemble_Tool_Get_ObjectImage(GetId(), image_type, &get_object_image_data, &object_image_width, &object_image_height, &get_image_type)  ;
 
 	cv::Mat object_image ;
 	if( object_image_width > 0 && object_image_height > 0 )
 	{
         qDebug("object image test : object_image_width(%d), object_image_height(%d), ret_image_size(%d)", object_image_width, object_image_height, ret_image_size) ;
 
-        if( image_type & IMAGE_YUV420 )
+        if( get_image_type == IMAGE_YUV420 )
 		{
 			//YUV420 
 	        cv::Mat get_image(object_image_height + object_image_height / 2, object_image_width, CV_8UC1, get_object_image_data) ;
@@ -101,7 +107,7 @@ void DialogSetCode::OnButtonGetImage(void)
 	        object_image = cls_image_decoder.Decoding(get_image) ;
 
 		}
-        else if( image_type & IMAGE_RGB888 )
+        else if( get_image_type == IMAGE_RGB888 )
 		{
             //cv::Mat get_image(object_image_height, object_image_width, CV_8UC3, get_object_image_data) ;
             cv::Mat get_image(object_image_height, object_image_width, CV_8UC3) ;
@@ -109,6 +115,11 @@ void DialogSetCode::OnButtonGetImage(void)
 
 			cv::cvtColor(get_image, object_image, cv::COLOR_BGR2RGB) ;
 		}
+        else if( get_image_type == IMAGE_JPG )
+        {
+            cv::Mat get_image = cv::imdecode(cv::Mat(1, object_image_height*object_image_width, CV_8UC1, get_object_image_data), cv::IMREAD_UNCHANGED) ;
+            cv::cvtColor(get_image, object_image, cv::COLOR_BGR2RGB) ;
+        }
 
 		SetObjectImage(object_image) ;
 

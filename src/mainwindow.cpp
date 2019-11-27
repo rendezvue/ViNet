@@ -779,7 +779,8 @@ void MainWindow::UpdateJobTree(void)
                 int width = 0 ;
                 int height = 0 ;
 				const int image_type = IMAGE_RGB888 ;
-                Ensemble_Source_Get_Image(GET_IMAGE_DEVICE_ICON, std::string(), image_type, &get_data, &width, &height) ;
+                int get_image_type = 0 ;
+                Ensemble_Source_Get_Image(GET_IMAGE_DEVICE_ICON, std::string(), image_type, &get_data, &width, &height, &get_image_type) ;
 
                 //qDebug("Get Image Size = %d x %d", width, height) ;
 
@@ -789,7 +790,7 @@ void MainWindow::UpdateJobTree(void)
                     {
                     	cv::Mat get_image ;
 						cv::Mat icon ;
-                    	if( image_type == IMAGE_YUV420 )
+                        if( get_image_type == IMAGE_YUV420 )
 						{
 							//YUV420 
 					        cv::Mat get_image(height + width / 2, width, CV_8UC1, get_data) ;
@@ -798,11 +799,16 @@ void MainWindow::UpdateJobTree(void)
 					        icon = cls_image_decoder.Decoding(get_image) ;
 
 						}
-						else if( image_type == IMAGE_RGB888 )
+                        else if( get_image_type == IMAGE_RGB888 )
 						{
-							cv::Mat get_image(height, width, CV_8UC3, get_data) ;
+                            cv::Mat get_image(height, width, CV_8UC3, get_data) ;
 							cv::cvtColor(get_image, icon, cv::COLOR_BGR2RGB) ;
 						}
+                        else if( get_image_type == ImageTypeOption::IMAGE_JPG)
+                        {
+                            cv::Mat get_image = cv::imdecode(cv::Mat(1, width*height, CV_8UC1, get_data), cv::IMREAD_UNCHANGED) ;
+                            cv::cvtColor(get_image, icon, cv::COLOR_BGR2RGB) ;
+                        }
 						
    						CMat2QImage cls_mat_2_qimage ;
 						QImage qt_display_image = cls_mat_2_qimage.cvtMat2QImage(icon, icon.cols, icon.rows) ;

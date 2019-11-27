@@ -94,15 +94,23 @@ void DialogSetCalibration::OnButtonGetCalibrationImage(void)
     int height = 480 ;
 
 	const int image_type = IMAGE_RGB888 ;
-	
-    Ensemble_Source_Get_Image(GET_IMAGE_CALIBRATION_FEATURE, GetId(), image_type, &get_data, &width, &height) ;
+    int get_image_type = 0 ;
+    Ensemble_Source_Get_Image(GET_IMAGE_CALIBRATION_FEATURE, GetId(), image_type, &get_data, &width, &height, &get_image_type) ;
 
     if( get_data != NULL )
     {
         if( width>0 && height >0 )
         {
-			cv::Mat get_image(height, width, CV_8UC3, get_data) ;
-			cv::cvtColor(get_image, calib_image, cv::COLOR_BGR2RGB) ;
+            if( get_image_type == ImageTypeOption::IMAGE_RGB888 )
+            {
+                cv::Mat get_image(height, width, CV_8UC3, get_data) ;
+                cv::cvtColor(get_image, calib_image, cv::COLOR_BGR2RGB) ;
+            }
+            else if( get_image_type == ImageTypeOption::IMAGE_JPG)
+            {
+                cv::Mat get_image = cv::imdecode(cv::Mat(1, width*height, CV_8UC1, get_data), cv::IMREAD_UNCHANGED) ;
+                cv::cvtColor(get_image, calib_image, cv::COLOR_BGR2RGB) ;
+            }
         }
     	
         delete [] get_data ;
@@ -175,16 +183,24 @@ void DialogSetCalibration::OnButtonUpdateCalibrationInfo(void)
         int width = 640 ;
         int height = 480 ;
 		const int image_type = IMAGE_RGB888 ;
-		
-		Ensemble_Job_Calibration_GetImage(GetId(), i, image_type, &get_data, &width, &height) ;
+        int get_image_type = 0 ;
+        Ensemble_Job_Calibration_GetImage(GetId(), i, image_type, &get_data, &width, &height, &get_image_type) ;
 
 		cv::Mat calibration_image ;
         if( get_data != NULL )
         {
             if( width>0 && height >0 )
             {
-                cv::Mat get_image(height, width, CV_8UC3, get_data) ;
-                cv::cvtColor(get_image, calibration_image, cv::COLOR_BGR2RGB) ;
+                if( get_image_type == ImageTypeOption::IMAGE_RGB888)
+                {
+                    cv::Mat get_image(height, width, CV_8UC3, get_data) ;
+                    cv::cvtColor(get_image, calibration_image, cv::COLOR_BGR2RGB) ;
+                }
+                else if( get_image_type == ImageTypeOption::IMAGE_JPG)
+                {
+                    cv::Mat get_image = cv::imdecode(cv::Mat(1, width*height, CV_8UC1, get_data), cv::IMREAD_UNCHANGED) ;
+                    cv::cvtColor(get_image, calibration_image, cv::COLOR_BGR2RGB) ;
+                }
             }
 
             delete [] get_data ;

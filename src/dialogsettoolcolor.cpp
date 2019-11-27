@@ -97,12 +97,12 @@ void DialogSetToolColor::OnButtonGetImage(void)
     int job_image_height = 0 ;
 
 	const int image_type = IMAGE_RGB888 ;
-	
-    Ensemble_Tool_Option_GetImage(GetId(), image_type, &get_job_image_data, &job_image_width, &job_image_height)  ;
+    int get_image_type = 0 ;
+    Ensemble_Tool_Option_GetImage(GetId(), image_type, &get_job_image_data, &job_image_width, &job_image_height, &get_image_type)  ;
 
     if( job_image_width > 0 && job_image_height > 0 )
     {
-    	if( image_type == IMAGE_YUV420)
+        if( get_image_type == IMAGE_YUV420)
     	{
 	        //YUV420
 	        cv::Mat get_image(job_image_height + job_image_height / 2, job_image_width, CV_8UC1, get_job_image_data) ;
@@ -110,11 +110,16 @@ void DialogSetToolColor::OnButtonGetImage(void)
 	        CImgDec cls_image_decoder ;
 	        m_image = cls_image_decoder.Decoding(get_image) ;
     	}
-		else if( image_type == IMAGE_RGB888 )
+        else if( get_image_type == IMAGE_RGB888 )
 		{
 			cv::Mat get_image(job_image_height, job_image_width, CV_8UC3, get_job_image_data) ;
 			cv::cvtColor(get_image, m_image, cv::COLOR_BGR2RGB) ;
 		}
+        else if( get_image_type == ImageTypeOption::IMAGE_JPG)
+        {
+            cv::Mat get_image = cv::imdecode(cv::Mat(1, job_image_width*job_image_height, CV_8UC1, get_job_image_data), cv::IMREAD_UNCHANGED) ;
+            cv::cvtColor(get_image, m_image, cv::COLOR_BGR2RGB) ;
+        }
 
         updatePicture(m_image) ;
     }
@@ -134,13 +139,13 @@ void DialogSetToolColor::OnButtonGetRedHistogramImage(void)
     int job_image_height = 0 ;
 
 	const int image_type = IMAGE_RGB888 ;
-	
-    Ensemble_Tool_Option_InspectColor_Histogram_GetImage(GetId(), 0/*red*/, image_type, &get_job_image_data, &job_image_width, &job_image_height)  ;
+    int get_image_type = 0 ;
+    Ensemble_Tool_Option_InspectColor_Histogram_GetImage(GetId(), 0/*red*/, image_type, &get_job_image_data, &job_image_width, &job_image_height, &get_image_type)  ;
 
 	cv::Mat histogram_image ;
     if( job_image_width > 0 && job_image_height > 0 )
     {
-    	if( image_type == IMAGE_YUV420)
+        if( get_image_type == IMAGE_YUV420)
     	{
 	        //YUV420
 	        cv::Mat get_image(job_image_height + job_image_height / 2, job_image_width, CV_8UC1, get_job_image_data) ;
@@ -148,11 +153,16 @@ void DialogSetToolColor::OnButtonGetRedHistogramImage(void)
 	        CImgDec cls_image_decoder ;
 	        histogram_image = cls_image_decoder.Decoding(get_image) ;
     	}
-		else if( image_type == IMAGE_RGB888 )
+        else if( get_image_type == IMAGE_RGB888 )
 		{
 			cv::Mat get_image(job_image_height, job_image_width, CV_8UC3, get_job_image_data) ;
 			cv::cvtColor(get_image, histogram_image, cv::COLOR_BGR2RGB) ;
 		}
+        else if( get_image_type == ImageTypeOption::IMAGE_JPG)
+        {
+            cv::Mat get_image = cv::imdecode(cv::Mat(1, job_image_width*job_image_height, CV_8UC1, get_job_image_data), cv::IMREAD_UNCHANGED) ;
+            cv::cvtColor(get_image, histogram_image, cv::COLOR_BGR2RGB) ;
+        }
 
         //updatePicture(m_image) ;
         CMat2QImage cls_mat_2_qimage ;
@@ -176,13 +186,13 @@ void DialogSetToolColor::OnButtonGetGreenHistogramImage(void)
     int job_image_height = 0 ;
 
 	const int image_type = IMAGE_RGB888 ;
-	
-    Ensemble_Tool_Option_InspectColor_Histogram_GetImage(GetId(), 1/*green*/, image_type, &get_job_image_data, &job_image_width, &job_image_height)  ;
+    int get_image_type = 0 ;
+    Ensemble_Tool_Option_InspectColor_Histogram_GetImage(GetId(), 1/*green*/, image_type, &get_job_image_data, &job_image_width, &job_image_height, &get_image_type)  ;
 
 	cv::Mat histogram_image ;
     if( job_image_width > 0 && job_image_height > 0 )
     {
-    	if( image_type == IMAGE_YUV420)
+        if( get_image_type == IMAGE_YUV420)
     	{
 	        //YUV420
 	        cv::Mat get_image(job_image_height + job_image_height / 2, job_image_width, CV_8UC1, get_job_image_data) ;
@@ -190,11 +200,16 @@ void DialogSetToolColor::OnButtonGetGreenHistogramImage(void)
 	        CImgDec cls_image_decoder ;
 	        histogram_image = cls_image_decoder.Decoding(get_image) ;
     	}
-		else if( image_type == IMAGE_RGB888 )
+        else if( get_image_type == IMAGE_RGB888 )
 		{
 			cv::Mat get_image(job_image_height, job_image_width, CV_8UC3, get_job_image_data) ;
 			cv::cvtColor(get_image, histogram_image, cv::COLOR_BGR2RGB) ;
 		}
+        else if( get_image_type == ImageTypeOption::IMAGE_JPG)
+        {
+            cv::Mat get_image = cv::imdecode(cv::Mat(1, job_image_width*job_image_height, CV_8UC1, get_job_image_data), cv::IMREAD_UNCHANGED) ;
+            cv::cvtColor(get_image, histogram_image, cv::COLOR_BGR2RGB) ;
+        }
 
         //updatePicture(m_image) ;
         CMat2QImage cls_mat_2_qimage ;
@@ -218,13 +233,13 @@ void DialogSetToolColor::OnButtonGetBlueHistogramImage(void)
     int job_image_height = 0 ;
 
 	const int image_type = IMAGE_RGB888 ;
-	
-    Ensemble_Tool_Option_InspectColor_Histogram_GetImage(GetId(), 2/*blue*/, image_type, &get_job_image_data, &job_image_width, &job_image_height)  ;
+    int get_image_type = 0 ;
+    Ensemble_Tool_Option_InspectColor_Histogram_GetImage(GetId(), 2/*blue*/, image_type, &get_job_image_data, &job_image_width, &job_image_height, &get_image_type)  ;
 
 	cv::Mat histogram_image ;
     if( job_image_width > 0 && job_image_height > 0 )
     {
-    	if( image_type == IMAGE_YUV420)
+        if( get_image_type == IMAGE_YUV420)
     	{
 	        //YUV420
 	        cv::Mat get_image(job_image_height + job_image_height / 2, job_image_width, CV_8UC1, get_job_image_data) ;
@@ -232,11 +247,16 @@ void DialogSetToolColor::OnButtonGetBlueHistogramImage(void)
 	        CImgDec cls_image_decoder ;
 	        histogram_image = cls_image_decoder.Decoding(get_image) ;
     	}
-		else if( image_type == IMAGE_RGB888 )
+        else if( get_image_type == IMAGE_RGB888 )
 		{
 			cv::Mat get_image(job_image_height, job_image_width, CV_8UC3, get_job_image_data) ;
 			cv::cvtColor(get_image, histogram_image, cv::COLOR_BGR2RGB) ;
 		}
+        else if( get_image_type == ImageTypeOption::IMAGE_JPG)
+        {
+            cv::Mat get_image = cv::imdecode(cv::Mat(1, job_image_width*job_image_height, CV_8UC1, get_job_image_data), cv::IMREAD_UNCHANGED) ;
+            cv::cvtColor(get_image, histogram_image, cv::COLOR_BGR2RGB) ;
+        }
 
         //updatePicture(m_image) ;
         CMat2QImage cls_mat_2_qimage ;
