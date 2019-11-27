@@ -61,6 +61,8 @@ DialogBaseCameraConfig::DialogBaseCameraConfig(QWidget *parent) :
     connect(m_p_cls_getimage, SIGNAL(Done(cv::Mat)), this, SLOT(updatePicture(cv::Mat))) ;
 	m_p_cls_getimage->m_thread_run = true ;
     m_p_cls_getimage->start();
+
+	ui->label_image_bg->setStyleSheet("QLabel { background-color : black; }");
 }
 
 DialogBaseCameraConfig::~DialogBaseCameraConfig()

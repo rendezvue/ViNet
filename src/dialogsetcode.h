@@ -48,6 +48,8 @@ private:
 public slots:
 	void OnButtonGetImage(void) ;
 	void OnButtonNameChange(void) ;
+	void OnButtonGetPaddingRate(void) ;
+	void OnButtonSetPaddingRate(void) ;
 
 signals:
 	void UpdateToolName(QString name) ;

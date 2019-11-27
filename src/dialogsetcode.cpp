@@ -12,6 +12,10 @@ DialogSetCode::DialogSetCode(QWidget *parent) :
 	connect(ui->pushButton_get_base_image, SIGNAL(clicked()), this,  SLOT(OnButtonGetImage())) ;
 	connect(ui->pushButton_name_change, SIGNAL(clicked()), this,  SLOT(OnButtonNameChange())) ;
 
+	//button
+	connect(ui->pushButton_padding_rate_get, SIGNAL(clicked()), this,  SLOT(OnButtonGetPaddingRate())) ;
+	connect(ui->pushButton_padding_rate_set, SIGNAL(clicked()), this,  SLOT(OnButtonSetPaddingRate())) ;
+
 	//background color
     ui->label_image_bg->setStyleSheet("QLabel { background-color : black; }");
 	ui->label_image_bg_code->setStyleSheet("QLabel { background-color : black; }");
@@ -40,6 +44,9 @@ void DialogSetCode::showEvent(QShowEvent *ev)
 
 	//Image
 	OnButtonGetImage() ;
+
+	//padding rate
+	OnButtonGetPaddingRate() ;
 }
 
 void DialogSetCode::OnButtonGetImage(void)
@@ -228,5 +235,21 @@ void DialogSetCode::OnButtonNameChange(void)
 		
 		emit UpdateToolName(QString::fromUtf8(tool_name.c_str())) ;
     }
+}
+
+void DialogSetCode::OnButtonGetPaddingRate(void)
+{
+	float padding_rate = Ensemble_Tool_Detect_Code_Get_Padding(GetId()) ;
+
+	ui->lineEdit_padding_rate->setText(QString::number(padding_rate)) ;
+}
+
+void DialogSetCode::OnButtonSetPaddingRate(void)
+{
+	QString qstr_padding_rate = ui->lineEdit_padding_rate->text() ;
+    Ensemble_Tool_Detect_Code_Set_Padding(GetId(), qstr_padding_rate.toFloat()) ;
+
+	OnButtonGetImage() ;
+	OnButtonGetPaddingRate() ;
 }
 
