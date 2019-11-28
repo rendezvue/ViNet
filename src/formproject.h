@@ -31,6 +31,7 @@ public:
     std::string GetIdInfo(void)  ;
 
 protected:
+	void showEvent(QShowEvent *ev);
     void enterEvent(QEvent *);
     void leaveEvent(QEvent *);
     bool event(QEvent * e);
@@ -50,6 +51,7 @@ signals:
 	
 
 public slots:
+	void OnTriggerRunCheckBoxToggled(bool checked) ;
 	void OnButtonDel(void);
 	void OnButtonSetName(void) ;
 	void OnButtonRun(void) ;

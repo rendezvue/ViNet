@@ -17,6 +17,9 @@ FormProject::FormProject(QWidget *parent) :
 	connect(ui->pushButton_del, SIGNAL(clicked()), this,  SLOT(OnButtonDel())) ;
 
 	connect(ui->pushButton_run, SIGNAL(clicked()), this,  SLOT(OnButtonRun())) ;
+
+	//check box
+    connect(ui->checkBox_trigger_run, SIGNAL(clicked(bool)), this, SLOT(OnTriggerRunCheckBoxToggled(bool)));
 }
 
 FormProject::~FormProject()
@@ -160,5 +163,24 @@ void FormProject::OnButtonRun(void)
 
 	emit UpdateResultImage(qstr_id) ;
 	emit UpdateResult(QString::fromStdString(str_result_xml)) ;
+}
+
+void FormProject::showEvent(QShowEvent *ev)
+{
+    QWidget::showEvent(ev) ;
+
+	//run checkbox
+	int trigger_run_option = Ensemble_Poject_Get_Trigger_Run(GetIdInfo()) ;
+	ui->checkBox_trigger_run->setChecked(trigger_run_option);
+}
+
+void FormProject::OnTriggerRunCheckBoxToggled(bool checked)
+{
+	qDebug("Trigger Run Check = %d", checked) ;
+	
+	Ensemble_Poject_Set_Trigger_Run(GetIdInfo(), checked) ;
+		
+	int trigger_run_option = Ensemble_Poject_Get_Trigger_Run(GetIdInfo()) ;
+	ui->checkBox_trigger_run->setChecked(trigger_run_option);
 }
 

@@ -12,5 +12,6 @@
         <file>image/icons/plus.png</file>
         <file>image/icons/save.png</file>
         <file>image/icons/load.png</file>
+        <file>image/icons/trigger.png</file>
     </qresource>
 </RCC>
