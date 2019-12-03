@@ -282,6 +282,45 @@
     <string>Get Image</string>
    </property>
   </widget>
+  <widget class="QGroupBox" name="groupBox_5">
+   <property name="geometry">
+    <rect>
+     <x>670</x>
+     <y>50</y>
+     <width>291</width>
+     <height>91</height>
+    </rect>
+   </property>
+   <property name="title">
+    <string>Object</string>
+   </property>
+   <widget class="QPushButton" name="pushButton_select_object">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>30</y>
+      <width>131</width>
+      <height>51</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Select Object</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton_reset_object">
+    <property name="geometry">
+     <rect>
+      <x>150</x>
+      <y>30</y>
+      <width>131</width>
+      <height>51</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Reset Object</string>
+    </property>
+   </widget>
+  </widget>
   <zorder>label_image_bg</zorder>
   <zorder>label_image</zorder>
   <zorder>layoutWidget</zorder>
@@ -290,6 +329,7 @@
   <zorder>groupBox</zorder>
   <zorder>layoutWidget_2</zorder>
   <zorder>pushButton_get_base_image</zorder>
+  <zorder>groupBox_5</zorder>
  </widget>
  <resources/>
  <connections/>

@@ -70,6 +70,9 @@ public slots:
     void OnButtonMaskPush(void) ;
     void OnButtonMaskPop(void) ;
     void OnButtonMaskClear(void) ;
+	//object
+	void OnButtonSelectObject(void) ;
+	void OnButtonResetObject(void) ;
 
 signals:
 	void UpdateBaseImage(void);

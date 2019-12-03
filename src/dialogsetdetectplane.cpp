@@ -16,6 +16,9 @@ DialogSetDetectPlane::DialogSetDetectPlane(QWidget *parent) :
     connect(ui->pushButton_zoom_reset, SIGNAL(clicked()), this,  SLOT(OnButtonZoomReset())) ;
     connect(ui->pushButton_name_change, SIGNAL(clicked()), this,  SLOT(OnButtonNameChange())) ;
 
+	//object button
+	connect(ui->pushButton_select_object, SIGNAL(clicked()), this,  SLOT(OnButtonSelectObject())) ;
+	connect(ui->pushButton_reset_object, SIGNAL(clicked()), this,  SLOT(OnButtonResetObject())) ;
 	
 	//mask
 	connect(ui->pushButton_mask_push, SIGNAL(clicked()), this,	SLOT(OnButtonMaskPush())) ;
@@ -392,5 +395,17 @@ void DialogSetDetectPlane::updatePictureCenterLine(cv::Mat image, cv::Point pt_u
     }
 
     ui->label_image->setPixmap(QPixmap::fromImage(qt_display_image));
+}
+
+void DialogSetDetectPlane::OnButtonSelectObject(void)
+{
+	m_cls_set_user_region.SetStatus(SetBaseStatus::SET_OBJECT) ;
+}
+
+void DialogSetDetectPlane::OnButtonResetObject(void)
+{
+	Ensemble_Job_Del_SelectObject(GetId()) ;
+	
+    OnButtonGetImage() ;
 }
 
