@@ -3,8 +3,7 @@
 
 FormJobBase::FormJobBase(QWidget *parent) :
     QWidget(parent),
-    ui(new Ui::FormJobBase) ,
-    m_type(JobType::JOB_TYPE_BASE)
+    ui(new Ui::FormJobBase)
 {
     //ui->pushButton_change->setVisible(false);
     //setMouseTracking(true);
@@ -24,8 +23,10 @@ FormJobBase::FormJobBase(QWidget *parent) :
     connect(ui->pushButton_change, SIGNAL(clicked()), this,  SLOT(OnButtonSetBase())) ;
 	connect(ui->pushButton_run, SIGNAL(clicked()), this,  SLOT(OnButtonRun())) ;
 
-    connect(&m_dlg_setbase, SIGNAL(UpdateBaseImage()), this, SLOT(OnUpdateImage())) ;
-	connect(&m_dlg_setbase, SIGNAL(UpdateBaseName(QString)), this, SLOT(OnUpdateName(QString))) ;
+    connect(&m_dlg_setbase_detect_objet, SIGNAL(UpdateBaseImage()), this, SLOT(OnUpdateImage())) ;
+	connect(&m_dlg_setbase_detect_objet, SIGNAL(UpdateBaseName(QString)), this, SLOT(OnUpdateName(QString))) ;
+	connect(&m_dlg_setbase_detect_plane, SIGNAL(UpdateBaseImage()), this, SLOT(OnUpdateImage())) ;
+	connect(&m_dlg_setbase_detect_plane, SIGNAL(UpdateBaseName(QString)), this, SLOT(OnUpdateName(QString))) ;
 
 	//set calibration button
 	connect(ui->pushButton_set_calib, SIGNAL(clicked()), this, SLOT(OnButtonSetCalibration())) ;
@@ -130,14 +131,34 @@ void FormJobBase::SetObjectImage(cv::Mat image)
 
 void FormJobBase::OnButtonSetBase(void)
 {
-    //DialogSetBase dlg_setbase ;
-    m_dlg_setbase.SetId(GetIdInfo());
+	int type = GetType() ;
 
-    int dialogCode = m_dlg_setbase.exec();
+	qDebug("%s : type=%d", __func__, type) ;
+	
+    if( type == BaseTypeList::BASE_TYPE_DETECT_OBJECT )		//obejct
+	{
+		qDebug("Detect Object Set") ;
+		
+	    m_dlg_setbase_detect_objet.SetId(GetIdInfo());
 
-    if(dialogCode == QDialog::Accepted)
-    {
-    }
+	    int dialogCode = m_dlg_setbase_detect_objet.exec();
+
+	    if(dialogCode == QDialog::Accepted)
+	    {
+	    }
+	}
+	else if( type == BaseTypeList::BASE_TYPE_DETECT_PLANE )		//plane
+	{
+		qDebug("Detect Plane Set") ;
+		
+	    m_dlg_setbase_detect_plane.SetId(GetIdInfo());
+
+	    int dialogCode = m_dlg_setbase_detect_plane.exec();
+
+	    if(dialogCode == QDialog::Accepted)
+	    {
+	    }
+	}
 }
 
 void FormJobBase::OnUpdateImage(void)
@@ -330,11 +351,6 @@ void FormJobBase::hoverMove(QHoverEvent * event)
     //qDebug() << Q_FUNC_INFO << event->type() ;
 }
 
-int FormJobBase::GetType(void)
-{
-    return m_type ;
-}
-
 void FormJobBase::OnRunCheckBoxToggled(bool checked)
 {
 	qDebug("Base Run Check = %d", checked) ;
@@ -413,5 +429,15 @@ void FormJobBase::SetResultString(const std::string str_result)
 
 void FormJobBase::SetAlarm(const bool b_on_off)
 {
+}
+
+void FormJobBase::SetType(const int type)
+{
+	m_type = type ;
+}
+
+int FormJobBase::GetType(void)
+{
+	return m_type ;
 }
 

@@ -85,7 +85,8 @@ HEADERS += \
     src/dialogbasecameraconfig.h \
     src/cgetimagethread.h \
     src/dialogsettooloffsetdistance.h \
-    src/dialogsetcode.h
+    src/dialogsetcode.h \
+    src/dialogsetdetectplane.h
 
 SOURCES += \
     module/EnsembleAPI/src/Interface.cpp \
@@ -137,7 +138,8 @@ SOURCES += \
     src/dialogbasecameraconfig.cpp \
     src/cgetimagethread.cpp \
     src/dialogsettooloffsetdistance.cpp \
-    src/dialogsetcode.cpp
+    src/dialogsetcode.cpp \
+    src/dialogsetdetectplane.cpp
 
 FORMS += \
     ui/cdialogconnect.ui \
@@ -169,5 +171,6 @@ FORMS += \
     ui/dialogresultinfo.ui \
     ui/dialogbasecameraconfig.ui \
     ui/dialogsettooloffsetdistance.ui \
-    ui/dialogsetcode.ui
+    ui/dialogsetcode.ui \
+    ui/dialogsetdetectplane.ui
 

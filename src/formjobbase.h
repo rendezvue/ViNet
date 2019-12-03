@@ -13,6 +13,8 @@
 
 //dialog
 #include "dialogsetbase.h"
+#include "dialogsetdetectplane.h"
+
 #include "dialogsetcalibration.h"
 #include "dialogresultinfo.h"
 
@@ -42,8 +44,6 @@ public:
     void SetIdInfo(const std::string id) ;
     std::string GetIdInfo(void) ;
 
-    int GetType(void) ;
-
 	void SetImage(cv::Mat image) ;
 
 	void SetObjectImage(cv::Mat image) ;
@@ -52,6 +52,9 @@ public:
 	void SetResultString(const std::string str_result) ;
 
 	void SetAlarm(const bool b_on_off) ;
+
+	void SetType(const int type) ;
+    int GetType(void) ;
 	
 protected:
 	void showEvent(QShowEvent *ev);
@@ -66,11 +69,12 @@ protected:
 private:
     Ui::FormJobBase *ui;
 
-    const int m_type ;
+    int m_type ;
 	std::string m_str_info ;
 	std::string m_str_result ;
 
-	DialogSetBase m_dlg_setbase ;
+	DialogSetBase m_dlg_setbase_detect_objet ;
+	DialogSetDetectPlane m_dlg_setbase_detect_plane ;
 	DialogSetCalibration m_dlg_set_calibration ;
 	
 signals:

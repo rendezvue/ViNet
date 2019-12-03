@@ -885,6 +885,7 @@ void MainWindow::UpdateJobTree(void)
                     FormJobBase *theWidgetItem = new FormJobBase;
 					theWidgetItem->SetNameInfo(str_name);
                 	theWidgetItem->SetIdInfo(str_job_id);
+					theWidgetItem->SetType(type) ;
 				
 					connect(theWidgetItem, SIGNAL(UpdateList()), this, SLOT(UpdateJobTree())) ;
 					connect(theWidgetItem, SIGNAL(UpdateResultImage(QString)), this, SLOT(UpdateResultImage(QString))) ;
