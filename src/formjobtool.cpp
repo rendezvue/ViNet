@@ -395,7 +395,8 @@ void FormJobTool::OnUpdateImage(void)
         else if( get_image_type == ImageTypeOption::IMAGE_JPG)
         {
             cv::Mat get_image = cv::imdecode(cv::Mat(1, object_image_width*object_image_height, CV_8UC1, get_object_image_data), cv::IMREAD_UNCHANGED) ;
-            cv::cvtColor(get_image, object_image, cv::COLOR_BGR2RGB) ;
+
+			if( !get_image.empty() )	cv::cvtColor(get_image, object_image, cv::COLOR_BGR2RGB) ;
         }
 	}
 
