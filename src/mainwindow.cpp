@@ -241,7 +241,10 @@ void MainWindow::OnMenuConnect(void)
 
         qDebug("Connect Info : %s", m_str_ip_address.c_str()) ;
 
-        int ret = Ensemble_Network_Connect(m_str_ip_address.c_str());
+		m_i_port = dlg_connect.GetPortNumber() ;
+		m_p_cls_check_network->SetPort(m_i_port) ;
+
+        int ret = Ensemble_Network_Connect(m_str_ip_address.c_str(), m_i_port);
 
         qDebug("Connect Ensemble : %d", ret ) ;
 
@@ -260,6 +263,7 @@ void MainWindow::OnMenuConnect(void)
         //ini
         boost::property_tree::ptree pt;
         pt.put("network.ip", m_str_ip_address);
+		pt.put("network.port", m_i_port);
         boost::property_tree::ini_parser::write_ini( ".run.ini" , pt );
 
         UpdateJobTree() ;

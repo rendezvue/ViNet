@@ -34,10 +34,14 @@ public:
     void SetIpAddress(const std::string str_ip) ;
     std::string GetIpAddress(void) ;
 
+	void SetPortNumber(const int port) ;
+	int GetPortNumber(void) ;
+
 private:
     Ui::CDialogConnect *ui;
 
     std::string m_str_ip_address ;
+	int m_i_port ;
 
 private slots :
     void ConnectOK(void);
