@@ -1040,3 +1040,10 @@ void MainWindow::OnButtonUpdateSourceList(void)
     }
 }
 
+
+void MainWindow::on_actionProgram_triggered()
+{
+    mDialogProgram = new DialogProgram(this);
+    mDialogProgram->setModal(false);
+    mDialogProgram->show();
+}

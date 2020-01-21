@@ -1,5 +1,6 @@
 #include "cdialogconnect.h"
 #include "ui_cdialogconnect.h"
+#include "IndyDCPConnector.h"
 
 CDialogConnect::CDialogConnect(QWidget *parent) :
     QDialog(parent),

@@ -40,6 +40,7 @@
 
 #include "cgetimagethread.h"
 
+#include "ui/dialogprogram.h"
 
 //boost
 #include <boost/property_tree/ptree.hpp>
@@ -134,6 +135,8 @@ private:
     std::string m_str_ip_address ;
 	int m_i_port ;
 
+    DialogProgram *mDialogProgram;
+
 protected :
     void showEvent(QShowEvent *ev) override;
 
@@ -156,6 +159,8 @@ public slots:
 	void OnButtonSaveAllTask(void) ;
 	void OnButtonLoadAllTask(void) ;
 	void OnButtonUpdateSourceList(void) ;
+private slots:
+    void on_actionProgram_triggered();
 };
 
 #endif // MAINWINDOW_H

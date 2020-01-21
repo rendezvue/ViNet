@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>DialogProgram</class>
+ <widget class="QDialog" name="DialogProgram">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1120</width>
+    <height>713</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Dialog</string>
+  </property>
+  <widget class="QDialogButtonBox" name="buttonBox">
+   <property name="geometry">
+    <rect>
+     <x>460</x>
+     <y>660</y>
+     <width>341</width>
+     <height>32</height>
+    </rect>
+   </property>
+   <property name="orientation">
+    <enum>Qt::Horizontal</enum>
+   </property>
+   <property name="standardButtons">
+    <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
+   </property>
+  </widget>
+  <widget class="QLineEdit" name="lineEdit_ip_address">
+   <property name="geometry">
+    <rect>
+     <x>830</x>
+     <y>670</y>
+     <width>141</width>
+     <height>25</height>
+    </rect>
+   </property>
+   <property name="maxLength">
+    <number>12</number>
+   </property>
+   <property name="alignment">
+    <set>Qt::AlignCenter</set>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label">
+   <property name="geometry">
+    <rect>
+     <x>830</x>
+     <y>640</y>
+     <width>151</width>
+     <height>25</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Robot IP Address :</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButton_Connect_Indy7">
+   <property name="geometry">
+    <rect>
+     <x>990</x>
+     <y>670</y>
+     <width>121</width>
+     <height>26</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Connect INDY7</string>
+   </property>
+  </widget>
+  <widget class="QTreeWidget" name="treeWidget">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>40</y>
+     <width>301</width>
+     <height>551</height>
+    </rect>
+   </property>
+   <column>
+    <property name="text">
+     <string>Command</string>
+    </property>
+   </column>
+   <item>
+    <property name="text">
+     <string>Before Start</string>
+    </property>
+    <item>
+     <property name="text">
+      <string>Set Value</string>
+     </property>
+    </item>
+   </item>
+   <item>
+    <property name="text">
+     <string>Robot Program</string>
+    </property>
+   </item>
+  </widget>
+  <widget class="QPushButton" name="pushButton">
+   <property name="geometry">
+    <rect>
+     <x>990</x>
+     <y>600</y>
+     <width>95</width>
+     <height>26</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>PushButton</string>
+   </property>
+  </widget>
+  <widget class="QDialogButtonBox" name="buttonBox_2">
+   <property name="geometry">
+    <rect>
+     <x>550</x>
+     <y>600</y>
+     <width>166</width>
+     <height>26</height>
+    </rect>
+   </property>
+   <property name="standardButtons">
+    <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
+   </property>
+  </widget>
+  <widget class="QMdiArea" name="mdiArea">
+   <property name="geometry">
+    <rect>
+     <x>540</x>
+     <y>40</y>
+     <width>551</width>
+     <height>551</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QListWidget" name="listWidget">
+   <property name="geometry">
+    <rect>
+     <x>320</x>
+     <y>40</y>
+     <width>211</width>
+     <height>551</height>
+    </rect>
+   </property>
+  </widget>
+ </widget>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>buttonBox</sender>
+   <signal>accepted()</signal>
+   <receiver>DialogProgram</receiver>
+   <slot>accept()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>248</x>
+     <y>254</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>157</x>
+     <y>274</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>buttonBox</sender>
+   <signal>rejected()</signal>
+   <receiver>DialogProgram</receiver>
+   <slot>reject()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>316</x>
+     <y>260</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>286</x>
+     <y>274</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>
