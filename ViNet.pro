@@ -23,7 +23,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 # You can also select to disable deprecated APIs only up to a certain version of Qt.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
-INCLUDEPATH += ./src ./module/EnsembleAPI ./module/EnsembleAPI/src ./module/PacketEthComm ./module/EnsembleCommon ./module/EnsembleCommand ./module/ImgEncDec ./module/pugixml/src ./module/IndyDCP
+INCLUDEPATH += ./src ./module/EnsembleAPI ./module/EnsembleAPI/src ./module/PacketEthComm ./module/EnsembleCommon ./module/EnsembleCommand ./module/ImgEncDec ./module/pugixml/src ./module/IndyDCP ./module/streambookmarks
 LIBS += -lboost_system -lboost_thread -lboost_filesystem -lboost_regex
 
 CONFIG += link_pkgconfig
@@ -33,6 +33,8 @@ RESOURCES += \
     resource.qrc
 
 HEADERS += \
+    module/streambookmarks/xbelreader.h \
+    module/streambookmarks/xbelwriter.h \
     module/IndyDCP/IndyDCP.h \
     module/IndyDCP/IndyDCPConnector.h \
     module/IndyDCP/IndyDCPException.h \
@@ -92,9 +94,12 @@ HEADERS += \
     src/dialogsetcode.h \
     src/dialogsetdetectplane.h \
     ui/dialogprogram.h \ 
-    ui/dialogprogram_jointmove.h
+    ui/dialogprogram_jointmove.h \
+    ui/dialogprogram_framemove.h
 
 SOURCES += \
+    module/streambookmarks/xbelreader.cpp \
+    module/streambookmarks/xbelwriter.cpp \
     module/IndyDCP/IndyDCP.cpp  \
     module/IndyDCP/IndyDCPConnector.cpp  \
     module/IndyDCP/IndyDCPConnectorCommands.cpp  \
@@ -151,7 +156,8 @@ SOURCES += \
     src/dialogsetcode.cpp \
     src/dialogsetdetectplane.cpp \
     ui/dialogprogram.cpp \
-    ui/dialogprogram_jointmove.cpp
+    ui/dialogprogram_jointmove.cpp \
+    ui/dialogprogram_framemove.cpp
 
 FORMS += \
     ui/cdialogconnect.ui \
@@ -186,5 +192,6 @@ FORMS += \
     ui/dialogsetcode.ui \
     ui/dialogsetdetectplane.ui \
     ui/dialogprogram.ui \
-    ui/dialogprogram_jointmove.ui
+    ui/dialogprogram_jointmove.ui \
+    ui/dialogprogram_framemove.ui
 

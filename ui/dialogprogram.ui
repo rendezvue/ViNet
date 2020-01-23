@@ -71,7 +71,7 @@
     <string>Connect INDY7</string>
    </property>
   </widget>
-  <widget class="QTreeWidget" name="treeWidget">
+  <widget class="QTreeWidget" name="treeWidget_Program">
    <property name="geometry">
     <rect>
      <x>20</x>
@@ -87,31 +87,21 @@
    </column>
    <item>
     <property name="text">
-     <string>Before Start</string>
-    </property>
-    <item>
-     <property name="text">
-      <string>Set Value</string>
-     </property>
-    </item>
-   </item>
-   <item>
-    <property name="text">
      <string>Robot Program</string>
     </property>
    </item>
   </widget>
-  <widget class="QPushButton" name="pushButton">
+  <widget class="QPushButton" name="pushButton_Save">
    <property name="geometry">
     <rect>
-     <x>990</x>
+     <x>760</x>
      <y>600</y>
-     <width>95</width>
+     <width>171</width>
      <height>26</height>
     </rect>
    </property>
    <property name="text">
-    <string>PushButton</string>
+    <string>PushButton_Save</string>
    </property>
   </widget>
   <widget class="QDialogButtonBox" name="buttonBox_2">
@@ -127,7 +117,7 @@
     <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
    </property>
   </widget>
-  <widget class="QMdiArea" name="mdiArea">
+  <widget class="QMdiArea" name="mdiArea_SubSetting">
    <property name="geometry">
     <rect>
      <x>540</x>
@@ -136,8 +126,11 @@
      <height>551</height>
     </rect>
    </property>
+   <property name="frameShape">
+    <enum>QFrame::Box</enum>
+   </property>
   </widget>
-  <widget class="QListWidget" name="listWidget">
+  <widget class="QListWidget" name="listWidget_ToolBox">
    <property name="geometry">
     <rect>
      <x>320</x>
@@ -145,6 +138,19 @@
      <width>211</width>
      <height>551</height>
     </rect>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButton_Load">
+   <property name="geometry">
+    <rect>
+     <x>940</x>
+     <y>600</y>
+     <width>171</width>
+     <height>26</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>PushButton_Load</string>
    </property>
   </widget>
  </widget>

@@ -1,5 +1,5 @@
-#ifndef DIALOGPROGRAM_JOINTMOVE_H
-#define DIALOGPROGRAM_JOINTMOVE_H
+#ifndef DIALOGPROGRAM_FRAMEMOVE_H
+#define DIALOGPROGRAM_FRAMEMOVE_H
 
 #include "IndyDCPConnector.h"
 #include <QDialog>
@@ -9,24 +9,24 @@
 using namespace NRMKIndy::Service::DCP;
 
 namespace Ui {
-class dialogprogram_jointmove;
+class dialogprogram_framemove;
 }
 
-class dialogprogram_jointmove : public QDialog
+class dialogprogram_framemove : public QDialog
 {
     Q_OBJECT
 
 public:
-    explicit dialogprogram_jointmove(IndyDCPConnector* IndyDCP, QTreeWidget* TreeWidget, QWidget *parent = 0);
-    ~dialogprogram_jointmove();
+    explicit dialogprogram_framemove(IndyDCPConnector* IndyDCP, QTreeWidget* TreeWidget, QWidget *parent = 0);
+    ~dialogprogram_framemove();
 
     void ParseString();
 private slots:
-    void on_pushButton_Add_clicked();
-
     void on_pushButton_Get_clicked();
 
     void on_pushButton_Set_clicked();
+
+    void on_pushButton_Add_clicked();
 
     void on_pushButton_Relative_Init_clicked();
 
@@ -37,10 +37,9 @@ private slots:
 private:
     QTreeWidget* m_TreeWidget;
     IndyDCPConnector* m_IndyDCP;
-    Ui::dialogprogram_jointmove *ui;
+    Ui::dialogprogram_framemove *ui;
 
-	void Setup_UI_Joint_Move(std::string command, std::string desc);
-
+    void Setup_UI_Frame_Move(std::string command, std::string desc);
 };
 
-#endif // DIALOGPROGRAM_JOINTMOVE_H
+#endif // DIALOGPROGRAM_FRAMEMOVE_H
