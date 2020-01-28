@@ -124,7 +124,7 @@ void dialogprogram_jointmove::on_pushButton_Add_clicked()
 void dialogprogram_jointmove::on_pushButton_Get_clicked()
 {
     double ret[6];
-    m_IndyDCP->getJointPosition(ret);
+    m_IndyDCP->getTaskPosition(ret);
 
     QString str;
     str = QString::number(ret[0]);
@@ -158,7 +158,7 @@ void dialogprogram_jointmove::on_pushButton_Set_clicked()
     str = ui->Edit_J6->toPlainText();
     ret[5] = str.toDouble();
 
-    m_IndyDCP->moveJointTo(ret);
+    m_IndyDCP->moveTaskTo(ret);
 }
 
 void dialogprogram_jointmove::on_pushButton_Relative_Init_clicked()
@@ -195,7 +195,7 @@ void dialogprogram_jointmove::on_pushButton_Relative_Set_clicked()
     str = ui->Edit_J6->toPlainText();
     ret[5] = str.toDouble();
 
-    m_IndyDCP->moveJointBy(ret);
+    m_IndyDCP->moveTaskBy(ret);
 }
 
 void dialogprogram_jointmove::on_pushButton_Relative_Add_clicked()

@@ -269,7 +269,8 @@ void DialogProgram::on_pushButton_Load_clicked()
 {
     QString fileName =  QFileDialog::getOpenFileName(this, tr("Open Bookmark File"),
                                             QDir::currentPath(),
-                                            tr("XBEL Files (*.xbel *.xml)"));
+                                            tr("xml Files (*.xml)"));
+
    if (fileName.isEmpty())
        return;
 
@@ -292,7 +293,21 @@ void DialogProgram::on_pushButton_Load_clicked()
 
 void DialogProgram::on_pushButton_Save_clicked()
 {
-    writeXml("TEST.xml", ui->treeWidget_Program);
+    QString fileName =  QFileDialog::getSaveFileName(this, tr("Open Bookmark File"),
+                                            QDir::currentPath(),
+                                            tr("xml Files (*.xml)"));
+   if (fileName.isEmpty())
+       return;
 
+    writeXml(fileName, ui->treeWidget_Program);
+}
+
+void DialogProgram::on_pushButton_RunProgram_clicked()
+{
+
+}
+
+void DialogProgram::on_pushButton_StopProgram_clicked()
+{
 
 }

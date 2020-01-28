@@ -101,7 +101,7 @@
     </rect>
    </property>
    <property name="text">
-    <string>PushButton_Save</string>
+    <string>Save Program</string>
    </property>
   </widget>
   <widget class="QDialogButtonBox" name="buttonBox_2">
@@ -150,7 +150,33 @@
     </rect>
    </property>
    <property name="text">
-    <string>PushButton_Load</string>
+    <string>Load Program</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButton_RunProgram">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>600</y>
+     <width>171</width>
+     <height>26</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Run Program</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButton_StopProgram">
+   <property name="geometry">
+    <rect>
+     <x>210</x>
+     <y>600</y>
+     <width>171</width>
+     <height>26</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Stop Program</string>
    </property>
   </widget>
  </widget>

@@ -56,6 +56,10 @@ private slots:
 
     void on_pushButton_Save_clicked();
 
+    void on_pushButton_RunProgram_clicked();
+
+    void on_pushButton_StopProgram_clicked();
+
 private:
     QListWidget* m_Widget_ToolBox;
     Ui::DialogProgram *ui;
