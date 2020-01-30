@@ -76,13 +76,22 @@ void DialogSetCalibration::OnButtonGetChessInfo(void)
 {
 	int chess_x_num = 0 ;
 	int chess_y_num = 0 ;
-	int chess_square_mm_size = 0 ;
+    float chess_square_mm_size = 0 ;
 
 	Ensemble_Job_Calibration_Get_Chess_Info(GetId(), &chess_x_num, &chess_y_num, &chess_square_mm_size);
 
 	ui->lineEdit_chess_x_num->setText(QString::number(chess_x_num));
 	ui->lineEdit_chess_y_num->setText(QString::number(chess_y_num));
 	ui->lineEdit_chess_size->setText(QString::number(chess_square_mm_size));
+}
+
+void DialogSetCalibration::on_pushButton_chess_set_clicked()
+{
+    int chess_x_num = ui->lineEdit_chess_x_num->text().toInt() ;
+    int chess_y_num = ui->lineEdit_chess_y_num->text().toInt() ;
+    float chess_square_mm_size = ui->lineEdit_chess_size->text().toFloat() ;
+
+    Ensemble_Job_Calibration_Set_Chess_Info(GetId(), chess_x_num, chess_y_num , chess_square_mm_size );
 }
 
 void DialogSetCalibration::OnButtonGetCalibrationImage(void)
@@ -362,5 +371,4 @@ void DialogSetCalibration::OnButtonCameraConfig(void)
     { 
     }
 }
-
 

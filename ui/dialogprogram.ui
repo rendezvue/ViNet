@@ -13,22 +13,6 @@
   <property name="windowTitle">
    <string>Dialog</string>
   </property>
-  <widget class="QDialogButtonBox" name="buttonBox">
-   <property name="geometry">
-    <rect>
-     <x>460</x>
-     <y>660</y>
-     <width>341</width>
-     <height>32</height>
-    </rect>
-   </property>
-   <property name="orientation">
-    <enum>Qt::Horizontal</enum>
-   </property>
-   <property name="standardButtons">
-    <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
-   </property>
-  </widget>
   <widget class="QLineEdit" name="lineEdit_ip_address">
    <property name="geometry">
     <rect>
@@ -104,19 +88,6 @@
     <string>Save Program</string>
    </property>
   </widget>
-  <widget class="QDialogButtonBox" name="buttonBox_2">
-   <property name="geometry">
-    <rect>
-     <x>550</x>
-     <y>600</y>
-     <width>166</width>
-     <height>26</height>
-    </rect>
-   </property>
-   <property name="standardButtons">
-    <set>QDialogButtonBox::Cancel|QDialogButtonBox::Ok</set>
-   </property>
-  </widget>
   <widget class="QMdiArea" name="mdiArea_SubSetting">
    <property name="geometry">
     <rect>
@@ -156,10 +127,10 @@
   <widget class="QPushButton" name="pushButton_RunProgram">
    <property name="geometry">
     <rect>
-     <x>20</x>
+     <x>360</x>
      <y>600</y>
      <width>171</width>
-     <height>26</height>
+     <height>61</height>
     </rect>
    </property>
    <property name="text">
@@ -169,50 +140,56 @@
   <widget class="QPushButton" name="pushButton_StopProgram">
    <property name="geometry">
     <rect>
-     <x>210</x>
+     <x>540</x>
      <y>600</y>
      <width>171</width>
-     <height>26</height>
+     <height>61</height>
     </rect>
    </property>
    <property name="text">
     <string>Stop Program</string>
    </property>
   </widget>
+  <widget class="QPushButton" name="pushButton_Item_UP">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>600</y>
+     <width>41</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>UP</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButton_Item_DOWN">
+   <property name="geometry">
+    <rect>
+     <x>90</x>
+     <y>600</y>
+     <width>41</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>DOWN</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButton_Item_DEL">
+   <property name="geometry">
+    <rect>
+     <x>160</x>
+     <y>600</y>
+     <width>41</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>DEL</string>
+   </property>
+  </widget>
  </widget>
  <resources/>
- <connections>
-  <connection>
-   <sender>buttonBox</sender>
-   <signal>accepted()</signal>
-   <receiver>DialogProgram</receiver>
-   <slot>accept()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>248</x>
-     <y>254</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>157</x>
-     <y>274</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>buttonBox</sender>
-   <signal>rejected()</signal>
-   <receiver>DialogProgram</receiver>
-   <slot>reject()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>316</x>
-     <y>260</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>286</x>
-     <y>274</y>
-    </hint>
-   </hints>
-  </connection>
- </connections>
+ <connections/>
 </ui>

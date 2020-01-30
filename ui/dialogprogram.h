@@ -26,6 +26,7 @@
 
 #include "dialogprogram_jointmove.h"
 #include "dialogprogram_framemove.h"
+#include "dialogprogram_detection.h"
 
 using namespace std;
 using namespace NRMKIndy::Service::DCP;
@@ -60,6 +61,8 @@ private slots:
 
     void on_pushButton_StopProgram_clicked();
 
+    void on_pushButton_Item_DEL_clicked();
+
 private:
     QListWidget* m_Widget_ToolBox;
     Ui::DialogProgram *ui;
@@ -71,12 +74,21 @@ private:
 	void writeIndexEntry(QXmlStreamWriter *xmlWriter, QTreeWidgetItem *item);
     bool writeXml(const QString &fileName, QTreeWidget *treeWidget);
 
+    void Run_Program();
+    void Show_All_child();
+    void Show_Recursive_child();
+    void visitTree(QStringList &list, QTreeWidgetItem *item);
+    QStringList visitTree(QTreeWidget *tree);
+
+    void Run_Parsing_Program(QTreeWidgetItem *item);
+
 
 public:
     vector<string> split(string str, char delimiter);
 
     dialogprogram_jointmove *m_dlg_jointmove;
     dialogprogram_framemove *m_dlg_framemove;
+    dialogprogram_detection *m_dlg_detection;
 };
 
 #endif // DIALOGPROGRAM_H

@@ -40,6 +40,13 @@ private:
     Ui::dialogprogram_framemove *ui;
 
     void Setup_UI_Frame_Move(std::string command, std::string desc);
+public:
+	void Program_Run_Frame_Move(std::string command, std::string desc);
+	void Program_Run_Frame_Move(double tcp_x, double tcp_y, double tcp_z, double tcp_u, double tcp_v, double tcp_w);	
+
+	void Program_Run_Frame_Move_Rel(std::string command, std::string desc);
+	void Program_Run_Frame_Move_Rel(double rel_x, double rel_y, double rel_z, double rel_u, double rel_v, double rel_w);	
+	
 };
 
 #endif // DIALOGPROGRAM_FRAMEMOVE_H

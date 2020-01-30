@@ -39,7 +39,14 @@ private:
     IndyDCPConnector* m_IndyDCP;
     Ui::dialogprogram_jointmove *ui;
 
-	void Setup_UI_Joint_Move(std::string command, std::string desc);
+    void Setup_UI_Joint_Move(std::string command, std::string desc);
+public:
+	void Program_Run_Joint_Move(std::string command, std::string desc);
+	void Program_Run_Joint_Move(double joint1, double joint2, double joint3, double joint4, double joint5, double joint6);
+
+	void Program_Run_Joint_Move_Rel(std::string command, std::string desc);
+	void Program_Run_Joint_Move_Rel(double joint1, double joint2, double joint3, double joint4, double joint5, double joint6);
+
 
 };
 

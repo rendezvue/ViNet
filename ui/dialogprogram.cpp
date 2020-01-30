@@ -13,6 +13,7 @@
 #include <QtWidgets/qtreewidget.h>
 #define ROBOT_CMD_MoveJ        	"MoveJ"
 #define ROBOT_CMD_MoveF         "MoveF"
+#define ROBOT_CMD_Detection     "Detection"
 
 /*
 #define ROBOT_CMD_DETECTION  	"DETECTION"
@@ -47,10 +48,21 @@ DialogProgram::DialogProgram(QWidget *parent) :
 
     m_dlg_jointmove = NULL;
     m_dlg_framemove = NULL;
+    m_dlg_detection = NULL;
+
+
 }
 
 DialogProgram::~DialogProgram()
 {
+    if( m_IndyDCP_connector != NULL )
+    {
+        bool connected = m_IndyDCP_connector->isConnected();
+        if( connected == true )
+        {
+            m_IndyDCP_connector->disconnect();
+        }
+    }
     delete ui;
 }
 
@@ -65,6 +77,7 @@ void DialogProgram::Init_ToolBox()
     m_Widget_ToolBox = ui->listWidget_ToolBox;
     m_Widget_ToolBox->addItem(ROBOT_CMD_MoveJ   		);
     m_Widget_ToolBox->addItem(ROBOT_CMD_MoveF    		);
+    m_Widget_ToolBox->addItem(ROBOT_CMD_Detection       );
 
 
 /*    m_Widget_ToolBox->addItem(ROBOT_CMD_DETECTION       );
@@ -105,6 +118,23 @@ void DialogProgram::on_pushButton_Connect_Indy7_clicked()
     if( connection == true )
     {
         QMessageBox::information(this,tr("INDY 7 Conenect OK"),tr("This is a ..."));
+
+     //   SetIndyDcp
+        if( m_dlg_jointmove == NULL )
+        {
+            m_dlg_jointmove = new dialogprogram_jointmove(m_IndyDCP_connector,ui->treeWidget_Program,this);
+            QMdiSubWindow *window = ui->mdiArea_SubSetting->addSubWindow(m_dlg_jointmove,Qt::FramelessWindowHint);
+        }
+        if( m_dlg_framemove == NULL )
+        {
+            m_dlg_framemove = new dialogprogram_framemove(m_IndyDCP_connector,ui->treeWidget_Program,this);
+            QMdiSubWindow *window = ui->mdiArea_SubSetting->addSubWindow(m_dlg_framemove,Qt::FramelessWindowHint);
+        }
+        if( m_dlg_detection == NULL )
+        {
+            m_dlg_detection = new dialogprogram_detection(m_IndyDCP_connector,ui->treeWidget_Program,this);
+            QMdiSubWindow *window = ui->mdiArea_SubSetting->addSubWindow(m_dlg_detection,Qt::FramelessWindowHint);
+        }
     }
     else
     {
@@ -164,6 +194,10 @@ void DialogProgram::on_TreeWidget_Put_Item(QListWidgetItem *Listitem)
                 return;
             }
         }
+        if( item_text == ROBOT_CMD_Detection )
+        {
+
+        }
 
 
         int childCount = parentItem->childCount();
@@ -192,25 +226,19 @@ void DialogProgram::on_treeWidget_Program_itemClicked(QTreeWidgetItem *item, int
     }
     if( item_text == ROBOT_CMD_MoveJ || parent_text == ROBOT_CMD_MoveJ )
     {        
-        if( m_dlg_jointmove == NULL )
-        {
-            m_dlg_jointmove = new dialogprogram_jointmove(m_IndyDCP_connector,ui->treeWidget_Program,this);
-            QMdiSubWindow *window = ui->mdiArea_SubSetting->addSubWindow(m_dlg_jointmove,Qt::FramelessWindowHint);
-        }
 
         m_dlg_jointmove->showMaximized();
         m_dlg_jointmove->ParseString();
     }
     if( item_text == ROBOT_CMD_MoveF || parent_text == ROBOT_CMD_MoveF )
     {
-        if( m_dlg_framemove == NULL )
-        {
-            m_dlg_framemove = new dialogprogram_framemove(m_IndyDCP_connector,ui->treeWidget_Program,this);
-            QMdiSubWindow *window = ui->mdiArea_SubSetting->addSubWindow(m_dlg_framemove,Qt::FramelessWindowHint);
-        }
 
         m_dlg_framemove->showMaximized();
         m_dlg_framemove->ParseString();
+    }
+    if( item_text == ROBOT_CMD_Detection || parent_text == ROBOT_CMD_Detection )
+    {
+        m_dlg_detection->showMaximized();
     }
 }
 
@@ -304,10 +332,125 @@ void DialogProgram::on_pushButton_Save_clicked()
 
 void DialogProgram::on_pushButton_RunProgram_clicked()
 {
-
+    Run_Program();
 }
 
 void DialogProgram::on_pushButton_StopProgram_clicked()
 {
 
+}
+
+void DialogProgram::Show_All_child()
+{
+    QTreeWidgetItemIterator it(ui->treeWidget_Program);
+    while(*it)
+    {
+        //if((*it)->text(0) == )
+        printf("(*it)->text(0) = %s\n", (*it)->text(0).toStdString().c_str());
+//        (*it)->setSelected(true);
+
+        ++it;
+    }
+}
+
+void DialogProgram::Show_Recursive_child()
+{
+    QStringList result = visitTree(ui->treeWidget_Program);
+}
+
+void DialogProgram::Run_Program()
+{
+    Show_Recursive_child();
+}
+
+void DialogProgram::Run_Parsing_Program(QTreeWidgetItem *item)
+{
+    QTreeWidgetItem *parentItem = item->parent();
+//    string item_text = item->text(0).toStdString();
+    vector<string> line_vector = split(item->text(0).toStdString(),'|');
+    string cmd = line_vector[0];
+    string Desc;
+    if( line_vector.size() == 1 )
+    {
+        Desc = "";
+    }
+    else
+    {
+        Desc = line_vector[1];
+
+        if( cmd == "Pos")
+        {
+            if( parentItem->text(0) == ROBOT_CMD_MoveJ)
+            {
+                m_dlg_jointmove->Program_Run_Joint_Move(cmd,Desc);
+            }
+            if( parentItem->text(0) == ROBOT_CMD_MoveF)
+            {
+                m_dlg_framemove->Program_Run_Frame_Move(cmd,Desc);
+            }
+        }
+        else if( cmd == "Rel")
+        {
+            if( parentItem->text(0) == ROBOT_CMD_MoveJ)
+            {
+                m_dlg_jointmove->Program_Run_Joint_Move_Rel(cmd,Desc);
+            }
+            if( parentItem->text(0) == ROBOT_CMD_MoveJ)
+            {
+                m_dlg_framemove->Program_Run_Frame_Move_Rel(cmd,Desc);
+            }
+        }
+        else if( cmd == "Job")
+        {
+            if( parentItem->text(0) == ROBOT_CMD_Detection )
+            {
+				m_dlg_detection->Program_Run_Job(cmd,Desc);
+            }
+        }
+        else if( cmd == "PickPos" )
+        {
+            if( parentItem->text(0) == ROBOT_CMD_Detection )
+            {
+				m_dlg_detection->Program_Run_PickPos(cmd,Desc);
+            }
+        }
+    }
+}
+
+void DialogProgram::visitTree(QStringList &list, QTreeWidgetItem *item){
+  list << item->text(0);
+  printf("child text = %s\n",item->text(0).toStdString().c_str());
+
+  Run_Parsing_Program(item);
+
+  for(int i=0;i<item->childCount(); ++i)
+  {
+    visitTree(list, item->child(i));
+  }
+}
+ 
+QStringList DialogProgram::visitTree(QTreeWidget *tree) {
+  QStringList list;
+  for(int i=0;i<tree->topLevelItemCount();++i)
+  {
+    visitTree(list, tree->topLevelItem(i));
+  }
+  return list;
+}
+
+
+void DialogProgram::on_pushButton_Item_DEL_clicked()
+{
+    QList <QTreeWidgetItem*> itemtree = ui->treeWidget_Program->selectedItems();
+    if( itemtree.size() < 1 )
+    {
+        return;
+    }
+    QTreeWidgetItem* selectedItem = itemtree[0];
+    QTreeWidgetItem* parentItem = selectedItem->parent();
+    if( parentItem != NULL )
+    {
+        parentItem->removeChild(selectedItem);
+        delete selectedItem;
+    }
 }

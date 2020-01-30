@@ -97,6 +97,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
     //drop on tree
     connect(ui->treeWidget_job, SIGNAL(SignalDropDone()), this, SLOT(DropEventDoneOnTree())) ;
+
+    mDialogProgram = NULL;
 }
 
 MainWindow::~MainWindow()
@@ -1043,7 +1045,10 @@ void MainWindow::OnButtonUpdateSourceList(void)
 
 void MainWindow::on_actionProgram_triggered()
 {
-    mDialogProgram = new DialogProgram(this);
-    mDialogProgram->setModal(false);
+    if( mDialogProgram == NULL )
+    {
+        mDialogProgram = new DialogProgram(this);
+        mDialogProgram->setModal(false);
+    }
     mDialogProgram->show();
 }
