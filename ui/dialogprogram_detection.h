@@ -43,6 +43,12 @@ private slots:
 
     void on_pushButton_Go_AnglePosition_clicked();
 
+    void on_pushButton_Get_clicked();
+
+    void on_pushButton_Set_PickPos_clicked();
+
+    void on_pushButton_Set_BasePos_clicked();
+
 private:
     QTreeWidget* m_TreeWidget;
     IndyDCPConnector* m_IndyDCP;
@@ -52,13 +58,18 @@ private:
     std::vector<detection_result> m_detection_result;
 
 	void Run_Job(QString qstr_job_id);
-    void Run_PickPos(QString qstr_dist_z);
+    void Run_PickPos(QString qstr_x, QString qstr_y,QString qstr_z, QString qstr_u, QString qstr_v, QString qstr_w );
     void Run_PickAngle(QString qstr_angle);
+
+    double calc_PickAngle(int dest_angle);
 
 public:
 	void Program_Run_Job(std::string command, std::string desc);
 	void Program_Run_PickPos(std::string command, std::string desc);
 	
+
+public:
+    double test_base_task[6];
     
 };
 
