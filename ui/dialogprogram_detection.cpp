@@ -403,23 +403,20 @@ void dialogprogram_detection::UpdateResult(std :: string result_xml)
 void dialogprogram_detection::on_pushButton_Go_PickPosition_clicked()
 {
     on_pushButton_Get_clicked();
-#if 0
-    QString qstr_z = ui->Edit_Z->toPlainText();
-    QString qstr_u = ui->Edit_U->toPlainText();
-    QString qstr_v = ui->Edit_V->toPlainText();
-    QString qstr_w = ui->Edit_W->toPlainText();
-#else
-    QString qstr_x = ui->label_X_SetPos->text();
-    QString qstr_y = ui->label_Y_SetPos->text();
-    QString qstr_z = ui->label_Z_SetPos->text();
-    QString qstr_u = ui->label_U_SetPos->text();
-    QString qstr_v = ui->label_V_SetPos->text();
-    QString qstr_w = ui->label_W_SetPos->text();
-#endif
-    Run_PickPos(qstr_x, qstr_y,qstr_z,qstr_u,qstr_v,qstr_w);
+    QString offset_x = "";
+    QString offset_y = "";
+    QString offset_z = "";
+    QString offset_angle = "";
+
+	offset_x.sprintf("%f",m_Pos_Calc_Offset[0]);
+	offset_y.sprintf("%f",m_Pos_Calc_Offset[1]);
+	offset_z.sprintf("%f",m_Pos_Calc_Offset[2]);	
+	offset_angle.sprintf("%f",m_Angle_UserPick);	
+    
+    Run_PickPos(offset_x,offset_y,offset_z,offset_angle);
 }
 
-void dialogprogram_detection::Run_PickPos(QString qstr_x, QString qstr_y, QString qstr_z, QString qstr_u, QString qstr_v, QString qstr_w )
+void dialogprogram_detection::Run_PickPos(QString qstr_offset_x, QString qstr_offset_y, QString qstr_offset_z, QString qstr_offset_angle  )
 {
     if( m_detection_result.size() < 1 )
     {
@@ -434,42 +431,32 @@ void dialogprogram_detection::Run_PickPos(QString qstr_x, QString qstr_y, QStrin
 
     float offset_x = 0;
     float offset_y = 0;
+    float offset_z = 0;
+    float offset_angle = 0;
 
-    float target_z = 0;
+    float target_z = ret[2]* dist_unit;
     float target_u = 180;
     float target_v = 0;
     float target_w = 0;
 
-    if( qstr_x != "" )
+    if( qstr_offset_x != "" )
     {
-        offset_x = qstr_x.toFloat() - test_base_task[0];
+        offset_x = qstr_offset_x.toFloat();
         //offset_x = qstr_x.toFloat();
     }
-    if( qstr_y != "" )
+    if( qstr_offset_y != "" )
     {
-        offset_y = qstr_y.toFloat() - test_base_task[1];
+        offset_y = qstr_offset_y.toFloat();
         //offset_y = qstr_y.toFloat();
     }
-    if( qstr_z != "" )
+    if( qstr_offset_z != "" )
     {
-        target_z = qstr_z.toFloat();
+        offset_z = qstr_offset_z.toFloat();
     }
-    if( qstr_u != "" )
+    if( qstr_offset_angle != "" )
     {
-        target_u = qstr_u.toFloat();
+        offset_angle = qstr_offset_angle.toFloat();
     }
-    if( qstr_v != "" )
-    {
-        target_v = qstr_v.toFloat();
-    }
-    if( qstr_w != "" )
-    {
-        target_w = qstr_w.toFloat();
-    }
-
-    float cur_robot_x = ret[0]*dist_unit;
-    float cur_robot_y = ret[1]*dist_unit;
-    float cur_robot_z = ret[2]*dist_unit;
 
     int index = 0;
 
@@ -477,20 +464,18 @@ void dialogprogram_detection::Run_PickPos(QString qstr_x, QString qstr_y, QStrin
     float target_y = m_detection_result[index].mm_center_y;
 
     qDebug("target x,y,z (%f/%f/%f)\n",target_x, target_y, target_z);
-
-
     double final_ret[6];
 
-	QString qstr_angle = ui->Edit_Angle->toPlainText();
-	double dest_angle = qstr_angle.toFloat();
-	int CalcAngle_Final = calc_PickAngle(dest_angle);
+    int CalcAngle_Final = calc_PickAngle(offset_angle);
 
     final_ret[0] = (target_x+offset_x) / dist_unit;
     final_ret[1] = (target_y+offset_y) / dist_unit;
-    final_ret[2] = target_z / dist_unit;
-    final_ret[3] = target_u ;
-    final_ret[4] = target_v ;
-    final_ret[5] = target_w;//ret[5] - CalcAngle_Final;
+    final_ret[2] = (target_z+offset_z) / dist_unit;
+    //final_ret[3] = target_u ;
+    //final_ret[4] = target_v ;
+    final_ret[3] = 180 ;
+    final_ret[4] = 0 ;
+    final_ret[5] = ret[5] - CalcAngle_Final;
 
     m_IndyDCP->moveTaskTo(final_ret);
 
@@ -560,75 +545,6 @@ double dialogprogram_detection::calc_PickAngle(int dest_angle)
     return CalcAngle_Final;
 }
 
-void dialogprogram_detection::Run_PickAngle(QString qstr_angle)
-{
-    if( m_detection_result.size() < 1 )
-    {
-        return;
-    }
-
-	int dest_angle = qstr_angle.toInt();
-
-	int CalcAngle_Final = calc_PickAngle(dest_angle);
-
-    double move_joint[6] = {0,};
-    move_joint[5] = CalcAngle_Final;
-    m_IndyDCP->moveJointBy(move_joint);
-
-    int loop_cnt = 0;
-	while (1)
-	{
-		bool check_finish;
-        m_IndyDCP->isMoveFinished(check_finish);
-		if (check_finish == true)
-		{
-			break;
-		}
-        usleep(50*1000);
-		loop_cnt += 50;
-		if (loop_cnt > 3000)
-		{
-			break;
-		}
-	}
-}
-
-void dialogprogram_detection::on_pushButton_Add_Go_PickPosition_clicked()
-{
-    //DialogProgram* myParent = (DialogProgram*)this->parent();
-
-    QString qstr_z = ui->label_Z_SetPos->text();
-    QString qstr_u = ui->label_U_SetPos->text();
-    QString qstr_v = ui->label_V_SetPos->text();
-    QString qstr_w = ui->label_W_SetPos->text();
-
-    QString job_str;
-    job_str.sprintf("PickPos|%s,%s,%s,%s",
-                    qstr_z.toStdString().c_str() ,
-                    qstr_u.toStdString().c_str() ,
-                    qstr_v.toStdString().c_str() ,
-                    qstr_w.toStdString().c_str() );
-
-    QList<QTreeWidgetItem*> SelectedItem = m_TreeWidget->selectedItems();
-
-    QTreeWidgetItem* new_child = new QTreeWidgetItem;
-    new_child->setText(0,job_str);
-    //myParent->on_TreeWidget_Put_Item(new_child);
-
-    QTreeWidgetItem* parentItem = SelectedItem[0]->parent();
-
-    if( SelectedItem[0]->text(0) == "Detection")
-    {
-        SelectedItem[0]->addChild(new_child);
-        SelectedItem[0]->setExpanded(true);
-    }
-    else
-    {
-        int Index_selectedItem = parentItem->indexOfChild(SelectedItem[0]);
-        parentItem->insertChild(Index_selectedItem+1,new_child);
-    }
-}
-
 void dialogprogram_detection::Program_Run_Job(std::string command, std::string desc)
 {
 	string line = desc;
@@ -652,23 +568,17 @@ void dialogprogram_detection::Program_Run_PickPos(std::string command, std::stri
     for (int i = 0; i < line_vector.size(); ++i)
         cout << line_vector[i] << endl;
 
-    string str_target_z = line_vector[0];
-    string str_target_u = line_vector[1];
-    string str_target_v = line_vector[2];
-    string str_target_w = line_vector[3];
+    string str_target_offset_x = line_vector[0];
+    string str_target_offset_y = line_vector[1];
+    string str_target_offset_z = line_vector[2];
+    string str_target_Angle = line_vector[3];
 
-    QString qstr_z = str_target_z.c_str();
-    QString qstr_u = str_target_u.c_str();
-    QString qstr_v = str_target_v.c_str();
-    QString qstr_w = str_target_w.c_str();
+    QString qstr_offset_x = str_target_offset_x.c_str();
+    QString qstr_offset_y = str_target_offset_y.c_str();
+    QString qstr_offset_z = str_target_offset_z.c_str();
+    QString qstr_Angle = str_target_Angle.c_str();
 
- //   Run_PickPos(qstr_z,qstr_u,qstr_v,qstr_w);
-}
-
-void dialogprogram_detection::on_pushButton_Go_AnglePosition_clicked()
-{
-    QString qstr_angle = ui->Edit_Angle->toPlainText();
-    Run_PickAngle(qstr_angle);
+	Run_PickPos(qstr_offset_x,qstr_offset_y,qstr_offset_z,qstr_Angle);
 }
 
 void dialogprogram_detection::on_pushButton_Get_clicked()
@@ -693,17 +603,7 @@ void dialogprogram_detection::on_pushButton_Get_clicked()
     ui->Edit_W->setText(str);
 }
 
-void dialogprogram_detection::on_pushButton_Set_PickPos_clicked()
-{
-    ui->label_X_SetPos->setText(ui->Edit_X->toPlainText());
-    ui->label_Y_SetPos->setText(ui->Edit_Y->toPlainText());
-    ui->label_Z_SetPos->setText(ui->Edit_Z->toPlainText());
-    ui->label_U_SetPos->setText(ui->Edit_U->toPlainText());
-    ui->label_V_SetPos->setText(ui->Edit_V->toPlainText());
-    ui->label_W_SetPos->setText(ui->Edit_W->toPlainText());
-}
-
-void dialogprogram_detection::on_pushButton_Set_BasePos_clicked()
+void dialogprogram_detection::on_pushButton_Set_Base_Position_clicked()
 {
     double ret[6];
     m_IndyDCP->getTaskPosition(ret);
@@ -711,16 +611,196 @@ void dialogprogram_detection::on_pushButton_Set_BasePos_clicked()
     double dist_unit = 1000.0;
 
     QString str;
-    test_base_task[0] = ret[0]*dist_unit;
+    str = QString::number(m_Pos_Base_Pos[0]);
+    ui->Edit_X->setText(str);
+    str = QString::number(m_Pos_Base_Pos[1]);
+    ui->Edit_Y->setText(str);
+    str = QString::number(m_Pos_Base_Pos[2]);
+    ui->Edit_Z->setText(str);
+    str = QString::number(m_Pos_Base_Pos[3]);
+    ui->Edit_U->setText(str);
+    str = QString::number(m_Pos_Base_Pos[4]);
+    ui->Edit_V->setText(str);
+    str = QString::number(m_Pos_Base_Pos[5]);
+    ui->Edit_W->setText(str);
 
-    test_base_task[1] = (ret[1]*dist_unit);
 
-    test_base_task[2] = (ret[2]*dist_unit);
+    m_Pos_Base_Pos[0] = ret[0]*dist_unit;
+    m_Pos_Base_Pos[1] = ret[1]*dist_unit;
+    m_Pos_Base_Pos[2] = ret[2]*dist_unit;
+    m_Pos_Base_Pos[3] = ret[3];
+    m_Pos_Base_Pos[4] = ret[4];
+    m_Pos_Base_Pos[5] = ret[5];
 
-    test_base_task[3] = (ret[3]);
+}
 
-    test_base_task[4] = (ret[4]);
+void dialogprogram_detection::on_pushButton_Set_Obj_Pos_clicked()
+{
+    /*************get robot pos**********/
+    double ret[6];
+    m_IndyDCP->getTaskPosition(ret);
+    double dist_unit = 1000.0;
+    /****************************************/
 
-    test_base_task[5] = (ret[5]);
+    int index = 0;
+    float target_x = m_detection_result[index].mm_center_x;
+    float target_y = m_detection_result[index].mm_center_y;
+
+    qDebug("target x,y,z (%f/%f/%f)\n",target_x, target_y);
+
+
+    double move_to_pos[6];
+
+    QString qstr_angle = ui->Edit_Angle->toPlainText();
+    double dest_angle = qstr_angle.toFloat();
+    int CalcAngle_Final = calc_PickAngle(dest_angle);
+
+    m_Pos_Obj_Pos[0] = (target_x);
+    m_Pos_Obj_Pos[1] = (target_y);
+    m_Pos_Obj_Pos[2] = m_Pos_Base_Pos[2];
+    m_Pos_Obj_Pos[3] = 180 ;
+    m_Pos_Obj_Pos[4] = 0 ;
+    m_Pos_Obj_Pos[5] = m_Pos_Base_Pos[5];// - CalcAngle_Final;
+
+
+	move_to_pos[0] = m_Pos_Obj_Pos[0]/dist_unit;
+	move_to_pos[1] = m_Pos_Obj_Pos[1]/dist_unit;
+	move_to_pos[2] = m_Pos_Obj_Pos[2]/dist_unit;
+	move_to_pos[3] = m_Pos_Obj_Pos[3];
+	move_to_pos[4] = m_Pos_Obj_Pos[4];
+	move_to_pos[5] = m_Pos_Obj_Pos[5];
+
+    m_IndyDCP->moveTaskTo(move_to_pos);
+
+    int loop_cnt = 0;
+    while (1)
+    {
+        bool check_finish;
+        m_IndyDCP->isMoveFinished(check_finish);
+        if (check_finish == true)
+        {
+            break;
+        }
+        usleep(50*1000);
+        loop_cnt += 50;
+        if (loop_cnt > 3000)
+        {
+            break;
+        }
+    }
+
+    on_pushButton_Get_clicked();
+}
+
+void dialogprogram_detection::on_pushButton_Set_Pick_Pos_clicked()
+{
+    double ret[6];
+    m_IndyDCP->getTaskPosition(ret);
+
+    double dist_unit = 1000.0;
+
+    QString str;
+    str = QString::number(m_Pos_Pick_Pos[0]);
+    ui->Edit_X->setText(str);
+    str = QString::number(m_Pos_Pick_Pos[1]);
+    ui->Edit_Y->setText(str);
+    str = QString::number(m_Pos_Pick_Pos[2]);
+    ui->Edit_Z->setText(str);
+    str = QString::number(m_Pos_Pick_Pos[3]);
+    ui->Edit_U->setText(str);
+    str = QString::number(m_Pos_Pick_Pos[4]);
+    ui->Edit_V->setText(str);
+    str = QString::number(m_Pos_Pick_Pos[5]);
+    ui->Edit_W->setText(str);
+
+
+    m_Pos_Pick_Pos[0] = ret[0]*dist_unit;
+    m_Pos_Pick_Pos[1] = ret[1]*dist_unit;
+    m_Pos_Pick_Pos[2] = ret[2]*dist_unit;
+    m_Pos_Pick_Pos[3] = ret[3];
+    m_Pos_Pick_Pos[4] = ret[4];
+    m_Pos_Pick_Pos[5] = ret[5];
+}
+
+void dialogprogram_detection::on_pushButton_Go_Base_Pos_clicked()
+{
+    double dist_unit = 1000.0;
+    double move_to_pos[6];
+
+    move_to_pos[0] = m_Pos_Base_Pos[0]/dist_unit;
+    move_to_pos[1] = m_Pos_Base_Pos[1]/dist_unit;
+    move_to_pos[2] = m_Pos_Base_Pos[2]/dist_unit;
+    move_to_pos[3] = m_Pos_Base_Pos[3];
+    move_to_pos[4] = m_Pos_Base_Pos[4];
+    move_to_pos[5] = m_Pos_Base_Pos[5];
+
+    m_IndyDCP->moveTaskTo(move_to_pos);
+
+    int loop_cnt = 0;
+    while (1)
+    {
+        bool check_finish;
+        m_IndyDCP->isMoveFinished(check_finish);
+        if (check_finish == true)
+        {
+            break;
+        }
+        usleep(50*1000);
+        loop_cnt += 50;
+        if (loop_cnt > 3000)
+        {
+            break;
+        }
+    }
+}
+
+void dialogprogram_detection::on_pushButton_Set_Calc_Offset_clicked()
+{
+    m_Pos_Calc_Offset[0] = m_Pos_Pick_Pos [0] - m_Pos_Obj_Pos[0];
+    m_Pos_Calc_Offset[1] = m_Pos_Pick_Pos [1] - m_Pos_Obj_Pos[1];
+    m_Pos_Calc_Offset[2] = m_Pos_Pick_Pos [2] - m_Pos_Obj_Pos[2];
+
+    QString str;
+
+    str.sprintf("%f",m_Pos_Calc_Offset[0]);
+    ui->label_X_Offset->setText(str);
+
+    str.sprintf("%f",m_Pos_Calc_Offset[1]);
+    ui->label_Y_Offset->setText(str);
+
+    str.sprintf("%f",m_Pos_Calc_Offset[2]);
+    ui->label_Z_Offset->setText(str);
+}
+void dialogprogram_detection::on_pushButton_Set_Pick_Angle_clicked()
+{
+    QString qstr_user_angle = ui->Edit_Angle->toPlainText();
+    m_Angle_UserPick = calc_PickAngle(qstr_user_angle.toFloat());
+}
+
+void dialogprogram_detection::on_pushButton_Add_Pick_clicked()
+{
+    //DialogProgram* myParent = (DialogProgram*)this->parent();
+
+    QString job_str;
+    job_str.sprintf("PickPos|%f,%f,%f,%f", m_Pos_Calc_Offset[0],m_Pos_Calc_Offset[1],m_Pos_Calc_Offset[2],m_Angle_UserPick );
+
+    QList<QTreeWidgetItem*> SelectedItem = m_TreeWidget->selectedItems();
+
+    QTreeWidgetItem* new_child = new QTreeWidgetItem;
+    new_child->setText(0,job_str);
+    //myParent->on_TreeWidget_Put_Item(new_child);
+
+    QTreeWidgetItem* parentItem = SelectedItem[0]->parent();
+
+    if( SelectedItem[0]->text(0) == "Detection")
+    {
+        SelectedItem[0]->addChild(new_child);
+        SelectedItem[0]->setExpanded(true);
+    }
+    else
+    {
+        int Index_selectedItem = parentItem->indexOfChild(SelectedItem[0]);
+        parentItem->insertChild(Index_selectedItem+1,new_child);
+    }
 
 }

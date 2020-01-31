@@ -39,15 +39,21 @@ private slots:
 
     void on_pushButton_Go_PickPosition_clicked();
 
-    void on_pushButton_Add_Go_PickPosition_clicked();
-
-    void on_pushButton_Go_AnglePosition_clicked();
-
     void on_pushButton_Get_clicked();
 
-    void on_pushButton_Set_PickPos_clicked();
+    void on_pushButton_Set_Base_Position_clicked();
 
-    void on_pushButton_Set_BasePos_clicked();
+    void on_pushButton_Set_Obj_Pos_clicked();
+
+    void on_pushButton_Set_Pick_Pos_clicked();
+
+    void on_pushButton_Go_Base_Pos_clicked();
+
+    void on_pushButton_Set_Calc_Offset_clicked();
+
+    void on_pushButton_Set_Pick_Angle_clicked();
+
+    void on_pushButton_Add_Pick_clicked();
 
 private:
     QTreeWidget* m_TreeWidget;
@@ -58,9 +64,8 @@ private:
     std::vector<detection_result> m_detection_result;
 
 	void Run_Job(QString qstr_job_id);
-    void Run_PickPos(QString qstr_x, QString qstr_y,QString qstr_z, QString qstr_u, QString qstr_v, QString qstr_w );
-    void Run_PickAngle(QString qstr_angle);
-
+    void Run_PickPos(QString qstr_offset_x, QString qstr_offset_y, QString qstr_offset_z, QString qstr_offset_angle  );
+ 
     double calc_PickAngle(int dest_angle);
 
 public:
@@ -69,7 +74,15 @@ public:
 	
 
 public:
-    double test_base_task[6];
+
+	double m_Pos_Base_Pos[6];
+
+	double m_Pos_Obj_Pos[6];
+
+    double m_Pos_Pick_Pos[6];    
+    double m_Pos_Calc_Offset[6];
+
+	double m_Angle_UserPick;
     
 };
 
