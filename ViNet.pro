@@ -96,7 +96,8 @@ HEADERS += \
     ui/dialogprogram.h \ 
     ui/dialogprogram_jointmove.h \
     ui/dialogprogram_framemove.h \
-    ui/dialogprogram_detection.h
+    ui/dialogprogram_detection.h \
+    ui/dialogprogram_io_control.h
 
 SOURCES += \
     module/streambookmarks/xbelreader.cpp \
@@ -159,7 +160,8 @@ SOURCES += \
     ui/dialogprogram.cpp \
     ui/dialogprogram_jointmove.cpp \
     ui/dialogprogram_framemove.cpp \
-    ui/dialogprogram_detection.cpp
+    ui/dialogprogram_detection.cpp \
+    ui/dialogprogram_io_control.cpp
 
 FORMS += \
     ui/cdialogconnect.ui \
@@ -196,5 +198,6 @@ FORMS += \
     ui/dialogprogram.ui \
     ui/dialogprogram_jointmove.ui \
     ui/dialogprogram_framemove.ui \
-    ui/dialogprogram_detection.ui
+    ui/dialogprogram_detection.ui \
+    ui/dialogprogram_io_control.ui
 
