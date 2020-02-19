@@ -76,7 +76,7 @@ void DialogSetCalibration::OnButtonGetChessInfo(void)
 {
 	int chess_x_num = 0 ;
 	int chess_y_num = 0 ;
-	int chess_square_mm_size = 0 ;
+    float chess_square_mm_size = 0 ;
 
 	Ensemble_Job_Calibration_Get_Chess_Info(GetId(), &chess_x_num, &chess_y_num, &chess_square_mm_size);
 

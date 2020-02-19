@@ -23,7 +23,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 # You can also select to disable deprecated APIs only up to a certain version of Qt.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
-INCLUDEPATH += ./src ./module/EnsembleAPI ./module/EnsembleAPI/src ./module/PacketEthComm ./module/EnsembleCommon ./module/EnsembleCommand ./module/ImgEncDec ./module/pugixml/src
+INCLUDEPATH += ./src ./module/EnsembleAPI ./module/EnsembleAPI/src ./module/PacketEthComm ./module/PacketEthComm/Client ./module/EnsembleCommon ./module/EnsembleCommand ./module/ImgEncDec ./module/pugixml/src
 LIBS += -lboost_system -lboost_thread -lboost_filesystem -lboost_regex
 
 CONFIG += link_pkgconfig
@@ -40,9 +40,6 @@ HEADERS += \
     module/EnsembleCommon/EnsembleCommon.h \
     module/ImgEncDec/ImgDec.h \
     module/ImgEncDec/ImgEnc.h \
-    module/PacketEthComm/ErrorType.h \
-    module/PacketEthComm/EthernetClient.h \
-    module/PacketEthComm/RendezvueCheckData.h \
     module/pugixml/src/pugiconfig.hpp \
     module/pugixml/src/pugixml.hpp \
     src/cdialogconnect.h \
@@ -76,8 +73,6 @@ HEADERS += \
     src/formtoollist.h \
     src/formtooloption.h \
     src/mainwindow.h \
-    module/PacketEthComm/EthernetClientControlData.h \
-    module/PacketEthComm/EthernetGetInfo.h \
     src/dialogsetcustomfeatureoption.h \
     src/csearchtreeitem.h \
     src/dialogresultinfo.h \
@@ -86,7 +81,12 @@ HEADERS += \
     src/cgetimagethread.h \
     src/dialogsettooloffsetdistance.h \
     src/dialogsetcode.h \
-    src/dialogsetdetectplane.h
+    src/dialogsetdetectplane.h \
+    module/PacketEthComm/ErrorType.h \
+    module/PacketEthComm/RendezvueCheckData.h \
+    module/PacketEthComm/EthernetGetInfo.h \
+    module/PacketEthComm/Client/EthernetClient.h \
+    module/PacketEthComm/Client/EthernetClientControlData.h
 
 SOURCES += \
     module/EnsembleAPI/src/Interface.cpp \
@@ -94,8 +94,6 @@ SOURCES += \
     module/EnsembleAPI/EnsembleAPI.cpp \
     module/ImgEncDec/ImgDec.cpp \
     module/ImgEncDec/ImgEnc.cpp \
-    module/PacketEthComm/EthernetClient.cpp \
-    module/PacketEthComm/RendezvueCheckData.cpp \
     module/pugixml/src/pugixml.cpp \
     src/cdialogconnect.cpp \
     src/cdialognewproject.cpp \
@@ -129,8 +127,6 @@ SOURCES += \
     src/formtooloption.cpp \
     src/main.cpp \
     src/mainwindow.cpp \
-    module/PacketEthComm/EthernetClientControlData.cpp \
-    module/PacketEthComm/EthernetGetInfo.cpp \
     src/dialogsetcustomfeatureoption.cpp \
     src/csearchtreeitem.cpp \
     src/dialogresultinfo.cpp \
@@ -139,7 +135,11 @@ SOURCES += \
     src/cgetimagethread.cpp \
     src/dialogsettooloffsetdistance.cpp \
     src/dialogsetcode.cpp \
-    src/dialogsetdetectplane.cpp
+    src/dialogsetdetectplane.cpp \
+    module/PacketEthComm/EthernetGetInfo.cpp \
+    module/PacketEthComm/RendezvueCheckData.cpp \
+    module/PacketEthComm/Client/EthernetClient.cpp \
+    module/PacketEthComm/Client/EthernetClientControlData.cpp
 
 FORMS += \
     ui/cdialogconnect.ui \
