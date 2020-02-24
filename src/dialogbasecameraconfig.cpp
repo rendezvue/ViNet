@@ -511,8 +511,8 @@ void DialogBaseCameraConfig::updatePicture(cv::Mat image)
 
 			bool bEnd = qPainter.end();
 		}
-		
-		if( !m_rect_user.empty() )
+
+        if( !(m_rect_user.width <= 0 || m_rect_user.height <= 0) )
 		{
 			if( m_rect_user.width > 0 && m_rect_user.height > 0 )
 			{

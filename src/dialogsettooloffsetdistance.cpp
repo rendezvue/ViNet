@@ -1,6 +1,6 @@
 #include "dialogsettooloffsetdistance.h"
 #include "ui_dialogsettooloffsetdistance.h"
-
+#include <QButtonGroup>
 DialogSetToolOffsetDistance::DialogSetToolOffsetDistance(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::DialogSetToolOffsetDistance)
@@ -138,7 +138,7 @@ void DialogSetToolOffsetDistance::updatePicture(cv::Mat image, cv::Rect rect_use
 	QImage qt_display_image = cls_mat_2_qimage.cvtMat2QImage(image, ui->label_image->width(), ui->label_image->height()) ;
 	
 	//draw set rect
-	if( !rect_user.empty() )
+    if( !(rect_user.width <= 0 || rect_user.height <= 0) )
 	{
 	    qDebug("%s : rect(%d,%d,%d,%d", __func__, rect_user.x, rect_user.y, rect_user.width, rect_user.height) ;
 

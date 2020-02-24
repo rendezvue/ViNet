@@ -4,7 +4,7 @@ UI program for embedded smart camera "Ensemble"
 * * *
 ## Compile
 1. Install QT lib. and QT Creator
-2. Install OpenCV lib.
+2. Install OpenCV lib. (v3.2 or higher)
 3. Install Boost lib.
 4. Get ViNet source code
 <pre><code>

@@ -124,7 +124,7 @@ void DialogSetDetectPlane::updatePicture(cv::Mat image, cv::Rect rect_user)
     CMat2QImage cls_mat_2_qimage ;
 	QImage qt_display_image = cls_mat_2_qimage.cvtMat2QImage(image, ui->label_image->width(), ui->label_image->height()) ;
 
-	if( !rect_user.empty() )
+    if( !(rect_user.width <= 0 || rect_user.height <= 0))
 	{
 		//draw set rect
 	    qDebug("%s : rect(%d,%d,%d,%d", __func__, rect_user.x, rect_user.y, rect_user.width, rect_user.height) ;
