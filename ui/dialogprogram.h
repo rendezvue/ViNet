@@ -27,6 +27,8 @@
 #include "dialogprogram_jointmove.h"
 #include "dialogprogram_framemove.h"
 #include "dialogprogram_detection.h"
+#include "dialogprogram_io_control.h"
+#include "dialogprogram_loop.h"
 
 using namespace std;
 using namespace NRMKIndy::Service::DCP;
@@ -89,6 +91,8 @@ public:
     dialogprogram_jointmove *m_dlg_jointmove;
     dialogprogram_framemove *m_dlg_framemove;
     dialogprogram_detection *m_dlg_detection;
+    dialogprogram_io_control *m_dlg_io_control;
+    dialogprogram_loop *m_dlg_loop;
 };
 
 #endif // DIALOGPROGRAM_H

@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>dialogprogram_loop</class>
+ <widget class="QDialog" name="dialogprogram_loop">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>492</width>
+    <height>369</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Dialog</string>
+  </property>
+  <widget class="QRadioButton" name="radioButton_Unlimit">
+   <property name="geometry">
+    <rect>
+     <x>90</x>
+     <y>100</y>
+     <width>118</width>
+     <height>24</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Unlimit</string>
+   </property>
+  </widget>
+  <widget class="QRadioButton" name="radioButton_Count">
+   <property name="geometry">
+    <rect>
+     <x>90</x>
+     <y>150</y>
+     <width>71</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Count</string>
+   </property>
+  </widget>
+  <widget class="QTextEdit" name="textEdit">
+   <property name="geometry">
+    <rect>
+     <x>170</x>
+     <y>150</y>
+     <width>111</width>
+     <height>31</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label">
+   <property name="geometry">
+    <rect>
+     <x>290</x>
+     <y>150</y>
+     <width>74</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>times</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButton_LoopType_Add">
+   <property name="geometry">
+    <rect>
+     <x>360</x>
+     <y>100</y>
+     <width>91</width>
+     <height>81</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Add</string>
+   </property>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

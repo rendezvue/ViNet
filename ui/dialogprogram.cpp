@@ -14,7 +14,10 @@
 #define ROBOT_CMD_MoveJ        	"MoveJ"
 #define ROBOT_CMD_MoveF         "MoveF"
 #define ROBOT_CMD_Detection     "Detection"
-
+#define ROBOT_CMD_IO_CONTROL    "IO_Control"
+#define ROBOT_CMD_LOOP          "Loop"
+#define ROBOT_CMD_If            "If"
+#define ROBOT_CMD_CaptureImage  "CaptureImage"
 /*
 #define ROBOT_CMD_DETECTION  	"DETECTION"
 #define ROBOT_CMD_RELATIVE  	"RELATIVE"
@@ -33,6 +36,7 @@
 
 #define ROBOT_CMD_TOP_ITEM       "Robot Program"
 
+
 DialogProgram::DialogProgram(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::DialogProgram)
@@ -49,7 +53,34 @@ DialogProgram::DialogProgram(QWidget *parent) :
     m_dlg_jointmove = NULL;
     m_dlg_framemove = NULL;
     m_dlg_detection = NULL;
-
+    m_dlg_io_control = NULL;
+    m_dlg_loop = NULL;
+    //   SetIndyDcp
+   if( m_dlg_jointmove == NULL )
+   {
+       m_dlg_jointmove = new dialogprogram_jointmove(m_IndyDCP_connector,ui->treeWidget_Program,this);
+       QMdiSubWindow *window = ui->mdiArea_SubSetting->addSubWindow(m_dlg_jointmove,Qt::FramelessWindowHint);
+   }
+   if( m_dlg_framemove == NULL )
+   {
+       m_dlg_framemove = new dialogprogram_framemove(m_IndyDCP_connector,ui->treeWidget_Program,this);
+       QMdiSubWindow *window = ui->mdiArea_SubSetting->addSubWindow(m_dlg_framemove,Qt::FramelessWindowHint);
+   }
+   if( m_dlg_detection == NULL )
+   {
+       m_dlg_detection = new dialogprogram_detection(m_IndyDCP_connector,ui->treeWidget_Program,this);
+       QMdiSubWindow *window = ui->mdiArea_SubSetting->addSubWindow(m_dlg_detection,Qt::FramelessWindowHint);
+   }
+   if( m_dlg_io_control == NULL )
+   {
+       m_dlg_io_control = new dialogprogram_io_control(ui->treeWidget_Program,this);
+       QMdiSubWindow *window = ui->mdiArea_SubSetting->addSubWindow(m_dlg_io_control,Qt::FramelessWindowHint);
+   }
+   if( m_dlg_loop == NULL )
+   {
+       m_dlg_loop = new dialogprogram_loop(ui->treeWidget_Program, this);
+       QMdiSubWindow *window = ui->mdiArea_SubSetting->addSubWindow(m_dlg_loop,Qt::FramelessWindowHint);
+   }
 
 }
 
@@ -78,6 +109,10 @@ void DialogProgram::Init_ToolBox()
     m_Widget_ToolBox->addItem(ROBOT_CMD_MoveJ   		);
     m_Widget_ToolBox->addItem(ROBOT_CMD_MoveF    		);
     m_Widget_ToolBox->addItem(ROBOT_CMD_Detection       );
+    m_Widget_ToolBox->addItem(ROBOT_CMD_IO_CONTROL      );
+    m_Widget_ToolBox->addItem(ROBOT_CMD_LOOP            );
+    m_Widget_ToolBox->addItem(ROBOT_CMD_If              );
+    m_Widget_ToolBox->addItem(ROBOT_CMD_CaptureImage    );
 
 
 /*    m_Widget_ToolBox->addItem(ROBOT_CMD_DETECTION       );
@@ -119,6 +154,7 @@ void DialogProgram::on_pushButton_Connect_Indy7_clicked()
     {
         QMessageBox::information(this,tr("INDY 7 Conenect OK"),tr("This is a ..."));
 
+#if 0
      //   SetIndyDcp
         if( m_dlg_jointmove == NULL )
         {
@@ -135,6 +171,12 @@ void DialogProgram::on_pushButton_Connect_Indy7_clicked()
             m_dlg_detection = new dialogprogram_detection(m_IndyDCP_connector,ui->treeWidget_Program,this);
             QMdiSubWindow *window = ui->mdiArea_SubSetting->addSubWindow(m_dlg_detection,Qt::FramelessWindowHint);
         }
+        if( m_dlg_io_control == NULL )
+        {
+            m_dlg_io_control = new dialogprogram_io_control(ui->treeWidget_Program,this);
+            QMdiSubWindow *window = ui->mdiArea_SubSetting->addSubWindow(m_dlg_io_control,Qt::FramelessWindowHint);
+        }
+#endif
     }
     else
     {
@@ -170,13 +212,29 @@ void DialogProgram::on_TreeWidget_Put_Item(QListWidgetItem *Listitem)
 
     bool first_child = false;
 
-    if( selectedItem->text(0) == ROBOT_CMD_TOP_ITEM )
+    string selected_str = selectedItem->text(0).toStdString();
+
+    vector<string> selected_str_split = split(selected_str,'|');
+
+    QString selectedItem_text = selectedItem->text(0);
+
+    if( selected_str_split.size() > 1 )
+    {
+        selectedItem_text = selected_str_split[0].c_str();
+    }
+
+    if( selectedItem_text == ROBOT_CMD_TOP_ITEM )
     {
         selectedItem->addChild(new_child);
         selectedItem->setExpanded(true);
 
 //        Calc_Parent = selectedItem;
 //        first_child = true;
+    }
+    else if( selectedItem_text == ROBOT_CMD_LOOP )
+    {
+        selectedItem->addChild(new_child);
+        selectedItem->setExpanded(true);
     }
     else
     {
@@ -218,7 +276,14 @@ void DialogProgram::on_TreeWidget_Put_Item(QListWidgetItem *Listitem)
 void DialogProgram::on_treeWidget_Program_itemClicked(QTreeWidgetItem *item, int column)
 {
 //    QList <QTreeWidgetItem*> itemtree = ui->treeWidget_Program->selectedItems();
-    QString item_text=item->text(0);
+
+    QTreeWidgetItem* selectedItem = item;
+    string selected_str = selectedItem->text(0).toStdString();
+    vector<string> selected_str_split = split(selected_str,'|');
+//    QString selectedItem_text = selectedItem->text(0);
+
+
+    QString item_text= selected_str_split[0].c_str();
     QString parent_text = "";
     if(item->parent())
     {
@@ -226,19 +291,25 @@ void DialogProgram::on_treeWidget_Program_itemClicked(QTreeWidgetItem *item, int
     }
     if( item_text == ROBOT_CMD_MoveJ || parent_text == ROBOT_CMD_MoveJ )
     {        
-
         m_dlg_jointmove->showMaximized();
         m_dlg_jointmove->ParseString();
     }
     if( item_text == ROBOT_CMD_MoveF || parent_text == ROBOT_CMD_MoveF )
     {
-
         m_dlg_framemove->showMaximized();
         m_dlg_framemove->ParseString();
     }
     if( item_text == ROBOT_CMD_Detection || parent_text == ROBOT_CMD_Detection )
     {
         m_dlg_detection->showMaximized();
+    }
+    if( item_text == ROBOT_CMD_IO_CONTROL || parent_text == ROBOT_CMD_IO_CONTROL  )
+    {
+        m_dlg_io_control->showMaximized();
+    }
+    if( item_text == ROBOT_CMD_LOOP )//|| parent_text == ROBOT_CMD_LOOP )
+    {
+        m_dlg_loop->showMaximized();
     }
 }
 
@@ -413,6 +484,14 @@ void DialogProgram::Run_Parsing_Program(QTreeWidgetItem *item)
             {
 				m_dlg_detection->Program_Run_PickPos(cmd,Desc);
             }
+        }
+        else if( cmd == "IO_GET")
+        {
+
+        }
+        else if( cmd == "IO_SET")
+        {
+
         }
     }
 }

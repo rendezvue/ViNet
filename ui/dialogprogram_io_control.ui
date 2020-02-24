@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>579</width>
-    <height>471</height>
+    <width>660</width>
+    <height>582</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -16,10 +16,10 @@
   <widget class="QFrame" name="frame">
    <property name="geometry">
     <rect>
-     <x>70</x>
-     <y>60</y>
-     <width>411</width>
-     <height>151</height>
+     <x>30</x>
+     <y>140</y>
+     <width>491</width>
+     <height>91</height>
     </rect>
    </property>
    <property name="frameShape">
@@ -28,14 +28,83 @@
    <property name="frameShadow">
     <enum>QFrame::Raised</enum>
    </property>
+   <widget class="QComboBox" name="comboBox_In_Pinnum">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>40</y>
+      <width>93</width>
+      <height>26</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QComboBox" name="comboBox_In_State">
+    <property name="geometry">
+     <rect>
+      <x>160</x>
+      <y>40</y>
+      <width>93</width>
+      <height>26</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_3">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>20</y>
+      <width>74</width>
+      <height>18</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Pin Num</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_5">
+    <property name="geometry">
+     <rect>
+      <x>160</x>
+      <y>20</y>
+      <width>74</width>
+      <height>18</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>State</string>
+    </property>
+   </widget>
+   <widget class="QComboBox" name="comboBox_In_Value">
+    <property name="geometry">
+     <rect>
+      <x>300</x>
+      <y>40</y>
+      <width>93</width>
+      <height>26</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_4">
+    <property name="geometry">
+     <rect>
+      <x>300</x>
+      <y>20</y>
+      <width>74</width>
+      <height>18</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Value</string>
+    </property>
+   </widget>
   </widget>
   <widget class="QFrame" name="frame_2">
    <property name="geometry">
     <rect>
-     <x>70</x>
-     <y>250</y>
+     <x>30</x>
+     <y>260</y>
      <width>411</width>
-     <height>151</height>
+     <height>81</height>
     </rect>
    </property>
    <property name="frameShape">
@@ -44,12 +113,58 @@
    <property name="frameShadow">
     <enum>QFrame::Raised</enum>
    </property>
+   <widget class="QLabel" name="label_7">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>20</y>
+      <width>74</width>
+      <height>18</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Pin Num</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_6">
+    <property name="geometry">
+     <rect>
+      <x>160</x>
+      <y>20</y>
+      <width>74</width>
+      <height>18</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Value</string>
+    </property>
+   </widget>
+   <widget class="QComboBox" name="comboBox_Out_Value">
+    <property name="geometry">
+     <rect>
+      <x>160</x>
+      <y>40</y>
+      <width>93</width>
+      <height>26</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QComboBox" name="comboBox_Out_Pinnum">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>40</y>
+      <width>93</width>
+      <height>26</height>
+     </rect>
+    </property>
+   </widget>
   </widget>
   <widget class="QLabel" name="label">
    <property name="geometry">
     <rect>
-     <x>80</x>
-     <y>40</y>
+     <x>40</x>
+     <y>120</y>
      <width>74</width>
      <height>18</height>
     </rect>
@@ -61,14 +176,89 @@
   <widget class="QLabel" name="label_2">
    <property name="geometry">
     <rect>
-     <x>80</x>
-     <y>230</y>
+     <x>40</x>
+     <y>240</y>
      <width>74</width>
      <height>18</height>
     </rect>
    </property>
    <property name="text">
     <string>Output</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButton_Get_Digital_IO">
+   <property name="geometry">
+    <rect>
+     <x>380</x>
+     <y>80</y>
+     <width>95</width>
+     <height>26</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>PushButton</string>
+   </property>
+  </widget>
+  <widget class="QListWidget" name="listWidget_JobList">
+   <property name="geometry">
+    <rect>
+     <x>30</x>
+     <y>10</y>
+     <width>451</width>
+     <height>61</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButton_Get_JobList">
+   <property name="geometry">
+    <rect>
+     <x>30</x>
+     <y>80</y>
+     <width>111</width>
+     <height>26</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Get Job List</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="Run_Job">
+   <property name="geometry">
+    <rect>
+     <x>150</x>
+     <y>80</y>
+     <width>111</width>
+     <height>26</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Run Job</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButton_Out_Set">
+   <property name="geometry">
+    <rect>
+     <x>450</x>
+     <y>270</y>
+     <width>95</width>
+     <height>26</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Set</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButton_Out_Add">
+   <property name="geometry">
+    <rect>
+     <x>450</x>
+     <y>310</y>
+     <width>95</width>
+     <height>26</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Add</string>
    </property>
   </widget>
  </widget>
