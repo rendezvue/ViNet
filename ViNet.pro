@@ -27,7 +27,7 @@ INCLUDEPATH += ./src ./module/EnsembleAPI ./module/EnsembleAPI/src ./module/Pack
 LIBS += -lboost_system -lboost_thread -lboost_filesystem -lboost_regex
 
 CONFIG += link_pkgconfig
-#PKGCONFIG += opencv4
+PKGCONFIG += opencv
 
 RESOURCES += \
     resource.qrc
