@@ -17,6 +17,12 @@ $git submodule update</code></pre>
 6. Open "ViNet.pro" and Compile using QT Creator
 7. Enjoy!
 
+## How to install dependency libraries on Ubuntu.
+sudo apt-get install libdc1394-22 libavcodec-dev libswscale-dev libavformat-dev libopencv-dev libboost-all-dev 
+
+## How to install QT Creator on Ubuntu.
+sudo apt-get install build-essential qtcreator qt5-default
+
 * * *
 ## Application
 1. Smart Factory : Gasket Detect and Inspect
