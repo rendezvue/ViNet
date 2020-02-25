@@ -177,7 +177,7 @@ void DialogBaseCameraConfig::showEvent(QShowEvent *ev)
 
 void DialogBaseCameraConfig::OnButtonExposureGet(void)
 {
-	int exposure_value = Ensemble_Camera_Get_Manual_Exposure_Value(GetId()) ;
+    int exposure_value = Ensemble_Camera_Get_Manual_Exposure_Value(GetId()) ;
 
 	ui->lineEdit_exposure->setText(QString::number(exposure_value));
 
@@ -432,6 +432,14 @@ void DialogBaseCameraConfig::OnButtonReset(void)
 	OnButtonContrastGet() ;
 	OnButtonISOGet() ;
 	OnButtonShutterSpeedGet() ;
+
+    int check_image_flip_v = Ensemble_Camera_Get_Flip_V(GetId()) ;
+    if( check_image_flip_v )	ui->checkBox_image_flip_v->setChecked(true) ;
+    else						ui->checkBox_image_flip_v->setChecked(false) ;
+
+    int check_image_flip_h = Ensemble_Camera_Get_Flip_H(GetId()) ;
+    if( check_image_flip_h )	ui->checkBox_image_flip_h->setChecked(true) ;
+    else						ui->checkBox_image_flip_h->setChecked(false) ;
 }
 
 void DialogBaseCameraConfig::OnButtonSetCamera(void)

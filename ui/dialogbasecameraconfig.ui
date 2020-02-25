@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1210</width>
-    <height>700</height>
+    <width>932</width>
+    <height>594</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -805,19 +805,6 @@
      </property>
     </widget>
    </widget>
-   <widget class="QPushButton" name="pushButton_reset">
-    <property name="geometry">
-     <rect>
-      <x>240</x>
-      <y>600</y>
-      <width>181</width>
-      <height>51</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>Factory Reset</string>
-    </property>
-   </widget>
    <widget class="QPushButton" name="pushButton_set_camera">
     <property name="geometry">
      <rect>
@@ -937,6 +924,19 @@
      </widget>
     </item>
    </layout>
+  </widget>
+  <widget class="QPushButton" name="pushButton_reset">
+   <property name="geometry">
+    <rect>
+     <x>470</x>
+     <y>530</y>
+     <width>181</width>
+     <height>51</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Factory Reset</string>
+   </property>
   </widget>
  </widget>
  <resources/>
