@@ -195,6 +195,32 @@ void FormJobTool::OnButtonSetBase(void)
 	    {
 	    }
 	}
+    else if( type == ToolTypeList::TOOL_TYPE_CRACK )		//crack
+   	{
+   		DialogChangeName dlg_change_name ;
+
+	    dlg_change_name.SetId(GetIdInfo());
+	    dlg_change_name.SetName(GetNameInfo());
+
+	    int dialogCode = dlg_change_name.exec();
+
+	    if(dialogCode == QDialog::Accepted)
+	    { // YesButton clicked
+	        std::string change_name = dlg_change_name.GetName() ;
+
+	        qDebug("Project Change Name = %s", change_name.c_str()) ;
+			
+	        if( !change_name.empty() )
+	        {
+	            Ensemble_Tool_Set_Name(GetIdInfo(), change_name) ;
+	        }
+
+	        std::string project_name = Ensemble_Tool_Get_Name(GetIdInfo()) ;
+	        ui->label_name->setText(QString::fromUtf8(project_name.c_str()));
+
+	        qDebug("Project Name = %s", project_name.c_str()) ;
+	    }
+	}
 	
 #if 0
     else if( type == ToolTypeList::TOOL_TYPE_INSPECT_DISTANCE )
