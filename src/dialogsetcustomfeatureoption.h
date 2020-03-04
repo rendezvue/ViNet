@@ -5,6 +5,7 @@
 
 //API
 #include "EnsembleAPI.h"
+#include "censemble.h"
 
 
 namespace Ui {

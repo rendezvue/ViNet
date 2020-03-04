@@ -7,6 +7,7 @@
 
 //API
 #include "EnsembleAPI.h"
+#include "censemble.h"
 
 //dialog
 #include "dialogsettoolobject.h"

@@ -99,30 +99,30 @@ void CJobTree::dropEvent(QDropEvent *event)
 
         qDebug("dropEvent : project id = %s", str_target_id.c_str()) ;
 
-        //if( Ensemble_Network_IsOnline() & ENSEMBLE_CONNECT_CONTROL_PORT )
+        //if( CEnsemble::getInstance()->m_cls_api.Ensemble_Network_IsOnline() & ENSEMBLE_CONNECT_CONTROL_PORT )
 		{
 			if( item_to_type == JobType::JOB_TYPE_PROJECT )
 			{
 				if( item_from_type >= JobType::JOB_TYPE_BASE && item_from_type < JobType::JOB_TYPE_BASE+10000 )
 				{
-					qDebug("call API : Ensemble_Job_Add_New(%s)", str_target_id.c_str()) ;
+					qDebug("call API : CEnsemble::getInstance()->m_cls_api.Ensemble_Job_Add_New(%s)", str_target_id.c_str()) ;
 					
-					Ensemble_Job_Add_New(str_target_id, item_from_type) ;
+					CEnsemble::getInstance()->m_cls_api.Ensemble_Job_Add_New(str_target_id, item_from_type) ;
 				}
 			}
 			else if( item_to_type == JobType::JOB_TYPE_BASE )
 			{
 				if( item_from_type >= JobType::JOB_TYPE_TOOL && item_from_type < JobType::JOB_TYPE_TOOL+10000 )
 				{
-                    qDebug("call API : Ensemble_Tool_Add_New (target id = %s)", str_target_id.c_str()) ;
+                    qDebug("call API : CEnsemble::getInstance()->m_cls_api.Ensemble_Tool_Add_New (target id = %s)", str_target_id.c_str()) ;
 					
-					Ensemble_Tool_Add_New(str_target_id, item_from_type) ;
+					CEnsemble::getInstance()->m_cls_api.Ensemble_Tool_Add_New(str_target_id, item_from_type) ;
 				}
 			}
 			else if( item_to_type >= JobType::JOB_TYPE_TOOL && item_to_type < JobType::JOB_TYPE_TOOL+10000 )
 			{
 				//Insert
-				//int Ensemble_Tool_Insert(const std::string parent_id, const int index, const int tool_type)
+				//int CEnsemble::getInstance()->m_cls_api.Ensemble_Tool_Insert(const std::string parent_id, const int index, const int tool_type)
 				qDebug("call API : EnsembleInsertTool : Type Tool") ;
 				
 				//parent
@@ -136,7 +136,7 @@ void CJobTree::dropEvent(QDropEvent *event)
 				        QString parent_job_base_id = parent_item_user_data.toString() ;
 				        std::string str_parent_job_base_id = parent_job_base_id.toUtf8().constData() ;
 
-                        Ensemble_Tool_Insert(str_parent_job_base_id, target_index, item_from_type) ;
+                        CEnsemble::getInstance()->m_cls_api.Ensemble_Tool_Insert(str_parent_job_base_id, target_index, item_from_type) ;
 
 						qDebug("call API : EnsembleInsertTool : Type Tool : parent id=%s, target_index=%d, type=%d", str_parent_job_base_id.c_str(), target_index, item_from_type) ;
 						
@@ -147,7 +147,7 @@ void CJobTree::dropEvent(QDropEvent *event)
 #if 0			
 			else if( item->type() == JobType::JOB_TYPE_BASE )
 			{
-                Ensemble_Tool_Add_New(str_job_base_id, type) ;
+                CEnsemble::getInstance()->m_cls_api.Ensemble_Tool_Add_New(str_job_base_id, type) ;
 
 				qDebug("call API : EnsembleAddTool(%s, %d)", str_job_project_id.c_str(), type) ;
 			}
@@ -166,7 +166,7 @@ void CJobTree::dropEvent(QDropEvent *event)
 				        QString parent_job_base_id = parent_item_user_data.toString() ;
 				        std::string str_parent_job_base_id = parent_job_base_id.toUtf8().constData() ;
 
-                        Ensemble_Tool_Insert(str_parent_job_base_id, target_index, type) ;
+                        CEnsemble::getInstance()->m_cls_api.Ensemble_Tool_Insert(str_parent_job_base_id, target_index, type) ;
 
 						qDebug("call API : EnsembleInsertTool : Type Tool : parent id=%s, target_index=%d, type=%d", str_parent_job_base_id.c_str(), target_index, type) ;
 						
@@ -203,7 +203,7 @@ void CJobTree::dropEvent(QDropEvent *event)
         QTreeWidgetItem* item = this->itemAt(pos);
 		
 		//Move
-        //if( Ensemble_Network_IsOnline() & ENSEMBLE_CONNECT_CONTROL_PORT )
+        //if( CEnsemble::getInstance()->m_cls_api.Ensemble_Network_IsOnline() & ENSEMBLE_CONNECT_CONTROL_PORT )
 		{
 #if 0
 			if( item->type() == JobType::JOB_TYPE_TOOL )
@@ -256,7 +256,7 @@ void CJobTree::dropEvent(QDropEvent *event)
 			if( str_parent_job_base_id.size() > 0 )
 			{
 				qDebug("Move Item : ID(%s), %d -> %d", str_parent_job_base_id.c_str(), cur_index, target_index) ;
-                Ensemble_Tool_Move(str_parent_job_base_id, cur_index, target_index-1) ;
+                CEnsemble::getInstance()->m_cls_api.Ensemble_Tool_Move(str_parent_job_base_id, cur_index, target_index-1) ;
 			}
 #endif
 		}

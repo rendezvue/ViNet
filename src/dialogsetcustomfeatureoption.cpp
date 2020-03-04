@@ -39,7 +39,7 @@ void DialogSetCustomFeatureOption::OnButtonGet(void)
 	int option_thre_lower = 0 ;
 	int option_kernel_size = 0 ;
 
-	Ensemble_Job_Get_Feature_Option(m_str_id, &option_blur, &option_thre_upper, &option_thre_lower, &option_kernel_size) ;
+	CEnsemble::getInstance()->m_cls_api.Ensemble_Job_Get_Feature_Option(m_str_id, &option_blur, &option_thre_upper, &option_thre_lower, &option_kernel_size) ;
 
 	ui->lineEdit_blur->setText(QString::number(option_blur)) ;
 	ui->lineEdit_upper_thre->setText(QString::number(option_thre_upper)) ;
@@ -54,7 +54,7 @@ void DialogSetCustomFeatureOption::OnButtonSet(void)
 	int option_thre_lower = ui->lineEdit_lower_thre->text().toInt() ; ;
 	int option_kernel_size = ui->lineEdit_kernel_size->text().toInt() ; ;
 	
-	Ensemble_Job_Set_Feature_Option(m_str_id, option_blur, option_thre_upper, option_thre_lower, option_kernel_size) ;
+	CEnsemble::getInstance()->m_cls_api.Ensemble_Job_Set_Feature_Option(m_str_id, option_blur, option_thre_upper, option_thre_lower, option_kernel_size) ;
 
 	OnButtonGet() ;
 }

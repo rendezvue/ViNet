@@ -21,7 +21,7 @@ void CGetImageThread::run(void)
             m_mat_input_image = cv::Mat::zeros(DISPLAY_IMAGE_HEIGHT, DISPLAY_IMAGE_WIDTH, CV_8UC3) ;
         }
 
-        if( Ensemble_Network_IsOnline()  )
+        if( CEnsemble::getInstance()->m_cls_api.Ensemble_Network_IsOnline()  )
         {
             unsigned char* get_data = NULL ;
             int width = DISPLAY_IMAGE_WIDTH ;
@@ -39,20 +39,20 @@ void CGetImageThread::run(void)
 
             if( m_i_type == 1 )        //result
             {
-                //ret = Ensemble_Job_Get_ResultImage(m_str_id, image_type, &get_data_result, &width_result, &height_result) ;
-                ret += Ensemble_Result_Get_Image(m_str_id, image_type, &get_data_result, &width_result, &height_result, &get_result_image_type) ;
+                //ret = CEnsemble::getInstance()->m_cls_api.Ensemble_Job_Get_ResultImage(m_str_id, image_type, &get_data_result, &width_result, &height_result) ;
+                ret += CEnsemble::getInstance()->m_cls_api.Ensemble_Result_Get_Image(m_str_id, image_type, &get_data_result, &width_result, &height_result, &get_result_image_type) ;
 
                 //qDebug("Result Image Size = %d, %d", width_result, height_result) ;
             }
             else if( m_i_type == 2 )        //merge image = image + result
             {
-                ret = Ensemble_Source_Get_Image(GET_IMAGE_INPUT, std::string(), image_type+IMAGE_ADD_TIME+IMAGE_ADD_SOURCE_INFO, &get_data, &width, &height, &get_source_image_type) ;
-                //ret += Ensemble_Job_Get_ResultImage(m_str_id, image_type, &get_data_result, &width_result, &height_result) ;
-                ret += Ensemble_Result_Get_Image(m_str_id, image_type, &get_data_result, &width_result, &height_result, &get_result_image_type) ;
+                ret = CEnsemble::getInstance()->m_cls_api.Ensemble_Source_Get_Image(GET_IMAGE_INPUT, std::string(), image_type+IMAGE_ADD_TIME+IMAGE_ADD_SOURCE_INFO, &get_data, &width, &height, &get_source_image_type) ;
+                //ret += CEnsemble::getInstance()->m_cls_api.Ensemble_Job_Get_ResultImage(m_str_id, image_type, &get_data_result, &width_result, &height_result) ;
+                ret += CEnsemble::getInstance()->m_cls_api.Ensemble_Result_Get_Image(m_str_id, image_type, &get_data_result, &width_result, &height_result, &get_result_image_type) ;
             }
             else
             {
-                ret = Ensemble_Source_Get_Image(GET_IMAGE_INPUT, std::string(), image_type+IMAGE_ADD_TIME+IMAGE_ADD_SOURCE_INFO, &get_data, &width, &height, &get_source_image_type) ;
+                ret = CEnsemble::getInstance()->m_cls_api.Ensemble_Source_Get_Image(GET_IMAGE_INPUT, std::string(), image_type+IMAGE_ADD_TIME+IMAGE_ADD_SOURCE_INFO, &get_data, &width, &height, &get_source_image_type) ;
             }
 
             //qDebug("Network return = %d", ret) ;
