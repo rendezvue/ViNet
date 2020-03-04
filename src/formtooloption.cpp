@@ -163,7 +163,9 @@ void FormToolOption::OnButtonSet(void)
 {
 	const int type = GetType() ;
 
-	if( type == ToolTypeList::TOOL_TYPE_OPTION_INSPECT_CRACK )
+	qDebug("Set : Type = %d", type) ;
+
+	if( type == ToolTypeList::TOOL_TYPE_OPTION_INSPECT_CRACK || type == ToolTypeList::TOOL_TYPE_OPTION_INSPECT_CRACK2 || type == ToolTypeList::TOOL_TYPE_OPTION_INSPECT_COLOR_COMPARE || type == ToolTypeList::TOOL_TYPE_OPTION_INSPECT_COLOR_COMPARE2 )
 	{
 		//DialogSetBase dlg_setbase ;
 	    m_dlg_set_tool_crack.SetParentId(GetParentIdInfo());
@@ -175,7 +177,7 @@ void FormToolOption::OnButtonSet(void)
 	    {
 	    }
 	}
-	else if( type == ToolTypeList::TOOL_TYPE_OPTION_INSPECT_COLOR )
+	else if( type == ToolTypeList::TOOL_TYPE_OPTION_INSPECT_COLOR || type == ToolTypeList::TOOL_TYPE_OPTION_INSPECT_COLOR2 )
 	{
 		//DialogSetBase dlg_setbase ;
 	    m_dlg_set_tool_color.SetParentId(GetParentIdInfo());
