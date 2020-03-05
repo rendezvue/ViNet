@@ -1049,7 +1049,8 @@ void MainWindow::OnMenuCheckforUpdates(void)
 
     dialogcheckforupdates dlg_connect;
 
-    if( Ensemble_Network_IsOnline() )
+
+    if( CEnsemble::getInstance()->m_cls_api.Ensemble_Network_IsOnline() )
     {
         dlg_connect.exec();
     }

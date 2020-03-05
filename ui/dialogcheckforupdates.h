@@ -6,6 +6,7 @@
 #include <string>
 #include <vector>
 
+#include "censemble.h"
 namespace Ui {
 class dialogcheckforupdates;
 }

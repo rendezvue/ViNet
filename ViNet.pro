@@ -87,7 +87,7 @@ HEADERS += \
     module/PacketEthComm/EthernetGetInfo.h \
     module/PacketEthComm/Client/EthernetClient.h \
     module/PacketEthComm/Client/EthernetClientControlData.h \
-    ui/dialogcheckforupdates.h
+    ui/dialogcheckforupdates.h \
     src/censemble.h
 
 SOURCES += \
@@ -142,7 +142,7 @@ SOURCES += \
     module/PacketEthComm/RendezvueCheckData.cpp \
     module/PacketEthComm/Client/EthernetClient.cpp \
     module/PacketEthComm/Client/EthernetClientControlData.cpp \
-    ui/dialogcheckforupdates.cpp
+    ui/dialogcheckforupdates.cpp \
     src/censemble.cpp
 
 FORMS += \

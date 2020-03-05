@@ -11,7 +11,7 @@ dialogcheckforupdates::dialogcheckforupdates(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    string cur_version = Ensemble_Update_Get_Current_Version();
+    string cur_version = CEnsemble::getInstance()->m_cls_api.Ensemble_Update_Get_Current_Version();
     QString qstr_cur_version = "Current ver: " + QString(cur_version.c_str());
     ui->label_curVersion->setText(qstr_cur_version);
 }
@@ -23,7 +23,7 @@ dialogcheckforupdates::~dialogcheckforupdates()
 
 void dialogcheckforupdates::on_pushButton_Checkforupdates_clicked()
 {
-    string version_strings = Ensemble_Update_Get_Version_List();
+    string version_strings = CEnsemble::getInstance()->m_cls_api.Ensemble_Update_Get_Version_List();
     vector<string> version_list = split(version_strings, '/');
     ui->comboBox_versionList->clear();
 
@@ -45,7 +45,7 @@ void dialogcheckforupdates::on_pushButton_Apply_Restart_clicked()
     }
     else
     {
-        Ensemble_Update_Set_Version(select_Version.toStdString());
+        CEnsemble::getInstance()->m_cls_api.Ensemble_Update_Set_Version(select_Version.toStdString());
         this->close();
     }
 }
