@@ -31,6 +31,8 @@ MainWindow::MainWindow(QWidget *parent) :
     //Menu
     connect(ui->actionConnect, SIGNAL(triggered()), this, SLOT(OnMenuConnect()));
 
+    connect(ui->actionCheck_for_updates, SIGNAL(triggered()), this, SLOT(OnMenuCheckforUpdates()));
+
     //Source list
     connect(ui->listView_source, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(OnSourceListDClick(const QModelIndex &)));
 
@@ -1040,3 +1042,21 @@ void MainWindow::OnButtonUpdateSourceList(void)
     }
 }
 
+
+void MainWindow::OnMenuCheckforUpdates(void)
+{
+    qDebug("%s", __func__);
+
+    dialogcheckforupdates dlg_connect;
+
+    if( Ensemble_Network_IsOnline() )
+    {
+        dlg_connect.exec();
+    }
+    else
+    {
+        QMessageBox msgBox;
+        msgBox.setText("Ensemble is not connected!\n");
+        msgBox.exec();
+    }
+}

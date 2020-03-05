@@ -456,7 +456,7 @@
      <x>0</x>
      <y>0</y>
      <width>1519</width>
-     <height>22</height>
+     <height>23</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuEnsemble">
@@ -465,6 +465,7 @@
     </property>
     <addaction name="actionSearch"/>
     <addaction name="actionConnect"/>
+    <addaction name="actionCheck_for_updates"/>
    </widget>
    <addaction name="menuEnsemble"/>
   </widget>
@@ -476,6 +477,11 @@
   <action name="actionConnect">
    <property name="text">
     <string>Connect</string>
+   </property>
+  </action>
+  <action name="actionCheck_for_updates">
+   <property name="text">
+    <string>Check for updates</string>
    </property>
   </action>
  </widget>

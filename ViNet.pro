@@ -86,7 +86,8 @@ HEADERS += \
     module/PacketEthComm/RendezvueCheckData.h \
     module/PacketEthComm/EthernetGetInfo.h \
     module/PacketEthComm/Client/EthernetClient.h \
-    module/PacketEthComm/Client/EthernetClientControlData.h
+    module/PacketEthComm/Client/EthernetClientControlData.h \
+    ui/dialogcheckforupdates.h
 
 SOURCES += \
     module/EnsembleAPI/src/Interface.cpp \
@@ -139,7 +140,8 @@ SOURCES += \
     module/PacketEthComm/EthernetGetInfo.cpp \
     module/PacketEthComm/RendezvueCheckData.cpp \
     module/PacketEthComm/Client/EthernetClient.cpp \
-    module/PacketEthComm/Client/EthernetClientControlData.cpp
+    module/PacketEthComm/Client/EthernetClientControlData.cpp \
+    ui/dialogcheckforupdates.cpp
 
 FORMS += \
     ui/cdialogconnect.ui \
@@ -172,5 +174,6 @@ FORMS += \
     ui/dialogbasecameraconfig.ui \
     ui/dialogsettooloffsetdistance.ui \
     ui/dialogsetcode.ui \
-    ui/dialogsetdetectplane.ui
+    ui/dialogsetdetectplane.ui \
+    ui/dialogcheckforupdates.ui
 

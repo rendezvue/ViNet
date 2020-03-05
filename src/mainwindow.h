@@ -11,7 +11,7 @@
 #include <QStringList>
 #include <QStringListModel>
 #include <QAbstractItemView>
-
+#include <QMessageBox>
 #include <QEvent>
 
 #include "opencv2/opencv.hpp"
@@ -19,6 +19,7 @@
 //Dialog
 #include "cdialogconnect.h"
 #include "cdialognewproject.h"
+#include "ui/dialogcheckforupdates.h"
 
 //API
 #include "EnsembleAPI.h"
@@ -156,6 +157,7 @@ public slots:
 	void OnButtonSaveAllTask(void) ;
 	void OnButtonLoadAllTask(void) ;
 	void OnButtonUpdateSourceList(void) ;
+    void OnMenuCheckforUpdates(void);
 };
 
 #endif // MAINWINDOW_H

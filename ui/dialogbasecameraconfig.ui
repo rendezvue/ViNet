@@ -902,7 +902,7 @@
      <x>10</x>
      <y>10</y>
      <width>291</width>
-     <height>19</height>
+     <height>20</height>
     </rect>
    </property>
    <layout class="QHBoxLayout" name="horizontalLayout_2">
@@ -936,6 +936,19 @@
    </property>
    <property name="text">
     <string>Factory Reset</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButton_capture">
+   <property name="geometry">
+    <rect>
+     <x>280</x>
+     <y>530</y>
+     <width>181</width>
+     <height>51</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Capture</string>
    </property>
   </widget>
  </widget>
