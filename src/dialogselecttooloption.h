@@ -8,6 +8,7 @@
 
 //API
 #include "EnsembleAPI.h"
+#include "censemble.h"
 
 //xml parser
 #include "pugixml.hpp"

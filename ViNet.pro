@@ -27,7 +27,7 @@ INCLUDEPATH += ./src ./module/EnsembleAPI ./module/EnsembleAPI/src ./module/Pack
 LIBS += -lboost_system -lboost_thread -lboost_filesystem -lboost_regex
 
 CONFIG += link_pkgconfig
-PKGCONFIG += opencv
+PKGCONFIG += opencv4
 
 RESOURCES += \
     resource.qrc
@@ -88,6 +88,7 @@ HEADERS += \
     module/PacketEthComm/Client/EthernetClient.h \
     module/PacketEthComm/Client/EthernetClientControlData.h \
     ui/dialogcheckforupdates.h
+    src/censemble.h
 
 SOURCES += \
     module/EnsembleAPI/src/Interface.cpp \
@@ -142,6 +143,7 @@ SOURCES += \
     module/PacketEthComm/Client/EthernetClient.cpp \
     module/PacketEthComm/Client/EthernetClientControlData.cpp \
     ui/dialogcheckforupdates.cpp
+    src/censemble.cpp
 
 FORMS += \
     ui/cdialogconnect.ui \

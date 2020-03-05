@@ -23,6 +23,7 @@
 
 //API
 #include "EnsembleAPI.h"
+#include "censemble.h"
 
 //
 #include "ImgDec.h"
@@ -40,7 +41,6 @@
 #include "csearchtreeitem.h"
 
 #include "cgetimagethread.h"
-
 
 //boost
 #include <boost/property_tree/ptree.hpp>
@@ -81,12 +81,12 @@ protected:
         {
             if( !m_str_ip_address.empty() )
             {
-                if( !Ensemble_Network_IsOnline() )
+                if( !CEnsemble::getInstance()->m_cls_api.Ensemble_Network_IsOnline() )
                 {
                     qDebug("(%d) Try Re-Connect = %s", retry_count++, m_str_ip_address.c_str()) ;
                     //try re-connect
-                    Ensemble_Network_Disconnect() ;
-                    Ensemble_Network_Connect(m_str_ip_address.c_str(), m_i_port) ;
+                    CEnsemble::getInstance()->m_cls_api.Ensemble_Network_Disconnect() ;
+                    CEnsemble::getInstance()->m_cls_api.Ensemble_Network_Connect(m_str_ip_address.c_str(), m_i_port) ;
                 }
                 else
                 {

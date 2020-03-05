@@ -7,6 +7,7 @@
 
 //API
 #include "EnsembleAPI.h"
+#include "censemble.h"
 
 #include "cgetimagethread.h"
 #include "cmat2qimage.h"

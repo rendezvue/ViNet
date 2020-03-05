@@ -51,7 +51,7 @@ void DialogSetDetectPlane::showEvent(QShowEvent *ev)
     QDialog::showEvent(ev) ;
 
     //Get Name
-    std::string base_name = Ensemble_Job_Get_Name(GetId()) ;
+    std::string base_name = CEnsemble::getInstance()->m_cls_api.Ensemble_Job_Get_Name(GetId()) ;
     ui->label_name->setText(QString::fromUtf8(base_name.c_str()));
 
     OnButtonGetImage() ;	
@@ -66,7 +66,7 @@ void DialogSetDetectPlane::OnButtonGetImage(void)
 
 	const int image_type = ImageTypeOption::IMAGE_RGB888 ;
     int get_image_type = 0 ;
-    Ensemble_Job_Get_Image(GetId(), image_type, &get_job_image_data, &job_image_width, &job_image_height, &get_image_type)  ;
+    CEnsemble::getInstance()->m_cls_api.Ensemble_Job_Get_Image(GetId(), image_type, &get_job_image_data, &job_image_width, &job_image_height, &get_image_type)  ;
 
     if( job_image_width > 0 && job_image_height > 0 )
     {
@@ -146,7 +146,7 @@ void DialogSetDetectPlane::updatePicture(cv::Mat image, cv::Rect rect_user)
 
 void DialogSetDetectPlane::OnButtonSetImage(void)
 {
-	Ensemble_Job_Set_Image(GetId())  ;
+	CEnsemble::getInstance()->m_cls_api.Ensemble_Job_Set_Image(GetId())  ;
 	
     OnButtonGetImage() ;
 
@@ -160,7 +160,7 @@ void DialogSetDetectPlane::OnButtonSetDetectArea(void)
 
 void DialogSetDetectPlane::OnButtonClearDetectArea(void)
 {
-    Ensemble_Job_Set_DetectArea(GetId(), 0, 0, 0, 0) ;
+    CEnsemble::getInstance()->m_cls_api.Ensemble_Job_Set_DetectArea(GetId(), 0, 0, 0, 0) ;
 
     OnButtonGetImage() ;
 
@@ -174,14 +174,14 @@ void DialogSetDetectPlane::OnButtonZoomSet(void)
 
 void DialogSetDetectPlane::OnButtonZoomReset(void)
 {
-    Ensemble_Job_Set_Zoom(GetId(), 0, 0, 0, 0) ;       //reset
+    CEnsemble::getInstance()->m_cls_api.Ensemble_Job_Set_Zoom(GetId(), 0, 0, 0, 0) ;       //reset
 
     OnButtonGetImage() ;
 }
 
 void DialogSetDetectPlane::OnButtonNameChange(void)
 {
-    std::string base_name = Ensemble_Job_Get_Name(GetId()) ;
+    std::string base_name = CEnsemble::getInstance()->m_cls_api.Ensemble_Job_Get_Name(GetId()) ;
 
     DialogChangeName dlg_change_name ;
 
@@ -196,10 +196,10 @@ void DialogSetDetectPlane::OnButtonNameChange(void)
 
         if( !change_name.empty() )
         {
-            Ensemble_Job_Set_Name(GetId(), change_name) ;
+            CEnsemble::getInstance()->m_cls_api.Ensemble_Job_Set_Name(GetId(), change_name) ;
         }
 
-        base_name = Ensemble_Job_Get_Name(GetId()) ;
+        base_name = CEnsemble::getInstance()->m_cls_api.Ensemble_Job_Get_Name(GetId()) ;
         ui->label_name->setText(QString::fromUtf8(base_name.c_str()));
 
 		emit UpdateBaseName(QString::fromUtf8(base_name.c_str())) ;
@@ -213,7 +213,7 @@ void DialogSetDetectPlane::OnButtonMaskPush(void)
 
 void DialogSetDetectPlane::OnButtonMaskPop(void)
 {
-	Ensemble_Job_Undo_MaskArea(GetId()) ;
+	CEnsemble::getInstance()->m_cls_api.Ensemble_Job_Undo_MaskArea(GetId()) ;
 
 	OnButtonGetImage() ;
 
@@ -222,7 +222,7 @@ void DialogSetDetectPlane::OnButtonMaskPop(void)
 
 void DialogSetDetectPlane::OnButtonMaskClear(void)
 {
-	Ensemble_Job_Del_MaskArea(GetId()) ;
+	CEnsemble::getInstance()->m_cls_api.Ensemble_Job_Del_MaskArea(GetId()) ;
 
 	OnButtonGetImage() ;
 
@@ -301,13 +301,13 @@ void DialogSetDetectPlane::mouseReleaseEvent(QMouseEvent *event)
 		
         if( set_status == SetBaseStatus::SET_AREA )
         {
-            Ensemble_Job_Set_DetectArea(GetId(), f_x, f_y, f_w, f_h) ;
+            CEnsemble::getInstance()->m_cls_api.Ensemble_Job_Set_DetectArea(GetId(), f_x, f_y, f_w, f_h) ;
 
             emit UpdateBaseImage();
         }
         else if( set_status == SetBaseStatus::SET_ZOOM)
         {
-            Ensemble_Job_Set_Zoom(GetId(), f_x, f_y, f_w, f_h) ;
+            CEnsemble::getInstance()->m_cls_api.Ensemble_Job_Set_Zoom(GetId(), f_x, f_y, f_w, f_h) ;
         }
 		else if( set_status == SetBaseStatus::SET_MASK)
         {
@@ -315,14 +315,14 @@ void DialogSetDetectPlane::mouseReleaseEvent(QMouseEvent *event)
             if (ui->checkBox_mask_enable_inside->isChecked())	b_enable_inside = false ;
             else												b_enable_inside = true ;
 				
-            Ensemble_Job_Set_MaskArea(GetId(), f_x, f_y, f_w, f_h, b_enable_inside) ;
+            CEnsemble::getInstance()->m_cls_api.Ensemble_Job_Set_MaskArea(GetId(), f_x, f_y, f_w, f_h, b_enable_inside) ;
 
 			emit UpdateBaseImage();
         }
 		else if( set_status == SetBaseStatus::SET_OBJECT)
 		{
 			//SelectObject
-			Ensemble_Job_Set_SelectObject(GetId(), f_x, f_y, f_w, f_h) ;
+			CEnsemble::getInstance()->m_cls_api.Ensemble_Job_Set_SelectObject(GetId(), f_x, f_y, f_w, f_h) ;
 
 			emit UpdateBaseImage();
 		}
@@ -336,15 +336,15 @@ void DialogSetDetectPlane::mouseReleaseEvent(QMouseEvent *event)
         	f_y = (float)point.y() / (float)label_h ;
 		
 			//SelectObject
-			//Ensemble_Job_Set_SelectObject(GetId(), f_x, f_y, f_w, f_h) ;
-            Ensemble_Job_Set_Ref_Point(GetId(), f_x, f_y) ;
+			//CEnsemble::getInstance()->m_cls_api.Ensemble_Job_Set_SelectObject(GetId(), f_x, f_y, f_w, f_h) ;
+            CEnsemble::getInstance()->m_cls_api.Ensemble_Job_Set_Ref_Point(GetId(), f_x, f_y) ;
 
 			emit UpdateBaseImage();
 		}
 		else if( set_status == SetBaseStatus::SET_ERASE)
 		{
 			//SelectObject
-			Ensemble_Job_Set_Erase(GetId(), f_x, f_y, f_w, f_h) ;
+			CEnsemble::getInstance()->m_cls_api.Ensemble_Job_Set_Erase(GetId(), f_x, f_y, f_w, f_h) ;
 
 			emit UpdateBaseImage();
 		}
@@ -404,7 +404,7 @@ void DialogSetDetectPlane::OnButtonSelectObject(void)
 
 void DialogSetDetectPlane::OnButtonResetObject(void)
 {
-	Ensemble_Job_Del_SelectObject(GetId()) ;
+	CEnsemble::getInstance()->m_cls_api.Ensemble_Job_Del_SelectObject(GetId()) ;
 	
     OnButtonGetImage() ;
 }

@@ -136,10 +136,10 @@ void FormProject::OnButtonSetName(void)
 		
         if( !change_name.empty() )
         {
-            Ensemble_Project_Set_Name(GetIdInfo(), change_name) ;
+            CEnsemble::getInstance()->m_cls_api.Ensemble_Project_Set_Name(GetIdInfo(), change_name) ;
         }
 
-        std::string project_name = Ensemble_Project_Get_Name(GetIdInfo()) ;
+        std::string project_name = CEnsemble::getInstance()->m_cls_api.Ensemble_Project_Get_Name(GetIdInfo()) ;
         ui->label_name->setText(QString::fromUtf8(project_name.c_str()));
 
         qDebug("Project Name = %s", project_name.c_str()) ;
@@ -148,14 +148,14 @@ void FormProject::OnButtonSetName(void)
 
 void FormProject::OnButtonDel(void)
 {
-    Ensemble_Project_Del(GetIdInfo()) ;
+    CEnsemble::getInstance()->m_cls_api.Ensemble_Project_Del(GetIdInfo()) ;
 	
 	emit UpdateList();
 }
 
 void FormProject::OnButtonRun(void)
 {
-	std::string str_result_xml = Ensemble_Poject_Run(GetIdInfo()) ;
+	std::string str_result_xml = CEnsemble::getInstance()->m_cls_api.Ensemble_Poject_Run(GetIdInfo()) ;
 
 	qDebug("Project Result = %s", str_result_xml.c_str()) ;
 
@@ -170,7 +170,7 @@ void FormProject::showEvent(QShowEvent *ev)
     QWidget::showEvent(ev) ;
 
 	//run checkbox
-	int trigger_run_option = Ensemble_Poject_Get_Trigger_Run(GetIdInfo()) ;
+	int trigger_run_option = CEnsemble::getInstance()->m_cls_api.Ensemble_Poject_Get_Trigger_Run(GetIdInfo()) ;
 	ui->checkBox_trigger_run->setChecked(trigger_run_option);
 }
 
@@ -178,9 +178,9 @@ void FormProject::OnTriggerRunCheckBoxToggled(bool checked)
 {
 	qDebug("Trigger Run Check = %d", checked) ;
 	
-	Ensemble_Poject_Set_Trigger_Run(GetIdInfo(), checked) ;
+	CEnsemble::getInstance()->m_cls_api.Ensemble_Poject_Set_Trigger_Run(GetIdInfo(), checked) ;
 		
-	int trigger_run_option = Ensemble_Poject_Get_Trigger_Run(GetIdInfo()) ;
+	int trigger_run_option = CEnsemble::getInstance()->m_cls_api.Ensemble_Poject_Get_Trigger_Run(GetIdInfo()) ;
 	ui->checkBox_trigger_run->setChecked(trigger_run_option);
 }
 

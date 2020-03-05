@@ -41,19 +41,19 @@ void DialogSetToolLine::showEvent(QShowEvent *ev)
     QDialog::showEvent(ev) ;
 
     //Get Name
-    std::string tool_name = Ensemble_Tool_Get_Name(GetId()) ;
+    std::string tool_name = CEnsemble::getInstance()->m_cls_api.Ensemble_Tool_Get_Name(GetId()) ;
     ui->label_name_line->setText(QString::fromUtf8(tool_name.c_str()));
 
     qDebug("Tool Name = %s", tool_name.c_str()) ;
 	
 	//Get Level 
-    int feature_level = Ensemble_Tool_Get_FeatureLevel(GetId());
+    int feature_level = CEnsemble::getInstance()->m_cls_api.Ensemble_Tool_Get_FeatureLevel(GetId());
 	//Set Slider
     ui->horizontalSlider_feature_level_line->setValue(feature_level) ;
     ui->label_feature_level_line->setText(QString::number(feature_level));
 
 	//Get Base Level
-	int base_feature_level = Ensemble_Job_Get_FeatureLevel(GetParentId());
+	int base_feature_level = CEnsemble::getInstance()->m_cls_api.Ensemble_Job_Get_FeatureLevel(GetParentId());
 	//Set Slider
 	std::string str_base_feature_level ;
 	str_base_feature_level = "(Base: " + std::to_string(base_feature_level) + ")" ;
@@ -66,7 +66,7 @@ void DialogSetToolLine::showEvent(QShowEvent *ev)
 
 void DialogSetToolLine::OnButtonNameChange(void)
 {
-    std::string tool_name = Ensemble_Tool_Get_Name(GetId()) ;
+    std::string tool_name = CEnsemble::getInstance()->m_cls_api.Ensemble_Tool_Get_Name(GetId()) ;
 
     DialogChangeName dlg_change_name ;
 
@@ -83,10 +83,10 @@ void DialogSetToolLine::OnButtonNameChange(void)
 		
         if( !change_name.empty() )
         {
-            Ensemble_Tool_Set_Name(GetId(), change_name) ;
+            CEnsemble::getInstance()->m_cls_api.Ensemble_Tool_Set_Name(GetId(), change_name) ;
         }
 
-        tool_name = Ensemble_Tool_Get_Name(GetId()) ;
+        tool_name = CEnsemble::getInstance()->m_cls_api.Ensemble_Tool_Get_Name(GetId()) ;
         ui->label_name_line->setText(QString::fromUtf8(tool_name.c_str()));
 
         qDebug("Tool Name = %s", tool_name.c_str()) ;
@@ -104,7 +104,7 @@ void DialogSetToolLine::OnButtonGetImage(void)
 
 	const int image_type = IMAGE_RGB888 ;
     int get_image_type = 0 ;
-    Ensemble_Tool_Get_Image(GetId(), image_type, &get_job_image_data, &job_image_width, &job_image_height, &get_image_type)  ;
+    CEnsemble::getInstance()->m_cls_api.Ensemble_Tool_Get_Image(GetId(), image_type, &get_job_image_data, &job_image_width, &job_image_height, &get_image_type)  ;
 
     if( job_image_width > 0 && job_image_height > 0 )
     {
@@ -265,7 +265,7 @@ void DialogSetToolLine::OnSliderSetFeatureLevel(void)
 
 	qDebug("%s : SetFeatureLevel = %d", __func__, level) ;
 	//set level
-    Ensemble_Tool_Set_FeatureLevel(GetId(), level);
+    CEnsemble::getInstance()->m_cls_api.Ensemble_Tool_Set_FeatureLevel(GetId(), level);
 
 	//Update Image
 	qDebug("%s : GetImage", __func__) ;
@@ -274,7 +274,7 @@ void DialogSetToolLine::OnSliderSetFeatureLevel(void)
 	qDebug("%s : GetFeatureLevel", __func__) ;
 	
 	//Get Level 
-    int feature_level = Ensemble_Tool_Get_FeatureLevel(GetId());
+    int feature_level = CEnsemble::getInstance()->m_cls_api.Ensemble_Tool_Get_FeatureLevel(GetId());
 
 	qDebug("%s : GetFeatureLevel = %d", __func__, feature_level) ;
 	
@@ -283,7 +283,7 @@ void DialogSetToolLine::OnSliderSetFeatureLevel(void)
     ui->label_feature_level_line->setText(QString::number(feature_level));
 
 	//Get Base Level
-	int base_feature_level = Ensemble_Job_Get_FeatureLevel(GetParentId());
+	int base_feature_level = CEnsemble::getInstance()->m_cls_api.Ensemble_Job_Get_FeatureLevel(GetParentId());
 	//Set Slider
 	std::string str_base_feature_level ;
 	str_base_feature_level = "(Base: " + std::to_string(base_feature_level) + ")" ;
@@ -305,7 +305,7 @@ void DialogSetToolLine::OnButtonSelectObject(void)
 
 void DialogSetToolLine::OnButtonResetObject(void)
 {
-	//Ensemble_Job_Del_SelectObject(GetId()) ;
+	//CEnsemble::getInstance()->m_cls_api.Ensemble_Job_Del_SelectObject(GetId()) ;
 	
     OnButtonGetImage() ;
 }
@@ -383,13 +383,13 @@ void DialogSetToolLine::mouseReleaseEvent(QMouseEvent *event)
 		
         if( set_status == SetBaseStatus::SET_AREA )
         {
-            //Ensemble_Job_Set_DetectArea(GetId(), f_x, f_y, f_w, f_h) ;
+            //CEnsemble::getInstance()->m_cls_api.Ensemble_Job_Set_DetectArea(GetId(), f_x, f_y, f_w, f_h) ;
 
             //emit UpdateToolObjectImage();
         }
         else if( set_status == SetBaseStatus::SET_ZOOM)
         {
-            //Ensemble_Job_Set_Zoom(GetId(), f_x, f_y, f_w, f_h) ;
+            //CEnsemble::getInstance()->m_cls_api.Ensemble_Job_Set_Zoom(GetId(), f_x, f_y, f_w, f_h) ;
         }
 		else if( set_status == SetBaseStatus::SET_MASK)
         {
@@ -397,7 +397,7 @@ void DialogSetToolLine::mouseReleaseEvent(QMouseEvent *event)
             if (ui->checkBox_mask_enable_inside_line->isChecked())	b_enable_inside = false ;
             else												b_enable_inside = true ;
 				
-            //Ensemble_Job_Set_MaskArea(GetId(), f_x, f_y, f_w, f_h, b_enable_inside) ;
+            //CEnsemble::getInstance()->m_cls_api.Ensemble_Job_Set_MaskArea(GetId(), f_x, f_y, f_w, f_h, b_enable_inside) ;
 
 			//emit UpdateToolObjectImage();
         }
@@ -474,8 +474,8 @@ void DialogSetToolLine::mouseReleaseEvent(QMouseEvent *event)
 			pt_line_2.x /= (float)label_w ;
 			pt_line_2.y /= (float)label_h ;
 
-            //Ensemble_Tool_Set_SelectObject(GetId(), pt_line_1.x, pt_line_1.y, pt_line_2.x, pt_line_2.y, pt_line_3.x, pt_line_3.y, pt_line_4.x, pt_line_4.y) ;
-            Ensemble_Tool_Detect_Line_Set_SelectObject(GetId(),
+            //CEnsemble::getInstance()->m_cls_api.Ensemble_Tool_Set_SelectObject(GetId(), pt_line_1.x, pt_line_1.y, pt_line_2.x, pt_line_2.y, pt_line_3.x, pt_line_3.y, pt_line_4.x, pt_line_4.y) ;
+            CEnsemble::getInstance()->m_cls_api.Ensemble_Tool_Detect_Line_Set_SelectObject(GetId(),
                                                         pt_line_1.x, pt_line_1.y,
                                                         pt_line_2.x, pt_line_2.y,
                                                         pt_rotated_roi_1.x, pt_rotated_roi_1.y,
