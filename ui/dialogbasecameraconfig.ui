@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>932</width>
-    <height>594</height>
+    <width>928</width>
+    <height>586</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -928,27 +928,27 @@
   <widget class="QPushButton" name="pushButton_reset">
    <property name="geometry">
     <rect>
-     <x>470</x>
-     <y>530</y>
+     <x>10</x>
+     <y>520</y>
      <width>181</width>
-     <height>51</height>
+     <height>31</height>
     </rect>
    </property>
    <property name="text">
     <string>Factory Reset</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="pushButton_capture">
+  <widget class="QPushButton" name="pushButton_save_default">
    <property name="geometry">
     <rect>
-     <x>280</x>
-     <y>530</y>
+     <x>200</x>
+     <y>520</y>
      <width>181</width>
-     <height>51</height>
+     <height>31</height>
     </rect>
    </property>
    <property name="text">
-    <string>Capture</string>
+    <string>Save Default</string>
    </property>
   </widget>
  </widget>

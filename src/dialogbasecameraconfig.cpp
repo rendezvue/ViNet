@@ -641,3 +641,28 @@ void DialogBaseCameraConfig::mouseReleaseEvent(QMouseEvent *event)
 	}
 }
 
+
+void DialogBaseCameraConfig::on_pushButton_save_default_clicked()
+{
+    std::string id_str = "ini";
+    int value_exposure = ui->lineEdit_exposure->text().toInt() ;
+    CEnsemble::getInstance()->m_cls_api.Ensemble_Camera_Set_Manual_Exposure_Value(id_str, value_exposure) ;
+
+    int value_gain = ui->lineEdit_gain->text().toInt() ;
+    CEnsemble::getInstance()->m_cls_api.Ensemble_Camera_Set_Manual_Gain_Value(id_str, value_gain) ;
+
+    int value_focus = ui->lineEdit_focus->text().toInt() ;
+    CEnsemble::getInstance()->m_cls_api.Ensemble_Camera_Set_Manual_Focus_Value(id_str, value_focus) ;
+
+    if (ui->checkBox_image_flip_v->isChecked())	CEnsemble::getInstance()->m_cls_api.Ensemble_Camera_Set_Flip_V(id_str, true) ;
+    else										CEnsemble::getInstance()->m_cls_api.Ensemble_Camera_Set_Flip_V(id_str, false) ;
+
+    int check_image_flip_v = CEnsemble::getInstance()->m_cls_api.Ensemble_Camera_Get_Flip_V(id_str) ;
+
+    if (ui->checkBox_image_flip_h->isChecked())	CEnsemble::getInstance()->m_cls_api.Ensemble_Camera_Set_Flip_H(id_str, true) ;
+    else										CEnsemble::getInstance()->m_cls_api.Ensemble_Camera_Set_Flip_H(id_str, false) ;
+
+    int check_image_flip_h = CEnsemble::getInstance()->m_cls_api.Ensemble_Camera_Get_Flip_H(id_str) ;
+}
+
+
