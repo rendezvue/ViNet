@@ -26,7 +26,7 @@ void dialogprogram_detection::on_pushButton_Get_JobList_clicked()
     //delete all item
 //    ui->treeWidget_job->clear();
 
-    std::string str_prj_list_xml = Ensemble_Project_Get_List() ;
+    std::string str_prj_list_xml = CEnsemble::getInstance()->m_cls_api.Ensemble_Project_Get_List() ;
 
     qDebug("project list xml (%d, %d) = %s", str_prj_list_xml.size(), str_prj_list_xml.length(), str_prj_list_xml.c_str()) ;
 
@@ -78,7 +78,7 @@ void dialogprogram_detection::on_pushButton_Get_JobList_clicked()
                     int type = job.attribute("Type").as_int();
                     std::string str_name = job.attribute("Name").value();
 					
-					std::string str_tool_type_name = Ensemble_Info_Get_ToolTypeName(type) ;
+                    std::string str_tool_type_name = CEnsemble::getInstance()->m_cls_api.Ensemble_Info_Get_ToolTypeName(type) ;
 					
                     qDebug("Job : Id = %s Type=%d, TypeName=%s, Name=%s", str_job_id.c_str(), type, str_tool_type_name.c_str(), str_name.c_str()) ;
 				}
@@ -143,7 +143,7 @@ void dialogprogram_detection::on_Run_Job_clicked()
 
 void dialogprogram_detection::Run_Job(QString qstr_job_id)
 {
-	std::string str_result_xml = Ensemble_Job_Run(qstr_job_id.toStdString().c_str()) ;
+    std::string str_result_xml = CEnsemble::getInstance()->m_cls_api.Ensemble_Job_Run(qstr_job_id.toStdString().c_str()) ;
 
 	qDebug("Project Result = %s", str_result_xml.c_str()) ;
 
@@ -165,7 +165,7 @@ void dialogprogram_detection::Run_Job(QString qstr_job_id)
 
             qDebug("x,y,angle,score=%f/%f/%f/%f\n",pixel_x,pixel_y,m_detection_result[i].angle, m_detection_result[i].score);
 
-            Ensemble_Job_Calibration_GetPoint(qstr_job_id.toStdString(), pixel_x, pixel_y, &robot_x, &robot_y);
+            CEnsemble::getInstance()->m_cls_api.Ensemble_Job_Calibration_GetPoint(qstr_job_id.toStdString(), pixel_x, pixel_y, &robot_x, &robot_y);
             m_detection_result[i].mm_center_x = robot_x;
             m_detection_result[i].mm_center_y = robot_y;
             qDebug("m_detection_result[%d].mm_center_x = %f\n",i,m_detection_result[i].mm_center_x);

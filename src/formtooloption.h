@@ -10,6 +10,7 @@
 
 //API
 #include "EnsembleAPI.h"
+#include "censemble.h"
 
 //dialog
 #include "dialogsettoolcrack.h"

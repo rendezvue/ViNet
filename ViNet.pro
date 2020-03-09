@@ -23,11 +23,11 @@ DEFINES += QT_DEPRECATED_WARNINGS
 # You can also select to disable deprecated APIs only up to a certain version of Qt.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
-INCLUDEPATH += ./src ./module/EnsembleAPI ./module/EnsembleAPI/src ./module/PacketEthComm ./module/EnsembleCommon ./module/EnsembleCommand ./module/ImgEncDec ./module/pugixml/src ./module/IndyDCP ./module/streambookmarks
+INCLUDEPATH += ./src ./module/EnsembleAPI ./module/EnsembleAPI/src ./module/PacketEthComm ./module/PacketEthComm/Client ./module/PacketEthComm/Server ./module/EnsembleCommon ./module/EnsembleCommand ./module/ImgEncDec ./module/pugixml/src ./module/IndyDCP ./module/streambookmarks
 LIBS += -lboost_system -lboost_thread -lboost_filesystem -lboost_regex
 
 CONFIG += link_pkgconfig
-PKGCONFIG += opencv4
+PKGCONFIG += opencv
 
 RESOURCES += \
     resource.qrc
@@ -46,9 +46,6 @@ HEADERS += \
     module/EnsembleCommon/EnsembleCommon.h \
     module/ImgEncDec/ImgDec.h \
     module/ImgEncDec/ImgEnc.h \
-    module/PacketEthComm/ErrorType.h \
-    module/PacketEthComm/EthernetClient.h \
-    module/PacketEthComm/RendezvueCheckData.h \
     module/pugixml/src/pugiconfig.hpp \
     module/pugixml/src/pugixml.hpp \
     src/cdialogconnect.h \
@@ -82,8 +79,6 @@ HEADERS += \
     src/formtoollist.h \
     src/formtooloption.h \
     src/mainwindow.h \
-    module/PacketEthComm/EthernetClientControlData.h \
-    module/PacketEthComm/EthernetGetInfo.h \
     src/dialogsetcustomfeatureoption.h \
     src/csearchtreeitem.h \
     src/dialogresultinfo.h \
@@ -98,7 +93,14 @@ HEADERS += \
     ui/dialogprogram_framemove.h \
     ui/dialogprogram_detection.h \
     ui/dialogprogram_io_control.h \
-    ui/dialogprogram_loop.h
+    ui/dialogprogram_loop.h \
+    module/PacketEthComm/ErrorType.h \
+    module/PacketEthComm/RendezvueCheckData.h \
+    module/PacketEthComm/EthernetGetInfo.h \
+    module/PacketEthComm/Client/EthernetClient.h \
+    module/PacketEthComm/Client/EthernetClientControlData.h \
+    ui/dialogcheckforupdates.h \
+    src/censemble.h
 
 SOURCES += \
     module/streambookmarks/xbelreader.cpp \
@@ -112,8 +114,6 @@ SOURCES += \
     module/EnsembleAPI/EnsembleAPI.cpp \
     module/ImgEncDec/ImgDec.cpp \
     module/ImgEncDec/ImgEnc.cpp \
-    module/PacketEthComm/EthernetClient.cpp \
-    module/PacketEthComm/RendezvueCheckData.cpp \
     module/pugixml/src/pugixml.cpp \
     src/cdialogconnect.cpp \
     src/cdialognewproject.cpp \
@@ -147,8 +147,6 @@ SOURCES += \
     src/formtooloption.cpp \
     src/main.cpp \
     src/mainwindow.cpp \
-    module/PacketEthComm/EthernetClientControlData.cpp \
-    module/PacketEthComm/EthernetGetInfo.cpp \
     src/dialogsetcustomfeatureoption.cpp \
     src/csearchtreeitem.cpp \
     src/dialogresultinfo.cpp \
@@ -163,7 +161,13 @@ SOURCES += \
     ui/dialogprogram_framemove.cpp \
     ui/dialogprogram_detection.cpp \
     ui/dialogprogram_io_control.cpp \
-    ui/dialogprogram_loop.cpp
+    ui/dialogprogram_loop.cpp \
+    module/PacketEthComm/EthernetGetInfo.cpp \
+    module/PacketEthComm/RendezvueCheckData.cpp \
+    module/PacketEthComm/Client/EthernetClient.cpp \
+    module/PacketEthComm/Client/EthernetClientControlData.cpp \
+    ui/dialogcheckforupdates.cpp \
+    src/censemble.cpp
 
 FORMS += \
     ui/cdialogconnect.ui \
@@ -202,5 +206,7 @@ FORMS += \
     ui/dialogprogram_framemove.ui \
     ui/dialogprogram_detection.ui \
     ui/dialogprogram_io_control.ui \
-    ui/dialogprogram_loop.ui
+    ui/dialogprogram_loop.ui \
+    ui/dialogcheckforupdates.ui
+
 

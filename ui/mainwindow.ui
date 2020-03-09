@@ -466,6 +466,7 @@
     <addaction name="actionSearch"/>
     <addaction name="actionConnect"/>
     <addaction name="actionProgram"/>
+    <addaction name="actionCheck_for_updates"/>
    </widget>
    <addaction name="menuEnsemble"/>
   </widget>
@@ -482,6 +483,11 @@
   <action name="actionProgram">
    <property name="text">
     <string>Program</string>
+   </property>
+  </action>
+  <action name="actionCheck_for_updates">
+   <property name="text">
+    <string>Check for updates</string>
    </property>
   </action>
  </widget>

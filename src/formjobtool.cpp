@@ -67,16 +67,16 @@ void FormJobTool::showEvent(QShowEvent *ev)
 
     //Set Initialize
     //Get Option Count
-    m_i_option_count = Ensemble_Tool_Get_OptionList_Count(GetType()) ;
+    m_i_option_count = CEnsemble::getInstance()->m_cls_api.Ensemble_Tool_Get_OptionList_Count(GetType()) ;
 
 	OnUpdateImage() ;
 
 	//run checkbox
-	int run_option = Ensemble_Task_Get_Run_Option(GetIdInfo()) ;
+	int run_option = CEnsemble::getInstance()->m_cls_api.Ensemble_Task_Get_Run_Option(GetIdInfo()) ;
 	ui->checkBox_run->setChecked(run_option);
 
 	//view checkbox
-	int view_option = Ensemble_Task_Get_View_Option(GetIdInfo()) ;
+	int view_option = CEnsemble::getInstance()->m_cls_api.Ensemble_Task_Get_View_Option(GetIdInfo()) ;
 	ui->checkBox_view->setChecked(view_option);
 }
 
@@ -195,6 +195,32 @@ void FormJobTool::OnButtonSetBase(void)
 	    {
 	    }
 	}
+    else if( type == ToolTypeList::TOOL_TYPE_CRACK )		//crack
+   	{
+   		DialogChangeName dlg_change_name ;
+
+	    dlg_change_name.SetId(GetIdInfo());
+	    dlg_change_name.SetName(GetNameInfo());
+
+	    int dialogCode = dlg_change_name.exec();
+
+	    if(dialogCode == QDialog::Accepted)
+	    { // YesButton clicked
+	        std::string change_name = dlg_change_name.GetName() ;
+
+	        qDebug("Project Change Name = %s", change_name.c_str()) ;
+			
+	        if( !change_name.empty() )
+	        {
+	            CEnsemble::getInstance()->m_cls_api.Ensemble_Tool_Set_Name(GetIdInfo(), change_name) ;
+	        }
+
+	        std::string project_name = CEnsemble::getInstance()->m_cls_api.Ensemble_Tool_Get_Name(GetIdInfo()) ;
+	        ui->label_name->setText(QString::fromUtf8(project_name.c_str()));
+
+	        qDebug("Project Name = %s", project_name.c_str()) ;
+	    }
+	}
 	
 #if 0
     else if( type == ToolTypeList::TOOL_TYPE_INSPECT_DISTANCE )
@@ -234,7 +260,7 @@ void FormJobTool::OnUpdateList(void)
 
 void FormJobTool::OnButtonDel(void)
 {
-    Ensemble_Tool_Del(GetIdInfo()) ;
+    CEnsemble::getInstance()->m_cls_api.Ensemble_Tool_Del(GetIdInfo()) ;
 	
 	OnUpdateList();
 }
@@ -373,7 +399,7 @@ void FormJobTool::OnUpdateImage(void)
 
 	const int image_type = IMAGE_RGB888 ;
     int get_image_type = 0 ;
-    Ensemble_Tool_Get_ObjectImage(GetIdInfo(), image_type+IMAGE_ICON, &get_object_image_data, &object_image_width, &object_image_height, &get_image_type)  ;
+    CEnsemble::getInstance()->m_cls_api.Ensemble_Tool_Get_ObjectImage(GetIdInfo(), image_type+IMAGE_ICON, &get_object_image_data, &object_image_width, &object_image_height, &get_image_type)  ;
 
 	cv::Mat object_image ;
 	if( object_image_width > 0 && object_image_height > 0 )
@@ -427,10 +453,10 @@ void FormJobTool::OnUpdateName(QString name)
 
 void FormJobTool::OnRunCheckBoxToggled(bool checked)
 {
-	Ensemble_Task_Set_Run_Option(GetIdInfo(), checked) ;
+	CEnsemble::getInstance()->m_cls_api.Ensemble_Task_Set_Run_Option(GetIdInfo(), checked) ;
 		
 	//run checkbox
-	int run_option = Ensemble_Task_Get_Run_Option(GetIdInfo()) ;
+	int run_option = CEnsemble::getInstance()->m_cls_api.Ensemble_Task_Get_Run_Option(GetIdInfo()) ;
 	ui->checkBox_run->setChecked(run_option);
 
 	QString qstr_id = QString::fromStdString(GetParentIdInfo());
@@ -439,10 +465,10 @@ void FormJobTool::OnRunCheckBoxToggled(bool checked)
 
 void FormJobTool::OnViewCheckBoxToggled(bool checked)
 {
-	Ensemble_Task_Set_View_Option(GetIdInfo(), checked) ;
+	CEnsemble::getInstance()->m_cls_api.Ensemble_Task_Set_View_Option(GetIdInfo(), checked) ;
 		
 	//view checkbox
-	int view_option = Ensemble_Task_Get_View_Option(GetIdInfo()) ;
+	int view_option = CEnsemble::getInstance()->m_cls_api.Ensemble_Task_Get_View_Option(GetIdInfo()) ;
 	ui->checkBox_view->setChecked(view_option);
 
 	QString qstr_id = QString::fromStdString(GetParentIdInfo());

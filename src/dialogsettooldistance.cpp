@@ -34,7 +34,7 @@ void DialogSetToolDistance::showEvent(QShowEvent *ev)
     QDialog::showEvent(ev) ;
 
     //Get Name
-    std::string tool_name = Ensemble_Tool_Get_Name(GetId()) ;
+    std::string tool_name = CEnsemble::getInstance()->m_cls_api.Ensemble_Tool_Get_Name(GetId()) ;
     ui->label_name_distance->setText(QString::fromUtf8(tool_name.c_str()));
 
     qDebug("Tool Name = %s", tool_name.c_str()) ;
@@ -58,7 +58,7 @@ void DialogSetToolDistance::OnButtonGetImage(void)
 
 	const int image_type = IMAGE_RGB888 ;
     int get_image_type = 0 ;
-    Ensemble_Tool_Get_Image(GetId(), image_type, &get_job_image_data, &job_image_width, &job_image_height, &get_image_type)  ;
+    CEnsemble::getInstance()->m_cls_api.Ensemble_Tool_Get_Image(GetId(), image_type, &get_job_image_data, &job_image_width, &job_image_height, &get_image_type)  ;
 
     if( job_image_width > 0 && job_image_height > 0 )
     {
@@ -131,14 +131,14 @@ void DialogSetToolDistance::OnButtonGetTolRate(void)
 void DialogSetToolDistance::OnButtonGetCalcDistance(void)
 {
 	//Tolerance
-    float distance = Ensemble_Tool_Distance_Get_CalcDistance(GetId()) ;
+    float distance = CEnsemble::getInstance()->m_cls_api.Ensemble_Tool_Distance_Get_CalcDistance(GetId()) ;
 
 	ui->lineEdit_get_calc_distance->setText(QString::number(distance));
 }
 
 void DialogSetToolDistance::OnButtonNameChange(void)
 {
-    std::string tool_name = Ensemble_Tool_Get_Name(GetId()) ;
+    std::string tool_name = CEnsemble::getInstance()->m_cls_api.Ensemble_Tool_Get_Name(GetId()) ;
 
     DialogChangeName dlg_change_name ;
 
@@ -155,10 +155,10 @@ void DialogSetToolDistance::OnButtonNameChange(void)
 		
         if( !change_name.empty() )
         {
-            Ensemble_Tool_Set_Name(GetId(), change_name) ;
+            CEnsemble::getInstance()->m_cls_api.Ensemble_Tool_Set_Name(GetId(), change_name) ;
         }
 
-        tool_name = Ensemble_Tool_Get_Name(GetId()) ;
+        tool_name = CEnsemble::getInstance()->m_cls_api.Ensemble_Tool_Get_Name(GetId()) ;
         ui->label_name_distance->setText(QString::fromUtf8(tool_name.c_str()));
 
         qDebug("Tool Name = %s", tool_name.c_str()) ;

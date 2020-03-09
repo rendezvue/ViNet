@@ -1,6 +1,6 @@
 #include "dialogsettooloffsetdistance.h"
 #include "ui_dialogsettooloffsetdistance.h"
-
+#include <QButtonGroup>
 DialogSetToolOffsetDistance::DialogSetToolOffsetDistance(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::DialogSetToolOffsetDistance)
@@ -50,12 +50,12 @@ void DialogSetToolOffsetDistance::showEvent(QShowEvent *ev)
     QDialog::showEvent(ev) ;
 
     //Get Name
-    std::string tool_name = Ensemble_Tool_Get_Name(GetId()) ;
+    std::string tool_name = CEnsemble::getInstance()->m_cls_api.Ensemble_Tool_Get_Name(GetId()) ;
     ui->label_name->setText(QString::fromUtf8(tool_name.c_str()));
 
     qDebug("Tool Name = %s", tool_name.c_str()) ;
 
-	int direction = Ensemble_Tool_Offset_Distance_Get_Direction(GetId()) ;
+	int direction = CEnsemble::getInstance()->m_cls_api.Ensemble_Tool_Offset_Distance_Get_Direction(GetId()) ;
 
 	if( direction == 0 ) 		ui->radioButton_1->setChecked(true) ;
 	else if( direction == 1 ) 	ui->radioButton_2->setChecked(true) ;
@@ -80,7 +80,7 @@ void DialogSetToolOffsetDistance::OnButtonGetImage(void)
 
 	const int image_type = IMAGE_RGB888 ;
     int get_image_type = 0 ;
-    Ensemble_Tool_Get_Image(GetId(), image_type, &get_job_image_data, &job_image_width, &job_image_height, &get_image_type)  ;
+    CEnsemble::getInstance()->m_cls_api.Ensemble_Tool_Get_Image(GetId(), image_type, &get_job_image_data, &job_image_width, &job_image_height, &get_image_type)  ;
 
     if( job_image_width > 0 && job_image_height > 0 )
     {
@@ -138,7 +138,7 @@ void DialogSetToolOffsetDistance::updatePicture(cv::Mat image, cv::Rect rect_use
 	QImage qt_display_image = cls_mat_2_qimage.cvtMat2QImage(image, ui->label_image->width(), ui->label_image->height()) ;
 	
 	//draw set rect
-	if( !rect_user.empty() )
+    if( !(rect_user.width <= 0 || rect_user.height <= 0) )
 	{
 	    qDebug("%s : rect(%d,%d,%d,%d", __func__, rect_user.x, rect_user.y, rect_user.width, rect_user.height) ;
 
@@ -158,7 +158,7 @@ void DialogSetToolOffsetDistance::updatePicture(cv::Mat image, cv::Rect rect_use
 
 void DialogSetToolOffsetDistance::OnButtonNameChange(void)
 {
-    std::string tool_name = Ensemble_Tool_Get_Name(GetId()) ;
+    std::string tool_name = CEnsemble::getInstance()->m_cls_api.Ensemble_Tool_Get_Name(GetId()) ;
 
     DialogChangeName dlg_change_name ;
 
@@ -175,10 +175,10 @@ void DialogSetToolOffsetDistance::OnButtonNameChange(void)
 		
         if( !change_name.empty() )
         {
-            Ensemble_Tool_Set_Name(GetId(), change_name) ;
+            CEnsemble::getInstance()->m_cls_api.Ensemble_Tool_Set_Name(GetId(), change_name) ;
         }
 
-        tool_name = Ensemble_Tool_Get_Name(GetId()) ;
+        tool_name = CEnsemble::getInstance()->m_cls_api.Ensemble_Tool_Get_Name(GetId()) ;
         ui->label_name->setText(QString::fromUtf8(tool_name.c_str()));
 
         qDebug("Tool Name = %s", tool_name.c_str()) ;
@@ -194,7 +194,7 @@ void DialogSetToolOffsetDistance::OnButtonSelectObject(void)
 
 void DialogSetToolOffsetDistance::OnButtonResetObject(void)
 {
-	//Ensemble_Job_Del_SelectObject(GetId()) ;
+	//CEnsemble::getInstance()->m_cls_api.Ensemble_Job_Del_SelectObject(GetId()) ;
 	
     OnButtonGetImage() ;
 
@@ -272,13 +272,13 @@ void DialogSetToolOffsetDistance::mouseReleaseEvent(QMouseEvent *event)
 		
         if( set_status == SetBaseStatus::SET_AREA )
         {
-            //Ensemble_Job_Set_DetectArea(GetId(), f_x, f_y, f_w, f_h) ;
+            //CEnsemble::getInstance()->m_cls_api.Ensemble_Job_Set_DetectArea(GetId(), f_x, f_y, f_w, f_h) ;
 
             //emit UpdateToolObjectImage();
         }
         else if( set_status == SetBaseStatus::SET_ZOOM)
         {
-            //Ensemble_Job_Set_Zoom(GetId(), f_x, f_y, f_w, f_h) ;
+            //CEnsemble::getInstance()->m_cls_api.Ensemble_Job_Set_Zoom(GetId(), f_x, f_y, f_w, f_h) ;
         }
 		else if( set_status == SetBaseStatus::SET_MASK)
         {
@@ -287,7 +287,7 @@ void DialogSetToolOffsetDistance::mouseReleaseEvent(QMouseEvent *event)
             if (ui->checkBox_mask_enable_inside->isChecked())	b_enable_inside = false ;
             else												b_enable_inside = true ;
 				
-            Ensemble_Tool_Set_MaskArea(GetId(), f_x, f_y, f_w, f_h, b_enable_inside) ;
+            CEnsemble::getInstance()->m_cls_api.Ensemble_Tool_Set_MaskArea(GetId(), f_x, f_y, f_w, f_h, b_enable_inside) ;
 
 			emit UpdateToolObjectImage();
 			#endif
@@ -295,7 +295,7 @@ void DialogSetToolOffsetDistance::mouseReleaseEvent(QMouseEvent *event)
 		else if( set_status == SetBaseStatus::SET_OBJECT)
 		{
 			//SelectObject
-            Ensemble_Tool_Set_SelectObject(GetId(), f_x, f_y, f_w, f_h) ;
+            CEnsemble::getInstance()->m_cls_api.Ensemble_Tool_Set_SelectObject(GetId(), f_x, f_y, f_w, f_h) ;
 
 			OnButtonRegionGet() ;
 			
@@ -312,8 +312,8 @@ void DialogSetToolOffsetDistance::mouseReleaseEvent(QMouseEvent *event)
         	f_y = (float)point.y() / (float)label_h ;
 		
 			//SelectObject
-			//Ensemble_Job_Set_SelectObject(GetId(), f_x, f_y, f_w, f_h) ;
-            Ensemble_Tool_Set_Ref_Point(GetId(), f_x, f_y) ;
+			//CEnsemble::getInstance()->m_cls_api.Ensemble_Job_Set_SelectObject(GetId(), f_x, f_y, f_w, f_h) ;
+            CEnsemble::getInstance()->m_cls_api.Ensemble_Tool_Set_Ref_Point(GetId(), f_x, f_y) ;
 
             emit UpdateToolObjectImage();
 			#endif
@@ -340,9 +340,9 @@ void DialogSetToolOffsetDistance::OnButtonChangeDirection(void)
 
     int index = group.checkedId() ;
 
-	Ensemble_Tool_Offset_Distance_Set_Direction(GetId(), index) ;
+	CEnsemble::getInstance()->m_cls_api.Ensemble_Tool_Offset_Distance_Set_Direction(GetId(), index) ;
 
-	int direction = Ensemble_Tool_Offset_Distance_Get_Direction(GetId()) ;
+	int direction = CEnsemble::getInstance()->m_cls_api.Ensemble_Tool_Offset_Distance_Get_Direction(GetId()) ;
 
 	if( direction == 0 ) 		ui->radioButton_1->setChecked(true) ;
 	else if( direction == 1 ) 	ui->radioButton_2->setChecked(true) ;
@@ -372,7 +372,7 @@ void DialogSetToolOffsetDistance::OnButtonChangeDirection(void)
 void DialogSetToolOffsetDistance::OnButtonRegionGet(void)
 {
 	float x=0,y=0,width=0,height=0 ; 
-	Ensemble_Tool_Offset_Distance_Get_Region(GetId(), &x, &y, &width, &height) ;
+	CEnsemble::getInstance()->m_cls_api.Ensemble_Tool_Offset_Distance_Get_Region(GetId(), &x, &y, &width, &height) ;
 
 	ui->lineEdit_region_x->setText(QString::number(x));
 	ui->lineEdit_region_y->setText(QString::number(y));
@@ -387,7 +387,7 @@ void DialogSetToolOffsetDistance::OnButtonRegionSet(void)
 	int region_width = ui->lineEdit_region_width->text().toInt() ;
 	int region_height = ui->lineEdit_region_height->text().toInt() ;
 
-	Ensemble_Tool_Offset_Distance_Set_Region(GetId(), region_x, region_y, region_width, region_height) ;
+	CEnsemble::getInstance()->m_cls_api.Ensemble_Tool_Offset_Distance_Set_Region(GetId(), region_x, region_y, region_width, region_height) ;
 
 	OnButtonGetImage() ;
 
@@ -398,7 +398,7 @@ void DialogSetToolOffsetDistance::OnButtonRegionSet(void)
 void DialogSetToolOffsetDistance::OnButtonGetInspectionBaseInfo(void)
 {
 	float distance=0,angle=0 ; 
-	Ensemble_Tool_Offset_Distance_Get_Inspection_Base_Info(GetId(), &distance, &angle) ;
+	CEnsemble::getInstance()->m_cls_api.Ensemble_Tool_Offset_Distance_Get_Inspection_Base_Info(GetId(), &distance, &angle) ;
 
 	ui->lineEdit_base_info_distance->setText(QString::number(distance));
 	ui->lineEdit_base_info_angle->setText(QString::number(angle));
@@ -407,7 +407,7 @@ void DialogSetToolOffsetDistance::OnButtonGetInspectionBaseInfo(void)
 void DialogSetToolOffsetDistance::OnButtonGetInspectionToleranceInfo(void)
 {
 	float distance_min=0,distance_max=0, angle_min=0, angle_max=0 ; 
-	Ensemble_Tool_Offset_Distance_Get_Inspection_Tolerance_Info(GetId(), &distance_min, &distance_max, &angle_min, &angle_max) ;
+	CEnsemble::getInstance()->m_cls_api.Ensemble_Tool_Offset_Distance_Get_Inspection_Tolerance_Info(GetId(), &distance_min, &distance_max, &angle_min, &angle_max) ;
 
 	ui->lineEdit_tol_info_distance_min->setText(QString::number(distance_min));
 	ui->lineEdit_tol_info_distance_max->setText(QString::number(distance_max));
@@ -423,7 +423,7 @@ void DialogSetToolOffsetDistance::OnButtonSetInspectionToleranceInfo(void)
 	float tol_angle_min = ui->lineEdit_tol_info_angle_min->text().toFloat() ;
 	float tol_angle_max = ui->lineEdit_tol_info_angle_max->text().toFloat() ;
 
-	Ensemble_Tool_Offset_Distance_Set_Inspection_Tolerance_Info(GetId(), tol_distance_min, tol_distance_max, tol_angle_min, tol_angle_max) ;
+	CEnsemble::getInstance()->m_cls_api.Ensemble_Tool_Offset_Distance_Set_Inspection_Tolerance_Info(GetId(), tol_distance_min, tol_distance_max, tol_angle_min, tol_angle_max) ;
 
 	OnButtonGetInspectionToleranceInfo() ;
 }

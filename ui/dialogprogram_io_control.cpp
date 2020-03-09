@@ -55,7 +55,7 @@ void dialogprogram_io_control::on_pushButton_Get_Digital_IO_clicked()
         qstr_job_id = listitems[0]->text();
     }
 
-    int io_val = Ensemble_Digital_IO_GetIn(qstr_job_id.toStdString());
+    int io_val = CEnsemble::getInstance()->m_cls_api.Ensemble_Digital_IO_GetIn(qstr_job_id.toStdString());
     qDebug("io_val = 0x%x\n", io_val);
     //Run_Job(qstr_job_id);
 }
@@ -68,7 +68,7 @@ void dialogprogram_io_control::on_pushButton_Get_JobList_clicked()
     //delete all item
 //    ui->treeWidget_job->clear();
 
-    std::string str_prj_list_xml = Ensemble_Project_Get_List() ;
+    std::string str_prj_list_xml = CEnsemble::getInstance()->m_cls_api.Ensemble_Project_Get_List() ;
 
     qDebug("project list xml (%d, %d) = %s", str_prj_list_xml.size(), str_prj_list_xml.length(), str_prj_list_xml.c_str()) ;
 
@@ -120,7 +120,7 @@ void dialogprogram_io_control::on_pushButton_Get_JobList_clicked()
                     int type = job.attribute("Type").as_int();
                     std::string str_name = job.attribute("Name").value();
 
-                    std::string str_tool_type_name = Ensemble_Info_Get_ToolTypeName(type) ;
+                    std::string str_tool_type_name = CEnsemble::getInstance()->m_cls_api.Ensemble_Info_Get_ToolTypeName(type) ;
 
                     qDebug("Job : Id = %s Type=%d, TypeName=%s, Name=%s", str_job_id.c_str(), type, str_tool_type_name.c_str(), str_name.c_str()) ;
                 }
@@ -144,7 +144,7 @@ void dialogprogram_io_control::on_pushButton_Out_Set_clicked()
         qstr_job_id = listitems[0]->text();
     }
 
-    Ensemble_Digital_IO_SetOut(qstr_job_id.toStdString(), 1,1);
+    CEnsemble::getInstance()->m_cls_api.Ensemble_Digital_IO_SetOut(qstr_job_id.toStdString(), 1,1);
 }
 
 void dialogprogram_io_control::on_pushButton_Out_Add_clicked()
@@ -159,5 +159,5 @@ void dialogprogram_io_control::on_pushButton_Out_Add_clicked()
     {
         qstr_job_id = listitems[0]->text();
     }
-    Ensemble_Digital_IO_SetOut(qstr_job_id.toStdString(), 1,0);
+    CEnsemble::getInstance()->m_cls_api.Ensemble_Digital_IO_SetOut(qstr_job_id.toStdString(), 1,0);
 }

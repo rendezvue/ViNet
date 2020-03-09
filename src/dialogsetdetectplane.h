@@ -13,6 +13,7 @@
 
 //API
 #include "EnsembleAPI.h"
+#include "censemble.h"
 
 //opencv
 #include "opencv2/opencv.hpp"

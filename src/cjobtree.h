@@ -20,6 +20,7 @@
 
 #include "EnsembleAPI.h"
 
+
 #if 0
 class CJobTreeStyle: public QProxyStyle
 {

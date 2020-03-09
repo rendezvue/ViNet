@@ -4,7 +4,7 @@ UI program for embedded smart camera "Ensemble"
 * * *
 ## Compile
 1. Install QT lib. and QT Creator
-2. Install OpenCV lib.
+2. Install OpenCV lib. (v3.2 or higher)
 3. Install Boost lib.
 4. Get ViNet source code
 <pre><code>
@@ -16,6 +16,12 @@ $cd ViNet
 $git submodule update</code></pre>
 6. Open "ViNet.pro" and Compile using QT Creator
 7. Enjoy!
+
+## How to install dependency libraries on Ubuntu.
+sudo apt-get install libdc1394-22 libavcodec-dev libswscale-dev libavformat-dev libopencv-dev libboost-all-dev 
+
+## How to install QT Creator on Ubuntu.
+sudo apt-get install build-essential qtcreator qt5-default
 
 * * *
 ## Application

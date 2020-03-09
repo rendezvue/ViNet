@@ -41,8 +41,8 @@ void DialogSetToolAngleInspect::showEvent(QShowEvent *ev)
 	OnButtonGetTolerance() ;
 
 	//ID
-	std::string str_id_base = Ensemble_Tool_Option_InspectAngle_Get_ID_Info_Base(GetId()) ;
-	std::string str_id_target = Ensemble_Tool_Option_InspectAngle_Get_ID_Info_Target(GetId()) ;
+	std::string str_id_base = CEnsemble::getInstance()->m_cls_api.Ensemble_Tool_Option_InspectAngle_Get_ID_Info_Base(GetId()) ;
+	std::string str_id_target = CEnsemble::getInstance()->m_cls_api.Ensemble_Tool_Option_InspectAngle_Get_ID_Info_Target(GetId()) ;
 
 	ui->label_id_base->setText(QString::fromStdString(str_id_base));
 	ui->label_id_target->setText(QString::fromStdString(str_id_target));
@@ -51,7 +51,7 @@ void DialogSetToolAngleInspect::showEvent(QShowEvent *ev)
 void DialogSetToolAngleInspect::OnButtonGetBaseAngle(void)
 {
 	//
-	float angle = Ensemble_Tool_Angle_Get_CalcAngle(GetParentId()) ;
+	float angle = CEnsemble::getInstance()->m_cls_api.Ensemble_Tool_Angle_Get_CalcAngle(GetParentId()) ;
 
 	ui->lineEdit_base_angle->setText(QString::number(angle));
 }
@@ -74,7 +74,7 @@ void DialogSetToolAngleInspect::OnButtonGetTolerance(void)
 	float tol_min = -1 ;
 	float tol_max = -1 ;
 	
-	Ensemble_Tool_Option_InspectAngle_Get_Tolerance(GetId(), &tol_min, &tol_max) ;
+	CEnsemble::getInstance()->m_cls_api.Ensemble_Tool_Option_InspectAngle_Get_Tolerance(GetId(), &tol_min, &tol_max) ;
 
 	ui->lineEdit_tolerance_min->setText(QString::number(tol_min));
 	ui->lineEdit_tolerance_max->setText(QString::number(tol_max));
@@ -85,7 +85,7 @@ void DialogSetToolAngleInspect::OnButtonSetTolerance(void)
 	float min = ui->lineEdit_tolerance_min->text().toFloat();
 	float max = ui->lineEdit_tolerance_max->text().toFloat();
 
-	Ensemble_Tool_Option_InspectAngle_Set_Tolerance(GetId(), min, max) ;
+	CEnsemble::getInstance()->m_cls_api.Ensemble_Tool_Option_InspectAngle_Set_Tolerance(GetId(), min, max) ;
 	
 	OnButtonGetTolerance() ;
 }

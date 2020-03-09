@@ -31,6 +31,8 @@ MainWindow::MainWindow(QWidget *parent) :
     //Menu
     connect(ui->actionConnect, SIGNAL(triggered()), this, SLOT(OnMenuConnect()));
 
+    connect(ui->actionCheck_for_updates, SIGNAL(triggered()), this, SLOT(OnMenuCheckforUpdates()));
+
     //Source list
     connect(ui->listView_source, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(OnSourceListDClick(const QModelIndex &)));
 
@@ -151,7 +153,7 @@ void MainWindow::OnSourceListDClick(const QModelIndex &index)
     QString itemText = index.data(Qt::DisplayRole).toString();
 
     std::string str_source = itemText.toUtf8().constData() ;
-    Ensemble_Source_Set(str_source) ;
+    CEnsemble::getInstance()->m_cls_api.Ensemble_Source_Set(str_source) ;
 
     //tab : Result Image
     ui->tabWidget_image->setCurrentIndex(0);
@@ -246,11 +248,11 @@ void MainWindow::OnMenuConnect(void)
 		m_i_port = dlg_connect.GetPortNumber() ;
 		m_p_cls_check_network->SetPort(m_i_port) ;
 
-        int ret = Ensemble_Network_Connect(m_str_ip_address.c_str(), m_i_port);
+        int ret = CEnsemble::getInstance()->m_cls_api.Ensemble_Network_Connect(m_str_ip_address.c_str(), m_i_port);
 
         qDebug("Connect Ensemble : %d", ret ) ;
 
-        if( Ensemble_Network_IsOnline() )
+        if( CEnsemble::getInstance()->m_cls_api.Ensemble_Network_IsOnline() )
         {
             qDebug(" - Success : Control Port") ;
 
@@ -293,7 +295,7 @@ void MainWindow::UpdateToolsListFromDevice(QListWidget *listWidget)
 {
     qDebug("test1") ;
 
-	std::string str_able_tools_list_xml = Ensemble_Info_Type_Get_Tool_List_Xml() ;
+	std::string str_able_tools_list_xml = CEnsemble::getInstance()->m_cls_api.Ensemble_Info_Type_Get_Tool_List_Xml() ;
 
 	qDebug("tools info xml = %s", str_able_tools_list_xml.c_str()) ;
 
@@ -374,7 +376,7 @@ void MainWindow::UpdateToolsListFromDevice(QListWidget *listWidget)
 
 void MainWindow::UpdateJobsListFromDevice(QListWidget *listWidget) 
 {
-	std::string str_able_tools_list_xml = Ensemble_Info_Type_Get_Job_List_Xml() ;
+	std::string str_able_tools_list_xml = CEnsemble::getInstance()->m_cls_api.Ensemble_Info_Type_Get_Job_List_Xml() ;
 
 	qDebug("tools info xml = %s", str_able_tools_list_xml.c_str()) ;
 
@@ -489,7 +491,7 @@ void MainWindow::OnButtonNewProject(void)
     if(dialogCode == QDialog::Accepted)
     { // YesButton clicked
         //EnsembleJobNew(dlg_new_project.GetName()) ;
-        Ensemble_Project_Add_New(dlg_new_project.GetName()) ;
+        CEnsemble::getInstance()->m_cls_api.Ensemble_Project_Add_New(dlg_new_project.GetName()) ;
 
         UpdateJobTree();
     }
@@ -741,7 +743,7 @@ void MainWindow::UpdateJobTree(void)
     //delete all item
     ui->treeWidget_job->clear();
 
-    std::string str_prj_list_xml = Ensemble_Project_Get_List() ;
+    std::string str_prj_list_xml = CEnsemble::getInstance()->m_cls_api.Ensemble_Project_Get_List() ;
 
     qDebug("project list xml (%d, %d) = %s", str_prj_list_xml.size(), str_prj_list_xml.length(), str_prj_list_xml.c_str()) ;
 
@@ -779,14 +781,14 @@ void MainWindow::UpdateJobTree(void)
 
             //---
             //Set Informationupda
-            //if( Ensemble_Network_IsOnline() & ENSEMBLE_CONNECT_CONTROL_PORT )
+            //if( CEnsemble::getInstance()->m_cls_api.Ensemble_Network_IsOnline() & ENSEMBLE_CONNECT_CONTROL_PORT )
             {
                 unsigned char* get_data = NULL ;
                 int width = 0 ;
                 int height = 0 ;
 				const int image_type = IMAGE_RGB888 ;
                 int get_image_type = 0 ;
-                Ensemble_Source_Get_Image(GET_IMAGE_DEVICE_ICON, std::string(), image_type, &get_data, &width, &height, &get_image_type) ;
+                CEnsemble::getInstance()->m_cls_api.Ensemble_Source_Get_Image(GET_IMAGE_DEVICE_ICON, std::string(), image_type, &get_data, &width, &height, &get_image_type) ;
 
                 //qDebug("Get Image Size = %d x %d", width, height) ;
 
@@ -878,7 +880,7 @@ void MainWindow::UpdateJobTree(void)
                     int type = job.attribute("Type").as_int();
                     std::string str_name = job.attribute("Name").value();
 					
-					std::string str_tool_type_name = Ensemble_Info_Get_ToolTypeName(type) ;
+					std::string str_tool_type_name = CEnsemble::getInstance()->m_cls_api.Ensemble_Info_Get_ToolTypeName(type) ;
 					
                     qDebug("Job : Type=%d, TypeName=%s, Name=%s", type, str_tool_type_name.c_str(), str_name.c_str()) ;
 
@@ -910,7 +912,7 @@ void MainWindow::UpdateJobTree(void)
 	                    int type = tool.attribute("Type").as_int();
 	                    std::string str_name = tool.attribute("Name").value();
 						
-						std::string str_tool_type_name = Ensemble_Info_Get_ToolTypeName(type) ;
+						std::string str_tool_type_name = CEnsemble::getInstance()->m_cls_api.Ensemble_Info_Get_ToolTypeName(type) ;
 						
 	                    qDebug("Tool Type=%d, TypeName=%s, Name=%s", type, str_tool_type_name.c_str(), str_name.c_str()) ;
 
@@ -944,7 +946,7 @@ void MainWindow::UpdateJobTree(void)
 		                    int option_type = option.attribute("Type").as_int();
 		                    std::string str_option_name = option.attribute("Name").value();
 							
-							std::string str_tool_option_type_name = Ensemble_Info_Get_ToolTypeName(option_type) ;
+							std::string str_tool_option_type_name = CEnsemble::getInstance()->m_cls_api.Ensemble_Info_Get_ToolTypeName(option_type) ;
 							
 		                    qDebug("Tool Option Type=%d, TypeName=%s, Name=%s", option_type, str_tool_option_type_name.c_str(), str_option_name.c_str()) ;
 
@@ -986,12 +988,12 @@ void MainWindow::DropEventDoneOnTree(void)
 
 void MainWindow::OnButtonSaveAllTask(void)
 {
-	Ensemble_Task_File_Save() ;
+	CEnsemble::getInstance()->m_cls_api.Ensemble_Task_File_Save() ;
 }
 
 void MainWindow::OnButtonLoadAllTask(void)
 {
-	Ensemble_Task_File_Load() ;
+	CEnsemble::getInstance()->m_cls_api.Ensemble_Task_File_Load() ;
 
 	UpdateJobTree() ;
 }
@@ -1006,7 +1008,7 @@ void MainWindow::showEvent(QShowEvent *ev)
 
 void MainWindow::OnButtonUpdateSourceList(void)
 {
-	std::string str_source_list_xml = Ensemble_Source_Get_List() ;
+	std::string str_source_list_xml = CEnsemble::getInstance()->m_cls_api.Ensemble_Source_Get_List() ;
 
 	qDebug(" - Get Source List : %s", str_source_list_xml.c_str()) ;
 	
@@ -1043,6 +1045,7 @@ void MainWindow::OnButtonUpdateSourceList(void)
 }
 
 
+
 void MainWindow::on_actionProgram_triggered()
 {
     if( mDialogProgram == NULL )
@@ -1051,4 +1054,22 @@ void MainWindow::on_actionProgram_triggered()
         mDialogProgram->setModal(false);
     }
     mDialogProgram->show();
+}
+void MainWindow::OnMenuCheckforUpdates(void)
+{
+    qDebug("%s", __func__);
+
+    dialogcheckforupdates dlg_connect;
+
+
+    if( CEnsemble::getInstance()->m_cls_api.Ensemble_Network_IsOnline() )
+    {
+        dlg_connect.exec();
+    }
+    else
+    {
+        QMessageBox msgBox;
+        msgBox.setText("Ensemble is not connected!\n");
+        msgBox.exec();
+    }
 }

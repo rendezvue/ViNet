@@ -53,18 +53,18 @@ void FormJobBase::showEvent(QShowEvent *ev)
 	OnUpdateImage() ;
 
 	//run checkbox
-	int run_option = Ensemble_Task_Get_Run_Option(GetIdInfo()) ;
+	int run_option = CEnsemble::getInstance()->m_cls_api.Ensemble_Task_Get_Run_Option(GetIdInfo()) ;
 	ui->checkBox_run->setChecked(run_option);
 
 	//view checkbox
-	int view_option = Ensemble_Task_Get_View_Option(GetIdInfo()) ;
+	int view_option = CEnsemble::getInstance()->m_cls_api.Ensemble_Task_Get_View_Option(GetIdInfo()) ;
 	ui->checkBox_view->setChecked(view_option);
 }
 
 
 void FormJobBase::OnButtonDel(void)
 {
-    Ensemble_Job_Del(GetIdInfo()) ;
+    CEnsemble::getInstance()->m_cls_api.Ensemble_Job_Del(GetIdInfo()) ;
 
 	qDebug("emit UpdateList") ;
 	
@@ -73,7 +73,7 @@ void FormJobBase::OnButtonDel(void)
 
 void FormJobBase::OnButtonRun(void)
 {
-	std::string str_result_xml = Ensemble_Job_Run(GetIdInfo()) ;
+	std::string str_result_xml = CEnsemble::getInstance()->m_cls_api.Ensemble_Job_Run(GetIdInfo()) ;
 
 	qDebug("Job Run = %s", str_result_xml.c_str()) ;
 
@@ -172,7 +172,7 @@ void FormJobBase::OnUpdateImage(void)
 
 	const int image_type = IMAGE_RGB888 ;
     int get_image_type = 0 ;
-    Ensemble_Job_Get_Image(GetIdInfo(), image_type+IMAGE_THUMBNAIL+IMAGE_ALL_AREA, &get_job_image_data, &job_image_width, &job_image_height, &get_image_type)  ;
+    CEnsemble::getInstance()->m_cls_api.Ensemble_Job_Get_Image(GetIdInfo(), image_type+IMAGE_THUMBNAIL+IMAGE_ALL_AREA, &get_job_image_data, &job_image_width, &job_image_height, &get_image_type)  ;
 
 	cv::Mat bae_image ;
 	if( job_image_width > 0 && job_image_height > 0 )
@@ -215,7 +215,7 @@ void FormJobBase::OnUpdateImage(void)
     int object_image_height = 0 ;
 	
     get_image_type = 0 ;
-    int object_image_size = Ensemble_Job_Get_ObjectImage(GetIdInfo(), image_type+IMAGE_THUMBNAIL, &get_object_image_data, &object_image_width, &object_image_height, &get_image_type)  ;
+    int object_image_size = CEnsemble::getInstance()->m_cls_api.Ensemble_Job_Get_ObjectImage(GetIdInfo(), image_type+IMAGE_THUMBNAIL, &get_object_image_data, &object_image_width, &object_image_height, &get_image_type)  ;
 
 	qDebug("%s - %d 4", __func__, __LINE__) ;
 
@@ -355,10 +355,10 @@ void FormJobBase::OnRunCheckBoxToggled(bool checked)
 {
 	qDebug("Base Run Check = %d", checked) ;
 	
-	Ensemble_Task_Set_Run_Option(GetIdInfo(), checked) ;
+	CEnsemble::getInstance()->m_cls_api.Ensemble_Task_Set_Run_Option(GetIdInfo(), checked) ;
 		
 	//run checkbox
-	int run_option = Ensemble_Task_Get_Run_Option(GetIdInfo()) ;
+	int run_option = CEnsemble::getInstance()->m_cls_api.Ensemble_Task_Get_Run_Option(GetIdInfo()) ;
 	ui->checkBox_run->setChecked(run_option);
 
 	QString qstr_id = QString::fromStdString(GetIdInfo());
@@ -369,10 +369,10 @@ void FormJobBase::OnViewCheckBoxToggled(bool checked)
 {
     qDebug("Base View Check = %d", checked) ;
 		
-	Ensemble_Task_Set_View_Option(GetIdInfo(), checked) ;
+	CEnsemble::getInstance()->m_cls_api.Ensemble_Task_Set_View_Option(GetIdInfo(), checked) ;
 		
 	//view checkbox
-	int view_option = Ensemble_Task_Get_View_Option(GetIdInfo()) ;
+	int view_option = CEnsemble::getInstance()->m_cls_api.Ensemble_Task_Get_View_Option(GetIdInfo()) ;
 	ui->checkBox_view->setChecked(view_option);
 
 	QString qstr_id = QString::fromStdString(GetIdInfo());

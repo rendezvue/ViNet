@@ -7,6 +7,7 @@
 
 //API
 #include "EnsembleAPI.h"
+#include "censemble.h"
 
 #include "cgetimagethread.h"
 #include "cmat2qimage.h"
@@ -88,6 +89,8 @@ public slots:
 	void OnSliderSetISO(void) ;
 	void OnSliderSetShutterSpeed(void) ;
 
+private slots:
+    void on_pushButton_save_default_clicked();
 };
 
 #endif // DIALOGBASECAMERACONFIG_H

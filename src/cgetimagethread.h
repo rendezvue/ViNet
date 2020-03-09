@@ -6,6 +6,7 @@
 
 //API
 #include "EnsembleAPI.h"
+#include "censemble.h"
 #include "ImgDec.h"
 
 #define DISPLAY_IMAGE_WIDTH		640
