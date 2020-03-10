@@ -781,38 +781,42 @@ void MainWindow::UpdateJobTree(void)
             //Set Informationupda
             //if( CEnsemble::getInstance()->m_cls_api.Ensemble_Network_IsOnline() & ENSEMBLE_CONNECT_CONTROL_PORT )
             {
-                unsigned char* get_data = NULL ;
-                int width = 0 ;
-                int height = 0 ;
+                //unsigned char* get_data = NULL ;
+                //int width = 0 ;
+                //int height = 0 ;
+                ImageBuf image_buf ;
+                image_buf.image_width = 0 ;
+                image_buf.image_height = 0 ;
+
 				const int image_type = IMAGE_RGB888 ;
-                int get_image_type = 0 ;
-                CEnsemble::getInstance()->m_cls_api.Ensemble_Source_Get_Image(GET_IMAGE_DEVICE_ICON, std::string(), image_type, &get_data, &width, &height, &get_image_type) ;
+                //int get_image_type = 0 ;
+                CEnsemble::getInstance()->m_cls_api.Ensemble_Source_Get_Image(GET_IMAGE_DEVICE_ICON, std::string(), image_type, &image_buf) ;
 
                 //qDebug("Get Image Size = %d x %d", width, height) ;
 
-                if( get_data != NULL )
+                if( image_buf.p_buf != NULL )
                 {
-                    if( width>0 && height >0 )
+                    if( image_buf.image_width>0 && image_buf.image_height >0 )
                     {
                     	cv::Mat get_image ;
 						cv::Mat icon ;
-                        if( get_image_type == IMAGE_YUV420 )
+                        if( image_buf.image_type == IMAGE_YUV420 )
 						{
 							//YUV420 
-					        cv::Mat get_image(height + width / 2, width, CV_8UC1, get_data) ;
+                            cv::Mat get_image(image_buf.image_height + image_buf.image_width / 2, image_buf.image_width, CV_8UC1, image_buf.p_buf) ;
 
 					        CImgDec cls_image_decoder ;
 					        icon = cls_image_decoder.Decoding(get_image) ;
 
 						}
-                        else if( get_image_type == IMAGE_RGB888 )
+                        else if( image_buf.image_type == IMAGE_RGB888 )
 						{
-                            cv::Mat get_image(height, width, CV_8UC3, get_data) ;
+                            cv::Mat get_image(image_buf.image_height, image_buf.image_width, CV_8UC3, image_buf.p_buf) ;
 							cv::cvtColor(get_image, icon, cv::COLOR_BGR2RGB) ;
 						}
-                        else if( get_image_type == ImageTypeOption::IMAGE_JPG)
+                        else if( image_buf.image_type == ImageTypeOption::IMAGE_JPG)
                         {
-                            cv::Mat get_image = cv::imdecode(cv::Mat(1, width*height, CV_8UC1, get_data), cv::IMREAD_UNCHANGED) ;
+                            cv::Mat get_image = cv::imdecode(cv::Mat(1, image_buf.image_width*image_buf.image_height, CV_8UC1, image_buf.p_buf), cv::IMREAD_UNCHANGED) ;
                             cv::cvtColor(get_image, icon, cv::COLOR_BGR2RGB) ;
                         }
 						
@@ -822,8 +826,8 @@ void MainWindow::UpdateJobTree(void)
 						theWidgetItem->SetIconInfo(qt_display_image);
                     }
 
-                    delete [] get_data ;
-                    get_data = NULL ;
+                    delete [] image_buf.p_buf ;
+                    image_buf.p_buf = NULL ;
                 }
             }
 

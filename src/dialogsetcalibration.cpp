@@ -89,32 +89,34 @@ void DialogSetCalibration::OnButtonGetCalibrationImage(void)
 {
 	cv::Mat calib_image = cv::Mat::zeros(cv::Size(640, 480), CV_8UC3); //cv::imread("base.png");		//opencv mat for display
 
-	unsigned char* get_data = NULL ;
-    int width = 640 ;
-    int height = 480 ;
+    //unsigned char* get_data = NULL ;
+    //int width = 640 ;
+    //int height = 480 ;
+    ImageBuf image ;
+    image.image_width = 640 ;
+    image.image_height = 480 ;
 
 	const int image_type = IMAGE_RGB888 ;
-    int get_image_type = 0 ;
-    CEnsemble::getInstance()->m_cls_api.Ensemble_Source_Get_Image(GET_IMAGE_CALIBRATION_FEATURE, GetId(), image_type, &get_data, &width, &height, &get_image_type) ;
+    CEnsemble::getInstance()->m_cls_api.Ensemble_Source_Get_Image(GET_IMAGE_CALIBRATION_FEATURE, GetId(), image_type, &image) ;
 
-    if( get_data != NULL )
+    if( image.p_buf != NULL )
     {
-        if( width>0 && height >0 )
+        if( image.image_width>0 && image.image_height >0 )
         {
-            if( get_image_type == ImageTypeOption::IMAGE_RGB888 )
+            if( image.image_type == ImageTypeOption::IMAGE_RGB888 )
             {
-                cv::Mat get_image(height, width, CV_8UC3, get_data) ;
+                cv::Mat get_image(image.image_height, image.image_width, CV_8UC3, image.p_buf) ;
                 cv::cvtColor(get_image, calib_image, cv::COLOR_BGR2RGB) ;
             }
-            else if( get_image_type == ImageTypeOption::IMAGE_JPG)
+            else if( image.image_type == ImageTypeOption::IMAGE_JPG)
             {
-                cv::Mat get_image = cv::imdecode(cv::Mat(1, width*height, CV_8UC1, get_data), cv::IMREAD_UNCHANGED) ;
+                cv::Mat get_image = cv::imdecode(cv::Mat(1, image.image_width*image.image_height, CV_8UC1, image.p_buf), cv::IMREAD_UNCHANGED) ;
                 cv::cvtColor(get_image, calib_image, cv::COLOR_BGR2RGB) ;
             }
         }
     	
-        delete [] get_data ;
-        get_data = NULL ;
+        delete [] image.p_buf ;
+        image.p_buf = NULL ;
     }
 
     const int draw_width = ui->label_image_bg->width();
@@ -179,32 +181,36 @@ void DialogSetCalibration::OnButtonUpdateCalibrationInfo(void)
 
 	for (int i = 0; i < nCalibrationInfo; i++)
 	{
-        unsigned char* get_data = NULL ;
-        int width = 640 ;
-        int height = 480 ;
+        //unsigned char* get_data = NULL ;
+        //int width = 640 ;
+        //int height = 480 ;
+        ImageBuf image_buf ;
+        image_buf.image_width = 640 ;
+        image_buf.image_height = 640 ;
+
 		const int image_type = IMAGE_RGB888 ;
-        int get_image_type = 0 ;
-        CEnsemble::getInstance()->m_cls_api.Ensemble_Job_Calibration_GetImage(GetId(), i, image_type, &get_data, &width, &height, &get_image_type) ;
+        //int get_image_type = 0 ;
+        CEnsemble::getInstance()->m_cls_api.Ensemble_Job_Calibration_GetImage(GetId(), i, image_type, &image_buf) ;
 
 		cv::Mat calibration_image ;
-        if( get_data != NULL )
+        if( image_buf.p_buf != NULL )
         {
-            if( width>0 && height >0 )
+            if( image_buf.image_width>0 && image_buf.image_height >0 )
             {
-                if( get_image_type == ImageTypeOption::IMAGE_RGB888)
+                if( image_buf.image_type == ImageTypeOption::IMAGE_RGB888)
                 {
-                    cv::Mat get_image(height, width, CV_8UC3, get_data) ;
+                    cv::Mat get_image(image_buf.image_height, image_buf.image_width, CV_8UC3, image_buf.p_buf) ;
                     cv::cvtColor(get_image, calibration_image, cv::COLOR_BGR2RGB) ;
                 }
-                else if( get_image_type == ImageTypeOption::IMAGE_JPG)
+                else if( image_buf.image_type == ImageTypeOption::IMAGE_JPG)
                 {
-                    cv::Mat get_image = cv::imdecode(cv::Mat(1, width*height, CV_8UC1, get_data), cv::IMREAD_UNCHANGED) ;
+                    cv::Mat get_image = cv::imdecode(cv::Mat(1, image_buf.image_width*image_buf.image_height, CV_8UC1, image_buf.p_buf), cv::IMREAD_UNCHANGED) ;
                     cv::cvtColor(get_image, calibration_image, cv::COLOR_BGR2RGB) ;
                 }
             }
 
-            delete [] get_data ;
-            get_data = NULL ;
+            delete [] image_buf.p_buf ;
+            image_buf.p_buf = NULL ;
         }
 
 		float robot_x = 0.0, robot_y = 0.0;

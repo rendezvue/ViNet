@@ -23,66 +23,72 @@ void CGetImageThread::run(void)
 
         if( CEnsemble::getInstance()->m_cls_api.Ensemble_Network_IsOnline()  )
         {
-            unsigned char* get_data = NULL ;
-            int width = DISPLAY_IMAGE_WIDTH ;
-            int height = DISPLAY_IMAGE_HEIGHT ;
+            //unsigned char* get_data = NULL ;
+            //int width = DISPLAY_IMAGE_WIDTH ;
+            //int height = DISPLAY_IMAGE_HEIGHT ;
+            ImageBuf image_buf ;
+            image_buf.image_width = DISPLAY_IMAGE_WIDTH ;
+            image_buf.image_height = DISPLAY_IMAGE_HEIGHT ;
 
-            unsigned char* get_data_result = NULL ;
-            int width_result = DISPLAY_IMAGE_WIDTH ;
-            int height_result = DISPLAY_IMAGE_HEIGHT ;
+            //unsigned char* get_data_result = NULL ;
+            //int width_result = DISPLAY_IMAGE_WIDTH ;
+            //int height_result = DISPLAY_IMAGE_HEIGHT ;
+            ImageBuf result_buf ;
+            result_buf.image_width = DISPLAY_IMAGE_WIDTH ;
+            result_buf.image_height = DISPLAY_IMAGE_HEIGHT ;
 
             const int image_type = IMAGE_RGB888 ;
-			int get_result_image_type = 0 ;
-			int get_source_image_type = 0 ;
+            //int get_result_image_type = 0 ;
+            //int get_source_image_type = 0 ;
 			
             int ret = 0 ;
 
             if( m_i_type == 1 )        //result
             {
                 //ret = CEnsemble::getInstance()->m_cls_api.Ensemble_Job_Get_ResultImage(m_str_id, image_type, &get_data_result, &width_result, &height_result) ;
-                ret += CEnsemble::getInstance()->m_cls_api.Ensemble_Result_Get_Image(m_str_id, image_type, &get_data_result, &width_result, &height_result, &get_result_image_type) ;
+                ret += CEnsemble::getInstance()->m_cls_api.Ensemble_Result_Get_Image(m_str_id, image_type, &result_buf) ;
 
                 //qDebug("Result Image Size = %d, %d", width_result, height_result) ;
             }
             else if( m_i_type == 2 )        //merge image = image + result
             {
-                ret = CEnsemble::getInstance()->m_cls_api.Ensemble_Source_Get_Image(GET_IMAGE_INPUT, std::string(), image_type+IMAGE_ADD_TIME+IMAGE_ADD_SOURCE_INFO, &get_data, &width, &height, &get_source_image_type) ;
+                ret = CEnsemble::getInstance()->m_cls_api.Ensemble_Source_Get_Image(GET_IMAGE_INPUT, std::string(), image_type+IMAGE_ADD_TIME+IMAGE_ADD_SOURCE_INFO, &image_buf) ;
                 //ret += CEnsemble::getInstance()->m_cls_api.Ensemble_Job_Get_ResultImage(m_str_id, image_type, &get_data_result, &width_result, &height_result) ;
-                ret += CEnsemble::getInstance()->m_cls_api.Ensemble_Result_Get_Image(m_str_id, image_type, &get_data_result, &width_result, &height_result, &get_result_image_type) ;
+                ret += CEnsemble::getInstance()->m_cls_api.Ensemble_Result_Get_Image(m_str_id, image_type, &result_buf) ;
             }
             else
             {
-                ret = CEnsemble::getInstance()->m_cls_api.Ensemble_Source_Get_Image(GET_IMAGE_INPUT, std::string(), image_type+IMAGE_ADD_TIME+IMAGE_ADD_SOURCE_INFO, &get_data, &width, &height, &get_source_image_type) ;
+                ret = CEnsemble::getInstance()->m_cls_api.Ensemble_Source_Get_Image(GET_IMAGE_INPUT, std::string(), image_type+IMAGE_ADD_TIME+IMAGE_ADD_SOURCE_INFO, &image_buf) ;
             }
 
             //qDebug("Network return = %d", ret) ;
             //qDebug("Get Image Size = %d x %d", width, height) ;
             //Check Get Data(Input Image)
-            if( get_data != NULL )
+            if( image_buf.p_buf != NULL )
             {
-                if( width>0 && height >0 )
+                if( image_buf.image_width>0 && image_buf.image_height >0 )
                 {
-                    if( get_source_image_type == IMAGE_YUV420 )
+                    if( image_buf.image_type == IMAGE_YUV420 )
                     {
-                        cv::Mat get_image(height + height / 2, width, CV_8UC1, get_data) ;
+                        cv::Mat get_image(image_buf.image_height + image_buf.image_height / 2, image_buf.image_width, CV_8UC1, image_buf.p_buf) ;
 
                         CImgDec cls_image_decoder ;
                         m_mat_input_image = cls_image_decoder.Decoding(get_image) ;
                     }
-                    else if( get_source_image_type == IMAGE_RGB888 )
+                    else if( image_buf.image_type == IMAGE_RGB888 )
                     {
-                        cv::Mat get_image(height, width, CV_8UC3, get_data) ;
+                        cv::Mat get_image(image_buf.image_height, image_buf.image_width, CV_8UC3, image_buf.p_buf) ;
                         cv::cvtColor(get_image, m_mat_input_image, cv::COLOR_BGR2RGB) ;
                     }
-					 else if( get_source_image_type == IMAGE_JPG )
+                     else if( image_buf.image_type == IMAGE_JPG )
                     {
-                        cv::Mat get_image = cv::imdecode(cv::Mat(1,  width*height, CV_8UC1, get_data), cv::IMREAD_UNCHANGED);
+                        cv::Mat get_image = cv::imdecode(cv::Mat(1,  image_buf.image_width*image_buf.image_height, CV_8UC1, image_buf.p_buf), cv::IMREAD_UNCHANGED);
                         cv::cvtColor(get_image, m_mat_input_image, cv::COLOR_BGR2RGB) ;
                     }
                 }
 
-                delete [] get_data ;
-                get_data = NULL ;
+                delete [] image_buf.p_buf ;
+                image_buf.p_buf = NULL ;
             }
             else
             {
@@ -98,32 +104,32 @@ void CGetImageThread::run(void)
 
             //qDebug("Get Result Image") ;
             //Check Result Data
-            if( get_data_result )
+            if( result_buf.p_buf )
             {
 
-                if( width_result>0 && height_result >0 )
+                if( result_buf.image_width>0 && result_buf.image_height >0 )
                 {
-                    if( get_result_image_type == IMAGE_YUV420 )
+                    if( result_buf.image_type == IMAGE_YUV420 )
                     {
-                        cv::Mat get_image(height_result + height_result / 2, width_result, CV_8UC1, get_data_result) ;
+                        cv::Mat get_image(result_buf.image_height + result_buf.image_height / 2, result_buf.image_width, CV_8UC1, result_buf.p_buf) ;
 
                         CImgDec cls_image_decoder ;
                         m_mat_result_image = cls_image_decoder.Decoding(get_image) ;
                     }
-                    else if( get_result_image_type == IMAGE_RGB888 )
+                    else if( result_buf.image_type == IMAGE_RGB888 )
                     {
-                        cv::Mat get_image(height_result, width_result, CV_8UC3, get_data_result) ;
+                        cv::Mat get_image(result_buf.image_height, result_buf.image_width, CV_8UC3, result_buf.p_buf) ;
                         cv::cvtColor(get_image, m_mat_result_image, cv::COLOR_BGR2RGB) ;
                     }
-					else if( get_result_image_type == IMAGE_JPG )
+                    else if( result_buf.image_type == IMAGE_JPG )
                     {
-                        cv::Mat get_image = cv::imdecode(cv::Mat(1,  width_result*height_result, CV_8UC1, get_data_result), cv::IMREAD_UNCHANGED);
+                        cv::Mat get_image = cv::imdecode(cv::Mat(1,  result_buf.image_width*result_buf.image_height, CV_8UC1, result_buf.p_buf), cv::IMREAD_UNCHANGED);
                         cv::cvtColor(get_image, m_mat_result_image, cv::COLOR_BGR2RGB) ;
                     }
                 }
 
-                delete [] get_data_result ;
-                get_data_result = NULL ;
+                delete [] result_buf.p_buf ;
+                result_buf.p_buf = NULL ;
             }
             else
             {

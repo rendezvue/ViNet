@@ -166,43 +166,46 @@ void FormJobBase::OnUpdateImage(void)
     qDebug("%s - %d 1", __func__, __LINE__) ;
 
 	//Get Base Job Image
-	unsigned char* get_job_image_data = NULL ;
-    int job_image_width = 0 ;
-    int job_image_height = 0 ;
+    //unsigned char* get_job_image_data = NULL ;
+    //int job_image_width = 0 ;
+    //int job_image_height = 0 ;
+    ImageBuf image_buf ;
+    image_buf.image_width = 0 ;
+    image_buf.image_height = 0 ;
 
 	const int image_type = IMAGE_RGB888 ;
-    int get_image_type = 0 ;
-    CEnsemble::getInstance()->m_cls_api.Ensemble_Job_Get_Image(GetIdInfo(), image_type+IMAGE_THUMBNAIL+IMAGE_ALL_AREA, &get_job_image_data, &job_image_width, &job_image_height, &get_image_type)  ;
+    //int get_image_type = 0 ;
+    CEnsemble::getInstance()->m_cls_api.Ensemble_Job_Get_Image(GetIdInfo(), image_type+IMAGE_THUMBNAIL+IMAGE_ALL_AREA, &image_buf)  ;
 
 	cv::Mat bae_image ;
-	if( job_image_width > 0 && job_image_height > 0 )
+    if( image_buf.image_width > 0 && image_buf.image_height > 0 )
 	{
-        if( get_image_type == IMAGE_YUV420 )
+        if( image_buf.image_type == IMAGE_YUV420 )
 		{
 			//YUV420 
-	        cv::Mat get_image(job_image_height + job_image_height / 2, job_image_width, CV_8UC1, get_job_image_data) ;
+            cv::Mat get_image(image_buf.image_height + image_buf.image_height / 2, image_buf.image_width, CV_8UC1, image_buf.p_buf) ;
 
 	        CImgDec cls_image_decoder ;
 	        bae_image = cls_image_decoder.Decoding(get_image) ;
 		}
-        else if( get_image_type == IMAGE_RGB888 )
+        else if( image_buf.image_type == IMAGE_RGB888 )
 		{
-			cv::Mat get_image(job_image_height, job_image_width, CV_8UC3, get_job_image_data) ;
+            cv::Mat get_image(image_buf.image_height, image_buf.image_width, CV_8UC3, image_buf.p_buf) ;
 			cv::cvtColor(get_image, bae_image, cv::COLOR_BGR2RGB) ;
 		}
-        else if( get_image_type == ImageTypeOption::IMAGE_JPG)
+        else if( image_buf.image_type == ImageTypeOption::IMAGE_JPG)
         {
-            cv::Mat get_image = cv::imdecode(cv::Mat(1, job_image_width*job_image_height, CV_8UC1, get_job_image_data), cv::IMREAD_UNCHANGED) ;
+            cv::Mat get_image = cv::imdecode(cv::Mat(1, image_buf.image_width*image_buf.image_height, CV_8UC1, image_buf.p_buf), cv::IMREAD_UNCHANGED) ;
             cv::cvtColor(get_image, bae_image, cv::COLOR_BGR2RGB) ;
         }
 	}
 
     qDebug("%s - %d 2", __func__, __LINE__) ;
 
-    if( get_job_image_data != NULL )
+    if( image_buf.p_buf != NULL )
     {
-        delete [] get_job_image_data ;
-        get_job_image_data = NULL ;
+        delete [] image_buf.p_buf ;
+        image_buf.p_buf = NULL ;
     }
 
     qDebug("%s - %d 3", __func__, __LINE__) ;
@@ -210,35 +213,38 @@ void FormJobBase::OnUpdateImage(void)
 	SetImage(bae_image) ;
 
 	//Get Base Object Image
-	unsigned char* get_object_image_data = NULL ;
-    int object_image_width = 0 ;
-    int object_image_height = 0 ;
-	
-    get_image_type = 0 ;
-    int object_image_size = CEnsemble::getInstance()->m_cls_api.Ensemble_Job_Get_ObjectImage(GetIdInfo(), image_type+IMAGE_THUMBNAIL, &get_object_image_data, &object_image_width, &object_image_height, &get_image_type)  ;
+    //unsigned char* get_object_image_data = NULL ;
+    //int object_image_width = 0 ;
+    //int object_image_height = 0 ;
+    //get_image_type = 0 ;
+    image_buf.image_width = 0 ;
+    image_buf.image_height = 0 ;
+    image_buf.image_type = 0 ;
+
+    int object_image_size = CEnsemble::getInstance()->m_cls_api.Ensemble_Job_Get_ObjectImage(GetIdInfo(), image_type+IMAGE_THUMBNAIL, &image_buf)  ;
 
 	qDebug("%s - %d 4", __func__, __LINE__) ;
 
-	if( get_object_image_data != NULL )
+    if( image_buf.p_buf != NULL )
     {
 		cv::Mat object_image ;
-		if( object_image_width > 0 && object_image_height > 0 )
+        if( image_buf.image_width > 0 && image_buf.image_height > 0 )
 		{
-            if( get_image_type == IMAGE_YUV420 )
+            if( image_buf.image_type == IMAGE_YUV420 )
 			{
 				//YUV420 
-		        cv::Mat get_image(object_image_height + object_image_height / 2, object_image_width, CV_8UC1, get_object_image_data) ;
+                cv::Mat get_image(image_buf.image_height + image_buf.image_height / 2, image_buf.image_width, CV_8UC1, image_buf.p_buf) ;
 
 		        CImgDec cls_image_decoder ;
 		        object_image = cls_image_decoder.Decoding(get_image) ;
 				
                 qDebug("yuv 420") ;
 			}
-            else if( get_image_type == IMAGE_RGB888 )
+            else if( image_buf.image_type == IMAGE_RGB888 )
 			{
 				qDebug("object_image_size=%d", object_image_size) ;
 					
-                cv::Mat get_image(object_image_height, object_image_width, CV_8UC3, get_object_image_data) ;
+                cv::Mat get_image(image_buf.image_height, image_buf.image_width, CV_8UC3, image_buf.p_buf) ;
 				//cv::Mat get_image = cv::Mat(object_image_height, object_image_width,CV_8UC3,get_object_image_data).clone(); // make a copy						
 				
 				//cv::Mat get_image(object_image_height, object_image_width, CV_8UC3) ;
@@ -254,7 +260,7 @@ void FormJobBase::OnUpdateImage(void)
 
 				cv::cvtColor(get_image, object_image, cv::COLOR_BGR2RGB) ;
 
-                qDebug("rgb 888 : w=%d, h=%d", object_image_width, object_image_height) ;
+                qDebug("rgb 888 : w=%d, h=%d", image_buf.image_width, image_buf.image_height) ;
                 qDebug("get_image : w=%d, h=%d", get_image.cols, get_image.rows) ;
                 qDebug("object_image : w=%d, h=%d", object_image.cols, object_image.rows) ;
 
@@ -262,15 +268,15 @@ void FormJobBase::OnUpdateImage(void)
                 //cv::imshow("test2", object_image) ;
                 //cv::waitKey(0) ;
 			}
-            else if( get_image_type == ImageTypeOption::IMAGE_JPG)
+            else if( image_buf.image_type == ImageTypeOption::IMAGE_JPG)
             {
-                cv::Mat get_image = cv::imdecode(cv::Mat(1, object_image_width*object_image_height, CV_8UC1, get_object_image_data), cv::IMREAD_UNCHANGED) ;
+                cv::Mat get_image = cv::imdecode(cv::Mat(1, image_buf.image_width*image_buf.image_height, CV_8UC1, image_buf.p_buf), cv::IMREAD_UNCHANGED) ;
                 cv::cvtColor(get_image, object_image, cv::COLOR_BGR2RGB) ;
             }
 		}
     
-        delete [] get_object_image_data ;
-        get_object_image_data = NULL ;
+        delete [] image_buf.p_buf ;
+        image_buf.p_buf = NULL ;
 
 		
         SetObjectImage(object_image) ;

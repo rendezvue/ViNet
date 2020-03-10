@@ -393,43 +393,46 @@ void FormJobTool::hoverMove(QHoverEvent * event)
 void FormJobTool::OnUpdateImage(void)
 {
 	//Get Base Object Image
-    unsigned char* get_object_image_data = NULL ;
-    int object_image_width = 0 ;
-    int object_image_height = 0 ;
+    //unsigned char* get_object_image_data = NULL ;
+    //int object_image_width = 0 ;
+    //int object_image_height = 0 ;
+    ImageBuf image_buf ;
+    image_buf.image_width = 0 ;
+    image_buf.image_height = 0 ;
 
 	const int image_type = IMAGE_RGB888 ;
-    int get_image_type = 0 ;
-    CEnsemble::getInstance()->m_cls_api.Ensemble_Tool_Get_ObjectImage(GetIdInfo(), image_type+IMAGE_ICON, &get_object_image_data, &object_image_width, &object_image_height, &get_image_type)  ;
+    //int get_image_type = 0 ;
+    CEnsemble::getInstance()->m_cls_api.Ensemble_Tool_Get_ObjectImage(GetIdInfo(), image_type+IMAGE_ICON, &image_buf)  ;
 
 	cv::Mat object_image ;
-	if( object_image_width > 0 && object_image_height > 0 )
+    if( image_buf.image_width > 0 && image_buf.image_height > 0 )
 	{
-        if( get_image_type == IMAGE_YUV420 )
+        if( image_buf.image_type == IMAGE_YUV420 )
 		{
 			//YUV420 
-	        cv::Mat get_image(object_image_height + object_image_height / 2, object_image_width, CV_8UC1, get_object_image_data) ;
+            cv::Mat get_image(image_buf.image_height + image_buf.image_height / 2, image_buf.image_width, CV_8UC1, image_buf.p_buf) ;
 
 	        CImgDec cls_image_decoder ;
 	        object_image = cls_image_decoder.Decoding(get_image) ;
 
 		}
-        else if( get_image_type == IMAGE_RGB888 )
+        else if( image_buf.image_type == IMAGE_RGB888 )
 		{
-			cv::Mat get_image(object_image_height, object_image_width, CV_8UC3, get_object_image_data) ;
+            cv::Mat get_image(image_buf.image_height, image_buf.image_width, CV_8UC3, image_buf.p_buf) ;
 			cv::cvtColor(get_image, object_image, cv::COLOR_BGR2RGB) ;
 		}
-        else if( get_image_type == ImageTypeOption::IMAGE_JPG)
+        else if( image_buf.image_type == ImageTypeOption::IMAGE_JPG)
         {
-            cv::Mat get_image = cv::imdecode(cv::Mat(1, object_image_width*object_image_height, CV_8UC1, get_object_image_data), cv::IMREAD_UNCHANGED) ;
+            cv::Mat get_image = cv::imdecode(cv::Mat(1, image_buf.image_width*image_buf.image_height, CV_8UC1, image_buf.p_buf), cv::IMREAD_UNCHANGED) ;
 
 			if( !get_image.empty() )	cv::cvtColor(get_image, object_image, cv::COLOR_BGR2RGB) ;
         }
 	}
 
-    if( get_object_image_data != NULL )
+    if( image_buf.p_buf != NULL )
     {
-        delete [] get_object_image_data ;
-        get_object_image_data = NULL ;
+        delete [] image_buf.p_buf ;
+        image_buf.p_buf = NULL ;
     }
 
 	SetObjectImage(object_image) ;
