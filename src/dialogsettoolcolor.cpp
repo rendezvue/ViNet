@@ -101,7 +101,7 @@ void DialogSetToolColor::OnButtonGetImage(void)
 
 	const int image_type = IMAGE_RGB888 ;
     //int get_image_type = 0 ;
-    CEnsemble::getInstance()->m_cls_api.Ensemble_Tool_Option_GetImage(GetId(), image_type, &image_buf)  ;
+    CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Tool_Option_GetImage(GetId(), image_type, &image_buf)  ;
 
     if( image_buf.image_width > 0 && image_buf.image_height > 0 )
     {
@@ -146,7 +146,7 @@ void DialogSetToolColor::OnButtonGetRedHistogramImage(void)
 
 	const int image_type = IMAGE_RGB888 ;
     //int get_image_type = 0 ;
-    CEnsemble::getInstance()->m_cls_api.Ensemble_Tool_Option_InspectColor_Histogram_GetImage(GetId(), 0/*red*/, image_type, &image_buf)  ;
+    CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Tool_Option_InspectColor_Histogram_GetImage(GetId(), 0/*red*/, image_type, &image_buf)  ;
 
 	cv::Mat histogram_image ;
     if( image_buf.image_width > 0 && image_buf.image_height > 0 )
@@ -196,7 +196,7 @@ void DialogSetToolColor::OnButtonGetGreenHistogramImage(void)
 
 	const int image_type = IMAGE_RGB888 ;
     //int get_image_type = 0 ;
-    CEnsemble::getInstance()->m_cls_api.Ensemble_Tool_Option_InspectColor_Histogram_GetImage(GetId(), 1/*green*/, image_type, &image_buf)  ;
+    CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Tool_Option_InspectColor_Histogram_GetImage(GetId(), 1/*green*/, image_type, &image_buf)  ;
 
 	cv::Mat histogram_image ;
     if( image_buf.image_width > 0 && image_buf.image_height > 0 )
@@ -246,7 +246,7 @@ void DialogSetToolColor::OnButtonGetBlueHistogramImage(void)
 
 	const int image_type = IMAGE_RGB888 ;
     //int get_image_type = 0 ;
-    CEnsemble::getInstance()->m_cls_api.Ensemble_Tool_Option_InspectColor_Histogram_GetImage(GetId(), 2/*blue*/, image_type, &image_buf)  ;
+    CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Tool_Option_InspectColor_Histogram_GetImage(GetId(), 2/*blue*/, image_type, &image_buf)  ;
 
 	cv::Mat histogram_image ;
     if( image_buf.image_width > 0 && image_buf.image_height > 0 )
@@ -312,7 +312,7 @@ void DialogSetToolColor::updatePicture(cv::Mat image)
 
 void DialogSetToolColor::CheckedUseRed(void)
 {
-	int check_color_elem = CEnsemble::getInstance()->m_cls_api.Ensemble_Tool_Option_InspectColor_Get_Histogram_UseElement(GetId())  ;
+	int check_color_elem = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Tool_Option_InspectColor_Get_Histogram_UseElement(GetId())  ;
 	if (check_color_elem & HISTOGRAM_USE_RED )
 	{
 		ui->checkBox_use_red->setChecked(1) ;
@@ -329,7 +329,7 @@ void DialogSetToolColor::CheckedUseRed(void)
 void DialogSetToolColor::CheckedUseGreen(void)
 {
 	//check
-	int check_color_elem = CEnsemble::getInstance()->m_cls_api.Ensemble_Tool_Option_InspectColor_Get_Histogram_UseElement(GetId())  ;
+	int check_color_elem = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Tool_Option_InspectColor_Get_Histogram_UseElement(GetId())  ;
 	if (check_color_elem & HISTOGRAM_USE_GREEN )
 	{
 		ui->checkBox_use_green->setChecked(1) ;
@@ -346,7 +346,7 @@ void DialogSetToolColor::CheckedUseGreen(void)
 void DialogSetToolColor::CheckedUseBlue(void) 
 {
 	//check
-	int check_color_elem = CEnsemble::getInstance()->m_cls_api.Ensemble_Tool_Option_InspectColor_Get_Histogram_UseElement(GetId())  ;
+	int check_color_elem = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Tool_Option_InspectColor_Get_Histogram_UseElement(GetId())  ;
 	if (check_color_elem & HISTOGRAM_USE_BLUE )
 	{
 		ui->checkBox_use_blue->setChecked(1) ;
@@ -364,12 +364,12 @@ void DialogSetToolColor::OnButtonSetUseRed(bool checked)
 {
 	qDebug("Check RED = %d", checked) ;
 	
-	int color_elem = CEnsemble::getInstance()->m_cls_api.Ensemble_Tool_Option_InspectColor_Get_Histogram_UseElement(GetId())  ;
+	int color_elem = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Tool_Option_InspectColor_Get_Histogram_UseElement(GetId())  ;
 	
 	if (checked)	color_elem |= HISTOGRAM_USE_RED ;
 	else 			color_elem &= ~HISTOGRAM_USE_RED ;
 
-	CEnsemble::getInstance()->m_cls_api.Ensemble_Tool_Option_InspectColor_Set_Histogram_UseElement(GetId(), color_elem)  ;
+	CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Tool_Option_InspectColor_Set_Histogram_UseElement(GetId(), color_elem)  ;
 
 	CheckedUseRed() ;
 
@@ -380,12 +380,12 @@ void DialogSetToolColor::OnButtonSetUseGreen(bool checked)
 {
 	qDebug("Check GREEN = %d", checked) ;
 	
-	int color_elem = CEnsemble::getInstance()->m_cls_api.Ensemble_Tool_Option_InspectColor_Get_Histogram_UseElement(GetId())  ;
+	int color_elem = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Tool_Option_InspectColor_Get_Histogram_UseElement(GetId())  ;
 	
 	if (checked)	color_elem |= HISTOGRAM_USE_GREEN ;
 	else 			color_elem &= ~HISTOGRAM_USE_GREEN ;
 
-	CEnsemble::getInstance()->m_cls_api.Ensemble_Tool_Option_InspectColor_Set_Histogram_UseElement(GetId(), color_elem)  ;
+	CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Tool_Option_InspectColor_Set_Histogram_UseElement(GetId(), color_elem)  ;
 
 	CheckedUseGreen() ;
 
@@ -396,12 +396,12 @@ void DialogSetToolColor::OnButtonSetUseBlue(bool checked)
 {
 	qDebug("Check BLUE = %d", checked) ;
 	
-	int color_elem = CEnsemble::getInstance()->m_cls_api.Ensemble_Tool_Option_InspectColor_Get_Histogram_UseElement(GetId())  ;
+	int color_elem = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Tool_Option_InspectColor_Get_Histogram_UseElement(GetId())  ;
 	
 	if (checked)	color_elem |= HISTOGRAM_USE_BLUE ;
 	else 			color_elem &= ~HISTOGRAM_USE_BLUE ;
 
-	CEnsemble::getInstance()->m_cls_api.Ensemble_Tool_Option_InspectColor_Set_Histogram_UseElement(GetId(), color_elem)  ;
+	CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Tool_Option_InspectColor_Set_Histogram_UseElement(GetId(), color_elem)  ;
 
 	CheckedUseBlue() ;
 
@@ -412,7 +412,7 @@ void DialogSetToolColor::OnButtonSetUseBlue(bool checked)
 void DialogSetToolColor::OnButtonGetRedHistogramRange(void)
 {
 	int out_min=0, out_max=0 ;
-	CEnsemble::getInstance()->m_cls_api.Ensemble_Tool_Option_InspectColor_Get_Histogram_Range(GetId(), HISTOGRAM_USE_RED, &out_min, &out_max)  ;
+	CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Tool_Option_InspectColor_Get_Histogram_Range(GetId(), HISTOGRAM_USE_RED, &out_min, &out_max)  ;
 
 	ui->lineEdit_range_min_red->setText(QString::number(out_min));
 	ui->lineEdit_range_max_red->setText(QString::number(out_max));
@@ -425,7 +425,7 @@ void DialogSetToolColor::OnButtonSetRedHistogramRange(void)
 
 	float f_min = (float)min / 255.0 ;
 	float f_max = (float)max / 255.0 ;
-	CEnsemble::getInstance()->m_cls_api.Ensemble_Tool_Option_InspectColor_Set_Histogram_Range(GetId(), HISTOGRAM_USE_RED, f_min, f_max)  ;
+	CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Tool_Option_InspectColor_Set_Histogram_Range(GetId(), HISTOGRAM_USE_RED, f_min, f_max)  ;
 
 	//check
     OnButtonGetRedHistogramRange() ;
@@ -439,7 +439,7 @@ void DialogSetToolColor::OnButtonSetRedHistogramRange(void)
 void DialogSetToolColor::OnButtonGetGreenHistogramRange(void)
 {
 	int out_min=0, out_max=0 ;
-	CEnsemble::getInstance()->m_cls_api.Ensemble_Tool_Option_InspectColor_Get_Histogram_Range(GetId(), HISTOGRAM_USE_GREEN, &out_min, &out_max)  ;
+	CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Tool_Option_InspectColor_Get_Histogram_Range(GetId(), HISTOGRAM_USE_GREEN, &out_min, &out_max)  ;
 
 	ui->lineEdit_range_min_green->setText(QString::number(out_min));
 	ui->lineEdit_range_max_green->setText(QString::number(out_max));
@@ -452,7 +452,7 @@ void DialogSetToolColor::OnButtonSetGreenHistogramRange(void)
 
 	float f_min = (float)min / 255.0 ;
 	float f_max = (float)max / 255.0 ;
-	CEnsemble::getInstance()->m_cls_api.Ensemble_Tool_Option_InspectColor_Set_Histogram_Range(GetId(), HISTOGRAM_USE_GREEN, f_min, f_max)  ;
+	CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Tool_Option_InspectColor_Set_Histogram_Range(GetId(), HISTOGRAM_USE_GREEN, f_min, f_max)  ;
 
 	//check
     OnButtonGetGreenHistogramRange() ;
@@ -466,7 +466,7 @@ void DialogSetToolColor::OnButtonSetGreenHistogramRange(void)
 void DialogSetToolColor::OnButtonGetBlueHistogramRange(void)
 {
 	int out_min=0, out_max=0 ;
-	CEnsemble::getInstance()->m_cls_api.Ensemble_Tool_Option_InspectColor_Get_Histogram_Range(GetId(), HISTOGRAM_USE_BLUE, &out_min, &out_max)  ;
+	CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Tool_Option_InspectColor_Get_Histogram_Range(GetId(), HISTOGRAM_USE_BLUE, &out_min, &out_max)  ;
 
 	ui->lineEdit_range_min_blue->setText(QString::number(out_min));
 	ui->lineEdit_range_max_blue->setText(QString::number(out_max));
@@ -479,7 +479,7 @@ void DialogSetToolColor::OnButtonSetBlueHistogramRange(void)
 
 	float f_min = (float)min / 255.0 ;
 	float f_max = (float)max / 255.0 ;
-	CEnsemble::getInstance()->m_cls_api.Ensemble_Tool_Option_InspectColor_Set_Histogram_Range(GetId(), HISTOGRAM_USE_BLUE, f_min, f_max)  ;
+	CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Tool_Option_InspectColor_Set_Histogram_Range(GetId(), HISTOGRAM_USE_BLUE, f_min, f_max)  ;
 
 	//check
     OnButtonGetBlueHistogramRange() ;
@@ -550,7 +550,7 @@ void DialogSetToolColor::mousePressEvent(QMouseEvent *event)
 
 			qDebug("Red Value : f_min = %f", f_min) ;
 			
-            CEnsemble::getInstance()->m_cls_api.Ensemble_Tool_Option_InspectColor_Set_Histogram_Range(GetId(), m_i_set_color, f_min, f_min) ;
+            CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Tool_Option_InspectColor_Set_Histogram_Range(GetId(), m_i_set_color, f_min, f_min) ;
 
 			OnButtonGetRedHistogramImage() ;
 			OnButtonGetImage() ;
@@ -578,7 +578,7 @@ void DialogSetToolColor::mousePressEvent(QMouseEvent *event)
 
 			qDebug("Green Value : f_min = %f", f_min) ;
 			
-            CEnsemble::getInstance()->m_cls_api.Ensemble_Tool_Option_InspectColor_Set_Histogram_Range(GetId(), m_i_set_color, f_min, f_min) ;
+            CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Tool_Option_InspectColor_Set_Histogram_Range(GetId(), m_i_set_color, f_min, f_min) ;
 
 			OnButtonGetGreenHistogramImage() ;
 			OnButtonGetImage() ;
@@ -606,7 +606,7 @@ void DialogSetToolColor::mousePressEvent(QMouseEvent *event)
 
 			qDebug("Blue Value : f_min = %f", f_min) ;
 			
-            CEnsemble::getInstance()->m_cls_api.Ensemble_Tool_Option_InspectColor_Set_Histogram_Range(GetId(), m_i_set_color, f_min, f_min) ;
+            CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Tool_Option_InspectColor_Set_Histogram_Range(GetId(), m_i_set_color, f_min, f_min) ;
 
 			OnButtonGetBlueHistogramImage() ;
 			OnButtonGetImage() ;
@@ -679,11 +679,11 @@ void DialogSetToolColor::mouseMoveEvent(QMouseEvent *event)
 
 					if( f_min < f_max )
 					{
-						CEnsemble::getInstance()->m_cls_api.Ensemble_Tool_Option_InspectColor_Set_Histogram_Range(GetId(), m_i_set_color, f_min, f_max) ;
+						CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Tool_Option_InspectColor_Set_Histogram_Range(GetId(), m_i_set_color, f_min, f_max) ;
 					}
 					else
 					{
-						CEnsemble::getInstance()->m_cls_api.Ensemble_Tool_Option_InspectColor_Set_Histogram_Range(GetId(), m_i_set_color, f_max, f_min) ;
+						CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Tool_Option_InspectColor_Set_Histogram_Range(GetId(), m_i_set_color, f_max, f_min) ;
 					}			
 					
 					OnButtonGetRedHistogramImage() ;
@@ -709,11 +709,11 @@ void DialogSetToolColor::mouseMoveEvent(QMouseEvent *event)
 
 					if( f_min < f_max )
 					{
-						CEnsemble::getInstance()->m_cls_api.Ensemble_Tool_Option_InspectColor_Set_Histogram_Range(GetId(), m_i_set_color, f_min, f_max) ;
+						CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Tool_Option_InspectColor_Set_Histogram_Range(GetId(), m_i_set_color, f_min, f_max) ;
 					}
 					else
 					{
-						CEnsemble::getInstance()->m_cls_api.Ensemble_Tool_Option_InspectColor_Set_Histogram_Range(GetId(), m_i_set_color, f_max, f_min) ;
+						CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Tool_Option_InspectColor_Set_Histogram_Range(GetId(), m_i_set_color, f_max, f_min) ;
 					}			
 
 					OnButtonGetGreenHistogramImage() ;
@@ -739,11 +739,11 @@ void DialogSetToolColor::mouseMoveEvent(QMouseEvent *event)
 
 					if( f_min < f_max )
 					{
-						CEnsemble::getInstance()->m_cls_api.Ensemble_Tool_Option_InspectColor_Set_Histogram_Range(GetId(), m_i_set_color, f_min, f_max) ;
+						CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Tool_Option_InspectColor_Set_Histogram_Range(GetId(), m_i_set_color, f_min, f_max) ;
 					}
 					else
 					{
-						CEnsemble::getInstance()->m_cls_api.Ensemble_Tool_Option_InspectColor_Set_Histogram_Range(GetId(), m_i_set_color, f_max, f_min) ;
+						CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Tool_Option_InspectColor_Set_Histogram_Range(GetId(), m_i_set_color, f_max, f_min) ;
 					}			
 
 					OnButtonGetBlueHistogramImage() ;
@@ -771,7 +771,7 @@ void DialogSetToolColor::mouseReleaseEvent(QMouseEvent *event)
 
 void DialogSetToolColor::OnButtonGetBasePixelCount(void)
 {
-	int base_pixel_count = CEnsemble::getInstance()->m_cls_api.Ensemble_Tool_Option_InspectColor_Get_Base_Pixel_Count(GetId()) ;
+	int base_pixel_count = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Tool_Option_InspectColor_Get_Base_Pixel_Count(GetId()) ;
 
 	ui->lineEdit_base_pixel_count->setText(QString::number(base_pixel_count));
 
@@ -783,7 +783,7 @@ void DialogSetToolColor::OnButtonGetTolerance(void)
 	int tol_min = -1 ;
 	int tol_max = -1 ;
 	
-	CEnsemble::getInstance()->m_cls_api.Ensemble_Tool_Option_InspectColor_Get_Tolerance(GetId(), &tol_min, &tol_max) ;
+	CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Tool_Option_InspectColor_Get_Tolerance(GetId(), &tol_min, &tol_max) ;
 
 	ui->lineEdit_tolerance_min->setText(QString::number(tol_min));
 	ui->lineEdit_tolerance_max->setText(QString::number(tol_max));
@@ -794,7 +794,7 @@ void DialogSetToolColor::OnButtonSetTolerance(void)
 	int min = ui->lineEdit_tolerance_min->text().toInt();
 	int max = ui->lineEdit_tolerance_max->text().toInt();
 
-	CEnsemble::getInstance()->m_cls_api.Ensemble_Tool_Option_InspectColor_Set_Tolerance(GetId(), min, max) ;
+	CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Tool_Option_InspectColor_Set_Tolerance(GetId(), min, max) ;
 	
 	OnButtonGetTolerance() ;
 }

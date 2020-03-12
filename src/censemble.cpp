@@ -3,7 +3,8 @@
 bool CEnsemble::instanceFlag = false;
 CEnsemble* CEnsemble::instance = NULL;
 
-CEnsemble::CEnsemble()
+CEnsemble::CEnsemble() :
+	m_select_device(NULL)
 {
 
 }
@@ -161,5 +162,15 @@ int CEnsemble::New(const std::string ip, const int port)
 	return m_list_ensembles.size() ;
 }
 
+CEnsembleAPI *CEnsemble::SelectDevice(const std::string ip, const int port)
+{
+	m_select_device = GetDevice(ip, port) ;
 
+	return m_select_device ;
+}
+
+CEnsembleAPI *CEnsemble::GetSelectDevice(void)
+{
+	return m_select_device ;
+}
 

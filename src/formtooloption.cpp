@@ -154,7 +154,7 @@ void FormToolOption::leaveEvent(QEvent * e)
 
 void FormToolOption::OnButtonDel(void)
 {
-    CEnsemble::getInstance()->m_cls_api.Ensemble_Tool_Del_Option(GetIdInfo()) ;
+    CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Tool_Del_Option(GetIdInfo()) ;
 
 	emit UpdateList() ;
 }
@@ -261,18 +261,18 @@ void FormToolOption::showEvent(QShowEvent *ev)
 	//Get Information
     if( GetType() == ToolTypeList::TOOL_TYPE_OPTION_INSPECT_CRACK )
     {
-        int inspect_crack_level = CEnsemble::getInstance()->m_cls_api.Ensemble_Tool_Option_Crack_Get_InspectLevel(GetIdInfo());
+        int inspect_crack_level = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Tool_Option_Crack_Get_InspectLevel(GetIdInfo());
 		str_info = "Crack Level : " + std::to_string(inspect_crack_level) ;		
     }
 
 	UpdateInformationString(QString::fromUtf8(str_info.c_str())) ;
 
 	//run checkbox
-	int run_option = CEnsemble::getInstance()->m_cls_api.Ensemble_Task_Get_Run_Option(GetIdInfo()) ;
+	int run_option = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Task_Get_Run_Option(GetIdInfo()) ;
 	ui->checkBox_run->setChecked(run_option);
 
 	//view checkbox
-	int view_option = CEnsemble::getInstance()->m_cls_api.Ensemble_Task_Get_View_Option(GetIdInfo()) ;
+	int view_option = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Task_Get_View_Option(GetIdInfo()) ;
 	ui->checkBox_view->setChecked(view_option);
 }
 
@@ -290,10 +290,10 @@ void FormToolOption::UpdateInformationString(QString str_info)
 
 void FormToolOption::OnRunCheckBoxToggled(bool checked)
 {
-	CEnsemble::getInstance()->m_cls_api.Ensemble_Task_Set_Run_Option(GetIdInfo(), checked) ;
+	CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Task_Set_Run_Option(GetIdInfo(), checked) ;
 		
 	//run checkbox
-	int run_option = CEnsemble::getInstance()->m_cls_api.Ensemble_Task_Get_Run_Option(GetIdInfo()) ;
+	int run_option = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Task_Get_Run_Option(GetIdInfo()) ;
 	ui->checkBox_run->setChecked(run_option);
 
 	QString qstr_id = QString::fromStdString(GetParentIdInfo());
@@ -302,10 +302,10 @@ void FormToolOption::OnRunCheckBoxToggled(bool checked)
 
 void FormToolOption::OnViewCheckBoxToggled(bool checked)
 {
-	CEnsemble::getInstance()->m_cls_api.Ensemble_Task_Set_View_Option(GetIdInfo(), checked) ;
+	CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Task_Set_View_Option(GetIdInfo(), checked) ;
 		
 	//view checkbox
-	int view_option = CEnsemble::getInstance()->m_cls_api.Ensemble_Task_Get_View_Option(GetIdInfo()) ;
+	int view_option = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Task_Get_View_Option(GetIdInfo()) ;
 	ui->checkBox_view->setChecked(view_option);
 
 	QString qstr_id = QString::fromStdString(GetParentIdInfo());

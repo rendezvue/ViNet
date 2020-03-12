@@ -44,7 +44,7 @@ void DialogSetToolDiameterInspect::showEvent(QShowEvent *ev)
 void DialogSetToolDiameterInspect::OnButtonGetBaseDiameter(void)
 {
 	//
-	float diameter = CEnsemble::getInstance()->m_cls_api.Ensemble_Tool_Circle_Get_CalcDiameter(GetParentId()) ;
+	float diameter = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Tool_Circle_Get_CalcDiameter(GetParentId()) ;
 
 	ui->lineEdit_base_diameter->setText(QString::number(diameter));
 }
@@ -67,7 +67,7 @@ void DialogSetToolDiameterInspect::OnButtonGetTolerance(void)
 	float tol_min = -1 ;
 	float tol_max = -1 ;
 	
-    CEnsemble::getInstance()->m_cls_api.Ensemble_Tool_Option_InspectDiameter_Get_Tolerance(GetId(), &tol_min, &tol_max) ;
+    CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Tool_Option_InspectDiameter_Get_Tolerance(GetId(), &tol_min, &tol_max) ;
 
 	ui->lineEdit_tolerance_min->setText(QString::number(tol_min));
 	ui->lineEdit_tolerance_max->setText(QString::number(tol_max));
@@ -78,7 +78,7 @@ void DialogSetToolDiameterInspect::OnButtonSetTolerance(void)
 	float min = ui->lineEdit_tolerance_min->text().toFloat();
 	float max = ui->lineEdit_tolerance_max->text().toFloat();
 
-	CEnsemble::getInstance()->m_cls_api.Ensemble_Tool_Option_InspectDiameter_Set_Tolerance(GetId(), min, max) ;
+	CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Tool_Option_InspectDiameter_Set_Tolerance(GetId(), min, max) ;
 	
 	OnButtonGetTolerance() ;
 }

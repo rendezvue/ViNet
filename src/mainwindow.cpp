@@ -60,6 +60,7 @@ MainWindow::MainWindow(QWidget *parent) :
     //tree
     // Set the number of columns in the tree
 	connect(ui->treeWidget_job, SIGNAL(doubleClicked(QModelIndex)), this, SLOT(OnTreeViewDClick(QModelIndex)));
+	connect(ui->treeWidget_job, SIGNAL(clicked(QModelIndex)), this, SLOT(OnTreeViewClick(QModelIndex)));
 	
     ui->treeWidget_job->show();
     ui->treeWidget_job->setColumnCount(1);
@@ -144,6 +145,23 @@ void MainWindow::OnTreeViewDClick(const QModelIndex& index)
 	}	
 }
 
+void MainWindow::OnTreeViewClick(const QModelIndex& index) 
+{
+    QString qstr_device_ip = index.data(Qt::UserRole+100).toString() ;
+	QString qstr_device_port = index.data(Qt::UserRole+101).toString() ;
+
+	std::string str_ip = qstr_device_ip.toUtf8().constData() ;
+	std::string str_port = qstr_device_port.toUtf8().constData() ;
+	int port = std::stoi(str_port) ;
+
+	qDebug("OnTreeViewClick : ip = %s, port = %s(%d)", str_ip.c_str(), str_port.c_str(), port) ;
+
+	m_str_select_ip_address = str_ip ;
+	m_i_select_port = port ;
+
+	CEnsemble::getInstance()->SelectDevice(m_str_select_ip_address, m_i_select_port) ;
+}
+
 
 void MainWindow::OnSourceListDClick(const QModelIndex &index)
 {
@@ -151,7 +169,7 @@ void MainWindow::OnSourceListDClick(const QModelIndex &index)
     QString itemText = index.data(Qt::DisplayRole).toString();
 
     std::string str_source = itemText.toUtf8().constData() ;
-    CEnsemble::getInstance()->m_cls_api.Ensemble_Source_Set(str_source) ;
+    CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Source_Set(str_source) ;
 
     //tab : Result Image
     ui->tabWidget_image->setCurrentIndex(0);
@@ -255,23 +273,27 @@ void MainWindow::OnMenuConnect(void)
 			if( p_device )
 			{
 				if( p_device->Ensemble_Network_IsOnline() )
-				{
+				{			
+					m_str_select_ip_address = m_str_ip_address ;
+					m_i_select_port = m_i_port ;
+					CEnsemble::getInstance()->SelectDevice(m_str_select_ip_address, m_i_select_port) ;
+					
 					qDebug(" - Success : Control Port") ;
 
-					//UpdateToolsListFromDevice(ui->listWidget_items) ;
-					//UpdateJobsListFromDevice(ui->listWidget_items_job) ;
+					UpdateToolsListFromDevice(ui->listWidget_items) ;
+					UpdateJobsListFromDevice(ui->listWidget_items_job) ;
 		       
 		            qDebug(" - Success : Image Port") ;
 
-					//OnButtonUpdateSourceList() ;
+					OnButtonUpdateSourceList() ;
 				}
 			}
 #if 0		
-	        int ret = CEnsemble::getInstance()->m_cls_api.Ensemble_Network_Connect(m_str_ip_address.c_str(), m_i_port);
+	        int ret = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Network_Connect(m_str_ip_address.c_str(), m_i_port);
 
 	        qDebug("Connect Ensemble : %d", ret ) ;
 
-	        if( CEnsemble::getInstance()->m_cls_api.Ensemble_Network_IsOnline() )
+	        if( CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Network_IsOnline() )
 	        {
 	            qDebug(" - Success : Control Port") ;
 
@@ -316,7 +338,7 @@ void MainWindow::UpdateToolsListFromDevice(QListWidget *listWidget)
 {
     qDebug("test1") ;
 
-	std::string str_able_tools_list_xml = CEnsemble::getInstance()->m_cls_api.Ensemble_Info_Type_Get_Tool_List_Xml() ;
+	std::string str_able_tools_list_xml = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Info_Type_Get_Tool_List_Xml() ;
 
 	qDebug("tools info xml = %s", str_able_tools_list_xml.c_str()) ;
 
@@ -397,7 +419,7 @@ void MainWindow::UpdateToolsListFromDevice(QListWidget *listWidget)
 
 void MainWindow::UpdateJobsListFromDevice(QListWidget *listWidget) 
 {
-	std::string str_able_tools_list_xml = CEnsemble::getInstance()->m_cls_api.Ensemble_Info_Type_Get_Job_List_Xml() ;
+	std::string str_able_tools_list_xml = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Info_Type_Get_Job_List_Xml() ;
 
 	qDebug("tools info xml = %s", str_able_tools_list_xml.c_str()) ;
 
@@ -512,7 +534,7 @@ void MainWindow::OnButtonNewProject(void)
     if(dialogCode == QDialog::Accepted)
     { // YesButton clicked
         //EnsembleJobNew(dlg_new_project.GetName()) ;
-        CEnsemble::getInstance()->m_cls_api.Ensemble_Project_Add_New(dlg_new_project.GetName()) ;
+        CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Project_Add_New(dlg_new_project.GetName()) ;
 
         UpdateJobTree();
     }
@@ -764,7 +786,7 @@ void MainWindow::UpdateJobTree(void)
     //delete all item
     ui->treeWidget_job->clear();
 
-    //std::string str_prj_list_xml = CEnsemble::getInstance()->m_cls_api.Ensemble_Project_Get_List() ;
+    //std::string str_prj_list_xml = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Project_Get_List() ;
 	std::string str_prj_list_xml = CEnsemble::getInstance()->GetDeviceJobInfo() ;
 	
 
@@ -787,8 +809,11 @@ void MainWindow::UpdateJobTree(void)
             std::string str_device_mac = device.attribute("Mac").value() ;
 			std::string str_device_ip_addr = device.attribute("IP").value() ;
 			std::string str_device_port = device.attribute("Port").value() ;
+			int device_port = std::stoi(str_device_port) ;
 
-            qDebug("xml: Device MAC address=%s, IP=%s, Port=%s", str_device_mac.c_str(), str_device_ip_addr.c_str(), str_device_port.c_str()) ;
+			CEnsembleAPI *p_device = CEnsemble::getInstance()->GetDevice(str_device_ip_addr, device_port) ;
+			
+            qDebug("xml: Device MAC address=%s, IP=%s, Port=%s(%d)", str_device_mac.c_str(), str_device_ip_addr.c_str(), str_device_port.c_str(), device_port) ;
             //AddTreeRoot(QString::fromStdString(str_device), QString::fromStdString("test")) ;
 
             std::string str_device_info = str_device_model_name + "(" + str_device_mac + ")" ;
@@ -798,6 +823,9 @@ void MainWindow::UpdateJobTree(void)
             treeItem->setExpanded(true);
             //treeItem->setText(0, QString::fromStdString(str_device_info));
 
+			treeItem->setData(0, Qt::UserRole+100, QString::fromStdString(str_device_ip_addr));
+			treeItem->setData(0, Qt::UserRole+101, QString::fromStdString(str_device_port));
+
             //Adding the item to the listwidget
             ui->treeWidget_job->addTopLevelItem(treeItem);
 
@@ -806,7 +834,7 @@ void MainWindow::UpdateJobTree(void)
 
             //---
             //Set Informationupda
-            //if( CEnsemble::getInstance()->m_cls_api.Ensemble_Network_IsOnline() & ENSEMBLE_CONNECT_CONTROL_PORT )
+            //if( CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Network_IsOnline() & ENSEMBLE_CONNECT_CONTROL_PORT )
             {
                 //unsigned char* get_data = NULL ;
                 //int width = 0 ;
@@ -817,7 +845,8 @@ void MainWindow::UpdateJobTree(void)
 
 				const int image_type = IMAGE_RGB888 ;
                 //int get_image_type = 0 ;
-                CEnsemble::getInstance()->m_cls_api.Ensemble_Source_Get_Image(GET_IMAGE_DEVICE_ICON, std::string(), image_type, &image_buf) ;
+                //CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Source_Get_Image(GET_IMAGE_DEVICE_ICON, std::string(), image_type, &image_buf) ;
+				if( p_device ) 	p_device->Ensemble_Source_Get_Image(GET_IMAGE_DEVICE_ICON, std::string(), image_type, &image_buf) ;
 
                 //qDebug("Get Image Size = %d x %d", width, height) ;
 
@@ -909,7 +938,9 @@ void MainWindow::UpdateJobTree(void)
                     int type = job.attribute("Type").as_int();
                     std::string str_name = job.attribute("Name").value();
 					
-					std::string str_tool_type_name = CEnsemble::getInstance()->m_cls_api.Ensemble_Info_Get_ToolTypeName(type) ;
+					//std::string str_tool_type_name = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Info_Get_ToolTypeName(type) ;
+					std::string str_tool_type_name ;
+					if( p_device ) 	str_tool_type_name = p_device->Ensemble_Info_Get_ToolTypeName(type) ;
 					
                     qDebug("Job : Type=%d, TypeName=%s, Name=%s", type, str_tool_type_name.c_str(), str_name.c_str()) ;
 
@@ -941,7 +972,8 @@ void MainWindow::UpdateJobTree(void)
 	                    int type = tool.attribute("Type").as_int();
 	                    std::string str_name = tool.attribute("Name").value();
 						
-						std::string str_tool_type_name = CEnsemble::getInstance()->m_cls_api.Ensemble_Info_Get_ToolTypeName(type) ;
+						std::string str_tool_type_name ;
+						if( p_device ) str_tool_type_name = p_device->Ensemble_Info_Get_ToolTypeName(type) ;
 						
 	                    qDebug("Tool Type=%d, TypeName=%s, Name=%s", type, str_tool_type_name.c_str(), str_name.c_str()) ;
 
@@ -975,7 +1007,8 @@ void MainWindow::UpdateJobTree(void)
 		                    int option_type = option.attribute("Type").as_int();
 		                    std::string str_option_name = option.attribute("Name").value();
 							
-							std::string str_tool_option_type_name = CEnsemble::getInstance()->m_cls_api.Ensemble_Info_Get_ToolTypeName(option_type) ;
+							std::string str_tool_option_type_name ;
+							if( p_device ) str_tool_option_type_name = p_device->Ensemble_Info_Get_ToolTypeName(option_type) ;
 							
 		                    qDebug("Tool Option Type=%d, TypeName=%s, Name=%s", option_type, str_tool_option_type_name.c_str(), str_option_name.c_str()) ;
 
@@ -1017,12 +1050,12 @@ void MainWindow::DropEventDoneOnTree(void)
 
 void MainWindow::OnButtonSaveAllTask(void)
 {
-	CEnsemble::getInstance()->m_cls_api.Ensemble_Task_File_Save() ;
+	CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Task_File_Save() ;
 }
 
 void MainWindow::OnButtonLoadAllTask(void)
 {
-	CEnsemble::getInstance()->m_cls_api.Ensemble_Task_File_Load() ;
+	CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Task_File_Load() ;
 
 	UpdateJobTree() ;
 }
@@ -1037,7 +1070,7 @@ void MainWindow::showEvent(QShowEvent *ev)
 
 void MainWindow::OnButtonUpdateSourceList(void)
 {
-	std::string str_source_list_xml = CEnsemble::getInstance()->m_cls_api.Ensemble_Source_Get_List() ;
+	std::string str_source_list_xml = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Source_Get_List() ;
 
 	qDebug(" - Get Source List : %s", str_source_list_xml.c_str()) ;
 	
@@ -1081,7 +1114,7 @@ void MainWindow::OnMenuCheckforUpdates(void)
     dialogcheckforupdates dlg_connect;
 
 
-    if( CEnsemble::getInstance()->m_cls_api.Ensemble_Network_IsOnline() )
+    if( CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Network_IsOnline() )
     {
         dlg_connect.exec();
     }

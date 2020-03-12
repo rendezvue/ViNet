@@ -90,36 +90,36 @@ void DialogBaseCameraConfig::showEvent(QShowEvent *ev)
 
 	//Update Camera Information
 	//exposure min/max value
-	const int exposure_min = CEnsemble::getInstance()->m_cls_api.Ensemble_Camera_Get_Min_Exposure_Value(GetId()) ;
-	const int exposure_max = CEnsemble::getInstance()->m_cls_api.Ensemble_Camera_Get_Max_Exposure_Value(GetId()) ;
+	const int exposure_min = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Camera_Get_Min_Exposure_Value(GetId()) ;
+	const int exposure_max = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Camera_Get_Max_Exposure_Value(GetId()) ;
 
 	//gain min/max value
-	const int gain_min = CEnsemble::getInstance()->m_cls_api.Ensemble_Camera_Get_Min_Gain_Value(GetId()) ;
-	const int gain_max = CEnsemble::getInstance()->m_cls_api.Ensemble_Camera_Get_Max_Gain_Value(GetId()) ;
+	const int gain_min = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Camera_Get_Min_Gain_Value(GetId()) ;
+	const int gain_max = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Camera_Get_Max_Gain_Value(GetId()) ;
 
 	//focus min/max value
-	const int focus_min = CEnsemble::getInstance()->m_cls_api.Ensemble_Camera_Get_Min_Focus_Value(GetId()) ;
-	const int focus_max = CEnsemble::getInstance()->m_cls_api.Ensemble_Camera_Get_Max_Focus_Value(GetId()) ;
+	const int focus_min = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Camera_Get_Min_Focus_Value(GetId()) ;
+	const int focus_max = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Camera_Get_Max_Focus_Value(GetId()) ;
 
 	//brightness min/max value
-	const int brightness_min = CEnsemble::getInstance()->m_cls_api.Ensemble_Camera_Get_Min_Brightness_Value(GetId()) ;
-	const int brightness_max = CEnsemble::getInstance()->m_cls_api.Ensemble_Camera_Get_Max_Brightness_Value(GetId()) ;
+	const int brightness_min = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Camera_Get_Min_Brightness_Value(GetId()) ;
+	const int brightness_max = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Camera_Get_Max_Brightness_Value(GetId()) ;
 
 	//sharpness min/max value
-	const int sharpness_min = CEnsemble::getInstance()->m_cls_api.Ensemble_Camera_Get_Min_Sharpness_Value(GetId()) ;
-	const int sharpness_max = CEnsemble::getInstance()->m_cls_api.Ensemble_Camera_Get_Max_Sharpness_Value(GetId()) ;
+	const int sharpness_min = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Camera_Get_Min_Sharpness_Value(GetId()) ;
+	const int sharpness_max = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Camera_Get_Max_Sharpness_Value(GetId()) ;
 
 	//contrast min/max value
-	const int contrast_min = CEnsemble::getInstance()->m_cls_api.Ensemble_Camera_Get_Min_Contrast_Value(GetId()) ;
-	const int contrast_max = CEnsemble::getInstance()->m_cls_api.Ensemble_Camera_Get_Max_Contrast_Value(GetId()) ;
+	const int contrast_min = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Camera_Get_Min_Contrast_Value(GetId()) ;
+	const int contrast_max = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Camera_Get_Max_Contrast_Value(GetId()) ;
 
 	//iso min/max value
-	const int iso_min = CEnsemble::getInstance()->m_cls_api.Ensemble_Camera_Get_Min_ISO_Value(GetId()) ;
-	const int iso_max = CEnsemble::getInstance()->m_cls_api.Ensemble_Camera_Get_Max_ISO_Value(GetId()) ;
+	const int iso_min = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Camera_Get_Min_ISO_Value(GetId()) ;
+	const int iso_max = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Camera_Get_Max_ISO_Value(GetId()) ;
 
 	//shutter speed min/max value
-	const int shutter_speed_min = CEnsemble::getInstance()->m_cls_api.Ensemble_Camera_Get_Min_Shutter_Speed_Value(GetId()) ;
-	const int shutter_speed_max = CEnsemble::getInstance()->m_cls_api.Ensemble_Camera_Get_Max_Shutter_Speed_Value(GetId()) ;
+	const int shutter_speed_min = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Camera_Get_Min_Shutter_Speed_Value(GetId()) ;
+	const int shutter_speed_max = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Camera_Get_Max_Shutter_Speed_Value(GetId()) ;
 
 	ui->label_exposure_min->setText(QString::number(exposure_min)) ;
 	ui->label_exposure_max->setText(QString::number(exposure_max)) ;
@@ -165,11 +165,11 @@ void DialogBaseCameraConfig::showEvent(QShowEvent *ev)
 	OnButtonShutterSpeedGet() ;
 
 	//image flip
-	int check_image_flip_v = CEnsemble::getInstance()->m_cls_api.Ensemble_Camera_Get_Flip_V(GetId()) ;
+	int check_image_flip_v = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Camera_Get_Flip_V(GetId()) ;
 	if( check_image_flip_v )	ui->checkBox_image_flip_v->setChecked(true) ;
 	else						ui->checkBox_image_flip_v->setChecked(false) ;
 	
-	int check_image_flip_h = CEnsemble::getInstance()->m_cls_api.Ensemble_Camera_Get_Flip_H(GetId()) ;
+	int check_image_flip_h = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Camera_Get_Flip_H(GetId()) ;
 	if( check_image_flip_h )	ui->checkBox_image_flip_h->setChecked(true) ;
 	else						ui->checkBox_image_flip_h->setChecked(false) ;
 	
@@ -177,7 +177,7 @@ void DialogBaseCameraConfig::showEvent(QShowEvent *ev)
 
 void DialogBaseCameraConfig::OnButtonExposureGet(void)
 {
-    int exposure_value = CEnsemble::getInstance()->m_cls_api.Ensemble_Camera_Get_Manual_Exposure_Value(GetId()) ;
+    int exposure_value = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Camera_Get_Manual_Exposure_Value(GetId()) ;
 
 	ui->lineEdit_exposure->setText(QString::number(exposure_value));
 
@@ -186,7 +186,7 @@ void DialogBaseCameraConfig::OnButtonExposureGet(void)
 
 void DialogBaseCameraConfig::OnButtonGainGet(void)
 {
-	int gain_value = CEnsemble::getInstance()->m_cls_api.Ensemble_Camera_Get_Manual_Gain_Value(GetId()) ;
+	int gain_value = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Camera_Get_Manual_Gain_Value(GetId()) ;
 
 	ui->lineEdit_gain->setText(QString::number(gain_value));
 
@@ -195,7 +195,7 @@ void DialogBaseCameraConfig::OnButtonGainGet(void)
 
 void DialogBaseCameraConfig::OnButtonFocusGet(void)
 {
-	int focus_value = CEnsemble::getInstance()->m_cls_api.Ensemble_Camera_Get_Manual_Focus_Value(GetId()) ;
+	int focus_value = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Camera_Get_Manual_Focus_Value(GetId()) ;
 
 	ui->lineEdit_focus->setText(QString::number(focus_value));
 
@@ -204,7 +204,7 @@ void DialogBaseCameraConfig::OnButtonFocusGet(void)
 
 void DialogBaseCameraConfig::OnButtonBrightnessGet(void)
 {
-	int brightness_value = CEnsemble::getInstance()->m_cls_api.Ensemble_Camera_Get_Manual_Brightness_Value(GetId()) ;
+	int brightness_value = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Camera_Get_Manual_Brightness_Value(GetId()) ;
 
 	ui->lineEdit_brightness->setText(QString::number(brightness_value));
 
@@ -213,7 +213,7 @@ void DialogBaseCameraConfig::OnButtonBrightnessGet(void)
 
 void DialogBaseCameraConfig::OnButtonSharpnessGet(void)
 {
-	int sharpness_value = CEnsemble::getInstance()->m_cls_api.Ensemble_Camera_Get_Manual_Sharpness_Value(GetId()) ;
+	int sharpness_value = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Camera_Get_Manual_Sharpness_Value(GetId()) ;
 
 	ui->lineEdit_sharpness->setText(QString::number(sharpness_value));
 
@@ -222,7 +222,7 @@ void DialogBaseCameraConfig::OnButtonSharpnessGet(void)
 
 void DialogBaseCameraConfig::OnButtonContrastGet(void)
 {
-	int contrast_value = CEnsemble::getInstance()->m_cls_api.Ensemble_Camera_Get_Manual_Contrast_Value(GetId()) ;
+	int contrast_value = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Camera_Get_Manual_Contrast_Value(GetId()) ;
 
 	ui->lineEdit_contrast->setText(QString::number(contrast_value));
 
@@ -231,7 +231,7 @@ void DialogBaseCameraConfig::OnButtonContrastGet(void)
 
 void DialogBaseCameraConfig::OnButtonISOGet(void)
 {
-	int iso_value = CEnsemble::getInstance()->m_cls_api.Ensemble_Camera_Get_Manual_ISO_Value(GetId()) ;
+	int iso_value = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Camera_Get_Manual_ISO_Value(GetId()) ;
 
 	ui->lineEdit_iso->setText(QString::number(iso_value));
 
@@ -240,7 +240,7 @@ void DialogBaseCameraConfig::OnButtonISOGet(void)
 
 void DialogBaseCameraConfig::OnButtonShutterSpeedGet(void)
 {
-	int shutter_speed_value = CEnsemble::getInstance()->m_cls_api.Ensemble_Camera_Get_Manual_Shutter_Speed_Value(GetId()) ;
+	int shutter_speed_value = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Camera_Get_Manual_Shutter_Speed_Value(GetId()) ;
 
 	ui->lineEdit_shutter_speed->setText(QString::number(shutter_speed_value));
 
@@ -250,7 +250,7 @@ void DialogBaseCameraConfig::OnButtonShutterSpeedGet(void)
 void DialogBaseCameraConfig::OnButtonExposureSet(void)
 {
     int value = ui->lineEdit_exposure->text().toInt() ;
-    CEnsemble::getInstance()->m_cls_api.Ensemble_Camera_Set_Manual_Exposure_Value(GetId(), value) ;
+    CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Camera_Set_Manual_Exposure_Value(GetId(), value) ;
 	
 	OnButtonExposureGet() ;
 }
@@ -258,7 +258,7 @@ void DialogBaseCameraConfig::OnButtonExposureSet(void)
 void DialogBaseCameraConfig::OnButtonGainSet(void)
 {
     int value = ui->lineEdit_gain->text().toInt() ;
-    CEnsemble::getInstance()->m_cls_api.Ensemble_Camera_Set_Manual_Gain_Value(GetId(), value) ;
+    CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Camera_Set_Manual_Gain_Value(GetId(), value) ;
 
 	OnButtonGainGet() ;
 }
@@ -266,7 +266,7 @@ void DialogBaseCameraConfig::OnButtonGainSet(void)
 void DialogBaseCameraConfig::OnButtonFocusSet(void)
 {
     int value = ui->lineEdit_focus->text().toInt() ;
-    CEnsemble::getInstance()->m_cls_api.Ensemble_Camera_Set_Manual_Focus_Value(GetId(), value) ;
+    CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Camera_Set_Manual_Focus_Value(GetId(), value) ;
 
 	OnButtonFocusGet() ;
 }
@@ -274,7 +274,7 @@ void DialogBaseCameraConfig::OnButtonFocusSet(void)
 void DialogBaseCameraConfig::OnButtonBrightnessSet(void)
 {
 	int value = ui->lineEdit_brightness->text().toInt() ;
-    CEnsemble::getInstance()->m_cls_api.Ensemble_Camera_Set_Manual_Brightness_Value(GetId(), value) ;
+    CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Camera_Set_Manual_Brightness_Value(GetId(), value) ;
 
 	OnButtonBrightnessGet() ;
 }
@@ -282,7 +282,7 @@ void DialogBaseCameraConfig::OnButtonBrightnessSet(void)
 void DialogBaseCameraConfig::OnButtonSharpnessSet(void)
 {
 	int value = ui->lineEdit_sharpness->text().toInt() ;
-    CEnsemble::getInstance()->m_cls_api.Ensemble_Camera_Set_Manual_Sharpness_Value(GetId(), value) ;
+    CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Camera_Set_Manual_Sharpness_Value(GetId(), value) ;
 
 	OnButtonSharpnessGet() ;
 }
@@ -290,7 +290,7 @@ void DialogBaseCameraConfig::OnButtonSharpnessSet(void)
 void DialogBaseCameraConfig::OnButtonContrastSet(void)
 {
 	int value = ui->lineEdit_contrast->text().toInt() ;
-    CEnsemble::getInstance()->m_cls_api.Ensemble_Camera_Set_Manual_Contrast_Value(GetId(), value) ;
+    CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Camera_Set_Manual_Contrast_Value(GetId(), value) ;
 
 	OnButtonContrastGet() ;
 }
@@ -298,7 +298,7 @@ void DialogBaseCameraConfig::OnButtonContrastSet(void)
 void DialogBaseCameraConfig::OnButtonISOSet(void)
 {
 	int value = ui->lineEdit_iso->text().toInt() ;
-    CEnsemble::getInstance()->m_cls_api.Ensemble_Camera_Set_Manual_ISO_Value(GetId(), value) ;
+    CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Camera_Set_Manual_ISO_Value(GetId(), value) ;
 
 	OnButtonISOGet() ;
 }
@@ -306,27 +306,27 @@ void DialogBaseCameraConfig::OnButtonISOSet(void)
 void DialogBaseCameraConfig::OnButtonShutterSpeedSet(void)
 {
 	int value = ui->lineEdit_shutter_speed->text().toInt() ;
-    CEnsemble::getInstance()->m_cls_api.Ensemble_Camera_Set_Manual_Shutter_Speed_Value(GetId(), value) ;
+    CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Camera_Set_Manual_Shutter_Speed_Value(GetId(), value) ;
 
 	OnButtonShutterSpeedGet() ;
 }
 
 void DialogBaseCameraConfig::OnButtonSetImageFlip_V(void)
 {
-	if (ui->checkBox_image_flip_v->isChecked())	CEnsemble::getInstance()->m_cls_api.Ensemble_Camera_Set_Flip_V(GetId(), true) ;
-	else										CEnsemble::getInstance()->m_cls_api.Ensemble_Camera_Set_Flip_V(GetId(), false) ;
+	if (ui->checkBox_image_flip_v->isChecked())	CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Camera_Set_Flip_V(GetId(), true) ;
+	else										CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Camera_Set_Flip_V(GetId(), false) ;
 	
-	int check_image_flip_v = CEnsemble::getInstance()->m_cls_api.Ensemble_Camera_Get_Flip_V(GetId()) ;
+	int check_image_flip_v = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Camera_Get_Flip_V(GetId()) ;
 	if( check_image_flip_v )	ui->checkBox_image_flip_v->setChecked(true) ;
 	else						ui->checkBox_image_flip_v->setChecked(false) ;
 }
 
 void DialogBaseCameraConfig::OnButtonSetImageFlip_H(void) 
 {
-	if (ui->checkBox_image_flip_h->isChecked())	CEnsemble::getInstance()->m_cls_api.Ensemble_Camera_Set_Flip_H(GetId(), true) ;
-	else										CEnsemble::getInstance()->m_cls_api.Ensemble_Camera_Set_Flip_H(GetId(), false) ;
+	if (ui->checkBox_image_flip_h->isChecked())	CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Camera_Set_Flip_H(GetId(), true) ;
+	else										CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Camera_Set_Flip_H(GetId(), false) ;
 	
-	int check_image_flip_h = CEnsemble::getInstance()->m_cls_api.Ensemble_Camera_Get_Flip_H(GetId()) ;
+	int check_image_flip_h = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Camera_Get_Flip_H(GetId()) ;
 	if( check_image_flip_h )	ui->checkBox_image_flip_h->setChecked(true) ;
 	else						ui->checkBox_image_flip_h->setChecked(false) ;
 }
@@ -337,7 +337,7 @@ void DialogBaseCameraConfig::OnSliderSetExposure(void)
     int value = ui->horizontalSlider_exposure->value() ;
  
 	//set value
-	CEnsemble::getInstance()->m_cls_api.Ensemble_Camera_Set_Manual_Exposure_Value(GetId(), value);
+	CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Camera_Set_Manual_Exposure_Value(GetId(), value);
 
 	OnButtonExposureGet() ;
 }
@@ -348,7 +348,7 @@ void DialogBaseCameraConfig::OnSliderSetGain(void)
     int value = ui->horizontalSlider_gain->value() ;
 
 	//set value
-	CEnsemble::getInstance()->m_cls_api.Ensemble_Camera_Set_Manual_Gain_Value(GetId() ,value);
+	CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Camera_Set_Manual_Gain_Value(GetId() ,value);
 
 	OnButtonGainGet() ;
 }
@@ -360,7 +360,7 @@ void DialogBaseCameraConfig::OnSliderSetFocus(void)
     int value = ui->horizontalSlider_focus->value() ;
 
 	//set value
-	CEnsemble::getInstance()->m_cls_api.Ensemble_Camera_Set_Manual_Focus_Value(GetId(), value);
+	CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Camera_Set_Manual_Focus_Value(GetId(), value);
 
 	OnButtonFocusGet() ;
 }
@@ -371,7 +371,7 @@ void DialogBaseCameraConfig::OnSliderSetBrightness(void)
     int value = ui->horizontalSlider_brightness->value() ;
 
 	//set value
-	CEnsemble::getInstance()->m_cls_api.Ensemble_Camera_Set_Manual_Brightness_Value(GetId(), value);
+	CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Camera_Set_Manual_Brightness_Value(GetId(), value);
 
 	OnButtonBrightnessGet() ;
 }
@@ -382,7 +382,7 @@ void DialogBaseCameraConfig::OnSliderSetSharpness(void)
     int value = ui->horizontalSlider_sharpness->value() ;
 
 	//set value
-	CEnsemble::getInstance()->m_cls_api.Ensemble_Camera_Set_Manual_Sharpness_Value(GetId(), value);
+	CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Camera_Set_Manual_Sharpness_Value(GetId(), value);
 
 	OnButtonSharpnessGet() ;
 }
@@ -393,7 +393,7 @@ void DialogBaseCameraConfig::OnSliderSetContrast(void)
     int value = ui->horizontalSlider_contrast->value() ;
 
 	//set value
-	CEnsemble::getInstance()->m_cls_api.Ensemble_Camera_Set_Manual_Contrast_Value(GetId(), value);
+	CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Camera_Set_Manual_Contrast_Value(GetId(), value);
 
 	OnButtonContrastGet() ;
 }
@@ -404,7 +404,7 @@ void DialogBaseCameraConfig::OnSliderSetISO(void)
     int value = ui->horizontalSlider_iso->value() ;
 
 	//set value
-	CEnsemble::getInstance()->m_cls_api.Ensemble_Camera_Set_Manual_ISO_Value(GetId(), value);
+	CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Camera_Set_Manual_ISO_Value(GetId(), value);
 
 	OnButtonISOGet() ;
 }
@@ -415,14 +415,14 @@ void DialogBaseCameraConfig::OnSliderSetShutterSpeed(void)
     int value = ui->horizontalSlider_shutter_speed->value() ;
 
 	//set value
-	CEnsemble::getInstance()->m_cls_api.Ensemble_Camera_Set_Manual_Shutter_Speed_Value(GetId(), value);
+	CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Camera_Set_Manual_Shutter_Speed_Value(GetId(), value);
 
 	OnButtonShutterSpeedGet() ;
 }
 
 void DialogBaseCameraConfig::OnButtonReset(void)
 {
-    CEnsemble::getInstance()->m_cls_api.Ensemble_Camera_Set_Factory_Reset(GetId()) ;
+    CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Camera_Set_Factory_Reset(GetId()) ;
 
 	OnButtonExposureGet() ;
 	OnButtonGainGet() ;
@@ -433,18 +433,18 @@ void DialogBaseCameraConfig::OnButtonReset(void)
 	OnButtonISOGet() ;
 	OnButtonShutterSpeedGet() ;
 
-    int check_image_flip_v = CEnsemble::getInstance()->m_cls_api.Ensemble_Camera_Get_Flip_V(GetId()) ;
+    int check_image_flip_v = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Camera_Get_Flip_V(GetId()) ;
     if( check_image_flip_v )	ui->checkBox_image_flip_v->setChecked(true) ;
     else						ui->checkBox_image_flip_v->setChecked(false) ;
 
-    int check_image_flip_h = CEnsemble::getInstance()->m_cls_api.Ensemble_Camera_Get_Flip_H(GetId()) ;
+    int check_image_flip_h = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Camera_Get_Flip_H(GetId()) ;
     if( check_image_flip_h )	ui->checkBox_image_flip_h->setChecked(true) ;
     else						ui->checkBox_image_flip_h->setChecked(false) ;
 }
 
 void DialogBaseCameraConfig::OnButtonSetCamera(void)
 {
-	CEnsemble::getInstance()->m_cls_api.Ensemble_Camera_Set_Config_Run(GetId()) ;
+	CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Camera_Set_Config_Run(GetId()) ;
 }
 
 void DialogBaseCameraConfig::SetId(const std::string id)
@@ -503,7 +503,7 @@ void DialogBaseCameraConfig::updatePicture(cv::Mat image)
 		float auto_focus_area_y = 0 ;
 		float auto_focus_area_width = 0 ;
 		float auto_focus_area_height = 0 ;
-		CEnsemble::getInstance()->m_cls_api.Ensemble_Camera_Get_Auto_Focus_Area(GetId(), &auto_focus_area_x, &auto_focus_area_y, &auto_focus_area_width, &auto_focus_area_height ) ;
+		CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Camera_Get_Auto_Focus_Area(GetId(), &auto_focus_area_x, &auto_focus_area_y, &auto_focus_area_width, &auto_focus_area_height ) ;
 
         int i_auto_focus_area_x = auto_focus_area_x * image.cols ;
 		int i_auto_focus_area_y = auto_focus_area_y * image.rows ;
@@ -547,14 +547,14 @@ void DialogBaseCameraConfig::OnButtonSetAutoFocusAllArea(void)
 {
 	//All 
 	//Set Focus Area
-    int ret = CEnsemble::getInstance()->m_cls_api.Ensemble_Camera_Set_Auto_Focus(GetId(), 0, 0, -1, -1) ;
+    int ret = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Camera_Set_Auto_Focus(GetId(), 0, 0, -1, -1) ;
 
 	OnButtonFocusGet() ;
 }
 
 void DialogBaseCameraConfig::OnButtonSetAutoExposure(void)
 {
-	int ret = CEnsemble::getInstance()->m_cls_api.Ensemble_Camera_Set_Auto_Exposure(GetId()) ;
+	int ret = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Camera_Set_Auto_Exposure(GetId()) ;
 
 	//Set Text
 	OnButtonExposureGet() ;
@@ -632,7 +632,7 @@ void DialogBaseCameraConfig::mouseReleaseEvent(QMouseEvent *event)
         if( set_status == SetBaseStatus::SET_AREA )
         {
 			//Set Focus Area
-            int ret = CEnsemble::getInstance()->m_cls_api.Ensemble_Camera_Set_Auto_Focus(GetId(), f_x, f_y, f_w, f_h) ;
+            int ret = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Camera_Set_Auto_Focus(GetId(), f_x, f_y, f_w, f_h) ;
 
 			OnButtonFocusGet() ;
         }
@@ -646,23 +646,23 @@ void DialogBaseCameraConfig::on_pushButton_save_default_clicked()
 {
     std::string id_str = "ini";
     int value_exposure = ui->lineEdit_exposure->text().toInt() ;
-    CEnsemble::getInstance()->m_cls_api.Ensemble_Camera_Set_Manual_Exposure_Value(id_str, value_exposure) ;
+    CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Camera_Set_Manual_Exposure_Value(id_str, value_exposure) ;
 
     int value_gain = ui->lineEdit_gain->text().toInt() ;
-    CEnsemble::getInstance()->m_cls_api.Ensemble_Camera_Set_Manual_Gain_Value(id_str, value_gain) ;
+    CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Camera_Set_Manual_Gain_Value(id_str, value_gain) ;
 
     int value_focus = ui->lineEdit_focus->text().toInt() ;
-    CEnsemble::getInstance()->m_cls_api.Ensemble_Camera_Set_Manual_Focus_Value(id_str, value_focus) ;
+    CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Camera_Set_Manual_Focus_Value(id_str, value_focus) ;
 
-    if (ui->checkBox_image_flip_v->isChecked())	CEnsemble::getInstance()->m_cls_api.Ensemble_Camera_Set_Flip_V(id_str, true) ;
-    else										CEnsemble::getInstance()->m_cls_api.Ensemble_Camera_Set_Flip_V(id_str, false) ;
+    if (ui->checkBox_image_flip_v->isChecked())	CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Camera_Set_Flip_V(id_str, true) ;
+    else										CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Camera_Set_Flip_V(id_str, false) ;
 
-    int check_image_flip_v = CEnsemble::getInstance()->m_cls_api.Ensemble_Camera_Get_Flip_V(id_str) ;
+    int check_image_flip_v = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Camera_Get_Flip_V(id_str) ;
 
-    if (ui->checkBox_image_flip_h->isChecked())	CEnsemble::getInstance()->m_cls_api.Ensemble_Camera_Set_Flip_H(id_str, true) ;
-    else										CEnsemble::getInstance()->m_cls_api.Ensemble_Camera_Set_Flip_H(id_str, false) ;
+    if (ui->checkBox_image_flip_h->isChecked())	CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Camera_Set_Flip_H(id_str, true) ;
+    else										CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Camera_Set_Flip_H(id_str, false) ;
 
-    int check_image_flip_h = CEnsemble::getInstance()->m_cls_api.Ensemble_Camera_Get_Flip_H(id_str) ;
+    int check_image_flip_h = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Camera_Get_Flip_H(id_str) ;
 }
 
 

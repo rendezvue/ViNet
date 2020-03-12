@@ -65,11 +65,11 @@ void DialogSetBase::showEvent(QShowEvent *ev)
     QDialog::showEvent(ev) ;
 
     //Get Name
-    std::string base_name = CEnsemble::getInstance()->m_cls_api.Ensemble_Job_Get_Name(GetId()) ;
+    std::string base_name = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Job_Get_Name(GetId()) ;
     ui->label_name->setText(QString::fromUtf8(base_name.c_str()));
 
 	//use custom
-	int use_custom_feature = CEnsemble::getInstance()->m_cls_api.Ensemble_Job_Get_UseCustomFeatureOption(GetId()) ;
+	int use_custom_feature = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Job_Get_UseCustomFeatureOption(GetId()) ;
 	if( use_custom_feature )
 	{
 		//checked and disable level ctrl.	
@@ -87,7 +87,7 @@ void DialogSetBase::showEvent(QShowEvent *ev)
 	
 	
 	//Get Level 
-	int feature_level = CEnsemble::getInstance()->m_cls_api.Ensemble_Job_Get_FeatureLevel(GetId());
+	int feature_level = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Job_Get_FeatureLevel(GetId());
 	//Set Slider
 	ui->horizontalSlider_feature_level->setValue(feature_level) ;
 	ui->label_feature_level->setText(QString::number(feature_level));
@@ -99,9 +99,9 @@ void DialogSetBase::showEvent(QShowEvent *ev)
 	OnButtonGetConstraintAngle() ;
 	
 #if 0
-	int detect_option_margin = CEnsemble::getInstance()->m_cls_api.Ensemble_Job_Get_DetectOption(GetId(), DetectOption::DETECT_OPTION_MARGIN) ;
-	float detect_option_threshold = CEnsemble::getInstance()->m_cls_api.Ensemble_Job_Get_DetectOption(GetId(), DetectOption::DETECT_OPTION_THRESHOLD) ;
-	int detect_option_count = CEnsemble::getInstance()->m_cls_api.Ensemble_Job_Get_DetectOption(GetId(), DetectOption::DETECT_OPTION_COUNT) ;
+	int detect_option_margin = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Job_Get_DetectOption(GetId(), DetectOption::DETECT_OPTION_MARGIN) ;
+	float detect_option_threshold = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Job_Get_DetectOption(GetId(), DetectOption::DETECT_OPTION_THRESHOLD) ;
+	int detect_option_count = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Job_Get_DetectOption(GetId(), DetectOption::DETECT_OPTION_COUNT) ;
     ui->lineEdit_detect_margin->setText(QString::number(detect_option_margin)) ;
     ui->lineEdit_detect_threshold->setText(QString("%2").arg(detect_option_threshold)) ;
     ui->lineEdit_detect_count->setText(QString::number(detect_option_count)) ;
@@ -223,7 +223,7 @@ void DialogSetBase::OnButtonGetImage(void)
     image.image_height = 0 ;
 
 	const int image_type = ImageTypeOption::IMAGE_RGB888 ;
-    CEnsemble::getInstance()->m_cls_api.Ensemble_Job_Get_Image(GetId(), image_type, &image)  ;
+    CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Job_Get_Image(GetId(), image_type, &image)  ;
 
     if( image.image_width > 0 && image.image_height > 0 )
     {
@@ -259,7 +259,7 @@ void DialogSetBase::OnButtonGetImage(void)
 
 void DialogSetBase::OnButtonSetImage(void)
 {
-	CEnsemble::getInstance()->m_cls_api.Ensemble_Job_Set_Image(GetId())  ;
+	CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Job_Set_Image(GetId())  ;
 	
     OnButtonGetImage() ;
 
@@ -273,7 +273,7 @@ void DialogSetBase::OnButtonSetDetectArea(void)
 
 void DialogSetBase::OnButtonClearDetectArea(void)
 {
-    CEnsemble::getInstance()->m_cls_api.Ensemble_Job_Set_DetectArea(GetId(), 0, 0, 0, 0) ;
+    CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Job_Set_DetectArea(GetId(), 0, 0, 0, 0) ;
 
     OnButtonGetImage() ;
 
@@ -287,7 +287,7 @@ void DialogSetBase::OnButtonZoomSet(void)
 
 void DialogSetBase::OnButtonZoomReset(void)
 {
-    CEnsemble::getInstance()->m_cls_api.Ensemble_Job_Set_Zoom(GetId(), 0, 0, 0, 0) ;       //reset
+    CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Job_Set_Zoom(GetId(), 0, 0, 0, 0) ;       //reset
 
     OnButtonGetImage() ;
 }
@@ -299,7 +299,7 @@ void DialogSetBase::OnButtonSelectObject(void)
 
 void DialogSetBase::OnButtonResetObject(void)
 {
-	CEnsemble::getInstance()->m_cls_api.Ensemble_Job_Del_SelectObject(GetId()) ;
+	CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Job_Del_SelectObject(GetId()) ;
 	
     OnButtonGetImage() ;
 }
@@ -311,7 +311,7 @@ void DialogSetBase::OnButtonSelectRefPoint(void)
 
 void DialogSetBase::OnButtonResetRefPoint(void)
 {
-	CEnsemble::getInstance()->m_cls_api.Ensemble_Job_Del_Ref_Point(GetId()) ;
+	CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Job_Del_Ref_Point(GetId()) ;
 	
     OnButtonGetImage() ;
 }
@@ -319,7 +319,7 @@ void DialogSetBase::OnButtonResetRefPoint(void)
 
 void DialogSetBase::OnButtonNameChange(void)
 {
-    std::string base_name = CEnsemble::getInstance()->m_cls_api.Ensemble_Job_Get_Name(GetId()) ;
+    std::string base_name = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Job_Get_Name(GetId()) ;
 
     DialogChangeName dlg_change_name ;
 
@@ -334,10 +334,10 @@ void DialogSetBase::OnButtonNameChange(void)
 
         if( !change_name.empty() )
         {
-            CEnsemble::getInstance()->m_cls_api.Ensemble_Job_Set_Name(GetId(), change_name) ;
+            CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Job_Set_Name(GetId(), change_name) ;
         }
 
-        base_name = CEnsemble::getInstance()->m_cls_api.Ensemble_Job_Get_Name(GetId()) ;
+        base_name = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Job_Get_Name(GetId()) ;
         ui->label_name->setText(QString::fromUtf8(base_name.c_str()));
 
 		emit UpdateBaseName(QString::fromUtf8(base_name.c_str())) ;
@@ -351,7 +351,7 @@ void DialogSetBase::OnButtonMaskPush(void)
 
 void DialogSetBase::OnButtonMaskPop(void)
 {
-	CEnsemble::getInstance()->m_cls_api.Ensemble_Job_Undo_MaskArea(GetId()) ;
+	CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Job_Undo_MaskArea(GetId()) ;
 
 	OnButtonGetImage() ;
 
@@ -360,7 +360,7 @@ void DialogSetBase::OnButtonMaskPop(void)
 
 void DialogSetBase::OnButtonMaskClear(void)
 {
-	CEnsemble::getInstance()->m_cls_api.Ensemble_Job_Del_MaskArea(GetId()) ;
+	CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Job_Del_MaskArea(GetId()) ;
 
 	OnButtonGetImage() ;
 
@@ -374,13 +374,13 @@ void DialogSetBase::OnSliderSetFeatureLevel(void)
     int level = ui->horizontalSlider_feature_level->value() ;
 
 	//set level
-	CEnsemble::getInstance()->m_cls_api.Ensemble_Job_Set_FeatureLevel(GetId(), level);
+	CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Job_Set_FeatureLevel(GetId(), level);
 
 	//Update Image
 	OnButtonGetImage() ;
 	
 	//Get Level 
-	int feature_level = CEnsemble::getInstance()->m_cls_api.Ensemble_Job_Get_FeatureLevel(GetId());
+	int feature_level = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Job_Get_FeatureLevel(GetId());
 	//Set Slider
 	ui->horizontalSlider_feature_level->setValue(feature_level) ;
 	ui->label_feature_level->setText(QString::number(feature_level));
@@ -466,13 +466,13 @@ void DialogSetBase::mouseReleaseEvent(QMouseEvent *event)
 		
         if( set_status == SetBaseStatus::SET_AREA )
         {
-            CEnsemble::getInstance()->m_cls_api.Ensemble_Job_Set_DetectArea(GetId(), f_x, f_y, f_w, f_h) ;
+            CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Job_Set_DetectArea(GetId(), f_x, f_y, f_w, f_h) ;
 
             emit UpdateBaseImage();
         }
         else if( set_status == SetBaseStatus::SET_ZOOM)
         {
-            CEnsemble::getInstance()->m_cls_api.Ensemble_Job_Set_Zoom(GetId(), f_x, f_y, f_w, f_h) ;
+            CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Job_Set_Zoom(GetId(), f_x, f_y, f_w, f_h) ;
         }
 		else if( set_status == SetBaseStatus::SET_MASK)
         {
@@ -480,14 +480,14 @@ void DialogSetBase::mouseReleaseEvent(QMouseEvent *event)
             if (ui->checkBox_mask_enable_inside->isChecked())	b_enable_inside = false ;
             else												b_enable_inside = true ;
 				
-            CEnsemble::getInstance()->m_cls_api.Ensemble_Job_Set_MaskArea(GetId(), f_x, f_y, f_w, f_h, b_enable_inside) ;
+            CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Job_Set_MaskArea(GetId(), f_x, f_y, f_w, f_h, b_enable_inside) ;
 
 			emit UpdateBaseImage();
         }
 		else if( set_status == SetBaseStatus::SET_OBJECT)
 		{
 			//SelectObject
-			CEnsemble::getInstance()->m_cls_api.Ensemble_Job_Set_SelectObject(GetId(), f_x, f_y, f_w, f_h) ;
+			CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Job_Set_SelectObject(GetId(), f_x, f_y, f_w, f_h) ;
 
 			emit UpdateBaseImage();
 		}
@@ -501,15 +501,15 @@ void DialogSetBase::mouseReleaseEvent(QMouseEvent *event)
         	f_y = (float)point.y() / (float)label_h ;
 		
 			//SelectObject
-			//CEnsemble::getInstance()->m_cls_api.Ensemble_Job_Set_SelectObject(GetId(), f_x, f_y, f_w, f_h) ;
-            CEnsemble::getInstance()->m_cls_api.Ensemble_Job_Set_Ref_Point(GetId(), f_x, f_y) ;
+			//CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Job_Set_SelectObject(GetId(), f_x, f_y, f_w, f_h) ;
+            CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Job_Set_Ref_Point(GetId(), f_x, f_y) ;
 
 			emit UpdateBaseImage();
 		}
 		else if( set_status == SetBaseStatus::SET_ERASE)
 		{
 			//SelectObject
-			CEnsemble::getInstance()->m_cls_api.Ensemble_Job_Set_Erase(GetId(), f_x, f_y, f_w, f_h) ;
+			CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Job_Set_Erase(GetId(), f_x, f_y, f_w, f_h) ;
 
 			emit UpdateBaseImage();
 		}
@@ -525,7 +525,7 @@ void DialogSetBase::OnButtonSetDetectOptionMargin(void)
 {
     //Set Detect Option Value
     QString text_value = ui->lineEdit_detect_margin->text() ;
-    CEnsemble::getInstance()->m_cls_api.Ensemble_Job_Set_DetectOption(GetId(), DetectOption::DETECT_OPTION_MARGIN, text_value.toFloat()) ;
+    CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Job_Set_DetectOption(GetId(), DetectOption::DETECT_OPTION_MARGIN, text_value.toFloat()) ;
 
     OnButtonGetDetectOptionMargin() ;
 }
@@ -534,7 +534,7 @@ void DialogSetBase::OnButtonSetDetectOptionThreshold(void)
 {
     //Set Detect Option Value
     QString text_value = ui->lineEdit_detect_threshold->text() ;
-    CEnsemble::getInstance()->m_cls_api.Ensemble_Job_Set_DetectOption(GetId(), DetectOption::DETECT_OPTION_THRESHOLD, text_value.toFloat()) ;
+    CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Job_Set_DetectOption(GetId(), DetectOption::DETECT_OPTION_THRESHOLD, text_value.toFloat()) ;
 
     OnButtonGetDetectOptionThreshold() ;
 }
@@ -543,7 +543,7 @@ void DialogSetBase::OnButtonSetDetectOptionCount(void)
 {
     //Set Detect Option Value
     QString text_value = ui->lineEdit_detect_count->text() ;
-    CEnsemble::getInstance()->m_cls_api.Ensemble_Job_Set_DetectOption(GetId(), DetectOption::DETECT_OPTION_COUNT, text_value.toFloat()) ;
+    CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Job_Set_DetectOption(GetId(), DetectOption::DETECT_OPTION_COUNT, text_value.toFloat()) ;
 
     OnButtonGetDetectOptionCount() ;
 }
@@ -551,21 +551,21 @@ void DialogSetBase::OnButtonSetDetectOptionCount(void)
 void DialogSetBase::OnButtonGetDetectOptionMargin(void)
 {
     //Get Detect Option Value
-    int detect_option_margin = CEnsemble::getInstance()->m_cls_api.Ensemble_Job_Get_DetectOption(GetId(), DetectOption::DETECT_OPTION_MARGIN) ;
+    int detect_option_margin = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Job_Get_DetectOption(GetId(), DetectOption::DETECT_OPTION_MARGIN) ;
     ui->lineEdit_detect_margin->setText(QString::number(detect_option_margin)) ;
 }
 
 void DialogSetBase::OnButtonGetDetectOptionThreshold(void)
 {
     //Get Detect Option Value
-    float detect_option_threshold = CEnsemble::getInstance()->m_cls_api.Ensemble_Job_Get_DetectOption(GetId(), DetectOption::DETECT_OPTION_THRESHOLD) ;
+    float detect_option_threshold = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Job_Get_DetectOption(GetId(), DetectOption::DETECT_OPTION_THRESHOLD) ;
     ui->lineEdit_detect_threshold->setText(QString("%2").arg(detect_option_threshold)) ;
 }
 
 void DialogSetBase::OnButtonGetDetectOptionCount(void)
 {
     //Get Detect Option Value
-    int detect_option_count = CEnsemble::getInstance()->m_cls_api.Ensemble_Job_Get_DetectOption(GetId(), DetectOption::DETECT_OPTION_COUNT) ;
+    int detect_option_count = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Job_Get_DetectOption(GetId(), DetectOption::DETECT_OPTION_COUNT) ;
     ui->lineEdit_detect_count->setText(QString::number(detect_option_count)) ;
 }
 
@@ -573,8 +573,8 @@ void DialogSetBase::OnCheckFeatureUseCustomOption(bool checked)
 {
     qDebug("Check = %d : Use Custom Feature", checked) ;
 
-	CEnsemble::getInstance()->m_cls_api.Ensemble_Job_Set_UseCustomFeatureOption(GetId(), checked) ;
-	int use_custom_feature = CEnsemble::getInstance()->m_cls_api.Ensemble_Job_Get_UseCustomFeatureOption(GetId()) ;
+	CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Job_Set_UseCustomFeatureOption(GetId(), checked) ;
+	int use_custom_feature = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Job_Get_UseCustomFeatureOption(GetId()) ;
 	
 	if( use_custom_feature )
 	{	
@@ -600,8 +600,8 @@ void DialogSetBase::OnCheckFeatureUseCustomOption(bool checked)
 void DialogSetBase::OnButtonGetConstraintAngle(void)
 {
 	//Get Detect Option Value
-    int detect_option_constraint_angle_min = CEnsemble::getInstance()->m_cls_api.Ensemble_Job_Get_DetectOption(GetId(), DetectOption::DETECT_OPTION_CONSTRAINT_ANGLE_MIN) ;
-	int detect_option_constraint_angle_max = CEnsemble::getInstance()->m_cls_api.Ensemble_Job_Get_DetectOption(GetId(), DetectOption::DETECT_OPTION_CONSTRAINT_ANGLE_MAX) ;
+    int detect_option_constraint_angle_min = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Job_Get_DetectOption(GetId(), DetectOption::DETECT_OPTION_CONSTRAINT_ANGLE_MIN) ;
+	int detect_option_constraint_angle_max = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Job_Get_DetectOption(GetId(), DetectOption::DETECT_OPTION_CONSTRAINT_ANGLE_MAX) ;
 	
     ui->lineEdit_constraint_angle_min->setText(QString::number(detect_option_constraint_angle_min)) ;
 	ui->lineEdit_constraint_angle_max->setText(QString::number(detect_option_constraint_angle_max)) ;
@@ -611,10 +611,10 @@ void DialogSetBase::OnButtonSetConstraintAngle(void)
 {
 	 //Set Detect Option Value
     QString qstr_detect_option_constraint_angle_min = ui->lineEdit_constraint_angle_min->text() ;
-    CEnsemble::getInstance()->m_cls_api.Ensemble_Job_Set_DetectOption(GetId(), DetectOption::DETECT_OPTION_CONSTRAINT_ANGLE_MIN, qstr_detect_option_constraint_angle_min.toFloat()) ;
+    CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Job_Set_DetectOption(GetId(), DetectOption::DETECT_OPTION_CONSTRAINT_ANGLE_MIN, qstr_detect_option_constraint_angle_min.toFloat()) ;
 
 	QString qstr_detect_option_constraint_angle_max = ui->lineEdit_constraint_angle_max->text() ;
-    CEnsemble::getInstance()->m_cls_api.Ensemble_Job_Set_DetectOption(GetId(), DetectOption::DETECT_OPTION_CONSTRAINT_ANGLE_MAX, qstr_detect_option_constraint_angle_max.toFloat()) ;
+    CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Job_Set_DetectOption(GetId(), DetectOption::DETECT_OPTION_CONSTRAINT_ANGLE_MAX, qstr_detect_option_constraint_angle_max.toFloat()) ;
 
     OnButtonGetConstraintAngle() ;
 }
@@ -626,6 +626,6 @@ void DialogSetBase::OnButtonSelectErase(void)
 
 void DialogSetBase::OnButtonResetErase(void)
 {
-	CEnsemble::getInstance()->m_cls_api.Ensemble_Job_Del_Erase(GetId()) ;
+	CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Job_Del_Erase(GetId()) ;
 }
 

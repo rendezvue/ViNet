@@ -37,7 +37,7 @@ void DialogSetCode::showEvent(QShowEvent *ev)
     QDialog::showEvent(ev) ;
 
     //Get Name
-    std::string tool_name = CEnsemble::getInstance()->m_cls_api.Ensemble_Tool_Get_Name(GetId()) ;
+    std::string tool_name = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Tool_Get_Name(GetId()) ;
     ui->label_name->setText(QString::fromUtf8(tool_name.c_str()));
 
     qDebug("Tool Name = %s", tool_name.c_str()) ;
@@ -61,7 +61,7 @@ void DialogSetCode::OnButtonGetImage(void)
 
     int image_type = IMAGE_RGB888 ;
     int get_image_type = 0 ;
-    CEnsemble::getInstance()->m_cls_api.Ensemble_Tool_Get_Image(GetId(), image_type, &image_buf)  ;
+    CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Tool_Get_Image(GetId(), image_type, &image_buf)  ;
 
     if( image_buf.image_width > 0 && image_buf.image_height > 0 )
     {
@@ -104,7 +104,7 @@ void DialogSetCode::OnButtonGetImage(void)
     image_type = IMAGE_RGB888 ;
     image_type += IMAGE_ORI_SIZE ;
     //get_image_type = 0 ;
-    int ret_image_size = CEnsemble::getInstance()->m_cls_api.Ensemble_Tool_Get_ObjectImage(GetId(), image_type, &image_buf)  ;
+    int ret_image_size = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Tool_Get_ObjectImage(GetId(), image_type, &image_buf)  ;
 
 	cv::Mat object_image ;
     if( image_buf.image_width > 0 && image_buf.image_height > 0 )
@@ -146,8 +146,8 @@ void DialogSetCode::OnButtonGetImage(void)
     }
 
 	//Get Code Info
-	std::string str_code_type = CEnsemble::getInstance()->m_cls_api.Ensemble_Tool_Detect_Code_Get_Ref_CodeType(GetId()) ;
-	std::string str_code_data = CEnsemble::getInstance()->m_cls_api.Ensemble_Tool_Detect_Code_Get_Ref_CodeData(GetId()) ;
+	std::string str_code_type = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Tool_Detect_Code_Get_Ref_CodeType(GetId()) ;
+	std::string str_code_data = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Tool_Detect_Code_Get_Ref_CodeData(GetId()) ;
 
 	std::string str_code_info ;
 	str_code_info += "(" + str_code_type + ")" ;
@@ -214,7 +214,7 @@ void DialogSetCode::SetObjectImage(cv::Mat image)
 
 void DialogSetCode::OnButtonNameChange(void)
 {
-    std::string tool_name = CEnsemble::getInstance()->m_cls_api.Ensemble_Tool_Get_Name(GetId()) ;
+    std::string tool_name = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Tool_Get_Name(GetId()) ;
 
     DialogChangeName dlg_change_name ;
 
@@ -231,10 +231,10 @@ void DialogSetCode::OnButtonNameChange(void)
 		
         if( !change_name.empty() )
         {
-            CEnsemble::getInstance()->m_cls_api.Ensemble_Tool_Set_Name(GetId(), change_name) ;
+            CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Tool_Set_Name(GetId(), change_name) ;
         }
 
-        tool_name = CEnsemble::getInstance()->m_cls_api.Ensemble_Tool_Get_Name(GetId()) ;
+        tool_name = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Tool_Get_Name(GetId()) ;
         ui->label_name->setText(QString::fromUtf8(tool_name.c_str()));
 
         qDebug("Tool Name = %s", tool_name.c_str()) ;
@@ -245,7 +245,7 @@ void DialogSetCode::OnButtonNameChange(void)
 
 void DialogSetCode::OnButtonGetPaddingRate(void)
 {
-	float padding_rate = CEnsemble::getInstance()->m_cls_api.Ensemble_Tool_Detect_Code_Get_Padding(GetId()) ;
+	float padding_rate = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Tool_Detect_Code_Get_Padding(GetId()) ;
 
 	ui->lineEdit_padding_rate->setText(QString::number(padding_rate)) ;
 }
@@ -253,7 +253,7 @@ void DialogSetCode::OnButtonGetPaddingRate(void)
 void DialogSetCode::OnButtonSetPaddingRate(void)
 {
 	QString qstr_padding_rate = ui->lineEdit_padding_rate->text() ;
-    CEnsemble::getInstance()->m_cls_api.Ensemble_Tool_Detect_Code_Set_Padding(GetId(), qstr_padding_rate.toFloat()) ;
+    CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Tool_Detect_Code_Set_Padding(GetId(), qstr_padding_rate.toFloat()) ;
 
 	OnButtonGetImage() ;
 	OnButtonGetPaddingRate() ;

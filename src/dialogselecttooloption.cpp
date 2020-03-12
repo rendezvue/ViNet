@@ -58,7 +58,7 @@ void DialogSelectToolOption::OnButtonAddOption(void)
 	{
         unsigned int item_type = index.data(Qt::UserRole+1).toUInt() ;
 
-		CEnsemble::getInstance()->m_cls_api.Ensemble_Tool_Add_NewOption(m_str_id, item_type) ;
+		CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Tool_Add_NewOption(m_str_id, item_type) ;
 		
         qDebug("Add New Option Type = %d", item_type) ;
 	}
@@ -69,7 +69,7 @@ void DialogSelectToolOption::OnButtonAddOption(void)
 
 void DialogSelectToolOption::OnButtonUpdateList(void)
 {
-	std::string str_able_tool_opion_list_xml = CEnsemble::getInstance()->m_cls_api.Ensemble_Tool_Get_OptionList(m_i_type) ;
+	std::string str_able_tool_opion_list_xml = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Tool_Get_OptionList(m_i_type) ;
 
 	qDebug("tools option xml = %s", str_able_tool_opion_list_xml.c_str()) ;
 

@@ -29,16 +29,20 @@ private:
     static CEnsemble* instance;
 	
 public:
-	CEnsembleAPI m_cls_api ;
+	//CEnsembleAPI m_cls_api ;
 
 	bool CheckDevice(const std::string ip, const int port) ;
 	int New(const std::string ip, const int port) ;
 	CEnsembleAPI *GetDevice(const std::string ip, const int port) ;
 	CEnsembleAPI *GetDevice(const int index) ;
 	std::string GetDeviceJobInfo(const int index=-1) ;
+
+	CEnsembleAPI *SelectDevice(const std::string ip, const int port) ;
+	CEnsembleAPI *GetSelectDevice(void) ;
 	
 private:
 	std::list<CEnsembleAPI *> m_list_ensembles ;
+	CEnsembleAPI *m_select_device ;
 	
 };
 

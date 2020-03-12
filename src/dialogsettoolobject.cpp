@@ -65,26 +65,26 @@ void DialogSetToolObject::showEvent(QShowEvent *ev)
     QDialog::showEvent(ev) ;
 
     //Get Name
-    std::string tool_name = CEnsemble::getInstance()->m_cls_api.Ensemble_Tool_Get_Name(GetId()) ;
+    std::string tool_name = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Tool_Get_Name(GetId()) ;
     ui->label_name->setText(QString::fromUtf8(tool_name.c_str()));
 
     qDebug("Tool Name = %s", tool_name.c_str()) ;
 	
 	//Get Level 
-    int feature_level = CEnsemble::getInstance()->m_cls_api.Ensemble_Tool_Get_FeatureLevel(GetId());
+    int feature_level = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Tool_Get_FeatureLevel(GetId());
 	//Set Slider
 	ui->horizontalSlider_feature_level->setValue(feature_level) ;
 	ui->label_feature_level->setText(QString::number(feature_level));
 
 	//Get Base Level
-	int base_feature_level = CEnsemble::getInstance()->m_cls_api.Ensemble_Job_Get_FeatureLevel(GetParentId());
+	int base_feature_level = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Job_Get_FeatureLevel(GetParentId());
 	//Set Slider
 	std::string str_base_feature_level ;
 	str_base_feature_level = "(Base: " + std::to_string(base_feature_level) + ")" ;
 	QString qstr_base_feature_level = QString::fromStdString(str_base_feature_level);
 	ui->label_feature_level_base->setText(qstr_base_feature_level);
 
-	int use_custom_feature = CEnsemble::getInstance()->m_cls_api.Ensemble_Tool_Get_UseCustomFeatureOption(GetId());
+	int use_custom_feature = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Tool_Get_UseCustomFeatureOption(GetId());
 	if( use_custom_feature )
 	{
 		//checked and disable level ctrl.	
@@ -114,7 +114,7 @@ void DialogSetToolObject::showEvent(QShowEvent *ev)
 
 void DialogSetToolObject::OnButtonNameChange(void)
 {
-    std::string tool_name = CEnsemble::getInstance()->m_cls_api.Ensemble_Tool_Get_Name(GetId()) ;
+    std::string tool_name = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Tool_Get_Name(GetId()) ;
 
     DialogChangeName dlg_change_name ;
 
@@ -131,10 +131,10 @@ void DialogSetToolObject::OnButtonNameChange(void)
 		
         if( !change_name.empty() )
         {
-            CEnsemble::getInstance()->m_cls_api.Ensemble_Tool_Set_Name(GetId(), change_name) ;
+            CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Tool_Set_Name(GetId(), change_name) ;
         }
 
-        tool_name = CEnsemble::getInstance()->m_cls_api.Ensemble_Tool_Get_Name(GetId()) ;
+        tool_name = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Tool_Get_Name(GetId()) ;
         ui->label_name->setText(QString::fromUtf8(tool_name.c_str()));
 
         qDebug("Tool Name = %s", tool_name.c_str()) ;
@@ -155,7 +155,7 @@ void DialogSetToolObject::OnButtonGetImage(void)
 
 	const int image_type = IMAGE_RGB888 ;
     //int get_image_type = 0 ;
-    CEnsemble::getInstance()->m_cls_api.Ensemble_Tool_Get_Image(GetId(), image_type, &image_buf)  ;
+    CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Tool_Get_Image(GetId(), image_type, &image_buf)  ;
 
     if( image_buf.image_width > 0 && image_buf.image_height > 0 )
     {
@@ -279,7 +279,7 @@ void DialogSetToolObject::OnSliderSetFeatureLevel(void)
 
 	qDebug("%s : SetFeatureLevel = %d", __func__, level) ;
 	//set level
-    CEnsemble::getInstance()->m_cls_api.Ensemble_Tool_Set_FeatureLevel(GetId(), level);
+    CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Tool_Set_FeatureLevel(GetId(), level);
 
 	//Update Image
 	qDebug("%s : GetImage", __func__) ;
@@ -288,7 +288,7 @@ void DialogSetToolObject::OnSliderSetFeatureLevel(void)
 	qDebug("%s : GetFeatureLevel", __func__) ;
 	
 	//Get Level 
-    int feature_level = CEnsemble::getInstance()->m_cls_api.Ensemble_Tool_Get_FeatureLevel(GetId());
+    int feature_level = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Tool_Get_FeatureLevel(GetId());
 
 	qDebug("%s : GetFeatureLevel = %d", __func__, feature_level) ;
 	
@@ -297,7 +297,7 @@ void DialogSetToolObject::OnSliderSetFeatureLevel(void)
 	ui->label_feature_level->setText(QString::number(feature_level));
 
 	//Get Base Level
-	int base_feature_level = CEnsemble::getInstance()->m_cls_api.Ensemble_Job_Get_FeatureLevel(GetParentId());
+	int base_feature_level = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Job_Get_FeatureLevel(GetParentId());
 	//Set Slider
 	std::string str_base_feature_level ;
 	str_base_feature_level = "(Base: " + std::to_string(base_feature_level) + ")" ;
@@ -319,7 +319,7 @@ void DialogSetToolObject::OnButtonSelectObject(void)
 
 void DialogSetToolObject::OnButtonResetObject(void)
 {
-	//CEnsemble::getInstance()->m_cls_api.Ensemble_Job_Del_SelectObject(GetId()) ;
+	//CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Job_Del_SelectObject(GetId()) ;
 	
     OnButtonGetImage() ;
 }
@@ -402,13 +402,13 @@ void DialogSetToolObject::mouseReleaseEvent(QMouseEvent *event)
 		
         if( set_status == SetBaseStatus::SET_AREA )
         {
-            //CEnsemble::getInstance()->m_cls_api.Ensemble_Job_Set_DetectArea(GetId(), f_x, f_y, f_w, f_h) ;
+            //CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Job_Set_DetectArea(GetId(), f_x, f_y, f_w, f_h) ;
 
             //emit UpdateToolObjectImage();
         }
         else if( set_status == SetBaseStatus::SET_ZOOM)
         {
-            //CEnsemble::getInstance()->m_cls_api.Ensemble_Job_Set_Zoom(GetId(), f_x, f_y, f_w, f_h) ;
+            //CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Job_Set_Zoom(GetId(), f_x, f_y, f_w, f_h) ;
         }
 		else if( set_status == SetBaseStatus::SET_MASK)
         {
@@ -416,14 +416,14 @@ void DialogSetToolObject::mouseReleaseEvent(QMouseEvent *event)
             if (ui->checkBox_mask_enable_inside->isChecked())	b_enable_inside = false ;
             else												b_enable_inside = true ;
 				
-            CEnsemble::getInstance()->m_cls_api.Ensemble_Tool_Set_MaskArea(GetId(), f_x, f_y, f_w, f_h, b_enable_inside) ;
+            CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Tool_Set_MaskArea(GetId(), f_x, f_y, f_w, f_h, b_enable_inside) ;
 
 			emit UpdateToolObjectImage();
         }
 		else if( set_status == SetBaseStatus::SET_OBJECT)
 		{
 			//SelectObject
-            CEnsemble::getInstance()->m_cls_api.Ensemble_Tool_Set_SelectObject(GetId(), f_x, f_y, f_w, f_h) ;
+            CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Tool_Set_SelectObject(GetId(), f_x, f_y, f_w, f_h) ;
 
 			emit UpdateToolObjectImage();
 		}
@@ -437,8 +437,8 @@ void DialogSetToolObject::mouseReleaseEvent(QMouseEvent *event)
         	f_y = (float)point.y() / (float)label_h ;
 		
 			//SelectObject
-			//CEnsemble::getInstance()->m_cls_api.Ensemble_Job_Set_SelectObject(GetId(), f_x, f_y, f_w, f_h) ;
-            CEnsemble::getInstance()->m_cls_api.Ensemble_Tool_Set_Ref_Point(GetId(), f_x, f_y) ;
+			//CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Job_Set_SelectObject(GetId(), f_x, f_y, f_w, f_h) ;
+            CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Tool_Set_Ref_Point(GetId(), f_x, f_y) ;
 
             emit UpdateToolObjectImage();
 		}
@@ -455,8 +455,8 @@ void DialogSetToolObject::OnCheckFeatureUseCustomOption(bool checked)
 {
     qDebug("Tool Check = %d : Use Custom Feature", checked) ;
 
-	CEnsemble::getInstance()->m_cls_api.Ensemble_Tool_Set_UseCustomFeatureOption(GetId(), checked) ;
-	int use_custom_feature = CEnsemble::getInstance()->m_cls_api.Ensemble_Tool_Get_UseCustomFeatureOption(GetId()) ;
+	CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Tool_Set_UseCustomFeatureOption(GetId(), checked) ;
+	int use_custom_feature = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Tool_Get_UseCustomFeatureOption(GetId()) ;
 	
 	if( use_custom_feature )
 	{	
@@ -486,7 +486,7 @@ void DialogSetToolObject::OnButtonSelectRefPoint(void)
 
 void DialogSetToolObject::OnButtonResetRefPoint(void)
 {
-	CEnsemble::getInstance()->m_cls_api.Ensemble_Tool_Del_Ref_Point(GetId()) ;
+	CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Tool_Del_Ref_Point(GetId()) ;
 	
     OnButtonGetImage() ;
 }
@@ -495,8 +495,8 @@ void DialogSetToolObject::OnButtonResetRefPoint(void)
 void DialogSetToolObject::OnButtonGetConstraintAngle(void)
 {
 	//Get Detect Option Value
-    int detect_option_constraint_angle_min = CEnsemble::getInstance()->m_cls_api.Ensemble_Tool_Get_DetectOption(GetId(), DetectOption::DETECT_OPTION_CONSTRAINT_ANGLE_MIN) ;
-	int detect_option_constraint_angle_max = CEnsemble::getInstance()->m_cls_api.Ensemble_Tool_Get_DetectOption(GetId(), DetectOption::DETECT_OPTION_CONSTRAINT_ANGLE_MAX) ;
+    int detect_option_constraint_angle_min = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Tool_Get_DetectOption(GetId(), DetectOption::DETECT_OPTION_CONSTRAINT_ANGLE_MIN) ;
+	int detect_option_constraint_angle_max = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Tool_Get_DetectOption(GetId(), DetectOption::DETECT_OPTION_CONSTRAINT_ANGLE_MAX) ;
 	
     ui->lineEdit_constraint_angle_min->setText(QString::number(detect_option_constraint_angle_min)) ;
 	ui->lineEdit_constraint_angle_max->setText(QString::number(detect_option_constraint_angle_max)) ;
@@ -506,10 +506,10 @@ void DialogSetToolObject::OnButtonSetConstraintAngle(void)
 {
 	 //Set Detect Option Value
     QString qstr_detect_option_constraint_angle_min = ui->lineEdit_constraint_angle_min->text() ;
-    CEnsemble::getInstance()->m_cls_api.Ensemble_Tool_Set_DetectOption(GetId(), DetectOption::DETECT_OPTION_CONSTRAINT_ANGLE_MIN, qstr_detect_option_constraint_angle_min.toFloat()) ;
+    CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Tool_Set_DetectOption(GetId(), DetectOption::DETECT_OPTION_CONSTRAINT_ANGLE_MIN, qstr_detect_option_constraint_angle_min.toFloat()) ;
 
 	QString qstr_detect_option_constraint_angle_max = ui->lineEdit_constraint_angle_max->text() ;
-    CEnsemble::getInstance()->m_cls_api.Ensemble_Tool_Set_DetectOption(GetId(), DetectOption::DETECT_OPTION_CONSTRAINT_ANGLE_MAX, qstr_detect_option_constraint_angle_max.toFloat()) ;
+    CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Tool_Set_DetectOption(GetId(), DetectOption::DETECT_OPTION_CONSTRAINT_ANGLE_MAX, qstr_detect_option_constraint_angle_max.toFloat()) ;
 
     OnButtonGetConstraintAngle() ;
 }
@@ -521,7 +521,7 @@ void DialogSetToolObject::OnButtonMaskPush(void)
 
 void DialogSetToolObject::OnButtonMaskPop(void)
 {
-	CEnsemble::getInstance()->m_cls_api.Ensemble_Tool_Undo_MaskArea(GetId()) ;
+	CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Tool_Undo_MaskArea(GetId()) ;
 
 	OnButtonGetImage() ;
 
@@ -530,7 +530,7 @@ void DialogSetToolObject::OnButtonMaskPop(void)
 
 void DialogSetToolObject::OnButtonMaskClear(void)
 {
-	CEnsemble::getInstance()->m_cls_api.Ensemble_Tool_Del_MaskArea(GetId()) ;
+	CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Tool_Del_MaskArea(GetId()) ;
 
 	OnButtonGetImage() ;
 
@@ -541,7 +541,7 @@ void DialogSetToolObject::OnButtonSetDetectOptionMargin(void)
 {
     //Set Detect Option Value
     QString text_value = ui->lineEdit_detect_margin->text() ;
-    CEnsemble::getInstance()->m_cls_api.Ensemble_Tool_Set_DetectOption(GetId(), DetectOption::DETECT_OPTION_MARGIN, text_value.toFloat()) ;
+    CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Tool_Set_DetectOption(GetId(), DetectOption::DETECT_OPTION_MARGIN, text_value.toFloat()) ;
 
     OnButtonGetDetectOptionMargin() ;
 }
@@ -550,7 +550,7 @@ void DialogSetToolObject::OnButtonSetDetectOptionThreshold(void)
 {
     //Set Detect Option Value
     QString text_value = ui->lineEdit_detect_threshold->text() ;
-    CEnsemble::getInstance()->m_cls_api.Ensemble_Tool_Set_DetectOption(GetId(), DetectOption::DETECT_OPTION_THRESHOLD, text_value.toFloat()) ;
+    CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Tool_Set_DetectOption(GetId(), DetectOption::DETECT_OPTION_THRESHOLD, text_value.toFloat()) ;
 
     OnButtonGetDetectOptionThreshold() ;
 }
@@ -558,21 +558,21 @@ void DialogSetToolObject::OnButtonSetDetectOptionThreshold(void)
 void DialogSetToolObject::OnButtonGetDetectOptionMargin(void)
 {
     //Get Detect Option Value
-    int detect_option_margin = CEnsemble::getInstance()->m_cls_api.Ensemble_Tool_Get_DetectOption(GetId(), DetectOption::DETECT_OPTION_MARGIN) ;
+    int detect_option_margin = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Tool_Get_DetectOption(GetId(), DetectOption::DETECT_OPTION_MARGIN) ;
     ui->lineEdit_detect_margin->setText(QString::number(detect_option_margin)) ;
 }
 
 void DialogSetToolObject::OnButtonGetDetectOptionThreshold(void)
 {
     //Get Detect Option Value
-    float detect_option_threshold = CEnsemble::getInstance()->m_cls_api.Ensemble_Tool_Get_DetectOption(GetId(), DetectOption::DETECT_OPTION_THRESHOLD) ;
+    float detect_option_threshold = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Tool_Get_DetectOption(GetId(), DetectOption::DETECT_OPTION_THRESHOLD) ;
     ui->lineEdit_detect_threshold->setText(QString("%2").arg(detect_option_threshold)) ;
 }
 
 void DialogSetToolObject::OnButtonSetDetectInspectionToleranceInfo(void) 
 {
 	float tol_distance_min = ui->lineEdit_detect_inspection_threshold->text().toFloat() ;
-    CEnsemble::getInstance()->m_cls_api.Ensemble_Tool_Detect_Object_Set_Inspection_Tolerance_Info(GetId(), tol_distance_min) ;
+    CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Tool_Detect_Object_Set_Inspection_Tolerance_Info(GetId(), tol_distance_min) ;
 
     OnButtonGetDetectInspectionToleranceInfo() ;
 }
@@ -581,7 +581,7 @@ void DialogSetToolObject::OnButtonGetDetectInspectionToleranceInfo(void)
 {
 	//Get Detect Option Value
 	float detect_inspect_threshold = 0 ;
-    CEnsemble::getInstance()->m_cls_api.Ensemble_Tool_Detect_Object_Get_Inspection_Tolerance_Info(GetId(), &detect_inspect_threshold) ;
+    CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Tool_Detect_Object_Get_Inspection_Tolerance_Info(GetId(), &detect_inspect_threshold) ;
     ui->lineEdit_detect_inspection_threshold->setText(QString("%2").arg(detect_inspect_threshold)) ;
 }
 

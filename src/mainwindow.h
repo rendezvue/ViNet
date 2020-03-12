@@ -83,12 +83,12 @@ protected:
 #if 0        
             if( !m_str_ip_address.empty() )
             {
-                if( !CEnsemble::getInstance()->m_cls_api.Ensemble_Network_IsOnline() )
+                if( !CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Network_IsOnline() )
                 {
                     qDebug("(%d) Try Re-Connect = %s", retry_count++, m_str_ip_address.c_str()) ;
                     //try re-connect
-                    CEnsemble::getInstance()->m_cls_api.Ensemble_Network_Disconnect() ;
-                    CEnsemble::getInstance()->m_cls_api.Ensemble_Network_Connect(m_str_ip_address.c_str(), m_i_port) ;
+                    CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Network_Disconnect() ;
+                    CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Network_Connect(m_str_ip_address.c_str(), m_i_port) ;
                 }
                 else
                 {
@@ -137,6 +137,9 @@ private:
     std::string m_str_ip_address ;
 	int m_i_port ;
 
+	std::string m_str_select_ip_address ;
+	int m_i_select_port ;
+
 protected :
     void showEvent(QShowEvent *ev) override;
 
@@ -155,6 +158,7 @@ public slots:
     void DropEventDoneOnTree(void) ;
     void OnSourceListDClick(const QModelIndex &index) ;
 	void OnTreeViewDClick(const QModelIndex& index)  ;
+	void OnTreeViewClick(const QModelIndex& index)  ;
     void tabSelected(void) ;
 	void OnButtonSaveAllTask(void) ;
 	void OnButtonLoadAllTask(void) ;

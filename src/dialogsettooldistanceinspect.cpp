@@ -41,8 +41,8 @@ void DialogSetToolDistanceInspect::showEvent(QShowEvent *ev)
 	OnButtonGetTolerance() ;
 
 	//ID
-	std::string str_id_base = CEnsemble::getInstance()->m_cls_api.Ensemble_Tool_Option_InspectDistance_Get_ID_Info_Base(GetId()) ;
-	std::string str_id_target = CEnsemble::getInstance()->m_cls_api.Ensemble_Tool_Option_InspectDistance_Get_ID_Info_Target(GetId()) ;
+	std::string str_id_base = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Tool_Option_InspectDistance_Get_ID_Info_Base(GetId()) ;
+	std::string str_id_target = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Tool_Option_InspectDistance_Get_ID_Info_Target(GetId()) ;
 
 	ui->label_id_base->setText(QString::fromStdString(str_id_base));
 	ui->label_id_target->setText(QString::fromStdString(str_id_target));
@@ -51,7 +51,7 @@ void DialogSetToolDistanceInspect::showEvent(QShowEvent *ev)
 void DialogSetToolDistanceInspect::OnButtonGetBaseDistance(void)
 {
 	//
-	float distance = CEnsemble::getInstance()->m_cls_api.Ensemble_Tool_Distance_Get_CalcDistance(GetParentId()) ;
+	float distance = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Tool_Distance_Get_CalcDistance(GetParentId()) ;
 
 	ui->lineEdit_base_distance->setText(QString::number(distance));
 }
@@ -74,7 +74,7 @@ void DialogSetToolDistanceInspect::OnButtonGetTolerance(void)
 	float tol_min = -1 ;
 	float tol_max = -1 ;
 	
-	CEnsemble::getInstance()->m_cls_api.Ensemble_Tool_Option_InspectDistance_Get_Tolerance(GetId(), &tol_min, &tol_max) ;
+	CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Tool_Option_InspectDistance_Get_Tolerance(GetId(), &tol_min, &tol_max) ;
 
 	ui->lineEdit_tolerance_min->setText(QString::number(tol_min));
 	ui->lineEdit_tolerance_max->setText(QString::number(tol_max));
@@ -85,7 +85,7 @@ void DialogSetToolDistanceInspect::OnButtonSetTolerance(void)
 	float min = ui->lineEdit_tolerance_min->text().toFloat();
 	float max = ui->lineEdit_tolerance_max->text().toFloat();
 
-	CEnsemble::getInstance()->m_cls_api.Ensemble_Tool_Option_InspectDistance_Set_Tolerance(GetId(), min, max) ;
+	CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Tool_Option_InspectDistance_Set_Tolerance(GetId(), min, max) ;
 	
 	OnButtonGetTolerance() ;
 }

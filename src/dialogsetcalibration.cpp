@@ -78,7 +78,7 @@ void DialogSetCalibration::OnButtonGetChessInfo(void)
 	int chess_y_num = 0 ;
     float chess_square_mm_size = 0 ;
 
-	CEnsemble::getInstance()->m_cls_api.Ensemble_Job_Calibration_Get_Chess_Info(GetId(), &chess_x_num, &chess_y_num, &chess_square_mm_size);
+	CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Job_Calibration_Get_Chess_Info(GetId(), &chess_x_num, &chess_y_num, &chess_square_mm_size);
 
 	ui->lineEdit_chess_x_num->setText(QString::number(chess_x_num));
 	ui->lineEdit_chess_y_num->setText(QString::number(chess_y_num));
@@ -97,7 +97,7 @@ void DialogSetCalibration::OnButtonGetCalibrationImage(void)
     image.image_height = 480 ;
 
 	const int image_type = IMAGE_RGB888 ;
-    CEnsemble::getInstance()->m_cls_api.Ensemble_Source_Get_Image(GET_IMAGE_CALIBRATION_FEATURE, GetId(), image_type, &image) ;
+    CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Source_Get_Image(GET_IMAGE_CALIBRATION_FEATURE, GetId(), image_type, &image) ;
 
     if( image.p_buf != NULL )
     {
@@ -149,7 +149,7 @@ void DialogSetCalibration::OnButtonAddCalibrationInfo(void)
 	float f_robot_x = ui->lineEdit_robot_x->text().toFloat();
 	float f_robot_y = ui->lineEdit_robot_y->text().toFloat();
 	
-	CEnsemble::getInstance()->m_cls_api.Ensemble_Job_Calibration_Add(GetId(), f_robot_x, f_robot_y);
+	CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Job_Calibration_Add(GetId(), f_robot_x, f_robot_y);
 
 	OnButtonUpdateCalibrationInfo();
 }
@@ -158,14 +158,14 @@ void DialogSetCalibration::OnButtonDelCalibrationInfo(void)
 {
 	int select_index = ui->listWidget_calibration->currentRow() ;
 
-    CEnsemble::getInstance()->m_cls_api.Ensemble_Job_Calibration_Del(GetId(), select_index);
+    CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Job_Calibration_Del(GetId(), select_index);
 
     OnButtonUpdateCalibrationInfo();
 }
 
 void DialogSetCalibration::OnButtonClearCalibrationInfo(void)
 {
-    CEnsemble::getInstance()->m_cls_api.Ensemble_Job_Calibration_Clear(GetId());
+    CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Job_Calibration_Clear(GetId());
 
 	OnButtonUpdateCalibrationInfo();
 }
@@ -175,7 +175,7 @@ void DialogSetCalibration::OnButtonUpdateCalibrationInfo(void)
 	ui->listWidget_calibration->clear();
 	
 	//calibration image list
-	int nCalibrationInfo = CEnsemble::getInstance()->m_cls_api.Ensemble_Job_Calibration_GetCount(GetId());
+	int nCalibrationInfo = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Job_Calibration_GetCount(GetId());
 
     qDebug("Calibration count = %d", nCalibrationInfo) ;
 
@@ -190,7 +190,7 @@ void DialogSetCalibration::OnButtonUpdateCalibrationInfo(void)
 
 		const int image_type = IMAGE_RGB888 ;
         //int get_image_type = 0 ;
-        CEnsemble::getInstance()->m_cls_api.Ensemble_Job_Calibration_GetImage(GetId(), i, image_type, &image_buf) ;
+        CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Job_Calibration_GetImage(GetId(), i, image_type, &image_buf) ;
 
 		cv::Mat calibration_image ;
         if( image_buf.p_buf != NULL )
@@ -214,7 +214,7 @@ void DialogSetCalibration::OnButtonUpdateCalibrationInfo(void)
         }
 
 		float robot_x = 0.0, robot_y = 0.0;
-		CEnsemble::getInstance()->m_cls_api.Ensemble_Job_Calibration_GetRobotInfo(GetId(), i, &robot_x, &robot_y);
+		CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Job_Calibration_GetRobotInfo(GetId(), i, &robot_x, &robot_y);
 
 		cv::Mat image;
 		cv::resize(calibration_image, image, cv::Size(120, 90));
@@ -232,7 +232,7 @@ void DialogSetCalibration::OnButtonUpdateCalibrationInfo(void)
 
 void DialogSetCalibration::OnButtonCalibrationRun(void)
 {
-	CEnsemble::getInstance()->m_cls_api.Ensemble_Job_Calibration_Run(GetId());
+	CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Job_Calibration_Run(GetId());
 
 	UpdateDataCalibrationRun(0.5, 0.5);
 }
@@ -242,7 +242,7 @@ void DialogSetCalibration::UpdateDataCalibrationRun(float f_pixel_x, float f_pix
 	//check calibration result
 	float robot_x = 0;
 	float robot_y = 0;
-	CEnsemble::getInstance()->m_cls_api.Ensemble_Job_Calibration_GetPoint(GetId(), f_pixel_x, f_pixel_y, &robot_x, &robot_y);
+	CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Job_Calibration_GetPoint(GetId(), f_pixel_x, f_pixel_y, &robot_x, &robot_y);
 
 	std::string str_info ;
 	char cstr_info[255] ;
@@ -275,7 +275,7 @@ void DialogSetCalibration::OnButtonCalibrationCopyListUpdate(void)
     ui->listView_list_calibration_copy->reset();
 	
 	//Get Parent Tree Info.
-	std::string str_xml = CEnsemble::getInstance()->m_cls_api.Ensemble_Task_Get_Parent_Tree(GetId()) ;
+	std::string str_xml = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Task_Get_Parent_Tree(GetId()) ;
 	
 	//XML Parsing and Find Project ID string
     pugi::xml_document doc;
@@ -303,7 +303,7 @@ void DialogSetCalibration::OnButtonCalibrationCopyListUpdate(void)
 
 	if( !str_projct_id.empty() )
 	{
-		std::string str_xml_has_job_info = CEnsemble::getInstance()->m_cls_api.Ensemble_Project_Get_Has_Job_Info(str_projct_id) ;
+		std::string str_xml_has_job_info = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Project_Get_Has_Job_Info(str_projct_id) ;
 	
 		//XML Parsing and Find Project ID string
 		pugi::xml_document doc;
@@ -321,7 +321,7 @@ void DialogSetCalibration::OnButtonCalibrationCopyListUpdate(void)
 			{
 				std::string str_job_id = job.attribute("ID").value();
 
-				if( CEnsemble::getInstance()->m_cls_api.Ensemble_Job_Calibration_isOK(str_job_id) )		//check calibration 
+				if( CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Job_Calibration_isOK(str_job_id) )		//check calibration 
 				{
                     stringListSource << str_job_id.c_str() ;
 				}
@@ -344,7 +344,7 @@ void DialogSetCalibration::OnButtonCalibrationCopy(void)
 
 	std::string str_item_text = itemText.toUtf8().constData();
 
-	CEnsemble::getInstance()->m_cls_api.Ensemble_Job_Calibration_Copy(GetId(), str_item_text) ;
+	CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Job_Calibration_Copy(GetId(), str_item_text) ;
 
 	//Get Chesboard information
 	OnButtonGetChessInfo() ;
