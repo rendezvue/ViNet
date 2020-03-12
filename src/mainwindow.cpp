@@ -35,7 +35,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     //Source list
     connect(ui->listView_source, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(OnSourceListDClick(const QModelIndex &)));
-
+	
     //background color
     ui->image_bg->setStyleSheet("QLabel { background-color : black; }");
     ui->merge_bg->setStyleSheet("QLabel { background-color : black; }");
@@ -267,13 +267,14 @@ void MainWindow::OnMenuConnect(void)
 		if( CEnsemble::getInstance()->CheckDevice(m_str_ip_address, m_i_port) == false )		//don't has device
 		{
 			CEnsemble::getInstance()->New(m_str_ip_address, m_i_port) ;
-
 			CEnsembleAPI *p_device = CEnsemble::getInstance()->GetDevice(m_str_ip_address, m_i_port) ;
 			
 			if( p_device )
 			{
 				if( p_device->Ensemble_Network_IsOnline() )
 				{			
+					p_device->Ensemble_Task_File_Load() ;
+					
 					m_str_select_ip_address = m_str_ip_address ;
 					m_i_select_port = m_i_port ;
 					CEnsemble::getInstance()->SelectDevice(m_str_select_ip_address, m_i_select_port) ;
@@ -781,8 +782,6 @@ void MainWindow::UpdateResult(QString qstr_xml)
 
 void MainWindow::UpdateJobTree(void)
 {
-	qDebug("%s", __func__) ;
-	
     //delete all item
     ui->treeWidget_job->clear();
 
