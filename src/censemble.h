@@ -30,7 +30,8 @@ public:
 	CEnsembleAPI m_cls_api ;
 
 	bool CheckDevice(const std::string ip, const int port) ;
-	void New(const std::string ip, const int port) ;
+	int New(const std::string ip, const int port) ;
+	CEnsembleAPI *GetDevice(const std::string ip, const int port) ;
 
 private:
 	std::list<CEnsembleAPI *> m_list_ensembles ;

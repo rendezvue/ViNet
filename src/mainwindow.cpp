@@ -248,6 +248,25 @@ void MainWindow::OnMenuConnect(void)
 
 		if( CEnsemble::getInstance()->CheckDevice(m_str_ip_address, m_i_port) == false )		//don't has device
 		{
+			CEnsemble::getInstance()->New(m_str_ip_address, m_i_port) ;
+
+			CEnsembleAPI *p_device = CEnsemble::getInstance()->GetDevice(m_str_ip_address, m_i_port) ;
+			
+			if( p_device )
+			{
+				if( p_device->Ensemble_Network_IsOnline() )
+				{
+					qDebug(" - Success : Control Port") ;
+
+					UpdateToolsListFromDevice(ui->listWidget_items) ;
+					UpdateJobsListFromDevice(ui->listWidget_items_job) ;
+		       
+		            qDebug(" - Success : Image Port") ;
+
+					OnButtonUpdateSourceList() ;
+				}
+			}
+#if 0		
 	        int ret = CEnsemble::getInstance()->m_cls_api.Ensemble_Network_Connect(m_str_ip_address.c_str(), m_i_port);
 
 	        qDebug("Connect Ensemble : %d", ret ) ;
@@ -263,6 +282,7 @@ void MainWindow::OnMenuConnect(void)
 
 				OnButtonUpdateSourceList() ;
 	        }
+#endif			
 		}
 
         //ini
