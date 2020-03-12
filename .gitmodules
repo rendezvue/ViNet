@@ -16,3 +16,6 @@
 [submodule "module/pugixml"]
 	path = module/pugixml
 	url = https://github.com/rendezvue/pugixml.git
+[submodule "module/ImageBuf2Mat"]
+	path = module/ImageBuf2Mat
+	url = https://github.com/rendezvue/ImageBuf2Mat.git

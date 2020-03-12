@@ -105,25 +105,8 @@ void DialogSetToolColor::OnButtonGetImage(void)
 
     if( image_buf.image_width > 0 && image_buf.image_height > 0 )
     {
-        if( image_buf.image_type == IMAGE_YUV420)
-    	{
-	        //YUV420
-            cv::Mat get_image(image_buf.image_height + image_buf.image_height / 2, image_buf.image_width, CV_8UC1, image_buf.p_buf) ;
-
-	        CImgDec cls_image_decoder ;
-	        m_image = cls_image_decoder.Decoding(get_image) ;
-    	}
-        else if( image_buf.image_type == IMAGE_RGB888 )
-		{
-            cv::Mat get_image(image_buf.image_height, image_buf.image_width, CV_8UC3, image_buf.p_buf) ;
-			cv::cvtColor(get_image, m_image, cv::COLOR_BGR2RGB) ;
-		}
-        else if( image_buf.image_type == ImageTypeOption::IMAGE_JPG)
-        {
-            cv::Mat get_image = cv::imdecode(cv::Mat(1, image_buf.image_width*image_buf.image_height, CV_8UC1, image_buf.p_buf), cv::IMREAD_UNCHANGED) ;
-            cv::cvtColor(get_image, m_image, cv::COLOR_BGR2RGB) ;
-        }
-
+    	CImageBuf2Mat cls_imagebuf2mat ;
+    	m_image = cls_imagebuf2mat.Cvt(image_buf) ;
         updatePicture(m_image) ;
     }
 
@@ -151,24 +134,8 @@ void DialogSetToolColor::OnButtonGetRedHistogramImage(void)
 	cv::Mat histogram_image ;
     if( image_buf.image_width > 0 && image_buf.image_height > 0 )
     {
-        if( image_buf.image_type == IMAGE_YUV420)
-    	{
-	        //YUV420
-            cv::Mat get_image(image_buf.image_height + image_buf.image_height / 2, image_buf.image_width, CV_8UC1, image_buf.p_buf) ;
-
-	        CImgDec cls_image_decoder ;
-	        histogram_image = cls_image_decoder.Decoding(get_image) ;
-    	}
-        else if( image_buf.image_type == IMAGE_RGB888 )
-		{
-            cv::Mat get_image(image_buf.image_height, image_buf.image_width, CV_8UC3, image_buf.p_buf) ;
-			cv::cvtColor(get_image, histogram_image, cv::COLOR_BGR2RGB) ;
-		}
-        else if( image_buf.image_type == ImageTypeOption::IMAGE_JPG)
-        {
-            cv::Mat get_image = cv::imdecode(cv::Mat(1, image_buf.image_width*image_buf.image_height, CV_8UC1, image_buf.p_buf), cv::IMREAD_UNCHANGED) ;
-            cv::cvtColor(get_image, histogram_image, cv::COLOR_BGR2RGB) ;
-        }
+    	CImageBuf2Mat cls_imagebuf2mat ;
+    	histogram_image = cls_imagebuf2mat.Cvt(image_buf) ;
 
         //updatePicture(m_image) ;
         CMat2QImage cls_mat_2_qimage ;
@@ -201,24 +168,8 @@ void DialogSetToolColor::OnButtonGetGreenHistogramImage(void)
 	cv::Mat histogram_image ;
     if( image_buf.image_width > 0 && image_buf.image_height > 0 )
     {
-        if( image_buf.image_type == IMAGE_YUV420)
-    	{
-	        //YUV420
-            cv::Mat get_image(image_buf.image_height + image_buf.image_height / 2, image_buf.image_width, CV_8UC1, image_buf.p_buf) ;
-
-	        CImgDec cls_image_decoder ;
-	        histogram_image = cls_image_decoder.Decoding(get_image) ;
-    	}
-        else if( image_buf.image_type == IMAGE_RGB888 )
-		{
-            cv::Mat get_image(image_buf.image_height, image_buf.image_width, CV_8UC3, image_buf.p_buf) ;
-			cv::cvtColor(get_image, histogram_image, cv::COLOR_BGR2RGB) ;
-		}
-        else if( image_buf.image_type == ImageTypeOption::IMAGE_JPG)
-        {
-            cv::Mat get_image = cv::imdecode(cv::Mat(1, image_buf.image_width*image_buf.image_height, CV_8UC1, image_buf.p_buf), cv::IMREAD_UNCHANGED) ;
-            cv::cvtColor(get_image, histogram_image, cv::COLOR_BGR2RGB) ;
-        }
+    	CImageBuf2Mat cls_imagebuf2mat ;
+    	histogram_image = cls_imagebuf2mat.Cvt(image_buf) ;
 
         //updatePicture(m_image) ;
         CMat2QImage cls_mat_2_qimage ;
@@ -251,24 +202,8 @@ void DialogSetToolColor::OnButtonGetBlueHistogramImage(void)
 	cv::Mat histogram_image ;
     if( image_buf.image_width > 0 && image_buf.image_height > 0 )
     {
-        if( image_buf.image_type == IMAGE_YUV420)
-    	{
-	        //YUV420
-            cv::Mat get_image(image_buf.image_height + image_buf.image_height / 2, image_buf.image_width, CV_8UC1, image_buf.p_buf) ;
-
-	        CImgDec cls_image_decoder ;
-	        histogram_image = cls_image_decoder.Decoding(get_image) ;
-    	}
-        else if( image_buf.image_type == IMAGE_RGB888 )
-		{
-            cv::Mat get_image(image_buf.image_height, image_buf.image_width, CV_8UC3, image_buf.p_buf) ;
-			cv::cvtColor(get_image, histogram_image, cv::COLOR_BGR2RGB) ;
-		}
-        else if( image_buf.image_type == ImageTypeOption::IMAGE_JPG)
-        {
-            cv::Mat get_image = cv::imdecode(cv::Mat(1, image_buf.image_width*image_buf.image_height, CV_8UC1, image_buf.p_buf), cv::IMREAD_UNCHANGED) ;
-            cv::cvtColor(get_image, histogram_image, cv::COLOR_BGR2RGB) ;
-        }
+    	CImageBuf2Mat cls_imagebuf2mat ;
+    	histogram_image = cls_imagebuf2mat.Cvt(image_buf) ;
 
         //updatePicture(m_image) ;
         CMat2QImage cls_mat_2_qimage ;

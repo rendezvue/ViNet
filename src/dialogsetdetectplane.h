@@ -10,7 +10,7 @@
 #include "EnsembleCommon.h"
 
 #include "cmat2qimage.h"
-
+#include "CImageBuf2Mat.h"
 //API
 #include "EnsembleAPI.h"
 #include "censemble.h"

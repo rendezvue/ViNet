@@ -30,6 +30,8 @@
 #include "cmat2qimage.h"
 #include "cnetworkinfo.h"
 
+#include "CImageBuf2Mat.h"
+
 
 namespace Ui {
 class FormJobTool;

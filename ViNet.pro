@@ -23,7 +23,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 # You can also select to disable deprecated APIs only up to a certain version of Qt.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
-INCLUDEPATH += ./src ./module/EnsembleAPI ./module/EnsembleAPI/src ./module/PacketEthComm ./module/PacketEthComm/Client ./module/EnsembleCommon ./module/EnsembleCommand ./module/ImgEncDec ./module/pugixml/src
+INCLUDEPATH += ./src ./module/ImageBuf2Mat ./module/EnsembleAPI ./module/EnsembleAPI/src ./module/PacketEthComm ./module/PacketEthComm/Client ./module/EnsembleCommon ./module/EnsembleCommand ./module/ImgEncDec ./module/pugixml/src
 LIBS += -lboost_system -lboost_thread -lboost_filesystem -lboost_regex
 
 CONFIG += link_pkgconfig
@@ -89,7 +89,8 @@ HEADERS += \
     module/PacketEthComm/Client/EthernetClientControlData.h \
     ui/dialogcheckforupdates.h \
     src/censemble.h \
-    src/cnetworkinfo.h
+    src/cnetworkinfo.h \
+    module/ImageBuf2Mat/CImageBuf2Mat.h
 
 SOURCES += \
     module/EnsembleAPI/src/Interface.cpp \
@@ -145,7 +146,8 @@ SOURCES += \
     module/PacketEthComm/Client/EthernetClientControlData.cpp \
     ui/dialogcheckforupdates.cpp \
     src/censemble.cpp \
-    src/cnetworkinfo.cpp
+    src/cnetworkinfo.cpp \
+    module/ImageBuf2Mat/CImageBuf2Mat.cpp
 
 FORMS += \
     ui/cdialogconnect.ui \
@@ -180,4 +182,7 @@ FORMS += \
     ui/dialogsetcode.ui \
     ui/dialogsetdetectplane.ui \
     ui/dialogcheckforupdates.ui
+
+DISTFILES += \
+    module/ImageBuf2Mat/LICENSE
 

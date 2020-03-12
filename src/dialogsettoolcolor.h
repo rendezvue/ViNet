@@ -8,7 +8,7 @@
 
 
 #include "ImgDec.h"
-
+#include "CImageBuf2Mat.h"
 //API
 #include "EnsembleAPI.h"
 #include "censemble.h"
