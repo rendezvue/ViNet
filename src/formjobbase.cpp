@@ -52,19 +52,35 @@ void FormJobBase::showEvent(QShowEvent *ev)
 
 	OnUpdateImage() ;
 
-	//run checkbox
-	int run_option = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Task_Get_Run_Option(GetIdInfo()) ;
-	ui->checkBox_run->setChecked(run_option);
+	std::string str_ip ;
+	int port ;
+	GetNetworkInfo(&str_ip, &port) ;
+	CEnsembleAPI *p_device = CEnsemble::getInstance()->GetDevice(str_ip, port) ;
 
-	//view checkbox
-	int view_option = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Task_Get_View_Option(GetIdInfo()) ;
-	ui->checkBox_view->setChecked(view_option);
+	if( p_device )
+	{
+		//run checkbox
+		int run_option = p_device->Ensemble_Task_Get_Run_Option(GetIdInfo()) ;
+		ui->checkBox_run->setChecked(run_option);
+
+		//view checkbox
+		int view_option = p_device->Ensemble_Task_Get_View_Option(GetIdInfo()) ;
+		ui->checkBox_view->setChecked(view_option);
+	}
 }
 
 
 void FormJobBase::OnButtonDel(void)
 {
-    CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Job_Del(GetIdInfo()) ;
+	std::string str_ip ;
+	int port ;
+	GetNetworkInfo(&str_ip, &port) ;
+	CEnsembleAPI *p_device = CEnsemble::getInstance()->GetDevice(str_ip, port) ;
+
+	if( p_device )
+	{
+    	p_device->Ensemble_Job_Del(GetIdInfo()) ;
+	}
 
 	qDebug("emit UpdateList") ;
 	
@@ -73,12 +89,20 @@ void FormJobBase::OnButtonDel(void)
 
 void FormJobBase::OnButtonRun(void)
 {
-	std::string str_result_xml = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Job_Run(GetIdInfo()) ;
+	std::string str_ip ;
+	int port ;
+	GetNetworkInfo(&str_ip, &port) ;
+	CEnsembleAPI *p_device = CEnsemble::getInstance()->GetDevice(str_ip, port) ;
 
-	qDebug("Job Run = %s", str_result_xml.c_str()) ;
+	if( p_device )
+	{
+		std::string str_result_xml = p_device->Ensemble_Job_Run(GetIdInfo()) ;
 
-	QString qstr_id = QString::fromStdString(GetIdInfo());
-	emit UpdateResultImage(qstr_id) ;
+		qDebug("Job Run = %s", str_result_xml.c_str()) ;
+
+		QString qstr_id = QString::fromStdString(GetIdInfo());
+		emit UpdateResultImage(qstr_id) ;
+	}
 }
 
 
@@ -165,124 +189,132 @@ void FormJobBase::OnUpdateImage(void)
 {
     qDebug("%s - %d 1", __func__, __LINE__) ;
 
-	//Get Base Job Image
-    //unsigned char* get_job_image_data = NULL ;
-    //int job_image_width = 0 ;
-    //int job_image_height = 0 ;
-    ImageBuf image_buf ;
-    image_buf.image_width = 0 ;
-    image_buf.image_height = 0 ;
+	std::string str_ip ;
+	int port ;
+	GetNetworkInfo(&str_ip, &port) ;
+	CEnsembleAPI *p_device = CEnsemble::getInstance()->GetDevice(str_ip, port) ;
 
-	const int image_type = IMAGE_RGB888 ;
-    //int get_image_type = 0 ;
-    CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Job_Get_Image(GetIdInfo(), image_type+IMAGE_THUMBNAIL+IMAGE_ALL_AREA, &image_buf)  ;
-
-	cv::Mat bae_image ;
-    if( image_buf.image_width > 0 && image_buf.image_height > 0 )
+	if( p_device )
 	{
-        if( image_buf.image_type == IMAGE_YUV420 )
+		//Get Base Job Image
+	    //unsigned char* get_job_image_data = NULL ;
+	    //int job_image_width = 0 ;
+	    //int job_image_height = 0 ;
+	    ImageBuf image_buf ;
+	    image_buf.image_width = 0 ;
+	    image_buf.image_height = 0 ;
+
+		const int image_type = IMAGE_RGB888 ;
+	    //int get_image_type = 0 ;
+	   p_device->Ensemble_Job_Get_Image(GetIdInfo(), image_type+IMAGE_THUMBNAIL+IMAGE_ALL_AREA, &image_buf)  ;
+
+		cv::Mat bae_image ;
+	    if( image_buf.image_width > 0 && image_buf.image_height > 0 )
 		{
-			//YUV420 
-            cv::Mat get_image(image_buf.image_height + image_buf.image_height / 2, image_buf.image_width, CV_8UC1, image_buf.p_buf) ;
-
-	        CImgDec cls_image_decoder ;
-	        bae_image = cls_image_decoder.Decoding(get_image) ;
-		}
-        else if( image_buf.image_type == IMAGE_RGB888 )
-		{
-            cv::Mat get_image(image_buf.image_height, image_buf.image_width, CV_8UC3, image_buf.p_buf) ;
-			cv::cvtColor(get_image, bae_image, cv::COLOR_BGR2RGB) ;
-		}
-        else if( image_buf.image_type == ImageTypeOption::IMAGE_JPG)
-        {
-            cv::Mat get_image = cv::imdecode(cv::Mat(1, image_buf.image_width*image_buf.image_height, CV_8UC1, image_buf.p_buf), cv::IMREAD_UNCHANGED) ;
-            cv::cvtColor(get_image, bae_image, cv::COLOR_BGR2RGB) ;
-        }
-	}
-
-    qDebug("%s - %d 2", __func__, __LINE__) ;
-
-    if( image_buf.p_buf != NULL )
-    {
-        delete [] image_buf.p_buf ;
-        image_buf.p_buf = NULL ;
-    }
-
-    qDebug("%s - %d 3", __func__, __LINE__) ;
-
-	SetImage(bae_image) ;
-
-	//Get Base Object Image
-    //unsigned char* get_object_image_data = NULL ;
-    //int object_image_width = 0 ;
-    //int object_image_height = 0 ;
-    //get_image_type = 0 ;
-    image_buf.image_width = 0 ;
-    image_buf.image_height = 0 ;
-    image_buf.image_type = 0 ;
-
-    int object_image_size = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Job_Get_ObjectImage(GetIdInfo(), image_type+IMAGE_THUMBNAIL, &image_buf)  ;
-
-	qDebug("%s - %d 4", __func__, __LINE__) ;
-
-    if( image_buf.p_buf != NULL )
-    {
-		cv::Mat object_image ;
-        if( image_buf.image_width > 0 && image_buf.image_height > 0 )
-		{
-            if( image_buf.image_type == IMAGE_YUV420 )
+	        if( image_buf.image_type == IMAGE_YUV420 )
 			{
 				//YUV420 
-                cv::Mat get_image(image_buf.image_height + image_buf.image_height / 2, image_buf.image_width, CV_8UC1, image_buf.p_buf) ;
+	            cv::Mat get_image(image_buf.image_height + image_buf.image_height / 2, image_buf.image_width, CV_8UC1, image_buf.p_buf) ;
 
 		        CImgDec cls_image_decoder ;
-		        object_image = cls_image_decoder.Decoding(get_image) ;
-				
-                qDebug("yuv 420") ;
+		        bae_image = cls_image_decoder.Decoding(get_image) ;
 			}
-            else if( image_buf.image_type == IMAGE_RGB888 )
+	        else if( image_buf.image_type == IMAGE_RGB888 )
 			{
-				qDebug("object_image_size=%d", object_image_size) ;
-					
-                cv::Mat get_image(image_buf.image_height, image_buf.image_width, CV_8UC3, image_buf.p_buf) ;
-				//cv::Mat get_image = cv::Mat(object_image_height, object_image_width,CV_8UC3,get_object_image_data).clone(); // make a copy						
-				
-				//cv::Mat get_image(object_image_height, object_image_width, CV_8UC3) ;
-				//get_image.data = get_object_image_data;
-
-                //cv::Mat get_image = cv::Mat(object_image_height, object_image_width,CV_8UC3,get_object_image_data,cv::Mat::AUTO_STEP).clone();
-				
-
-                //std::vector<unsigned char> vectordata(get_object_image_data, get_object_image_data + object_image_size);
-                //cv::Mat data_mat(vectordata,true);
-                //cv::Mat get_image(cv::imdecode(data_mat,1)); //put 0 if you want greyscale
-				//cv::Mat get_image(object_image_height, object_image_width,CV_8UC3,const_cast<char*>(get_object_image_data));
-
-				cv::cvtColor(get_image, object_image, cv::COLOR_BGR2RGB) ;
-
-                qDebug("rgb 888 : w=%d, h=%d", image_buf.image_width, image_buf.image_height) ;
-                qDebug("get_image : w=%d, h=%d", get_image.cols, get_image.rows) ;
-                qDebug("object_image : w=%d, h=%d", object_image.cols, object_image.rows) ;
-
-                //cv::imshow("test1", get_image) ;
-                //cv::imshow("test2", object_image) ;
-                //cv::waitKey(0) ;
+	            cv::Mat get_image(image_buf.image_height, image_buf.image_width, CV_8UC3, image_buf.p_buf) ;
+				cv::cvtColor(get_image, bae_image, cv::COLOR_BGR2RGB) ;
 			}
-            else if( image_buf.image_type == ImageTypeOption::IMAGE_JPG)
-            {
-                cv::Mat get_image = cv::imdecode(cv::Mat(1, image_buf.image_width*image_buf.image_height, CV_8UC1, image_buf.p_buf), cv::IMREAD_UNCHANGED) ;
-                cv::cvtColor(get_image, object_image, cv::COLOR_BGR2RGB) ;
-            }
+	        else if( image_buf.image_type == ImageTypeOption::IMAGE_JPG)
+	        {
+	            cv::Mat get_image = cv::imdecode(cv::Mat(1, image_buf.image_width*image_buf.image_height, CV_8UC1, image_buf.p_buf), cv::IMREAD_UNCHANGED) ;
+	            cv::cvtColor(get_image, bae_image, cv::COLOR_BGR2RGB) ;
+	        }
 		}
-    
-        delete [] image_buf.p_buf ;
-        image_buf.p_buf = NULL ;
 
-		
-        SetObjectImage(object_image) ;
-    }
+	    qDebug("%s - %d 2", __func__, __LINE__) ;
 
-    qDebug("%s - %d 3", __func__, __LINE__) ;
+	    if( image_buf.p_buf != NULL )
+	    {
+	        delete [] image_buf.p_buf ;
+	        image_buf.p_buf = NULL ;
+	    }
+
+	    qDebug("%s - %d 3", __func__, __LINE__) ;
+
+		SetImage(bae_image) ;
+
+		//Get Base Object Image
+	    //unsigned char* get_object_image_data = NULL ;
+	    //int object_image_width = 0 ;
+	    //int object_image_height = 0 ;
+	    //get_image_type = 0 ;
+	    image_buf.image_width = 0 ;
+	    image_buf.image_height = 0 ;
+	    image_buf.image_type = 0 ;
+
+	    int object_image_size = p_device->Ensemble_Job_Get_ObjectImage(GetIdInfo(), image_type+IMAGE_THUMBNAIL, &image_buf)  ;
+
+		qDebug("%s - %d 4", __func__, __LINE__) ;
+
+	    if( image_buf.p_buf != NULL )
+	    {
+			cv::Mat object_image ;
+	        if( image_buf.image_width > 0 && image_buf.image_height > 0 )
+			{
+	            if( image_buf.image_type == IMAGE_YUV420 )
+				{
+					//YUV420 
+	                cv::Mat get_image(image_buf.image_height + image_buf.image_height / 2, image_buf.image_width, CV_8UC1, image_buf.p_buf) ;
+
+			        CImgDec cls_image_decoder ;
+			        object_image = cls_image_decoder.Decoding(get_image) ;
+					
+	                qDebug("yuv 420") ;
+				}
+	            else if( image_buf.image_type == IMAGE_RGB888 )
+				{
+					qDebug("object_image_size=%d", object_image_size) ;
+						
+	                cv::Mat get_image(image_buf.image_height, image_buf.image_width, CV_8UC3, image_buf.p_buf) ;
+					//cv::Mat get_image = cv::Mat(object_image_height, object_image_width,CV_8UC3,get_object_image_data).clone(); // make a copy						
+					
+					//cv::Mat get_image(object_image_height, object_image_width, CV_8UC3) ;
+					//get_image.data = get_object_image_data;
+
+	                //cv::Mat get_image = cv::Mat(object_image_height, object_image_width,CV_8UC3,get_object_image_data,cv::Mat::AUTO_STEP).clone();
+					
+
+	                //std::vector<unsigned char> vectordata(get_object_image_data, get_object_image_data + object_image_size);
+	                //cv::Mat data_mat(vectordata,true);
+	                //cv::Mat get_image(cv::imdecode(data_mat,1)); //put 0 if you want greyscale
+					//cv::Mat get_image(object_image_height, object_image_width,CV_8UC3,const_cast<char*>(get_object_image_data));
+
+					cv::cvtColor(get_image, object_image, cv::COLOR_BGR2RGB) ;
+
+	                qDebug("rgb 888 : w=%d, h=%d", image_buf.image_width, image_buf.image_height) ;
+	                qDebug("get_image : w=%d, h=%d", get_image.cols, get_image.rows) ;
+	                qDebug("object_image : w=%d, h=%d", object_image.cols, object_image.rows) ;
+
+	                //cv::imshow("test1", get_image) ;
+	                //cv::imshow("test2", object_image) ;
+	                //cv::waitKey(0) ;
+				}
+	            else if( image_buf.image_type == ImageTypeOption::IMAGE_JPG)
+	            {
+	                cv::Mat get_image = cv::imdecode(cv::Mat(1, image_buf.image_width*image_buf.image_height, CV_8UC1, image_buf.p_buf), cv::IMREAD_UNCHANGED) ;
+	                cv::cvtColor(get_image, object_image, cv::COLOR_BGR2RGB) ;
+	            }
+			}
+	    
+	        delete [] image_buf.p_buf ;
+	        image_buf.p_buf = NULL ;
+
+			
+	        SetObjectImage(object_image) ;
+	    }
+
+	    qDebug("%s - %d 3", __func__, __LINE__) ;
+	}
 	
 }
 
@@ -360,29 +392,45 @@ void FormJobBase::hoverMove(QHoverEvent * event)
 void FormJobBase::OnRunCheckBoxToggled(bool checked)
 {
 	qDebug("Base Run Check = %d", checked) ;
-	
-	CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Task_Set_Run_Option(GetIdInfo(), checked) ;
-		
-	//run checkbox
-	int run_option = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Task_Get_Run_Option(GetIdInfo()) ;
-	ui->checkBox_run->setChecked(run_option);
 
-	QString qstr_id = QString::fromStdString(GetIdInfo());
+	std::string str_ip ;
+	int port ;
+	GetNetworkInfo(&str_ip, &port) ;
+	CEnsembleAPI *p_device = CEnsemble::getInstance()->GetDevice(str_ip, port) ;
+
+	if( p_device )
+	{
+		p_device->Ensemble_Task_Set_Run_Option(GetIdInfo(), checked) ;
+			
+		//run checkbox
+		int run_option = p_device->Ensemble_Task_Get_Run_Option(GetIdInfo()) ;
+		ui->checkBox_run->setChecked(run_option);
+
+		QString qstr_id = QString::fromStdString(GetIdInfo());
+	}
 	//emit UpdateResultImage(qstr_id) ;
 }
 
 void FormJobBase::OnViewCheckBoxToggled(bool checked)
 {
     qDebug("Base View Check = %d", checked) ;
-		
-	CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Task_Set_View_Option(GetIdInfo(), checked) ;
-		
-	//view checkbox
-	int view_option = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Task_Get_View_Option(GetIdInfo()) ;
-	ui->checkBox_view->setChecked(view_option);
 
-	QString qstr_id = QString::fromStdString(GetIdInfo());
-	//emit UpdateResultImage(qstr_id) ;
+	std::string str_ip ;
+	int port ;
+	GetNetworkInfo(&str_ip, &port) ;
+	CEnsembleAPI *p_device = CEnsemble::getInstance()->GetDevice(str_ip, port) ;
+
+	if( p_device )
+	{
+		p_device->Ensemble_Task_Set_View_Option(GetIdInfo(), checked) ;
+			
+		//view checkbox
+		int view_option = p_device->Ensemble_Task_Get_View_Option(GetIdInfo()) ;
+		ui->checkBox_view->setChecked(view_option);
+
+		QString qstr_id = QString::fromStdString(GetIdInfo());
+		//emit UpdateResultImage(qstr_id) ;
+	}
 }
 
 

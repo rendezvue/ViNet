@@ -65,19 +65,24 @@ void FormJobTool::showEvent(QShowEvent *ev)
 {
     QWidget::showEvent(ev) ;
 
-    //Set Initialize
-    //Get Option Count
-    m_i_option_count = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Tool_Get_OptionList_Count(GetType()) ;
+	CEnsembleAPI *p_device = CEnsemble::getInstance()->GetDevice(GetNetworkInfo_Ip_Address(), GetNetworkInfo_Port()) ;
 
-	OnUpdateImage() ;
+	if( p_device )
+	{
+	    //Set Initialize
+	    //Get Option Count
+	    m_i_option_count = p_device->Ensemble_Tool_Get_OptionList_Count(GetType()) ;
 
-	//run checkbox
-	int run_option = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Task_Get_Run_Option(GetIdInfo()) ;
-	ui->checkBox_run->setChecked(run_option);
+		OnUpdateImage() ;
 
-	//view checkbox
-	int view_option = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Task_Get_View_Option(GetIdInfo()) ;
-	ui->checkBox_view->setChecked(view_option);
+		//run checkbox
+		int run_option = p_device->Ensemble_Task_Get_Run_Option(GetIdInfo()) ;
+		ui->checkBox_run->setChecked(run_option);
+
+		//view checkbox
+		int view_option = p_device->Ensemble_Task_Get_View_Option(GetIdInfo()) ;
+		ui->checkBox_view->setChecked(view_option);
+	}
 }
 
 void FormJobTool::OnButtonSetOption(void) 
@@ -209,16 +214,21 @@ void FormJobTool::OnButtonSetBase(void)
 	        std::string change_name = dlg_change_name.GetName() ;
 
 	        qDebug("Project Change Name = %s", change_name.c_str()) ;
-			
-	        if( !change_name.empty() )
-	        {
-	            CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Tool_Set_Name(GetIdInfo(), change_name) ;
-	        }
 
-	        std::string project_name = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Tool_Get_Name(GetIdInfo()) ;
-	        ui->label_name->setText(QString::fromUtf8(project_name.c_str()));
+			CEnsembleAPI *p_device = CEnsemble::getInstance()->GetDevice(GetNetworkInfo_Ip_Address(), GetNetworkInfo_Port()) ;
 
-	        qDebug("Project Name = %s", project_name.c_str()) ;
+			if( p_device )
+			{
+		        if( !change_name.empty() )
+		        {
+		            p_device->Ensemble_Tool_Set_Name(GetIdInfo(), change_name) ;
+		        }
+
+		        std::string project_name = p_device->Ensemble_Tool_Get_Name(GetIdInfo()) ;
+		        ui->label_name->setText(QString::fromUtf8(project_name.c_str()));
+
+		        qDebug("Project Name = %s", project_name.c_str()) ;
+			}
 	    }
 	}
 	
@@ -260,7 +270,12 @@ void FormJobTool::OnUpdateList(void)
 
 void FormJobTool::OnButtonDel(void)
 {
-    CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Tool_Del(GetIdInfo()) ;
+	CEnsembleAPI *p_device = CEnsemble::getInstance()->GetDevice(GetNetworkInfo_Ip_Address(), GetNetworkInfo_Port()) ;
+
+	if( p_device )
+	{
+	    p_device->Ensemble_Tool_Del(GetIdInfo()) ;
+	}
 	
 	OnUpdateList();
 }
@@ -392,50 +407,55 @@ void FormJobTool::hoverMove(QHoverEvent * event)
 
 void FormJobTool::OnUpdateImage(void)
 {
-	//Get Base Object Image
-    //unsigned char* get_object_image_data = NULL ;
-    //int object_image_width = 0 ;
-    //int object_image_height = 0 ;
-    ImageBuf image_buf ;
-    image_buf.image_width = 0 ;
-    image_buf.image_height = 0 ;
+	CEnsembleAPI *p_device = CEnsemble::getInstance()->GetDevice(GetNetworkInfo_Ip_Address(), GetNetworkInfo_Port()) ;
 
-	const int image_type = IMAGE_RGB888 ;
-    //int get_image_type = 0 ;
-    CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Tool_Get_ObjectImage(GetIdInfo(), image_type+IMAGE_ICON, &image_buf)  ;
-
-	cv::Mat object_image ;
-    if( image_buf.image_width > 0 && image_buf.image_height > 0 )
+	if( p_device )
 	{
-        if( image_buf.image_type == IMAGE_YUV420 )
+		//Get Base Object Image
+	    //unsigned char* get_object_image_data = NULL ;
+	    //int object_image_width = 0 ;
+	    //int object_image_height = 0 ;
+	    ImageBuf image_buf ;
+	    image_buf.image_width = 0 ;
+	    image_buf.image_height = 0 ;
+
+		const int image_type = IMAGE_RGB888 ;
+	    //int get_image_type = 0 ;
+	    p_device->Ensemble_Tool_Get_ObjectImage(GetIdInfo(), image_type+IMAGE_ICON, &image_buf)  ;
+
+		cv::Mat object_image ;
+	    if( image_buf.image_width > 0 && image_buf.image_height > 0 )
 		{
-			//YUV420 
-            cv::Mat get_image(image_buf.image_height + image_buf.image_height / 2, image_buf.image_width, CV_8UC1, image_buf.p_buf) ;
+	        if( image_buf.image_type == IMAGE_YUV420 )
+			{
+				//YUV420 
+	            cv::Mat get_image(image_buf.image_height + image_buf.image_height / 2, image_buf.image_width, CV_8UC1, image_buf.p_buf) ;
 
-	        CImgDec cls_image_decoder ;
-	        object_image = cls_image_decoder.Decoding(get_image) ;
+		        CImgDec cls_image_decoder ;
+		        object_image = cls_image_decoder.Decoding(get_image) ;
 
+			}
+	        else if( image_buf.image_type == IMAGE_RGB888 )
+			{
+	            cv::Mat get_image(image_buf.image_height, image_buf.image_width, CV_8UC3, image_buf.p_buf) ;
+				cv::cvtColor(get_image, object_image, cv::COLOR_BGR2RGB) ;
+			}
+	        else if( image_buf.image_type == ImageTypeOption::IMAGE_JPG)
+	        {
+	            cv::Mat get_image = cv::imdecode(cv::Mat(1, image_buf.image_width*image_buf.image_height, CV_8UC1, image_buf.p_buf), cv::IMREAD_UNCHANGED) ;
+
+				if( !get_image.empty() )	cv::cvtColor(get_image, object_image, cv::COLOR_BGR2RGB) ;
+	        }
 		}
-        else if( image_buf.image_type == IMAGE_RGB888 )
-		{
-            cv::Mat get_image(image_buf.image_height, image_buf.image_width, CV_8UC3, image_buf.p_buf) ;
-			cv::cvtColor(get_image, object_image, cv::COLOR_BGR2RGB) ;
-		}
-        else if( image_buf.image_type == ImageTypeOption::IMAGE_JPG)
-        {
-            cv::Mat get_image = cv::imdecode(cv::Mat(1, image_buf.image_width*image_buf.image_height, CV_8UC1, image_buf.p_buf), cv::IMREAD_UNCHANGED) ;
 
-			if( !get_image.empty() )	cv::cvtColor(get_image, object_image, cv::COLOR_BGR2RGB) ;
-        }
+	    if( image_buf.p_buf != NULL )
+	    {
+	        delete [] image_buf.p_buf ;
+	        image_buf.p_buf = NULL ;
+	    }
+
+		SetObjectImage(object_image) ;
 	}
-
-    if( image_buf.p_buf != NULL )
-    {
-        delete [] image_buf.p_buf ;
-        image_buf.p_buf = NULL ;
-    }
-
-	SetObjectImage(object_image) ;
 	
 }
 
@@ -456,26 +476,36 @@ void FormJobTool::OnUpdateName(QString name)
 
 void FormJobTool::OnRunCheckBoxToggled(bool checked)
 {
-	CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Task_Set_Run_Option(GetIdInfo(), checked) ;
-		
-	//run checkbox
-	int run_option = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Task_Get_Run_Option(GetIdInfo()) ;
-	ui->checkBox_run->setChecked(run_option);
+	CEnsembleAPI *p_device = CEnsemble::getInstance()->GetDevice(GetNetworkInfo_Ip_Address(), GetNetworkInfo_Port()) ;
 
-	QString qstr_id = QString::fromStdString(GetParentIdInfo());
-	emit UpdateResultImage(qstr_id) ;
+	if( p_device )
+	{
+		p_device->Ensemble_Task_Set_Run_Option(GetIdInfo(), checked) ;
+			
+		//run checkbox
+		int run_option = p_device->Ensemble_Task_Get_Run_Option(GetIdInfo()) ;
+		ui->checkBox_run->setChecked(run_option);
+
+		QString qstr_id = QString::fromStdString(GetParentIdInfo());
+		emit UpdateResultImage(qstr_id) ;
+	}
 }
 
 void FormJobTool::OnViewCheckBoxToggled(bool checked)
 {
-	CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Task_Set_View_Option(GetIdInfo(), checked) ;
-		
-	//view checkbox
-	int view_option = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Task_Get_View_Option(GetIdInfo()) ;
-	ui->checkBox_view->setChecked(view_option);
+	CEnsembleAPI *p_device = CEnsemble::getInstance()->GetDevice(GetNetworkInfo_Ip_Address(), GetNetworkInfo_Port()) ;
 
-	QString qstr_id = QString::fromStdString(GetParentIdInfo());
-	emit UpdateResultImage(qstr_id) ;
+	if( p_device )
+	{
+		p_device->Ensemble_Task_Set_View_Option(GetIdInfo(), checked) ;
+			
+		//view checkbox
+		int view_option = p_device->Ensemble_Task_Get_View_Option(GetIdInfo()) ;
+		ui->checkBox_view->setChecked(view_option);
+
+		QString qstr_id = QString::fromStdString(GetParentIdInfo());
+		emit UpdateResultImage(qstr_id) ;
+	}
 }
 
 

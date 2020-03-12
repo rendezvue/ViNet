@@ -130,57 +130,82 @@ void FormProject::OnButtonSetName(void)
 
     if(dialogCode == QDialog::Accepted)
     { // YesButton clicked
-        std::string change_name = dlg_change_name.GetName() ;
+ 		CEnsembleAPI *p_device = CEnsemble::getInstance()->GetDevice(GetNetworkInfo_Ip_Address(), GetNetworkInfo_Port()) ;
 
-        qDebug("Project Change Name = %s", change_name.c_str()) ;
-		
-        if( !change_name.empty() )
-        {
-            CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Project_Set_Name(GetIdInfo(), change_name) ;
-        }
+		if( p_device )
+		{ 
+	        std::string change_name = dlg_change_name.GetName() ;
 
-        std::string project_name = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Project_Get_Name(GetIdInfo()) ;
-        ui->label_name->setText(QString::fromUtf8(project_name.c_str()));
+	        qDebug("Project Change Name = %s", change_name.c_str()) ;
+			
+	        if( !change_name.empty() )
+	        {
+	           p_device->Ensemble_Project_Set_Name(GetIdInfo(), change_name) ;
+	        }
 
-        qDebug("Project Name = %s", project_name.c_str()) ;
+	        std::string project_name = p_device->Ensemble_Project_Get_Name(GetIdInfo()) ;
+	        ui->label_name->setText(QString::fromUtf8(project_name.c_str()));
+
+	        qDebug("Project Name = %s", project_name.c_str()) ;
+		}
     }
 }
 
 void FormProject::OnButtonDel(void)
 {
-    CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Project_Del(GetIdInfo()) ;
+	CEnsembleAPI *p_device = CEnsemble::getInstance()->GetDevice(GetNetworkInfo_Ip_Address(), GetNetworkInfo_Port()) ;
+
+	if( p_device )
+	{ 
+	    p_device->Ensemble_Project_Del(GetIdInfo()) ;
 	
-	emit UpdateList();
+		emit UpdateList();
+	}
 }
 
 void FormProject::OnButtonRun(void)
 {
-	std::string str_result_xml = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Poject_Run(GetIdInfo()) ;
+	CEnsembleAPI *p_device = CEnsemble::getInstance()->GetDevice(GetNetworkInfo_Ip_Address(), GetNetworkInfo_Port()) ;
 
-	qDebug("Project Result = %s", str_result_xml.c_str()) ;
+	if( p_device )
+	{ 
+		std::string str_result_xml = p_device->Ensemble_Poject_Run(GetIdInfo()) ;
 
-	QString qstr_id = QString::fromStdString(GetIdInfo());
+		qDebug("Project Result = %s", str_result_xml.c_str()) ;
 
-	emit UpdateResultImage(qstr_id) ;
-	emit UpdateResult(QString::fromStdString(str_result_xml)) ;
+		QString qstr_id = QString::fromStdString(GetIdInfo());
+
+		emit UpdateResultImage(qstr_id) ;
+		emit UpdateResult(QString::fromStdString(str_result_xml)) ;
+	}
 }
 
 void FormProject::showEvent(QShowEvent *ev)
 {
     QWidget::showEvent(ev) ;
 
-	//run checkbox
-	int trigger_run_option = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Poject_Get_Trigger_Run(GetIdInfo()) ;
-	ui->checkBox_trigger_run->setChecked(trigger_run_option);
+	CEnsembleAPI *p_device = CEnsemble::getInstance()->GetDevice(GetNetworkInfo_Ip_Address(), GetNetworkInfo_Port()) ;
+
+	if( p_device )
+	{ 
+		//run checkbox
+		int trigger_run_option = p_device->Ensemble_Poject_Get_Trigger_Run(GetIdInfo()) ;
+		ui->checkBox_trigger_run->setChecked(trigger_run_option);
+	}
 }
 
 void FormProject::OnTriggerRunCheckBoxToggled(bool checked)
 {
 	qDebug("Trigger Run Check = %d", checked) ;
-	
-	CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Poject_Set_Trigger_Run(GetIdInfo(), checked) ;
-		
-	int trigger_run_option = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Poject_Get_Trigger_Run(GetIdInfo()) ;
-	ui->checkBox_trigger_run->setChecked(trigger_run_option);
+
+	CEnsembleAPI *p_device = CEnsemble::getInstance()->GetDevice(GetNetworkInfo_Ip_Address(), GetNetworkInfo_Port()) ;
+
+	if( p_device )
+	{ 
+		p_device->Ensemble_Poject_Set_Trigger_Run(GetIdInfo(), checked) ;
+			
+		int trigger_run_option = p_device->Ensemble_Poject_Get_Trigger_Run(GetIdInfo()) ;
+		ui->checkBox_trigger_run->setChecked(trigger_run_option);
+	}
 }
 

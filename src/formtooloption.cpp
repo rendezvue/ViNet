@@ -154,9 +154,14 @@ void FormToolOption::leaveEvent(QEvent * e)
 
 void FormToolOption::OnButtonDel(void)
 {
-    CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Tool_Del_Option(GetIdInfo()) ;
+	CEnsembleAPI *p_device = CEnsemble::getInstance()->GetDevice(GetNetworkInfo_Ip_Address(), GetNetworkInfo_Port()) ;
 
-	emit UpdateList() ;
+	if( p_device )
+	{ 
+	    p_device->Ensemble_Tool_Del_Option(GetIdInfo()) ;
+
+		emit UpdateList() ;
+	}
 }
 
 void FormToolOption::OnButtonSet(void)
@@ -256,24 +261,29 @@ void FormToolOption::showEvent(QShowEvent *ev)
 {
     QWidget::showEvent( ev );
 
-	std::string str_info = "Information" ;
-	
-	//Get Information
-    if( GetType() == ToolTypeList::TOOL_TYPE_OPTION_INSPECT_CRACK )
-    {
-        int inspect_crack_level = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Tool_Option_Crack_Get_InspectLevel(GetIdInfo());
-		str_info = "Crack Level : " + std::to_string(inspect_crack_level) ;		
-    }
+	CEnsembleAPI *p_device = CEnsemble::getInstance()->GetDevice(GetNetworkInfo_Ip_Address(), GetNetworkInfo_Port()) ;
 
-	UpdateInformationString(QString::fromUtf8(str_info.c_str())) ;
+	if( p_device )
+	{ 
+		std::string str_info = "Information" ;
+		
+		//Get Information
+	    if( GetType() == ToolTypeList::TOOL_TYPE_OPTION_INSPECT_CRACK )
+	    {
+	        int inspect_crack_level = p_device->Ensemble_Tool_Option_Crack_Get_InspectLevel(GetIdInfo());
+			str_info = "Crack Level : " + std::to_string(inspect_crack_level) ;		
+	    }
 
-	//run checkbox
-	int run_option = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Task_Get_Run_Option(GetIdInfo()) ;
-	ui->checkBox_run->setChecked(run_option);
+		UpdateInformationString(QString::fromUtf8(str_info.c_str())) ;
 
-	//view checkbox
-	int view_option = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Task_Get_View_Option(GetIdInfo()) ;
-	ui->checkBox_view->setChecked(view_option);
+		//run checkbox
+		int run_option = p_device->Ensemble_Task_Get_Run_Option(GetIdInfo()) ;
+		ui->checkBox_run->setChecked(run_option);
+
+		//view checkbox
+		int view_option = p_device->Ensemble_Task_Get_View_Option(GetIdInfo()) ;
+		ui->checkBox_view->setChecked(view_option);
+	}
 }
 
 /*
@@ -290,26 +300,36 @@ void FormToolOption::UpdateInformationString(QString str_info)
 
 void FormToolOption::OnRunCheckBoxToggled(bool checked)
 {
-	CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Task_Set_Run_Option(GetIdInfo(), checked) ;
-		
-	//run checkbox
-	int run_option = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Task_Get_Run_Option(GetIdInfo()) ;
-	ui->checkBox_run->setChecked(run_option);
+	CEnsembleAPI *p_device = CEnsemble::getInstance()->GetDevice(GetNetworkInfo_Ip_Address(), GetNetworkInfo_Port()) ;
 
-	QString qstr_id = QString::fromStdString(GetParentIdInfo());
-	//emit UpdateResultImage(qstr_id) ;
+	if( p_device )
+	{ 
+		p_device->Ensemble_Task_Set_Run_Option(GetIdInfo(), checked) ;
+			
+		//run checkbox
+		int run_option = p_device->Ensemble_Task_Get_Run_Option(GetIdInfo()) ;
+		ui->checkBox_run->setChecked(run_option);
+
+		QString qstr_id = QString::fromStdString(GetParentIdInfo());
+		//emit UpdateResultImage(qstr_id) ;
+	}
 }
 
 void FormToolOption::OnViewCheckBoxToggled(bool checked)
 {
-	CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Task_Set_View_Option(GetIdInfo(), checked) ;
-		
-	//view checkbox
-	int view_option = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Task_Get_View_Option(GetIdInfo()) ;
-	ui->checkBox_view->setChecked(view_option);
+	CEnsembleAPI *p_device = CEnsemble::getInstance()->GetDevice(GetNetworkInfo_Ip_Address(), GetNetworkInfo_Port()) ;
 
-	QString qstr_id = QString::fromStdString(GetParentIdInfo());
-	//emit UpdateResultImage(qstr_id) ;
+	if( p_device )
+	{ 
+		p_device->Ensemble_Task_Set_View_Option(GetIdInfo(), checked) ;
+			
+		//view checkbox
+		int view_option = p_device->Ensemble_Task_Get_View_Option(GetIdInfo()) ;
+		ui->checkBox_view->setChecked(view_option);
+
+		QString qstr_id = QString::fromStdString(GetParentIdInfo());
+		//emit UpdateResultImage(qstr_id) ;
+	}
 }
 
 void FormToolOption::SetAlarm(const bool b_on_off)
