@@ -35,6 +35,7 @@ public:
 	int New(const std::string ip, const int port) ;
 	CEnsembleAPI *GetDevice(const std::string ip, const int port) ;
 	CEnsembleAPI *GetDevice(const int index) ;
+	int GetSize(void) ;
 	std::string GetDeviceJobInfo(const int index=-1) ;
 
 	CEnsembleAPI *SelectDevice(const std::string ip, const int port) ;

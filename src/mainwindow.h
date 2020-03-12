@@ -76,26 +76,29 @@ public:
 protected:
     void run()
     {
-        int retry_count = 0 ;
-
         while(1)
         {
-#if 0        
-            if( !m_str_ip_address.empty() )
-            {
-                if( !CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Network_IsOnline() )
-                {
-                    qDebug("(%d) Try Re-Connect = %s", retry_count++, m_str_ip_address.c_str()) ;
-                    //try re-connect
-                    CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Network_Disconnect() ;
-                    CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Network_Connect(m_str_ip_address.c_str(), m_i_port) ;
-                }
-                else
-                {
-                    retry_count = 0 ;
-                }
-            }
-#endif
+        	int size = CEnsemble::getInstance()->GetSize() ;
+			for( int i=0 ; i<size ; i++ )
+			{	
+				CEnsembleAPI *p_device = CEnsemble::getInstance()->GetDevice(i) ;
+			
+				if( p_device )
+	            {
+	                if( !p_device->Ensemble_Network_IsOnline() )
+	                {
+	                	std::string str_ip ;
+						int port ;
+	                	p_device->Ensemble_Network_GetInfo(&str_ip, &port);
+						
+	                    qDebug("Try Re-Connect = %s:%d", str_ip.c_str(), port) ;
+	                    //try re-connect
+	                    p_device->Ensemble_Network_Disconnect() ;
+	                    p_device->Ensemble_Network_Connect(str_ip.c_str(), port) ;
+	                }
+	            }
+			}
+			
             QThread::yieldCurrentThread() ;
             QThread::sleep(1) ;     //1sec
         }

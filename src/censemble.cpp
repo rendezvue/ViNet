@@ -109,6 +109,11 @@ CEnsembleAPI *CEnsemble::GetDevice(const int index)
 	return p_device ;
 }
 
+int CEnsemble::GetSize(void)
+{
+	return m_list_ensembles.size() ;
+}
+
 std::string CEnsemble::GetDeviceJobInfo(const int index)
 {
 	std::string str_xml_device_info = "<?xml version='1.0' encoding='UTF-8' standalone='no' ?>" ;
