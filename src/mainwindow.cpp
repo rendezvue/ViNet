@@ -258,12 +258,12 @@ void MainWindow::OnMenuConnect(void)
 				{
 					qDebug(" - Success : Control Port") ;
 
-					UpdateToolsListFromDevice(ui->listWidget_items) ;
-					UpdateJobsListFromDevice(ui->listWidget_items_job) ;
+					//UpdateToolsListFromDevice(ui->listWidget_items) ;
+					//UpdateJobsListFromDevice(ui->listWidget_items_job) ;
 		       
 		            qDebug(" - Success : Image Port") ;
 
-					OnButtonUpdateSourceList() ;
+					//OnButtonUpdateSourceList() ;
 				}
 			}
 #if 0		
@@ -764,7 +764,9 @@ void MainWindow::UpdateJobTree(void)
     //delete all item
     ui->treeWidget_job->clear();
 
-    std::string str_prj_list_xml = CEnsemble::getInstance()->m_cls_api.Ensemble_Project_Get_List() ;
+    //std::string str_prj_list_xml = CEnsemble::getInstance()->m_cls_api.Ensemble_Project_Get_List() ;
+	std::string str_prj_list_xml = CEnsemble::getInstance()->GetDeviceJobInfo() ;
+	
 
     qDebug("project list xml (%d, %d) = %s", str_prj_list_xml.size(), str_prj_list_xml.length(), str_prj_list_xml.c_str()) ;
 
@@ -779,7 +781,7 @@ void MainWindow::UpdateJobTree(void)
     else
     {
 
-        for (pugi::xml_node device : doc.children("Ensemble") )
+        for (pugi::xml_node device : doc.child("Ensembles").children("Ensemble") )
         {
             std::string str_device_model_name = device.attribute("Model").value() ;
             std::string str_device_mac = device.attribute("Mac").value() ;

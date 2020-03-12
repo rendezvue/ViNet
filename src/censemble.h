@@ -3,6 +3,8 @@
 
 #include "EnsembleAPI.h"
 
+#include <qdebug.h>
+
 class CEnsemble
 {
 public:
@@ -32,7 +34,9 @@ public:
 	bool CheckDevice(const std::string ip, const int port) ;
 	int New(const std::string ip, const int port) ;
 	CEnsembleAPI *GetDevice(const std::string ip, const int port) ;
-
+	CEnsembleAPI *GetDevice(const int index) ;
+	std::string GetDeviceJobInfo(const int index=-1) ;
+	
 private:
 	std::list<CEnsembleAPI *> m_list_ensembles ;
 	

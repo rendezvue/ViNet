@@ -80,6 +80,7 @@ protected:
 
         while(1)
         {
+#if 0        
             if( !m_str_ip_address.empty() )
             {
                 if( !CEnsemble::getInstance()->m_cls_api.Ensemble_Network_IsOnline() )
@@ -94,7 +95,7 @@ protected:
                     retry_count = 0 ;
                 }
             }
-
+#endif
             QThread::yieldCurrentThread() ;
             QThread::sleep(1) ;     //1sec
         }
