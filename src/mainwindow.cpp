@@ -785,8 +785,10 @@ void MainWindow::UpdateJobTree(void)
         {
             std::string str_device_model_name = device.attribute("Model").value() ;
             std::string str_device_mac = device.attribute("Mac").value() ;
+			std::string str_device_ip_addr = device.attribute("IP").value() ;
+			std::string str_device_port = device.attribute("Port").value() ;
 
-            qDebug("xml: Device MAC address=%s", str_device_mac.c_str()) ;
+            qDebug("xml: Device MAC address=%s, IP=%s, Port=%s", str_device_mac.c_str(), str_device_ip_addr.c_str(), str_device_port.c_str()) ;
             //AddTreeRoot(QString::fromStdString(str_device), QString::fromStdString("test")) ;
 
             std::string str_device_info = str_device_model_name + "(" + str_device_mac + ")" ;
@@ -857,7 +859,7 @@ void MainWindow::UpdateJobTree(void)
             }
 
             theWidgetItem->SetDeviceNameInfo(str_device_model_name);
-            theWidgetItem->SetMacAddressInfo(str_device_mac);
+            theWidgetItem->SetMacAddressInfo(str_device_mac, str_device_ip_addr, str_device_port);
             //Set Information
             //---
 

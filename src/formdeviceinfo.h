@@ -22,7 +22,7 @@ public:
     void SetDeviceNameInfo(const std::string name) ;
     std::string GetDeviceNameInfo(void) ;
 
-    void SetMacAddressInfo(const std::string mac) ;
+    void SetMacAddressInfo(const std::string mac, const std::string ip, const std::string port) ;
     std::string GetMacAddressInfo(void) ;
 
     void SetIconInfo(QImage image) ;

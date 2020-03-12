@@ -18,6 +18,21 @@ CEnsemble::~CEnsemble(void)
 		delete instance ;
 		instance = NULL;
 	}
+
+	std::list<CEnsembleAPI*>::iterator itor;// = list1.begin();      // 따로, 또는 이렇게 .
+	for(itor=m_list_ensembles.begin(); itor != m_list_ensembles.end();)
+	{
+		//delete
+		if( (*itor) != NULL )
+		{
+			delete (*itor) ;
+			(*itor) = NULL ;
+		}
+		
+		m_list_ensembles.erase(itor++); //erase의 경우 후위형 연산자로만 증가시켜야함
+	}
+
+	m_list_ensembles.clear();
 };
 	
 // 싱글턴 인스턴스를 반환할 멤버함수

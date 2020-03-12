@@ -29,9 +29,11 @@ std::string FormDeviceInfo::GetDeviceNameInfo(void)
     return str_name ;
 }
 
-void FormDeviceInfo::SetMacAddressInfo(const std::string mac)
+void FormDeviceInfo::SetMacAddressInfo(const std::string mac, const std::string ip, const std::string port)
 {
-     ui->label_mac->setText(QString::fromUtf8(mac.c_str()));
+	ui->label_mac->setText(QString::fromUtf8(mac.c_str()));
+	ui->label_ip->setText(QString::fromUtf8(ip.c_str()));
+	ui->label_port->setText(QString::fromUtf8(port.c_str()));
 }
 
 std::string FormDeviceInfo::GetMacAddressInfo(void)
