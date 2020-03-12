@@ -246,21 +246,24 @@ void MainWindow::OnMenuConnect(void)
 		m_i_port = dlg_connect.GetPortNumber() ;
 		m_p_cls_check_network->SetPort(m_i_port) ;
 
-        int ret = CEnsemble::getInstance()->m_cls_api.Ensemble_Network_Connect(m_str_ip_address.c_str(), m_i_port);
+		if( CEnsemble::getInstance()->CheckDevice(m_str_ip_address, m_i_port) == false )		//don't has device
+		{
+	        int ret = CEnsemble::getInstance()->m_cls_api.Ensemble_Network_Connect(m_str_ip_address.c_str(), m_i_port);
 
-        qDebug("Connect Ensemble : %d", ret ) ;
+	        qDebug("Connect Ensemble : %d", ret ) ;
 
-        if( CEnsemble::getInstance()->m_cls_api.Ensemble_Network_IsOnline() )
-        {
-            qDebug(" - Success : Control Port") ;
+	        if( CEnsemble::getInstance()->m_cls_api.Ensemble_Network_IsOnline() )
+	        {
+	            qDebug(" - Success : Control Port") ;
 
-			UpdateToolsListFromDevice(ui->listWidget_items) ;
-			UpdateJobsListFromDevice(ui->listWidget_items_job) ;
-       
-            qDebug(" - Success : Image Port") ;
+				UpdateToolsListFromDevice(ui->listWidget_items) ;
+				UpdateJobsListFromDevice(ui->listWidget_items_job) ;
+	       
+	            qDebug(" - Success : Image Port") ;
 
-			OnButtonUpdateSourceList() ;
-        }
+				OnButtonUpdateSourceList() ;
+	        }
+		}
 
         //ini
         boost::property_tree::ptree pt;
