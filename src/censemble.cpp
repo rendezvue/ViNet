@@ -156,7 +156,15 @@ int CEnsemble::New(const std::string ip, const int port)
 
         p_cls_api->Ensemble_Network_Connect(ip.c_str(), port) ;
 
-        m_list_ensembles.push_back(p_cls_api) ;
+		if( !p_cls_api->Ensemble_Network_IsOnline() )
+        {
+        	delete p_cls_api ;
+			p_cls_api = NULL ;
+        }
+		else
+		{
+        	m_list_ensembles.push_back(p_cls_api) ;
+		}
 	}
 
 	return m_list_ensembles.size() ;
