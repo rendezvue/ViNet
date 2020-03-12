@@ -11,6 +11,7 @@
 //API
 #include "EnsembleAPI.h"
 #include "censemble.h"
+#include "cnetworkinfo.h"
 
 //dialog
 #include "dialogsettoolcrack.h"
@@ -26,7 +27,7 @@ namespace Ui {
 class FormToolOption;
 }
 
-class FormToolOption : public QWidget
+class FormToolOption : public QWidget, public CNetworkInfo
 {
     Q_OBJECT
 

@@ -28,13 +28,14 @@
 #include "opencv2/opencv.hpp"
 
 #include "cmat2qimage.h"
+#include "cnetworkinfo.h"
 
 
 namespace Ui {
 class FormJobTool;
 }
 
-class FormJobTool : public QWidget
+class FormJobTool : public QWidget, public CNetworkInfo
 {
     Q_OBJECT
 

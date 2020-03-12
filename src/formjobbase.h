@@ -26,12 +26,13 @@
 #include "opencv2/opencv.hpp"
 
 #include "cmat2qimage.h"
+#include "cnetworkinfo.h"
 
 namespace Ui {
 class FormJobBase;
 }
 
-class FormJobBase : public QWidget
+class FormJobBase : public QWidget, public CNetworkInfo
 {
     Q_OBJECT
 
@@ -44,7 +45,7 @@ public:
 
     void SetIdInfo(const std::string id) ;
     std::string GetIdInfo(void) ;
-
+	
 	void SetImage(cv::Mat image) ;
 
 	void SetObjectImage(cv::Mat image) ;

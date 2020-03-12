@@ -921,6 +921,7 @@ void MainWindow::UpdateJobTree(void)
 				
                 theWidgetItem->SetNameInfo(str_prj_name);
                 theWidgetItem->SetIdInfo(str_prj_id);
+				theWidgetItem->SetNetworkInfo(str_device_port, device_port) ;
 
                 QSize item_size = theWidgetItem->size() ;
                 treeChileItem->setSizeHint(0, item_size);
@@ -953,6 +954,7 @@ void MainWindow::UpdateJobTree(void)
 					theWidgetItem->SetNameInfo(str_name);
                 	theWidgetItem->SetIdInfo(str_job_id);
 					theWidgetItem->SetType(type) ;
+					theWidgetItem->SetNetworkInfo(str_device_port, device_port) ;
 				
 					connect(theWidgetItem, SIGNAL(UpdateList()), this, SLOT(UpdateJobTree())) ;
 					connect(theWidgetItem, SIGNAL(UpdateResultImage(QString)), this, SLOT(UpdateResultImage(QString))) ;
@@ -988,6 +990,7 @@ void MainWindow::UpdateJobTree(void)
 						theWidgetItem->SetParentIdInfo(str_job_id);
 	                    theWidgetItem->SetTypeInfo(str_tool_type_name);
 						theWidgetItem->SetType(type) ;
+						theWidgetItem->SetNetworkInfo(str_device_port, device_port) ;
 
 						connect(theWidgetItem, SIGNAL(UpdateList()), this, SLOT(UpdateJobTree())) ;
                         //connect(this, SIGNAL(UpdateFormInfo()), theWidgetItem, SLOT(UpdateInfo())) ;		//mainwindow(UpdateInfoJob) --> FormJobBase(UpdateInfo)
@@ -1023,6 +1026,7 @@ void MainWindow::UpdateJobTree(void)
 							theWidgetItem->SetParentIdInfo(str_id);			//Parent Type is Tool
 		                    theWidgetItem->SetTypeInfo(str_tool_option_type_name);
 							theWidgetItem->SetType(option_type) ;
+							theWidgetItem->SetNetworkInfo(str_device_port, device_port) ;
 
 							connect(theWidgetItem, SIGNAL(UpdateList()), this, SLOT(UpdateJobTree())) ;
 							//connect(this, SIGNAL(UpdateFormInfo()), theWidgetItem, SLOT(UpdateInfo())) ;		//mainwindow(UpdateInfoJob) --> FormJobBase(UpdateInfo)

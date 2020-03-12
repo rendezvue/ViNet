@@ -11,13 +11,14 @@
 #include "censemble.h"
 
 #include "dialogchangename.h"
+#include "cnetworkinfo.h"
 
 
 namespace Ui {
 class FormProject;
 }
 
-class FormProject : public QWidget
+class FormProject : public QWidget, public CNetworkInfo
 {
     Q_OBJECT
 

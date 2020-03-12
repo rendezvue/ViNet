@@ -88,7 +88,8 @@ HEADERS += \
     module/PacketEthComm/Client/EthernetClient.h \
     module/PacketEthComm/Client/EthernetClientControlData.h \
     ui/dialogcheckforupdates.h \
-    src/censemble.h
+    src/censemble.h \
+    src/cnetworkinfo.h
 
 SOURCES += \
     module/EnsembleAPI/src/Interface.cpp \
@@ -143,7 +144,8 @@ SOURCES += \
     module/PacketEthComm/Client/EthernetClient.cpp \
     module/PacketEthComm/Client/EthernetClientControlData.cpp \
     ui/dialogcheckforupdates.cpp \
-    src/censemble.cpp
+    src/censemble.cpp \
+    src/cnetworkinfo.cpp
 
 FORMS += \
     ui/cdialogconnect.ui \
