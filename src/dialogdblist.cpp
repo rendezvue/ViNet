@@ -68,3 +68,33 @@ void DialogDbList::showEvent(QShowEvent *ev)
 	}
 }
 
+std::vector<std::string> DialogDbList::Get_Sel_DB(void)
+{
+	std::vector<std::string> vec_path ;
+
+	QStringList list;
+	foreach(const QModelIndex &index, ui->listView_db_list->selectionModel()->selectedIndexes())
+	{
+		QString itemText = index.data(Qt::DisplayRole).toString();
+
+		std::string str_db = itemText.toUtf8().constData() ;
+
+	    //list.append(model->itemFromIndex(index)->text());
+
+		//ID string parsing
+		int start_id = str_db.find("[", 0)+1 ;
+		int end_id = str_db.find("]", 0) ;
+
+		std::string str_db_id = str_db.substr(start_id, (end_id - start_id));
+
+		qDebug("DB sel id = %s(%s)", str_db.c_str(), str_db_id.c_str() ) ;
+
+		if( !str_db_id.empty() )
+		{
+			vec_path.push_back(str_db_id) ;
+		}
+	}
+	
+	return vec_path ;
+}
+

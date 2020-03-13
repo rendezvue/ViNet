@@ -97,6 +97,7 @@ void FormDeviceInfo::OnButton_DB_Load(void)
 
 		if(dialogCode == QDialog::Accepted)
 		{ // YesButton clicked
+			dlg_db_list.Get_Sel_DB() ;
 		}
 	}
 }

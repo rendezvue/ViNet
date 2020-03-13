@@ -24,6 +24,8 @@ public:
     explicit DialogDbList(QWidget *parent = 0);
     ~DialogDbList();
 
+	std::vector<std::string> Get_Sel_DB(void) ;
+	
 protected :
 	void showEvent(QShowEvent *ev) override;
 
