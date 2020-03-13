@@ -45,9 +45,9 @@
   <widget class="QPushButton" name="pushButton">
    <property name="geometry">
     <rect>
-     <x>390</x>
+     <x>449</x>
      <y>14</y>
-     <width>90</width>
+     <width>31</width>
      <height>31</height>
     </rect>
    </property>
@@ -117,6 +117,23 @@
      </widget>
     </item>
    </layout>
+  </widget>
+  <widget class="QPushButton" name="pushButton_db_load">
+   <property name="geometry">
+    <rect>
+     <x>410</x>
+     <y>14</y>
+     <width>31</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="icon">
+    <iconset resource="../resource.qrc">
+     <normaloff>:/icons/image/icons/file_load2.png</normaloff>:/icons/image/icons/file_load2.png</iconset>
+   </property>
   </widget>
  </widget>
  <resources>

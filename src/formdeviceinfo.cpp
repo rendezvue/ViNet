@@ -7,7 +7,10 @@ FormDeviceInfo::FormDeviceInfo(QWidget *parent) :
 {
     ui->setupUi(this);
 
+	//buttton
 	connect(ui->pushButton_camera_config, SIGNAL(clicked()), this, SLOT(OnButtonBaseCameraConfig())) ;	
+	connect(ui->pushButton_db_load, SIGNAL(clicked()), this, SLOT(OnButton_DB_Load())) ;	
+	
 }
 
 FormDeviceInfo::~FormDeviceInfo()
@@ -69,6 +72,32 @@ void FormDeviceInfo::OnButtonBaseCameraConfig(void)
 
     if(dialogCode == QDialog::Accepted)
     { 
-    }
+    } 
+}
+
+void FormDeviceInfo::OnButton_DB_Load(void) 
+{
+	QString qstr_ip = ui->label_ip->text() ;
+    std::string str_ip = qstr_ip.toUtf8().constData();
+
+	QString qstr_port = ui->label_port->text() ;
+    std::string str_port = qstr_port.toUtf8().constData();
+
+	qDebug("OnButton_DB_Load = %s, %s", str_ip.c_str(), str_port.c_str()) ;
+	
+	if( !str_ip.empty() && !str_port.empty() )
+	{
+		int port = std::stoi(str_port) ;
+			
+		DialogDbList dlg_db_list ;
+
+		dlg_db_list.SetNetworkInfo(str_ip, port) ;
+
+		int dialogCode = dlg_db_list.exec();
+
+		if(dialogCode == QDialog::Accepted)
+		{ // YesButton clicked
+		}
+	}
 }
 

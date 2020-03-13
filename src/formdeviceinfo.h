@@ -5,6 +5,7 @@
 #include <QImage>
 
 #include "dialogbasecameraconfig.h"
+#include "dialogdblist.h"
 
 
 namespace Ui {
@@ -32,6 +33,7 @@ private:
 
 public slots:
 	void OnButtonBaseCameraConfig(void) ;
+	void OnButton_DB_Load(void) ;
 
 };
 

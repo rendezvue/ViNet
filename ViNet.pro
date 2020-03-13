@@ -87,10 +87,11 @@ HEADERS += \
     module/PacketEthComm/EthernetGetInfo.h \
     module/PacketEthComm/Client/EthernetClient.h \
     module/PacketEthComm/Client/EthernetClientControlData.h \
-    ui/dialogcheckforupdates.h \
+    src/dialogcheckforupdates.h \
     src/censemble.h \
     src/cnetworkinfo.h \
-    module/ImageBuf2Mat/CImageBuf2Mat.h
+    module/ImageBuf2Mat/CImageBuf2Mat.h \
+    src/dialogdblist.h
 
 SOURCES += \
     module/EnsembleAPI/src/Interface.cpp \
@@ -144,10 +145,11 @@ SOURCES += \
     module/PacketEthComm/RendezvueCheckData.cpp \
     module/PacketEthComm/Client/EthernetClient.cpp \
     module/PacketEthComm/Client/EthernetClientControlData.cpp \
-    ui/dialogcheckforupdates.cpp \
+    src/dialogcheckforupdates.cpp \
     src/censemble.cpp \
     src/cnetworkinfo.cpp \
-    module/ImageBuf2Mat/CImageBuf2Mat.cpp
+    module/ImageBuf2Mat/CImageBuf2Mat.cpp \
+    src/dialogdblist.cpp
 
 FORMS += \
     ui/cdialogconnect.ui \
@@ -181,7 +183,8 @@ FORMS += \
     ui/dialogsettooloffsetdistance.ui \
     ui/dialogsetcode.ui \
     ui/dialogsetdetectplane.ui \
-    ui/dialogcheckforupdates.ui
+    ui/dialogcheckforupdates.ui \
+    ui/dialogdblist.ui
 
 DISTFILES += \
     module/ImageBuf2Mat/LICENSE

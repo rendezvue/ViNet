@@ -19,7 +19,7 @@
 //Dialog
 #include "cdialogconnect.h"
 #include "cdialognewproject.h"
-#include "ui/dialogcheckforupdates.h"
+#include "dialogcheckforupdates.h"
 
 //API
 #include "EnsembleAPI.h"
