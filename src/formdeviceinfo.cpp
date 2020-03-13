@@ -88,16 +88,29 @@ void FormDeviceInfo::OnButton_DB_Load(void)
 	if( !str_ip.empty() && !str_port.empty() )
 	{
 		int port = std::stoi(str_port) ;
-			
-		DialogDbList dlg_db_list ;
 
-		dlg_db_list.SetNetworkInfo(str_ip, port) ;
+		CEnsembleAPI *p_device = CEnsemble::getInstance()->GetDevice(str_ip, port) ;
 
-		int dialogCode = dlg_db_list.exec();
+		if( p_device )
+		{
+			DialogDbList dlg_db_list ;
 
-		if(dialogCode == QDialog::Accepted)
-		{ // YesButton clicked
-			dlg_db_list.Get_Sel_DB() ;
+			dlg_db_list.SetNetworkInfo(str_ip, port) ;
+
+			int dialogCode = dlg_db_list.exec();
+
+			if(dialogCode == QDialog::Accepted)
+			{ // YesButton clicked
+				std::vector<std::string> vec_db = dlg_db_list.Get_Sel_DB() ;
+
+				const int db_size = vec_db.size() ;
+
+				for( int i=0 ; i<db_size ; i++ )
+				{
+					//load
+					p_device->Ensemble_Task_File_Load(vec_db[i]) ;
+				}
+			}
 		}
 	}
 }
