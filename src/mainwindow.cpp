@@ -152,14 +152,18 @@ void MainWindow::OnTreeViewClick(const QModelIndex& index)
 
 	std::string str_ip = qstr_device_ip.toUtf8().constData() ;
 	std::string str_port = qstr_device_port.toUtf8().constData() ;
-	int port = std::stoi(str_port) ;
 
-	qDebug("OnTreeViewClick : ip = %s, port = %s(%d)", str_ip.c_str(), str_port.c_str(), port) ;
+	if( !str_ip.empty() && !str_port.empty() )
+	{
+		int port = std::stoi(str_port) ;
 
-	m_str_select_ip_address = str_ip ;
-	m_i_select_port = port ;
+		qDebug("OnTreeViewClick : ip = %s, port = %s(%d)", str_ip.c_str(), str_port.c_str(), port) ;
 
-	CEnsemble::getInstance()->SelectDevice(m_str_select_ip_address, m_i_select_port) ;
+		m_str_select_ip_address = str_ip ;
+		m_i_select_port = port ;
+
+		CEnsemble::getInstance()->SelectDevice(m_str_select_ip_address, m_i_select_port) ;
+	}
 }
 
 
@@ -893,7 +897,9 @@ void MainWindow::UpdateJobTree(void)
                 treeItem->addChild(treeChileItem);
 
                 treeChileItem->setData(0, Qt::UserRole+1, QString::fromStdString(str_prj_id));
-
+				treeChileItem->setData(0, Qt::UserRole+100, QString::fromStdString(str_device_ip_addr));
+				treeChileItem->setData(0, Qt::UserRole+101, QString::fromStdString(str_device_port));
+			
                 FormProject *theWidgetItem = new FormProject;
 
 				connect(theWidgetItem, SIGNAL(UpdateList()), this, SLOT(UpdateJobTree())) ;
@@ -930,7 +936,9 @@ void MainWindow::UpdateJobTree(void)
                     treeChileItem->addChild(treeJobItem);
 
 					treeJobItem->setData(0, Qt::UserRole+1, QString::fromStdString(str_job_id));
-					
+					treeJobItem->setData(0, Qt::UserRole+100, QString::fromStdString(str_device_ip_addr));
+					treeJobItem->setData(0, Qt::UserRole+101, QString::fromStdString(str_device_port));
+				
                     FormJobBase *theWidgetItem = new FormJobBase;
 					theWidgetItem->SetNameInfo(str_name);
                 	theWidgetItem->SetIdInfo(str_job_id);
@@ -964,7 +972,9 @@ void MainWindow::UpdateJobTree(void)
 	                    treeJobItem->addChild(treeToolItem);
 
 						treeToolItem->setData(0, Qt::UserRole+1, QString::fromStdString(str_id));
-						
+						treeToolItem->setData(0, Qt::UserRole+100, QString::fromStdString(str_device_ip_addr));
+						treeToolItem->setData(0, Qt::UserRole+101, QString::fromStdString(str_device_port));
+					
 	                    FormJobTool *theWidgetItem = new FormJobTool;
 	                    theWidgetItem->SetNameInfo(str_name);
 	                    theWidgetItem->SetIdInfo(str_id);
@@ -1000,7 +1010,9 @@ void MainWindow::UpdateJobTree(void)
 		                    treeToolItem->addChild(treeToolOptionItem);
 
 							treeToolOptionItem->setData(0, Qt::UserRole+1, QString::fromStdString(str_option_id));
-							
+							treeToolOptionItem->setData(0, Qt::UserRole+100, QString::fromStdString(str_device_ip_addr));
+							treeToolOptionItem->setData(0, Qt::UserRole+101, QString::fromStdString(str_device_port));
+						
 		                    FormToolOption *theWidgetItem = new FormToolOption;
 		                    theWidgetItem->SetNameInfo(str_option_name);
 		                    theWidgetItem->SetIdInfo(str_option_id);
