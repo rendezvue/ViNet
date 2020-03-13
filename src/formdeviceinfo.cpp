@@ -10,6 +10,7 @@ FormDeviceInfo::FormDeviceInfo(QWidget *parent) :
 	//buttton
 	connect(ui->pushButton_camera_config, SIGNAL(clicked()), this, SLOT(OnButtonBaseCameraConfig())) ;	
 	connect(ui->pushButton_db_load, SIGNAL(clicked()), this, SLOT(OnButton_DB_Load())) ;	
+	connect(ui->pushButton_job_clear, SIGNAL(clicked()), this, SLOT(OnButton_Job_Clear())) ;	
 	
 }
 
@@ -77,6 +78,9 @@ void FormDeviceInfo::OnButtonBaseCameraConfig(void)
 
 void FormDeviceInfo::OnButton_DB_Load(void) 
 {
+	//Clear
+	OnButton_Job_Clear() ;
+	
 	QString qstr_ip = ui->label_ip->text() ;
     std::string str_ip = qstr_ip.toUtf8().constData();
 
@@ -110,8 +114,36 @@ void FormDeviceInfo::OnButton_DB_Load(void)
 					//load
 					p_device->Ensemble_Task_File_Load(vec_db[i]) ;
 				}
+
+                emit signal_Change_Task() ;
 			}
 		}
 	}
 }
+
+void FormDeviceInfo::OnButton_Job_Clear(void)
+{
+	QString qstr_ip = ui->label_ip->text() ;
+    std::string str_ip = qstr_ip.toUtf8().constData();
+
+	QString qstr_port = ui->label_port->text() ;
+    std::string str_port = qstr_port.toUtf8().constData();
+
+	qDebug("OnButton_Job_Clear = %s, %s", str_ip.c_str(), str_port.c_str()) ;
+	
+	if( !str_ip.empty() && !str_port.empty() )
+	{
+		int port = std::stoi(str_port) ;
+
+		CEnsembleAPI *p_device = CEnsemble::getInstance()->GetDevice(str_ip, port) ;
+
+		if( p_device )
+		{
+			p_device->Ensemble_Task_Clear() ;
+
+			emit signal_Change_Task() ;
+		}
+	}
+}
+
 

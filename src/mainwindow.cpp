@@ -835,6 +835,8 @@ void MainWindow::UpdateJobTree(void)
             //Creating an object of the designed widget which is to be added to the listwidget
             FormDeviceInfo *theWidgetItem = new FormDeviceInfo;
 
+			connect(theWidgetItem, SIGNAL(signal_Change_Task()), this, SLOT(UpdateJobTree())) ;
+			
             //---
             //Set Informationupda
             //if( CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Network_IsOnline() & ENSEMBLE_CONNECT_CONTROL_PORT )

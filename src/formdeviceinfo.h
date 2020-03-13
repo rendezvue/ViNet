@@ -34,6 +34,10 @@ private:
 public slots:
 	void OnButtonBaseCameraConfig(void) ;
 	void OnButton_DB_Load(void) ;
+	void OnButton_Job_Clear(void) ;
+
+signals:
+	void signal_Change_Task(void);
 
 };
 
