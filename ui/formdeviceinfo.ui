@@ -77,7 +77,7 @@
     <rect>
      <x>59</x>
      <y>30</y>
-     <width>321</width>
+     <width>281</width>
      <height>21</height>
     </rect>
    </property>
@@ -133,6 +133,23 @@
    <property name="icon">
     <iconset resource="../resource.qrc">
      <normaloff>:/icons/image/icons/file_load2.png</normaloff>:/icons/image/icons/file_load2.png</iconset>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButton_job_clear">
+   <property name="geometry">
+    <rect>
+     <x>370</x>
+     <y>14</y>
+     <width>31</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="icon">
+    <iconset resource="../resource.qrc">
+     <normaloff>:/icons/image/icons/clear.png</normaloff>:/icons/image/icons/clear.png</iconset>
    </property>
   </widget>
  </widget>

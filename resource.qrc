@@ -14,5 +14,6 @@
         <file>image/icons/trigger.png</file>
         <file>image/icons/file_load.png</file>
         <file>image/icons/file_load2.png</file>
+        <file>image/icons/clear.png</file>
     </qresource>
 </RCC>
