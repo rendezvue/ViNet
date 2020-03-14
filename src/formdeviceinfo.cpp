@@ -78,9 +78,6 @@ void FormDeviceInfo::OnButtonBaseCameraConfig(void)
 
 void FormDeviceInfo::OnButton_DB_Load(void) 
 {
-	//Clear
-	OnButton_Job_Clear() ;
-	
 	QString qstr_ip = ui->label_ip->text() ;
     std::string str_ip = qstr_ip.toUtf8().constData();
 
@@ -109,13 +106,13 @@ void FormDeviceInfo::OnButton_DB_Load(void)
 
 				const int db_size = vec_db.size() ;
 
-				for( int i=0 ; i<db_size ; i++ )
+				if( db_size > 0 )
 				{
 					//load
-					p_device->Ensemble_Task_File_Load(vec_db[i]) ;
-				}
+                    p_device->Ensemble_Task_File_Load(vec_db) ;
 
-                emit signal_Change_Task() ;
+	                emit signal_Change_Task() ;
+				}
 			}
 		}
 	}
