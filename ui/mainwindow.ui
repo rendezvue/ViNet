@@ -380,57 +380,6 @@
       </property>
      </column>
     </widget>
-    <widget class="QPushButton" name="pushButton_newjob">
-     <property name="geometry">
-      <rect>
-       <x>470</x>
-       <y>0</y>
-       <width>20</width>
-       <height>20</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string/>
-     </property>
-     <property name="icon">
-      <iconset resource="../resource.qrc">
-       <normaloff>:/icons/image/icons/plus.png</normaloff>:/icons/image/icons/plus.png</iconset>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="pushButton_task_save">
-     <property name="geometry">
-      <rect>
-       <x>500</x>
-       <y>0</y>
-       <width>20</width>
-       <height>20</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string/>
-     </property>
-     <property name="icon">
-      <iconset resource="../resource.qrc">
-       <normaloff>:/icons/image/icons/save.png</normaloff>:/icons/image/icons/save.png</iconset>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="pushButton_task_load">
-     <property name="geometry">
-      <rect>
-       <x>520</x>
-       <y>0</y>
-       <width>20</width>
-       <height>20</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string/>
-     </property>
-     <property name="icon">
-      <iconset resource="../resource.qrc">
-       <normaloff>:/icons/image/icons/load.png</normaloff>:/icons/image/icons/load.png</iconset>
-     </property>
-    </widget>
    </widget>
    <widget class="QPushButton" name="pushButton_update_source_list">
     <property name="geometry">
@@ -465,7 +414,6 @@
     </property>
     <addaction name="actionSearch"/>
     <addaction name="actionConnect"/>
-    <addaction name="actionCheck_for_updates"/>
    </widget>
    <addaction name="menuEnsemble"/>
   </widget>

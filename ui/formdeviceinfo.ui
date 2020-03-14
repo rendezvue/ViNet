@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>530</width>
-    <height>60</height>
+    <height>90</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -42,12 +42,12 @@
     <string/>
    </property>
   </widget>
-  <widget class="QPushButton" name="pushButton">
+  <widget class="QPushButton" name="pushButton_device_update">
    <property name="geometry">
     <rect>
-     <x>449</x>
-     <y>14</y>
-     <width>31</width>
+     <x>370</x>
+     <y>50</y>
+     <width>111</width>
      <height>31</height>
     </rect>
    </property>
@@ -59,7 +59,7 @@
    <property name="geometry">
     <rect>
      <x>490</x>
-     <y>14</y>
+     <y>50</y>
      <width>31</width>
      <height>31</height>
     </rect>
@@ -75,9 +75,9 @@
   <widget class="QWidget" name="horizontalLayoutWidget">
    <property name="geometry">
     <rect>
-     <x>59</x>
-     <y>30</y>
-     <width>281</width>
+     <x>10</x>
+     <y>60</y>
+     <width>341</width>
      <height>21</height>
     </rect>
    </property>
@@ -85,13 +85,6 @@
     <property name="sizeConstraint">
      <enum>QLayout::SetFixedSize</enum>
     </property>
-    <item>
-     <widget class="QLabel" name="label_mac">
-      <property name="text">
-       <string>MAC : </string>
-      </property>
-     </widget>
-    </item>
     <item>
      <widget class="QLabel" name="label_ip">
       <property name="text">
@@ -121,8 +114,8 @@
   <widget class="QPushButton" name="pushButton_db_load">
    <property name="geometry">
     <rect>
-     <x>410</x>
-     <y>14</y>
+     <x>450</x>
+     <y>10</y>
      <width>31</width>
      <height>31</height>
     </rect>
@@ -138,8 +131,8 @@
   <widget class="QPushButton" name="pushButton_job_clear">
    <property name="geometry">
     <rect>
-     <x>370</x>
-     <y>14</y>
+     <x>410</x>
+     <y>10</y>
      <width>31</width>
      <height>31</height>
     </rect>
@@ -150,6 +143,53 @@
    <property name="icon">
     <iconset resource="../resource.qrc">
      <normaloff>:/icons/image/icons/clear.png</normaloff>:/icons/image/icons/clear.png</iconset>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButton_db_save">
+   <property name="geometry">
+    <rect>
+     <x>490</x>
+     <y>10</y>
+     <width>31</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="icon">
+    <iconset resource="../resource.qrc">
+     <normaloff>:/icons/image/icons/save.png</normaloff>:/icons/image/icons/save.png</iconset>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButton_new_project">
+   <property name="geometry">
+    <rect>
+     <x>370</x>
+     <y>10</y>
+     <width>31</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="icon">
+    <iconset resource="../resource.qrc">
+     <normaloff>:/icons/image/icons/new_project.png</normaloff>:/icons/image/icons/new_project.png</iconset>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_mac">
+   <property name="geometry">
+    <rect>
+     <x>60</x>
+     <y>30</y>
+     <width>65</width>
+     <height>19</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>MAC : </string>
    </property>
   </widget>
  </widget>

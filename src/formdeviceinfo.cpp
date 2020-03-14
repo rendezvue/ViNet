@@ -11,7 +11,9 @@ FormDeviceInfo::FormDeviceInfo(QWidget *parent) :
 	connect(ui->pushButton_camera_config, SIGNAL(clicked()), this, SLOT(OnButtonBaseCameraConfig())) ;	
 	connect(ui->pushButton_db_load, SIGNAL(clicked()), this, SLOT(OnButton_DB_Load())) ;	
 	connect(ui->pushButton_job_clear, SIGNAL(clicked()), this, SLOT(OnButton_Job_Clear())) ;	
-	
+	connect(ui->pushButton_new_project, SIGNAL(clicked()), this, SLOT(OnButton_Add_New_Project())) ;	
+	connect(ui->pushButton_db_save, SIGNAL(clicked()), this, SLOT(OnButton_DB_Save())) ;	
+	connect(ui->pushButton_device_update, SIGNAL(clicked()), this, SLOT(OnButton_Device_Update())) ;	
 }
 
 FormDeviceInfo::~FormDeviceInfo()
@@ -118,6 +120,30 @@ void FormDeviceInfo::OnButton_DB_Load(void)
 	}
 }
 
+void FormDeviceInfo::OnButton_DB_Save(void)
+{
+	QString qstr_ip = ui->label_ip->text() ;
+    std::string str_ip = qstr_ip.toUtf8().constData();
+
+	QString qstr_port = ui->label_port->text() ;
+    std::string str_port = qstr_port.toUtf8().constData();
+
+	qDebug("OnButton_DB_Save = %s, %s", str_ip.c_str(), str_port.c_str()) ;
+	
+	if( !str_ip.empty() && !str_port.empty() )
+	{
+		int port = std::stoi(str_port) ;
+
+		CEnsembleAPI *p_device = CEnsemble::getInstance()->GetDevice(str_ip, port) ;
+
+		if( p_device )
+		{
+			p_device->Ensemble_Task_File_Save() ;
+            emit signal_Change_Task() ;
+		}
+	}
+}
+
 void FormDeviceInfo::OnButton_Job_Clear(void)
 {
 	QString qstr_ip = ui->label_ip->text() ;
@@ -143,4 +169,75 @@ void FormDeviceInfo::OnButton_Job_Clear(void)
 	}
 }
 
+void FormDeviceInfo::OnButton_Add_New_Project(void)
+{
+	QString qstr_ip = ui->label_ip->text() ;
+    std::string str_ip = qstr_ip.toUtf8().constData();
+
+	QString qstr_port = ui->label_port->text() ;
+    std::string str_port = qstr_port.toUtf8().constData();
+
+	qDebug("OnButton_Add_New_Project = %s, %s", str_ip.c_str(), str_port.c_str()) ;
+	
+	if( !str_ip.empty() && !str_port.empty() )
+	{
+		int port = std::stoi(str_port) ;
+
+		CEnsembleAPI *p_device = CEnsemble::getInstance()->GetDevice(str_ip, port) ;
+
+		if( p_device )
+		{
+			//New Job Dialog
+		    CDialogNewProject dlg_new_project ;
+
+		    int dialogCode = dlg_new_project.exec();
+
+		    if(dialogCode == QDialog::Accepted)
+		    { // YesButton clicked
+		        //EnsembleJobNew(dlg_new_project.GetName()) ;
+		        p_device->Ensemble_Project_Add_New(dlg_new_project.GetName()) ;
+
+				emit signal_Change_Task() ;
+		    }
+		}
+	}
+}
+
+void FormDeviceInfo::OnButton_Device_Update(void)
+{
+	qDebug("%s", __func__);
+
+	QString qstr_ip = ui->label_ip->text() ;
+    std::string str_ip = qstr_ip.toUtf8().constData();
+
+	QString qstr_port = ui->label_port->text() ;
+    std::string str_port = qstr_port.toUtf8().constData();
+
+	qDebug("OnButton_Add_New_Project = %s, %s", str_ip.c_str(), str_port.c_str()) ;
+	
+	if( !str_ip.empty() && !str_port.empty() )
+	{
+		int port = std::stoi(str_port) ;
+
+		CEnsembleAPI *p_device = CEnsemble::getInstance()->GetDevice(str_ip, port) ;
+
+		if( p_device )
+		{
+			dialogcheckforupdates dlg_connect;
+	
+		    if( p_device->Ensemble_Network_IsOnline() )
+		    {
+		        dlg_connect.exec();
+		    }
+		    else
+		    {
+		        QMessageBox msgBox;
+		        msgBox.setText("Ensemble is not connected!\n");
+		        msgBox.exec();
+		    }
+
+			//emit signal_Change_Task() ;
+		}
+	}
+}
 

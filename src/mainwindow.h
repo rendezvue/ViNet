@@ -18,7 +18,6 @@
 
 //Dialog
 #include "cdialogconnect.h"
-#include "cdialognewproject.h"
 #include "dialogcheckforupdates.h"
 
 //API
@@ -157,16 +156,12 @@ public slots:
 	void UpdateResultImage(QString id) ;
 	void UpdateResult(QString qstr_xml) ;
     void OnMenuConnect(void);
-    void OnButtonNewProject(void) ;
     void DropEventDoneOnTree(void) ;
     void OnSourceListDClick(const QModelIndex &index) ;
 	void OnTreeViewDClick(const QModelIndex& index)  ;
 	void OnTreeViewClick(const QModelIndex& index)  ;
     void tabSelected(void) ;
-	void OnButtonSaveAllTask(void) ;
-	void OnButtonLoadAllTask(void) ;
 	void OnButtonUpdateSourceList(void) ;
-    void OnMenuCheckforUpdates(void);
 };
 
 #endif // MAINWINDOW_H

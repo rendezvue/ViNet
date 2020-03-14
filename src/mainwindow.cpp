@@ -18,20 +18,14 @@ MainWindow::MainWindow(QWidget *parent) :
     m_source_list_model = new QStringListModel(this); ;
 
     //button
-    connect(ui->pushButton_newjob, SIGNAL(clicked()), this,  SLOT(OnButtonNewProject())) ;
     connect(ui->pushButton_update_tool, SIGNAL(clicked()), this,  SLOT(UpdateToolsList())) ;
     connect(ui->pushButton_update_job_tree, SIGNAL(clicked()), this,  SLOT(UpdateJobTree())) ;
 	connect(ui->pushButton_update_job, SIGNAL(clicked()), this,  SLOT(UpdateJobsList())) ;
-
-	connect(ui->pushButton_task_save, SIGNAL(clicked()), this,  SLOT(OnButtonSaveAllTask())) ;
-	connect(ui->pushButton_task_load, SIGNAL(clicked()), this,  SLOT(OnButtonLoadAllTask())) ;
 
 	connect(ui->pushButton_update_source_list, SIGNAL(clicked()), this,  SLOT(OnButtonUpdateSourceList())) ;
 		
     //Menu
     connect(ui->actionConnect, SIGNAL(triggered()), this, SLOT(OnMenuConnect()));
-
-    connect(ui->actionCheck_for_updates, SIGNAL(triggered()), this, SLOT(OnMenuCheckforUpdates()));
 
     //Source list
     connect(ui->listView_source, SIGNAL(doubleClicked(const QModelIndex &)), this, SLOT(OnSourceListDClick(const QModelIndex &)));
@@ -528,23 +522,7 @@ void MainWindow::AddTreeChild(QTreeWidgetItem *parent,
     // QTreeWidgetItem::addChild(QTreeWidgetItem * child)
     parent->addChild(treeItem);
 }
-
-void MainWindow::OnButtonNewProject(void)
-{
-    //New Job Dialog
-    CDialogNewProject dlg_new_project ;
-
-    int dialogCode = dlg_new_project.exec();
-
-    if(dialogCode == QDialog::Accepted)
-    { // YesButton clicked
-        //EnsembleJobNew(dlg_new_project.GetName()) ;
-        CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Project_Add_New(dlg_new_project.GetName()) ;
-
-        UpdateJobTree();
-    }
-}
-
+				  
 void MainWindow::UpdateToolsList(void)
 {
     UpdateToolsListFromDevice(ui->listWidget_items) ;
@@ -1046,18 +1024,6 @@ void MainWindow::DropEventDoneOnTree(void)
     UpdateJobTree() ;
 }
 
-void MainWindow::OnButtonSaveAllTask(void)
-{
-	CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Task_File_Save() ;
-}
-
-void MainWindow::OnButtonLoadAllTask(void)
-{
-	CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Task_File_Load() ;
-
-	UpdateJobTree() ;
-}
-
 void MainWindow::showEvent(QShowEvent *ev)
 {
     QMainWindow::showEvent(ev) ;
@@ -1104,22 +1070,3 @@ void MainWindow::OnButtonUpdateSourceList(void)
     }
 }
 
-
-void MainWindow::OnMenuCheckforUpdates(void)
-{
-    qDebug("%s", __func__);
-
-    dialogcheckforupdates dlg_connect;
-
-
-    if( CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Network_IsOnline() )
-    {
-        dlg_connect.exec();
-    }
-    else
-    {
-        QMessageBox msgBox;
-        msgBox.setText("Ensemble is not connected!\n");
-        msgBox.exec();
-    }
-}
