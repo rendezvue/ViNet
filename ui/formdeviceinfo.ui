@@ -69,7 +69,7 @@
    </property>
    <property name="icon">
     <iconset resource="../resource.qrc">
-     <normaloff>:/icons/image/icons/camera.png</normaloff>:/icons/image/icons/camera.png</iconset>
+     <normaloff>:/icons/image/icons/camera_config.png</normaloff>:/icons/image/icons/camera_config.png</iconset>
    </property>
   </widget>
   <widget class="QWidget" name="horizontalLayoutWidget">

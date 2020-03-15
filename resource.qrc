@@ -16,5 +16,6 @@
         <file>image/icons/file_load2.png</file>
         <file>image/icons/clear.png</file>
         <file>image/icons/new_project.png</file>
+        <file>image/icons/camera_config.png</file>
     </qresource>
 </RCC>
