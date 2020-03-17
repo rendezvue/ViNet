@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Set Tool Crack</string>
+   <string>Set Level</string>
   </property>
   <widget class="QWidget" name="layoutWidget_2">
    <property name="geometry">
@@ -52,7 +52,7 @@
     </rect>
    </property>
    <property name="title">
-    <string>Check Level</string>
+    <string>Level</string>
    </property>
    <widget class="QSlider" name="horizontalSlider_feature_level">
     <property name="geometry">
@@ -64,7 +64,7 @@
      </rect>
     </property>
     <property name="maximum">
-     <number>10</number>
+     <number>100</number>
     </property>
     <property name="pageStep">
      <number>1</number>
