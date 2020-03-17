@@ -97,7 +97,7 @@ void DialogSetCalibration::OnButtonGetCalibrationImage(void)
     image.image_height = 480 ;
 
 	const int image_type = IMAGE_RGB888 ;
-    CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Source_Get_Image(GET_IMAGE_CALIBRATION_FEATURE, GetId(), image_type, &image) ;
+    CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Source_Get_CalibrationImage(GetId(), image_type, &image) ;
 
     if( image.p_buf != NULL )
     {

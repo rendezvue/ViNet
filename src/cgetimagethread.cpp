@@ -54,13 +54,13 @@ void CGetImageThread::run(void)
 	            }
 	            else if( m_i_type == 2 )        //merge image = image + result
 	            {
-	                ret = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Source_Get_Image(GET_IMAGE_INPUT, std::string(), image_type+IMAGE_ADD_TIME+IMAGE_ADD_SOURCE_INFO, &image_buf) ;
+                    ret = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Source_Get_Image(image_type+IMAGE_ADD_TIME+IMAGE_ADD_SOURCE_INFO, &image_buf) ;
 	                //ret += if( CEnsemble::getInstance()->GetSelectDevice() ) CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Job_Get_ResultImage(m_str_id, image_type, &get_data_result, &width_result, &height_result) ;
 	                ret += CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Result_Get_Image(m_str_id, image_type, &result_buf) ;
 	            }
 	            else
 	            {
-	                ret = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Source_Get_Image(GET_IMAGE_INPUT, std::string(), image_type+IMAGE_ADD_TIME+IMAGE_ADD_SOURCE_INFO, &image_buf) ;
+                    ret = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Source_Get_Image(image_type+IMAGE_ADD_TIME+IMAGE_ADD_SOURCE_INFO, &image_buf) ;
 	            }
 
 	            //qDebug("Network return = %d", ret) ;

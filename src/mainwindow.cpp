@@ -823,13 +823,10 @@ void MainWindow::UpdateJobTree(void)
                 //int width = 0 ;
                 //int height = 0 ;
                 ImageBuf image_buf ;
-                image_buf.image_width = 0 ;
-                image_buf.image_height = 0 ;
 
-				const int image_type = IMAGE_RGB888 ;
                 //int get_image_type = 0 ;
                 //CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Source_Get_Image(GET_IMAGE_DEVICE_ICON, std::string(), image_type, &image_buf) ;
-				if( p_device ) 	p_device->Ensemble_Source_Get_Image(GET_IMAGE_DEVICE_ICON, std::string(), image_type, &image_buf) ;
+                if( p_device ) 	p_device->Ensemble_DeviceIcon_Get_Image(&image_buf) ;
 
                 //qDebug("Get Image Size = %d x %d", width, height) ;
 
