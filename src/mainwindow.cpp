@@ -617,10 +617,12 @@ void MainWindow::UpdateResult(QString qstr_xml)
 				str_result += "<ul>" ;
 				for (pugi::xml_node job: jobs.children("Job"))
             	{
+                    int src_width = job.child("Src").attribute("Width").as_int();
+                    int src_height = job.child("Src").attribute("Height").as_int();
             		float center_x = job.child("Pose").attribute("CenterX").as_float() ;
 					float center_y = job.child("Pose").attribute("CenterY").as_float() ;
 					float angle = job.child("Pose").attribute("Angle").as_float() ;
-					float score = job.child("Matching").attribute("Score").as_float() ;
+					float score = job.child("Matching").attribute("Score").as_float() ;                                       
 					
 					float roi_tl_x = job.child("Pose").attribute("Roi_TL_X").as_float() ;
 					float roi_tl_y = job.child("Pose").attribute("Roi_TL_Y").as_float() ;
@@ -630,11 +632,19 @@ void MainWindow::UpdateResult(QString qstr_xml)
 					float roi_br_y = job.child("Pose").attribute("Roi_BR_Y").as_float() ;
 					float roi_bl_x = job.child("Pose").attribute("Roi_BL_X").as_float() ;
 					float roi_bl_y = job.child("Pose").attribute("Roi_BL_Y").as_float() ;
+
+                    float robot_pixel_x = center_x / src_width;
+                    float robot_pixel_y = center_y / src_height;
+
+                    float robot_mm_x = 0;
+                    float robot_mm_y = 0;
+                    CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Job_Calibration_GetPoint(str_jobs_id, robot_pixel_x, robot_pixel_y, &robot_mm_x, &robot_mm_y);
 					
                     qDebug("[%d] Center(%.2f, %.2f), Angle(%.2f), Score(%.2f)", job_count,center_x,center_y, angle, score) ;
+                    qDebug("[%d] Robot Center(%.2f, %.2f)",job_count, robot_mm_x, robot_mm_y ) ;
 					qDebug("    - ROI : (%.2f, %.2f), (%.2f, %.2f), (%.2f, %.2f), (%.2f, %.2f)", roi_tl_x,roi_tl_y,roi_tr_x,roi_tr_y,roi_br_x,roi_br_y,roi_bl_x,roi_bl_y) ;
 
-					str_result +=   "<li>[" + std::to_string(job_count) + "] Center(" + std::to_string(center_x) + ", " + std::to_string(center_y) + "), Angle(" + std::to_string(angle) + "), Score(" + std::to_string(score) + ")</li>" ;
+                    str_result +=   "<li>[" + std::to_string(job_count) + "] Center(" + std::to_string(center_x) + ", " + std::to_string(center_y) + "), Angle(" + std::to_string(angle) + "), Score(" + std::to_string(score) + ") , Robot Center(" + std::to_string(robot_mm_x) + ", " + std::to_string(robot_mm_y) + ")</li>" ;
 
 					//---------------------------------------------------------------------------------------
 					//Result Tool 
