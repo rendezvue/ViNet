@@ -635,5 +635,6 @@ void DialogSetBase::OnButtonSelectErase(void)
 void DialogSetBase::OnButtonResetErase(void)
 {
 	CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Job_Del_Erase(GetId()) ;
+	OnButtonGetImage() ;
 }
 
