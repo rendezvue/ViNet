@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>530</width>
+    <width>510</width>
     <height>90</height>
    </rect>
   </property>
@@ -45,7 +45,7 @@
   <widget class="QPushButton" name="pushButton_device_update">
    <property name="geometry">
     <rect>
-     <x>370</x>
+     <x>350</x>
      <y>50</y>
      <width>111</width>
      <height>31</height>
@@ -58,7 +58,7 @@
   <widget class="QPushButton" name="pushButton_camera_config">
    <property name="geometry">
     <rect>
-     <x>490</x>
+     <x>470</x>
      <y>50</y>
      <width>31</width>
      <height>31</height>
@@ -114,7 +114,7 @@
   <widget class="QPushButton" name="pushButton_db_load">
    <property name="geometry">
     <rect>
-     <x>450</x>
+     <x>430</x>
      <y>10</y>
      <width>31</width>
      <height>31</height>
@@ -131,7 +131,7 @@
   <widget class="QPushButton" name="pushButton_job_clear">
    <property name="geometry">
     <rect>
-     <x>410</x>
+     <x>390</x>
      <y>10</y>
      <width>31</width>
      <height>31</height>
@@ -148,7 +148,7 @@
   <widget class="QPushButton" name="pushButton_db_save">
    <property name="geometry">
     <rect>
-     <x>490</x>
+     <x>470</x>
      <y>10</y>
      <width>31</width>
      <height>31</height>
@@ -165,7 +165,7 @@
   <widget class="QPushButton" name="pushButton_new_project">
    <property name="geometry">
     <rect>
-     <x>370</x>
+     <x>350</x>
      <y>10</y>
      <width>31</width>
      <height>31</height>

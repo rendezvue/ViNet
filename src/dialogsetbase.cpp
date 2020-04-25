@@ -307,6 +307,8 @@ void DialogSetBase::OnButtonResetObject(void)
 	CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Job_Del_SelectObject(GetId()) ;
 	
     OnButtonGetImage() ;
+
+	emit UpdateBaseImage();
 }
 
 void DialogSetBase::OnButtonSelectRefPoint(void)
