@@ -97,6 +97,8 @@ public slots:
 
     void OnCheckFeatureUseCustomOption(bool checked) ;
 
+	void UpdateImage(void) ;
+	
 signals:
 	void UpdateBaseImage(void);
 	void UpdateBaseName(QString name) ;

@@ -57,5 +57,7 @@ void DialogSetCustomFeatureOption::OnButtonSet(void)
 	CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Job_Set_Feature_Option(m_str_id, option_blur, option_thre_upper, option_thre_lower, option_kernel_size) ;
 
 	OnButtonGet() ;
+
+	emit UpdateImage() ;
 }
 

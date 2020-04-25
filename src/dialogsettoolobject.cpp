@@ -143,6 +143,11 @@ void DialogSetToolObject::OnButtonNameChange(void)
     }
 }
 
+void DialogSetToolObject::UpdateImage(void)
+{
+	OnButtonGetImage() ;
+}
+
 void DialogSetToolObject::OnButtonGetImage(void)
 {
     //Get Base Job Image
@@ -452,6 +457,7 @@ void DialogSetToolObject::OnCheckFeatureUseCustomOption(bool checked)
 
 		//open set dialog for custom value
 		DialogSetCustomFeatureOption dlg_set_custom_feature_option ;
+		connect(&dlg_set_custom_feature_option, SIGNAL(UpdateImage()), this, SLOT(UpdateImage())) ;
 		dlg_set_custom_feature_option.SetId(GetId()) ;
 	
 	   int dialogCode = dlg_set_custom_feature_option.exec();
@@ -461,6 +467,8 @@ void DialogSetToolObject::OnCheckFeatureUseCustomOption(bool checked)
 	{
         ui->horizontalSlider_feature_level->setEnabled(true) ;
 	}
+
+	OnButtonGetImage() ;
 }
 
 void DialogSetToolObject::OnButtonSelectRefPoint(void)

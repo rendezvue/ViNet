@@ -34,6 +34,9 @@ public slots:
 	void OnButtonGet(void) ;
 	void OnButtonSet(void) ;
 
+signals:
+	void UpdateImage(void);
+
 };
 
 #endif // DIALOGSETCUSTOMFEATUREOPTION_H

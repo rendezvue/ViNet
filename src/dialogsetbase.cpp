@@ -212,6 +212,11 @@ std::string DialogSetBase::GetId(void)
     return m_str_id ;
 }
 
+void DialogSetBase::UpdateImage(void)
+{
+	OnButtonGetImage() ;
+}
+
 void DialogSetBase::OnButtonGetImage(void)
 {
     //Get Base Job Image
@@ -586,6 +591,7 @@ void DialogSetBase::OnCheckFeatureUseCustomOption(bool checked)
 
 		//open set dialog for custom value
 		DialogSetCustomFeatureOption dlg_set_custom_feature_option ;
+		connect(&dlg_set_custom_feature_option, SIGNAL(UpdateImage()), this, SLOT(UpdateImage())) ;
 		dlg_set_custom_feature_option.SetId(GetId()) ;
 	
 	   int dialogCode = dlg_set_custom_feature_option.exec();
@@ -595,6 +601,8 @@ void DialogSetBase::OnCheckFeatureUseCustomOption(bool checked)
 	{
         ui->horizontalSlider_feature_level->setEnabled(true) ;
 	}
+
+	OnButtonGetImage() ;
 }
 
 void DialogSetBase::OnButtonGetConstraintAngle(void)

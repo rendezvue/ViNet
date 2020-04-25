@@ -81,6 +81,7 @@ public slots:
 	
 	void OnCheckFeatureUseCustomOption(bool checked) ;
 
+	void UpdateImage(void) ;
 signals:
 	void UpdateToolName(QString name) ;
 	void UpdateToolObjectImage(void);
