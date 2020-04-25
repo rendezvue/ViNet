@@ -358,3 +358,13 @@ void DialogSetCalibration::OnButtonCameraConfig(void)
 }
 
 
+
+void DialogSetCalibration::on_pushButton_chess_set_clicked()
+{
+
+    int chess_x_num = ui->lineEdit_chess_x_num->text().toInt();
+    int chess_y_num = ui->lineEdit_chess_y_num->text().toInt();
+    float chess_square_mm_size = ui->lineEdit_chess_size->text().toFloat();
+
+    CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Job_Calibration_Set_Chess_Info(GetId(), chess_x_num, chess_y_num, chess_square_mm_size);
+}

@@ -61,6 +61,8 @@ public slots:
 	void OnButtonCameraConfig(void) ;
 
 
+private slots:
+    void on_pushButton_chess_set_clicked();
 };
 
 #endif // DIALOGSETCALIBRATION_H
