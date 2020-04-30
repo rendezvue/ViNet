@@ -19,6 +19,7 @@
 #include "dialogsettooldistanceinspect.h"
 #include "dialogsettoolangleinspect.h"
 #include "dialogsettooldiameterinspect.h"
+#include "dialogsetcolorcompare.h"
 
 #include <QPropertyAnimation>
 
@@ -89,6 +90,9 @@ private:
 	DialogSetToolCrack m_dlg_set_tool_crack ;
 	//Set Dialog : Color
 	DialogSetToolColor m_dlg_set_tool_color ;
+	//Set Dialog : Color Compare
+	DialogSetColorCompare m_dlg_set_tool_color_compare ;
+	
 	//Set Dialog : Distance
 	DialogSetToolDistanceInspect m_dlg_set_tool_inspect_distance ;
 	//Set Dialog : Angle

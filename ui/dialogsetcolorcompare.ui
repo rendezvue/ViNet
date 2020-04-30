@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>DialogSetToolCrack</class>
- <widget class="QDialog" name="DialogSetToolCrack">
+ <class>DialogSetColorCompare</class>
+ <widget class="QDialog" name="DialogSetColorCompare">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>311</width>
-    <height>264</height>
+    <width>310</width>
+    <height>300</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Set Level</string>
+   <string>Set Color Compare</string>
   </property>
   <widget class="QWidget" name="layoutWidget_2">
    <property name="geometry">

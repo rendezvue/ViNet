@@ -91,7 +91,8 @@ HEADERS += \
     src/censemble.h \
     src/cnetworkinfo.h \
     module/ImageBuf2Mat/CImageBuf2Mat.h \
-    src/dialogdblist.h
+    src/dialogdblist.h \
+    src/dialogsetcolorcompare.h
 
 SOURCES += \
     module/EnsembleAPI/src/Interface.cpp \
@@ -149,7 +150,8 @@ SOURCES += \
     src/censemble.cpp \
     src/cnetworkinfo.cpp \
     module/ImageBuf2Mat/CImageBuf2Mat.cpp \
-    src/dialogdblist.cpp
+    src/dialogdblist.cpp \
+    src/dialogsetcolorcompare.cpp
 
 FORMS += \
     ui/cdialogconnect.ui \
@@ -184,7 +186,8 @@ FORMS += \
     ui/dialogsetcode.ui \
     ui/dialogsetdetectplane.ui \
     ui/dialogcheckforupdates.ui \
-    ui/dialogdblist.ui
+    ui/dialogdblist.ui \
+    ui/dialogsetcolorcompare.ui
 
 DISTFILES += \
     module/ImageBuf2Mat/LICENSE

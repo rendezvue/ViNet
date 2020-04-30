@@ -170,7 +170,7 @@ void FormToolOption::OnButtonSet(void)
 
 	qDebug("Set : Type = %d", type) ;
 
-	if( type == ToolTypeList::TOOL_TYPE_OPTION_INSPECT_CRACK || type == ToolTypeList::TOOL_TYPE_OPTION_INSPECT_CRACK2 || type == ToolTypeList::TOOL_TYPE_OPTION_INSPECT_COLOR_COMPARE || type == ToolTypeList::TOOL_TYPE_OPTION_INSPECT_COLOR_COMPARE2 )
+	if( type == ToolTypeList::TOOL_TYPE_OPTION_INSPECT_CRACK || type == ToolTypeList::TOOL_TYPE_OPTION_INSPECT_CRACK2 )
 	{
 		//DialogSetBase dlg_setbase ;
 	    m_dlg_set_tool_crack.SetParentId(GetParentIdInfo());
@@ -181,6 +181,19 @@ void FormToolOption::OnButtonSet(void)
 	    if(dialogCode == QDialog::Accepted)
 	    {
 	    }
+	}
+	else if( type == ToolTypeList::TOOL_TYPE_OPTION_INSPECT_COLOR_COMPARE || type == ToolTypeList::TOOL_TYPE_OPTION_INSPECT_COLOR_COMPARE2 )
+	{
+		//DialogSetBase dlg_setbase ;
+	    m_dlg_set_tool_color_compare.SetParentId(GetParentIdInfo());
+	    m_dlg_set_tool_color_compare.SetToolId(GetIdInfo());
+
+	    int dialogCode = m_dlg_set_tool_color_compare.exec();
+
+	    if(dialogCode == QDialog::Accepted)
+	    {
+	    }
+			
 	}
 	else if( type == ToolTypeList::TOOL_TYPE_OPTION_INSPECT_COLOR || type == ToolTypeList::TOOL_TYPE_OPTION_INSPECT_COLOR2 )
 	{
