@@ -30,8 +30,11 @@ private:
     Ui::DialogSetColorCompare *ui;
 
 public slots:
-	void OnSliderSetFeatureLevel(void) ;
-	void OnSliderMove(int value) ;
+	
+	void OnSliderSetSensitivityLevel(void) ;
+	void OnSensitivitySliderMove(int value) ;
+	void OnSliderSetInspectThresholdLevel(void) ;
+	void OnInspectThresholdLevelSliderMove(int value) ;
 
 };
 
