@@ -271,7 +271,7 @@ void MainWindow::OnMenuConnect(void)
 			{
 				if( p_device->Ensemble_Network_IsOnline() )
 				{			
-					p_device->Ensemble_Task_File_Load() ;
+					//p_device->Ensemble_Task_File_Load() ;
 					
 					m_str_select_ip_address = m_str_ip_address ;
 					m_i_select_port = m_i_port ;
@@ -936,10 +936,10 @@ void MainWindow::UpdateJobTree(void)
 					if( type == BaseTypeList::BASE_TYPE_PYTHON )
 					{
 						FormJobBaseCode *theWidgetItem = new FormJobBaseCode;
-                        //theWidgetItem->SetNameInfo(str_name);
-                        //theWidgetItem->SetIdInfo(str_job_id);
-                        //theWidgetItem->SetType(type) ;
-                        //theWidgetItem->SetNetworkInfo(str_device_ip_addr, device_port) ;
+                        theWidgetItem->SetNameInfo(str_name);
+                        theWidgetItem->SetIdInfo(str_job_id);
+                        theWidgetItem->SetType(type) ;
+                        theWidgetItem->SetNetworkInfo(str_device_ip_addr, device_port) ;
 					
 						connect(theWidgetItem, SIGNAL(UpdateList()), this, SLOT(UpdateJobTree())) ;
 						connect(theWidgetItem, SIGNAL(UpdateResultImage(QString)), this, SLOT(UpdateResultImage(QString))) ;
