@@ -33,6 +33,7 @@
 #include "formjobtool.h"
 #include "formtooloption.h"
 #include "formproject.h"
+#include "formtooloptionwithprogress.h"
 
 #include "cmat2qimage.h"
 

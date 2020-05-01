@@ -281,12 +281,13 @@ void FormToolOption::showEvent(QShowEvent *ev)
 		std::string str_info = "Information" ;
 		
 		//Get Information
-	    if( GetType() == ToolTypeList::TOOL_TYPE_OPTION_INSPECT_CRACK )
+		const int type = GetType() ;
+	    if( type == ToolTypeList::TOOL_TYPE_OPTION_INSPECT_CRACK )
 	    {
 	        int inspect_crack_level = p_device->Ensemble_Tool_Option_Crack_Get_InspectLevel(GetIdInfo());
 			str_info = "Crack Level : " + std::to_string(inspect_crack_level) ;		
 	    }
-
+		
 		UpdateInformationString(QString::fromUtf8(str_info.c_str())) ;
 
 		//run checkbox

@@ -591,7 +591,7 @@ void MainWindow::UpdateResult(QString qstr_xml)
 	}
 	else
 	{
-        std::vector<std::string> vec_result_change_color_id ;
+        //std::vector<std::string> vec_result_id ;
 		for (pugi::xml_node result : doc.children("Result") )
         {
         	std::string str_project_id = result.attribute("ID").value() ;
@@ -604,9 +604,19 @@ void MainWindow::UpdateResult(QString qstr_xml)
 				int jobs_type = jobs.attribute("TYPE").as_int() ;
 				int jobs_find_count = jobs.attribute("FindCount").as_int() ;
 
+				bool b_alarm = false ;
 				if( jobs_find_count <= 0 )
 				{
-					vec_result_change_color_id.push_back(str_jobs_id) ;
+					b_alarm = true ;
+				}
+
+				//Update
+				CSearchTreeItem cls_search_tree_item ;
+				QTreeWidgetItem *item = cls_search_tree_item.GetItem(ui->treeWidget_job, str_jobs_id) ;
+				if( item )
+				{
+	                FormJobBase* p_FromJobBase = dynamic_cast<FormJobBase*>(ui->treeWidget_job->itemWidget(item, 0));
+					if( p_FromJobBase )	p_FromJobBase->SetAlarm(b_alarm) ;
 				}
 
 				std::string str_result ;
@@ -691,18 +701,42 @@ void MainWindow::UpdateResult(QString qstr_xml)
 
 									//specific
                                     int option_specific_pass = option.child("Specific").child("Pass").text().as_int() ;
+									float quality = option.child("Specific").child("Quality").text().as_float();
 											
                                     qDebug("Option ID=%s, TYPE=%d", str_option_id.c_str(), option_type) ;
 
                                     std::string str_result_style = "style='color:black;background-color:white;'" ;
+									bool b_alarm = false ;
 									if( option_specific_pass == 0 )
 									{
+                                        b_alarm = true ;
 										//fail
 										str_result_style = "style='color:red;background-color:white;'" ;
-
-										vec_result_change_color_id.push_back(str_option_id) ;
 									}
-                                    str_result +=   "<li " + str_result_style + ">[Option ID=" + str_option_id + " Type=" + std::to_string(option_type) + "] Inspect Pass(" + std::to_string(option_specific_pass) + ")</li>" ;
+
+									//Update
+									CSearchTreeItem cls_search_tree_item ;
+									QTreeWidgetItem *item = cls_search_tree_item.GetItem(ui->treeWidget_job, str_option_id) ;
+									if( item )
+									{
+										if( option_type == ToolTypeList::TOOL_TYPE_OPTION_INSPECT_COLOR_COMPARE ||
+											option_type == ToolTypeList::TOOL_TYPE_OPTION_INSPECT_COLOR_COMPARE2 )
+										{
+											FormToolOptionWithProgress* p_FromJobToolOption = dynamic_cast<FormToolOptionWithProgress*>(ui->treeWidget_job->itemWidget(item, 0));
+											if( p_FromJobToolOption )	
+											{
+												p_FromJobToolOption->SetAlarm(b_alarm) ;
+												p_FromJobToolOption->SetProgress(quality) ;
+											}
+										}
+										else
+										{
+											FormToolOption* p_FromJobToolOption = dynamic_cast<FormToolOption*>(ui->treeWidget_job->itemWidget(item, 0));
+											if( p_FromJobToolOption )	p_FromJobToolOption->SetAlarm(b_alarm) ;
+										}
+						                
+									}
+                                    str_result +=   "<li " + str_result_style + ">[Option ID=" + str_option_id + " Type=" + std::to_string(quality) + "] Quality(" + std::to_string(option_specific_pass) + "), Inspect Pass(" + std::to_string(option_specific_pass) + ")</li>" ;
 		            			}
 							}
 							str_result += "</ul>" ;
@@ -720,13 +754,14 @@ void MainWindow::UpdateResult(QString qstr_xml)
 
 				//Find Job in List				
 				qDebug("Update Job Form : Find %s item", str_jobs_id.c_str()) ;
-				CSearchTreeItem cls_search_tree_item ;
-				QTreeWidgetItem *item = cls_search_tree_item.GetItem(ui->treeWidget_job, str_jobs_id) ;
-				if( item )
+                //CSearchTreeItem cls_search_tree_item ;
+                //QTreeWidgetItem *item = cls_search_tree_item.GetItem(ui->treeWidget_job, str_jobs_id) ;
+                QTreeWidgetItem *search_item = cls_search_tree_item.GetItem(ui->treeWidget_job, str_jobs_id) ;
+                if( search_item )
 				{
 					qDebug("Search Item") ;
 
-                    FormJobBase* p_FromJobBase = dynamic_cast<FormJobBase*>(ui->treeWidget_job->itemWidget(item, 0));
+                    FormJobBase* p_FromJobBase = dynamic_cast<FormJobBase*>(ui->treeWidget_job->itemWidget(search_item, 0));
                 
                     if( p_FromJobBase )
                     {
@@ -741,34 +776,6 @@ void MainWindow::UpdateResult(QString qstr_xml)
 				}				
 			}
 		}
-
-		int size_alarm = vec_result_change_color_id.size() ;
-		for( int i=0 ; i<size_alarm ; i++ )
-		{
-			CSearchTreeItem cls_search_tree_item ;
-			QTreeWidgetItem *item = cls_search_tree_item.GetItem(ui->treeWidget_job, vec_result_change_color_id[i]) ;
-			if( item )
-			{
-                FormJobBase* p_FromJobBase = dynamic_cast<FormJobBase*>(ui->treeWidget_job->itemWidget(item, 0));
-				FormJobTool* p_FromJobTool = dynamic_cast<FormJobTool*>(ui->treeWidget_job->itemWidget(item, 0));
-				FormToolOption* p_FromJobToolOption = dynamic_cast<FormToolOption*>(ui->treeWidget_job->itemWidget(item, 0));
-            
-                if( p_FromJobBase )
-                {		
-                	p_FromJobBase->SetAlarm(true) ;
-                }
-				else if( p_FromJobTool )
-				{
-					p_FromJobTool->SetAlarm(true) ;
-				}
-				else if( p_FromJobToolOption )
-				{
-					p_FromJobToolOption->SetAlarm(true) ;
-				}
-			}				
-		}
-
-		//emit UpdateFormInfo() ;
 	}
 }
 
@@ -999,23 +1006,50 @@ void MainWindow::UpdateJobTree(void)
 							treeToolOptionItem->setData(0, Qt::UserRole+1, QString::fromStdString(str_option_id));
 							treeToolOptionItem->setData(0, Qt::UserRole+100, QString::fromStdString(str_device_ip_addr));
 							treeToolOptionItem->setData(0, Qt::UserRole+101, QString::fromStdString(str_device_port));
-						
-		                    FormToolOption *theWidgetItem = new FormToolOption;
-		                    theWidgetItem->SetNameInfo(str_option_name);
-		                    theWidgetItem->SetIdInfo(str_option_id);
-							theWidgetItem->SetParentIdInfo(str_id);			//Parent Type is Tool
-		                    theWidgetItem->SetTypeInfo(str_tool_option_type_name);
-							theWidgetItem->SetType(option_type) ;
-							theWidgetItem->SetNetworkInfo(str_device_ip_addr, device_port) ;
 
-							connect(theWidgetItem, SIGNAL(UpdateList()), this, SLOT(UpdateJobTree())) ;
-							//connect(this, SIGNAL(UpdateFormInfo()), theWidgetItem, SLOT(UpdateInfo())) ;		//mainwindow(UpdateInfoJob) --> FormJobBase(UpdateInfo)
-							//connect(theWidgetItem, SIGNAL(UpdateResultImage(QString)), this, SLOT(UpdateResultImage(QString))) ;
+							if( option_type == ToolTypeList::TOOL_TYPE_OPTION_INSPECT_COLOR_COMPARE || 
+								option_type == ToolTypeList::TOOL_TYPE_OPTION_INSPECT_COLOR_COMPARE2 )
+							{
+								FormToolOptionWithProgress *theWidgetItem = new FormToolOptionWithProgress;
+
+			                    theWidgetItem->SetNameInfo(str_option_name);
+			                    theWidgetItem->SetIdInfo(str_option_id);
+								theWidgetItem->SetParentIdInfo(str_id);			//Parent Type is Tool
+			                    theWidgetItem->SetTypeInfo(str_tool_option_type_name);
+								theWidgetItem->SetType(option_type) ;
+								theWidgetItem->SetNetworkInfo(str_device_ip_addr, device_port) ;
+
+								connect(theWidgetItem, SIGNAL(UpdateList()), this, SLOT(UpdateJobTree())) ;
+								//connect(this, SIGNAL(UpdateFormInfo()), theWidgetItem, SLOT(UpdateInfo())) ;		//mainwindow(UpdateInfoJob) --> FormJobBase(UpdateInfo)
+								//connect(theWidgetItem, SIGNAL(UpdateResultImage(QString)), this, SLOT(UpdateResultImage(QString))) ;
+								
+			                    QSize item_size = theWidgetItem->size() ;
+			                    treeToolOptionItem->setSizeHint(0, item_size);
+
+			                    ui->treeWidget_job->setItemWidget(treeToolOptionItem, 0, theWidgetItem);
+							}
+							else
+							{
+								FormToolOption *theWidgetItem = new FormToolOption;
+								
+			                    theWidgetItem->SetNameInfo(str_option_name);
+			                    theWidgetItem->SetIdInfo(str_option_id);
+								theWidgetItem->SetParentIdInfo(str_id);			//Parent Type is Tool
+			                    theWidgetItem->SetTypeInfo(str_tool_option_type_name);
+								theWidgetItem->SetType(option_type) ;
+								theWidgetItem->SetNetworkInfo(str_device_ip_addr, device_port) ;
+
+								connect(theWidgetItem, SIGNAL(UpdateList()), this, SLOT(UpdateJobTree())) ;
+								//connect(this, SIGNAL(UpdateFormInfo()), theWidgetItem, SLOT(UpdateInfo())) ;		//mainwindow(UpdateInfoJob) --> FormJobBase(UpdateInfo)
+								//connect(theWidgetItem, SIGNAL(UpdateResultImage(QString)), this, SLOT(UpdateResultImage(QString))) ;
+								
+			                    QSize item_size = theWidgetItem->size() ;
+			                    treeToolOptionItem->setSizeHint(0, item_size);
+
+			                    ui->treeWidget_job->setItemWidget(treeToolOptionItem, 0, theWidgetItem);
+							}
 							
-		                    QSize item_size = theWidgetItem->size() ;
-		                    treeToolOptionItem->setSizeHint(0, item_size);
-
-		                    ui->treeWidget_job->setItemWidget(treeToolOptionItem, 0, theWidgetItem);
+		                    
 		                }
 	                }
 	                //Tool list
