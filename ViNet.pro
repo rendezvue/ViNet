@@ -93,7 +93,8 @@ HEADERS += \
     module/ImageBuf2Mat/CImageBuf2Mat.h \
     src/dialogdblist.h \
     src/dialogsetcolorcompare.h \
-    src/formtooloptionwithprogress.h
+    src/formtooloptionwithprogress.h \
+    src/formjobbasecode.h
 
 SOURCES += \
     module/EnsembleAPI/src/Interface.cpp \
@@ -153,7 +154,8 @@ SOURCES += \
     module/ImageBuf2Mat/CImageBuf2Mat.cpp \
     src/dialogdblist.cpp \
     src/dialogsetcolorcompare.cpp \
-    src/formtooloptionwithprogress.cpp
+    src/formtooloptionwithprogress.cpp \
+    src/formjobbasecode.cpp
 
 FORMS += \
     ui/cdialogconnect.ui \
@@ -190,7 +192,8 @@ FORMS += \
     ui/dialogcheckforupdates.ui \
     ui/dialogdblist.ui \
     ui/dialogsetcolorcompare.ui \
-    ui/formtooloptionwithprogress.ui
+    ui/formtooloptionwithprogress.ui \
+    ui/formjobbasecode.ui
 
 DISTFILES += \
     module/ImageBuf2Mat/LICENSE

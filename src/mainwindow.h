@@ -30,6 +30,7 @@
 #include "formtoollist.h"
 #include "formdeviceinfo.h"
 #include "formjobbase.h"
+#include "formjobbasecode.h"
 #include "formjobtool.h"
 #include "formtooloption.h"
 #include "formproject.h"

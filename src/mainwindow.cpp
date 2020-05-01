@@ -932,22 +932,42 @@ void MainWindow::UpdateJobTree(void)
 					treeJobItem->setData(0, Qt::UserRole+1, QString::fromStdString(str_job_id));
 					treeJobItem->setData(0, Qt::UserRole+100, QString::fromStdString(str_device_ip_addr));
 					treeJobItem->setData(0, Qt::UserRole+101, QString::fromStdString(str_device_port));
-				
-                    FormJobBase *theWidgetItem = new FormJobBase;
-					theWidgetItem->SetNameInfo(str_name);
-                	theWidgetItem->SetIdInfo(str_job_id);
-					theWidgetItem->SetType(type) ;
-					theWidgetItem->SetNetworkInfo(str_device_ip_addr, device_port) ;
-				
-					connect(theWidgetItem, SIGNAL(UpdateList()), this, SLOT(UpdateJobTree())) ;
-					connect(theWidgetItem, SIGNAL(UpdateResultImage(QString)), this, SLOT(UpdateResultImage(QString))) ;
-					//connect(this, SIGNAL(UpdateFormInfo()), theWidgetItem, SLOT(UpdateInfo())) ;		//mainwindow(UpdateInfoJob) --> FormJobBase(UpdateInfo)
+
+					if( type == BaseTypeList::BASE_TYPE_PYTHON )
+					{
+						FormJobBaseCode *theWidgetItem = new FormJobBaseCode;
+                        //theWidgetItem->SetNameInfo(str_name);
+                        //theWidgetItem->SetIdInfo(str_job_id);
+                        //theWidgetItem->SetType(type) ;
+                        //theWidgetItem->SetNetworkInfo(str_device_ip_addr, device_port) ;
 					
-                    QSize item_size = theWidgetItem->size() ;
-                    treeJobItem->setSizeHint(0, item_size);
+						connect(theWidgetItem, SIGNAL(UpdateList()), this, SLOT(UpdateJobTree())) ;
+						connect(theWidgetItem, SIGNAL(UpdateResultImage(QString)), this, SLOT(UpdateResultImage(QString))) ;
+						//connect(this, SIGNAL(UpdateFormInfo()), theWidgetItem, SLOT(UpdateInfo())) ;		//mainwindow(UpdateInfoJob) --> FormJobBase(UpdateInfo)
 
-                    ui->treeWidget_job->setItemWidget(treeJobItem, 0, theWidgetItem);
+						QSize item_size = theWidgetItem->size() ;
+	                    treeJobItem->setSizeHint(0, item_size);
 
+	                    ui->treeWidget_job->setItemWidget(treeJobItem, 0, theWidgetItem);
+					}
+					else
+					{
+	                    FormJobBase *theWidgetItem = new FormJobBase;
+						theWidgetItem->SetNameInfo(str_name);
+	                	theWidgetItem->SetIdInfo(str_job_id);
+						theWidgetItem->SetType(type) ;
+						theWidgetItem->SetNetworkInfo(str_device_ip_addr, device_port) ;
+					
+						connect(theWidgetItem, SIGNAL(UpdateList()), this, SLOT(UpdateJobTree())) ;
+						connect(theWidgetItem, SIGNAL(UpdateResultImage(QString)), this, SLOT(UpdateResultImage(QString))) ;
+						//connect(this, SIGNAL(UpdateFormInfo()), theWidgetItem, SLOT(UpdateInfo())) ;		//mainwindow(UpdateInfoJob) --> FormJobBase(UpdateInfo)
+
+						QSize item_size = theWidgetItem->size() ;
+	                    treeJobItem->setSizeHint(0, item_size);
+
+	                    ui->treeWidget_job->setItemWidget(treeJobItem, 0, theWidgetItem);
+					}
+					
 					//---------------------------
 	                //Tool list
 	                for (pugi::xml_node tool: job.child("Tools").children("Tool"))

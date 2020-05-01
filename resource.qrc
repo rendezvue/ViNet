@@ -17,5 +17,8 @@
         <file>image/icons/clear.png</file>
         <file>image/icons/new_project.png</file>
         <file>image/icons/camera_config.png</file>
+        <file>image/icons/coding.png</file>
+        <file>image/python_64x64.png</file>
+        <file>image/python2_64x64.png</file>
     </qresource>
 </RCC>
