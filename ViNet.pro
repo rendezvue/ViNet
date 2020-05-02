@@ -94,7 +94,8 @@ HEADERS += \
     src/dialogdblist.h \
     src/dialogsetcolorcompare.h \
     src/formtooloptionwithprogress.h \
-    src/formjobbasecode.h
+    src/formjobbasecode.h \
+    src/dialogcoding.h
 
 SOURCES += \
     module/EnsembleAPI/src/Interface.cpp \
@@ -155,7 +156,8 @@ SOURCES += \
     src/dialogdblist.cpp \
     src/dialogsetcolorcompare.cpp \
     src/formtooloptionwithprogress.cpp \
-    src/formjobbasecode.cpp
+    src/formjobbasecode.cpp \
+    src/dialogcoding.cpp
 
 FORMS += \
     ui/cdialogconnect.ui \
@@ -193,7 +195,8 @@ FORMS += \
     ui/dialogdblist.ui \
     ui/dialogsetcolorcompare.ui \
     ui/formtooloptionwithprogress.ui \
-    ui/formjobbasecode.ui
+    ui/formjobbasecode.ui \
+    ui/dialogcoding.ui
 
 DISTFILES += \
     module/ImageBuf2Mat/LICENSE
