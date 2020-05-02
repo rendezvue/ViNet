@@ -43,7 +43,11 @@ void DialogCoding::OnButtonDownload(void)
 
 void DialogCoding::OnButtonUploadAndRun(void)
 {
+	//Code Upload
 	OnButtonUpdate() ;
+
+	//Run
+	CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Job_Run_Python_Code(GetId()) ;
 }
 
 void DialogCoding::OnButtonUpdate(void)
