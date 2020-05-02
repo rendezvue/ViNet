@@ -23,7 +23,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 # You can also select to disable deprecated APIs only up to a certain version of Qt.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
-INCLUDEPATH += ./src ./module/ImageBuf2Mat ./module/EnsembleAPI ./module/EnsembleAPI/src ./module/PacketEthComm ./module/PacketEthComm/Client ./module/EnsembleCommon ./module/EnsembleCommand ./module/ImgEncDec ./module/pugixml/src
+INCLUDEPATH += ./src ./module/ImageBuf2Mat ./module/EnsembleAPI ./module/EnsembleAPI/src ./module/EnsembleAPI/src/interface ./module/EnsembleAPI/module/PacketEthComm ./module/EnsembleAPI/module/PacketEthComm/Client ./module/EnsembleAPI/module/EnsembleCommon ./module/EnsembleAPI/module/EnsembleCommand ./module/ImgEncDec ./module/pugixml/src
 LIBS += -lboost_system -lboost_thread -lboost_filesystem -lboost_regex
 
 CONFIG += link_pkgconfig
@@ -33,11 +33,11 @@ RESOURCES += \
     resource.qrc
 
 HEADERS += \
-    module/EnsembleAPI/src/Interface.h \
-    module/EnsembleAPI/src/InterfaceControl.h \
-    module/EnsembleAPI/EnsembleAPI.h \
-    module/EnsembleCommand/EnsembleCommand.h \
-    module/EnsembleCommon/EnsembleCommon.h \
+    module/EnsembleAPI/src/interface/Interface.h \
+    module/EnsembleAPI/src/interface/InterfaceControl.h \
+    module/EnsembleAPI/src/EnsembleAPI.h \
+    module/EnsembleAPI/module/EnsembleCommand/EnsembleCommand.h \
+    module/EnsembleAPI/module/EnsembleCommon/EnsembleCommon.h \
     module/ImgEncDec/ImgDec.h \
     module/ImgEncDec/ImgEnc.h \
     module/pugixml/src/pugiconfig.hpp \
@@ -82,11 +82,11 @@ HEADERS += \
     src/dialogsettooloffsetdistance.h \
     src/dialogsetcode.h \
     src/dialogsetdetectplane.h \
-    module/PacketEthComm/ErrorType.h \
-    module/PacketEthComm/RendezvueCheckData.h \
-    module/PacketEthComm/EthernetGetInfo.h \
-    module/PacketEthComm/Client/EthernetClient.h \
-    module/PacketEthComm/Client/EthernetClientControlData.h \
+    module/EnsembleAPI/module/PacketEthComm/ErrorType.h \
+    module/EnsembleAPI/module/PacketEthComm/RendezvueCheckData.h \
+    module/EnsembleAPI/module/PacketEthComm/EthernetGetInfo.h \
+    module/EnsembleAPI/module/PacketEthComm/Client/EthernetClient.h \
+    module/EnsembleAPI/module/PacketEthComm/Client/EthernetClientControlData.h \
     src/dialogcheckforupdates.h \
     src/censemble.h \
     src/cnetworkinfo.h \
@@ -98,9 +98,9 @@ HEADERS += \
     src/dialogcoding.h
 
 SOURCES += \
-    module/EnsembleAPI/src/Interface.cpp \
-    module/EnsembleAPI/src/InterfaceControl.cpp \
-    module/EnsembleAPI/EnsembleAPI.cpp \
+    module/EnsembleAPI/src/interface/Interface.cpp \
+    module/EnsembleAPI/src/interface/InterfaceControl.cpp \
+    module/EnsembleAPI/src/EnsembleAPI.cpp \
     module/ImgEncDec/ImgDec.cpp \
     module/ImgEncDec/ImgEnc.cpp \
     module/pugixml/src/pugixml.cpp \
@@ -145,10 +145,10 @@ SOURCES += \
     src/dialogsettooloffsetdistance.cpp \
     src/dialogsetcode.cpp \
     src/dialogsetdetectplane.cpp \
-    module/PacketEthComm/EthernetGetInfo.cpp \
-    module/PacketEthComm/RendezvueCheckData.cpp \
-    module/PacketEthComm/Client/EthernetClient.cpp \
-    module/PacketEthComm/Client/EthernetClientControlData.cpp \
+    module/EnsembleAPI/module/PacketEthComm/EthernetGetInfo.cpp \
+    module/EnsembleAPI/module/PacketEthComm/RendezvueCheckData.cpp \
+    module/EnsembleAPI/module/PacketEthComm/Client/EthernetClient.cpp \
+    module/EnsembleAPI/module/PacketEthComm/Client/EthernetClientControlData.cpp \
     src/dialogcheckforupdates.cpp \
     src/censemble.cpp \
     src/cnetworkinfo.cpp \
