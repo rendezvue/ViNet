@@ -1,18 +1,9 @@
 [submodule "module/EnsembleAPI"]
 	path = module/EnsembleAPI
 	url = https://github.com/rendezvue/EnsembleAPI.git
-[submodule "module/EnsembleCommand"]
-	path = module/EnsembleCommand
-	url = https://github.com/rendezvue/EnsembleCommand.git
-[submodule "module/EnsembleCommon"]
-	path = module/EnsembleCommon
-	url = https://github.com/rendezvue/EnsembleCommon.git
 [submodule "module/ImgEncDec"]
 	path = module/ImgEncDec
 	url = https://github.com/rendezvue/ImgEncDec.git
-[submodule "module/PacketEthComm"]
-	path = module/PacketEthComm
-	url = https://github.com/rendezvue/PacketEthComm.git
 [submodule "module/pugixml"]
 	path = module/pugixml
 	url = https://github.com/rendezvue/pugixml.git
