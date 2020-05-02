@@ -20,6 +20,7 @@ FormJobBaseCode::FormJobBaseCode(QWidget *parent) :
     connect(ui->pushButton_change, SIGNAL(clicked()), this,  SLOT(OnButtonEdit())) ;
 	connect(ui->pushButton_run, SIGNAL(clicked()), this,  SLOT(OnButtonRun())) ;
 
+	connect(&m_dlg_coding, SIGNAL(UpdateBaseName(QString)), this, SLOT(OnUpdateName(QString))) ;
 	//connect(&m_dlg_setbase_detect_objet, SIGNAL(UpdateBaseName(QString)), this, SLOT(OnUpdateName(QString))) ;
 
 	//check box
@@ -121,6 +122,13 @@ void FormJobBaseCode::OnButtonEdit(void)
 	
     if( type == BaseTypeList::BASE_TYPE_PYTHON )		
 	{
+	    m_dlg_coding.SetId(GetIdInfo());
+
+	    int dialogCode = m_dlg_coding.exec();
+
+	    if(dialogCode == QDialog::Accepted)
+	    {
+	    }
 	}
 }
 

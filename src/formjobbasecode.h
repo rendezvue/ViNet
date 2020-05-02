@@ -14,6 +14,9 @@
 
 #include "cnetworkinfo.h"
 
+#include "dialogcoding.h"
+
+
 
 namespace Ui {
 class FormJobBaseCode;
@@ -50,6 +53,9 @@ protected:
 	
     int m_type ;
 	std::string m_str_result ;
+
+private:
+	DialogCoding m_dlg_coding ;
 	
 signals:
     void UpdateList(void);
