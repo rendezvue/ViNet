@@ -37,15 +37,18 @@ void DialogCoding::OnButtonDownload(void)
 	QString qstr_code = QString::fromUtf8(code.c_str());
 	
 	ui->plainTextEdit_code->setPlainText(qstr_code);
-
-	OnButtonUpdate() ;
 }
 
 void DialogCoding::OnButtonUploadAndRun(void)
 {
 	//Code Upload
-	OnButtonUpdate() ;
+	OnButtonUpload() ;
 
+	//Update
+	OnButtonUpdate() ;
+	//Download
+	OnButtonDownload() ;
+	
 	//Run
 	CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Job_Run_Python_Code(GetId()) ;
 }
@@ -80,6 +83,7 @@ void DialogCoding::showEvent(QShowEvent *ev)
     ui->label_name->setText(QString::fromUtf8(base_name.c_str()));
 
 	OnButtonUpdate() ;
+	OnButtonDownload() ;
 }
 
 void DialogCoding::OnButtonNameChange(void)
