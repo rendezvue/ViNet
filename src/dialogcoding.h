@@ -44,6 +44,7 @@ public slots:
 	void OnButtonUpload(void) ;	
 	void OnButtonDownload(void) ;	
 	void OnButtonUploadAndRun(void) ;	
+	void OnButtonUpdate(void) ;
 
 signals:
 	void UpdateBaseName(QString name) ;	

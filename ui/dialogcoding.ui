@@ -121,7 +121,7 @@
     <string>Download</string>
    </property>
   </widget>
-  <widget class="QPlainTextEdit" name="plainTextEdit_code_2">
+  <widget class="QPlainTextEdit" name="plainTextEdit_code_ensemble">
    <property name="geometry">
     <rect>
      <x>500</x>
@@ -134,7 +134,26 @@
     <bool>true</bool>
    </property>
   </widget>
+  <widget class="QPushButton" name="pushButton_update">
+   <property name="geometry">
+    <rect>
+     <x>960</x>
+     <y>50</y>
+     <width>20</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="icon">
+    <iconset resource="../resource.qrc">
+     <normaloff>:/icons/image/icons/refresh.png</normaloff>:/icons/image/icons/refresh.png</iconset>
+   </property>
+  </widget>
  </widget>
- <resources/>
+ <resources>
+  <include location="../resource.qrc"/>
+ </resources>
  <connections/>
 </ui>

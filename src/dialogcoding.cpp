@@ -12,6 +12,7 @@ DialogCoding::DialogCoding(QWidget *parent) :
 	connect(ui->pushButton_upload, SIGNAL(clicked()), this,  SLOT(OnButtonUpload())) ;
 	connect(ui->pushButton_download, SIGNAL(clicked()), this,  SLOT(OnButtonDownload())) ;
 	connect(ui->pushButton_upload_and_run, SIGNAL(clicked()), this,  SLOT(OnButtonUploadAndRun())) ;
+	connect(ui->pushButton_update, SIGNAL(clicked()), this,  SLOT(OnButtonUpdate())) ;
 }
 
 DialogCoding::~DialogCoding()
@@ -21,16 +22,38 @@ DialogCoding::~DialogCoding()
 
 void DialogCoding::OnButtonUpload(void)
 {
-	CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Job_Get_Name(GetId()) ;
+	std::string code ;
+	code = ui->plainTextEdit_code->toPlainText().toStdString();;
+	
+	CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Job_Set_Python_Code(GetId(), code) ;
+
+	//Get Code from Ensemble
+	OnButtonUpdate() ;
 }
 
 void DialogCoding::OnButtonDownload(void)
 {
+	const std::string code = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Job_Get_Python_Code(GetId()) ;
+	QString qstr_code = QString::fromUtf8(code.c_str());
+	
+	ui->plainTextEdit_code->setPlainText(qstr_code);
+
+	OnButtonUpdate() ;
 }
 
 void DialogCoding::OnButtonUploadAndRun(void)
 {
+	OnButtonUpdate() ;
 }
+
+void DialogCoding::OnButtonUpdate(void)
+{
+	//Get Code from Ensemble
+	const std::string code = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Job_Get_Python_Code(GetId()) ;
+	QString qstr_code = QString::fromUtf8(code.c_str());
+	ui->plainTextEdit_code_ensemble->setPlainText(qstr_code);
+}
+
 
 void DialogCoding::SetId(const std::string id)
 {
@@ -52,6 +75,7 @@ void DialogCoding::showEvent(QShowEvent *ev)
     std::string base_name = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Job_Get_Name(GetId()) ;
     ui->label_name->setText(QString::fromUtf8(base_name.c_str()));
 
+	OnButtonUpdate() ;
 }
 
 void DialogCoding::OnButtonNameChange(void)
