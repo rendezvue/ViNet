@@ -13,7 +13,7 @@
 
 #include "dialogchangename.h"
 #include "cnetworkinfo.h"
-
+#include "cparsingaddablejoblist.h"
 
 namespace Ui {
 class FormProject;

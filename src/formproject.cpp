@@ -34,17 +34,39 @@ FormProject::~FormProject()
 
 void FormProject::ShowContextMenu(const QPoint &pos)
 {
-	QMenu contextMenu(tr("Context menu"), this);
+	CEnsembleAPI *p_device = CEnsemble::getInstance()->GetDevice(GetNetworkInfo_Ip_Address(), GetNetworkInfo_Port()) ;
 
-	//Get Sub Job List
-	const std::string str_addable_job_list_xml = CEnsemble::getInstance()->Ensemble_Info_Get_Addable_Subjob_List_Xml(GetIdInfo()) ;
-	
-	
-	QAction action1("Remove Data Point", this);
-	connect(&action1, SIGNAL(triggered()), this, SLOT(removeDataPoint()));
+	if( p_device )
+	{
+		QMenu contextMenu(tr("Context menu"), this);
 
-	contextMenu.addAction(&action1);
-	contextMenu.exec(mapToGlobal(pos));
+		//Get Sub Job List
+		const std::string str_addable_job_list_xml = p_device->Ensemble_Info_Get_Addable_Subjob_List_Xml(GetIdInfo()) ;
+
+		//parsing
+		CParsingAddableJobList cls_parsing_addable_job_list ;
+		std::vector<AddableJobInfo> vec_list = cls_parsing_addable_job_list.GetAddableJobList(str_addable_job_list_xml) ;
+
+        const int size_list = vec_list.size() ;
+		for( int i=0 ; i<size_list ; i++ )
+		{
+            std::string str_menu ;
+            str_menu = "New " + vec_list[i].name + "(" + vec_list[i].description + ")" ;
+			
+            //QAction action1(str_name.c_str(), this);
+            //connect(&action1, SIGNAL(triggered()), this, SLOT(removeDataPoint()));
+
+            //contextMenu.addAction(&action1);
+            contextMenu.addAction(str_menu.c_str());
+            //contextMenu.exec(mapToGlobal(pos));
+        }
+
+        QAction* selectedItem = contextMenu.exec(mapToGlobal(pos));
+        if( selectedItem )
+        {
+
+        }
+	}
 }
 
 void FormProject::SetNameInfo(const std::string name)

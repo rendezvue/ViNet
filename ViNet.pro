@@ -95,7 +95,8 @@ HEADERS += \
     src/dialogsetcolorcompare.h \
     src/formtooloptionwithprogress.h \
     src/formjobbasecode.h \
-    src/dialogcoding.h
+    src/dialogcoding.h \
+    src/cparsingaddablejoblist.h
 
 SOURCES += \
     module/EnsembleAPI/src/interface/Interface.cpp \
@@ -157,7 +158,8 @@ SOURCES += \
     src/dialogsetcolorcompare.cpp \
     src/formtooloptionwithprogress.cpp \
     src/formjobbasecode.cpp \
-    src/dialogcoding.cpp
+    src/dialogcoding.cpp \
+    src/cparsingaddablejoblist.cpp
 
 FORMS += \
     ui/cdialogconnect.ui \
