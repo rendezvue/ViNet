@@ -177,7 +177,7 @@ void DialogSetCalibration::OnButtonUpdateCalibrationInfo(void)
 	//calibration image list
 	int nCalibrationInfo = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Job_Calibration_GetCount(GetId());
 
-    qDebug("Calibration count = %d", nCalibrationInfo) ;
+    //qDebug("Calibration count = %d", nCalibrationInfo) ;
 
 	for (int i = 0; i < nCalibrationInfo; i++)
 	{
@@ -273,7 +273,7 @@ void DialogSetCalibration::OnButtonCalibrationCopyListUpdate(void)
 	
     if (!result)
     {
-        qDebug("DialogSetCalibration::OnButtonCalibrationCopyListUpdate - xml parsing error") ;
+        //qDebug("DialogSetCalibration::OnButtonCalibrationCopyListUpdate - xml parsing error") ;
     }
     else
     {
@@ -299,7 +299,7 @@ void DialogSetCalibration::OnButtonCalibrationCopyListUpdate(void)
 
 		if (!result)
 	    {
-	        qDebug("DialogSetCalibration::OnButtonCalibrationCopyListUpdate - str_xml_has_job_info parsing error") ;
+	        //qDebug("DialogSetCalibration::OnButtonCalibrationCopyListUpdate - str_xml_has_job_info parsing error") ;
 	    }
 	    else
 	    {

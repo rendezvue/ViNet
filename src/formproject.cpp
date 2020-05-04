@@ -74,14 +74,14 @@ void FormProject::ShowContextMenu(const QPoint &pos)
             std::string str_txt = txt.toUtf8().constData();
             const int type = selectedItem->data().toInt() ;
 
-            qDebug("select item = %s, type = %d", str_txt.c_str(), type) ;
+            //qDebug("select item = %s, type = %d", str_txt.c_str(), type) ;
 
 			//new job
 			if( type >= JobType::JOB_TYPE_BASE && type < JobType::JOB_TYPE_BASE+10000 )
 			{
 				const std::string str_id = GetIdInfo() ;
 				
-				qDebug("call API : CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Job_Add_New(%s)", str_id.c_str()) ;
+				//qDebug("call API : CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Job_Add_New(%s)", str_id.c_str()) ;
 				
 				CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Job_Add_New(str_id, type) ;
 
@@ -91,7 +91,7 @@ void FormProject::ShowContextMenu(const QPoint &pos)
 			/*
 			if( item_from_type >= JobType::JOB_TYPE_BASE && item_from_type < JobType::JOB_TYPE_BASE+10000 )
 			{
-				qDebug("call API : CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Job_Add_New(%s)", str_target_id.c_str()) ;
+				//qDebug("call API : CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Job_Add_New(%s)", str_target_id.c_str()) ;
 				
 				CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Job_Add_New(str_target_id, item_from_type) ;
 			}
@@ -124,13 +124,13 @@ void FormProject::SetIdInfo(const std::string id)
 std::string FormProject::GetIdInfo(void)
 {
 #if 0
-	qDebug("Call FormProject::GetIdInfo") ;
+	//qDebug("Call FormProject::GetIdInfo") ;
 	
     QString id = ui->label_id->text() ;
 
     std::string str_id = id.toUtf8().constData();
 
-	qDebug("Call FormProject::GetIdInfo ID = %s", str_id.c_str()) ;
+	//qDebug("Call FormProject::GetIdInfo ID = %s", str_id.c_str()) ;
 #endif
 
     return m_str_id ;
@@ -160,12 +160,12 @@ bool FormProject::event(QEvent * e)
 
 void FormProject::enterEvent(QEvent * e)
 {
-    //qDebug() << Q_FUNC_INFO << e->type();
+    ////qDebug() << Q_FUNC_INFO << e->type();
 }
 
 void FormProject::leaveEvent(QEvent * e)
 {
-    //qDebug() << Q_FUNC_INFO << e->type();
+    ////qDebug() << Q_FUNC_INFO << e->type();
 }
 
 
@@ -175,7 +175,7 @@ void FormProject::hoverEnter(QHoverEvent * event)
 	ui->pushButton_run->setVisible(true);
 	ui->pushButton_del->setVisible(true);
 
-    //qDebug() << Q_FUNC_INFO << event->type();
+    ////qDebug() << Q_FUNC_INFO << event->type();
 }
 
 void FormProject::hoverLeave(QHoverEvent * event)
@@ -184,12 +184,12 @@ void FormProject::hoverLeave(QHoverEvent * event)
 	ui->pushButton_run->setVisible(false);
 	ui->pushButton_del->setVisible(false);
 	
-    //qDebug() << Q_FUNC_INFO << event->type();
+    ////qDebug() << Q_FUNC_INFO << event->type();
 }
 
 void FormProject::hoverMove(QHoverEvent * event)
 {
-    //qDebug() << Q_FUNC_INFO << event->type() ;
+    ////qDebug() << Q_FUNC_INFO << event->type() ;
 }
 
 void FormProject::OnButtonSetName(void)
@@ -209,7 +209,7 @@ void FormProject::OnButtonSetName(void)
 		{ 
 	        std::string change_name = dlg_change_name.GetName() ;
 
-	        qDebug("Project Change Name = %s", change_name.c_str()) ;
+	        //qDebug("Project Change Name = %s", change_name.c_str()) ;
 			
 	        if( !change_name.empty() )
 	        {
@@ -219,7 +219,7 @@ void FormProject::OnButtonSetName(void)
 	        std::string project_name = p_device->Ensemble_Project_Get_Name(GetIdInfo()) ;
 	        ui->label_name->setText(QString::fromUtf8(project_name.c_str()));
 
-	        qDebug("Project Name = %s", project_name.c_str()) ;
+	        //qDebug("Project Name = %s", project_name.c_str()) ;
 		}
     }
 }
@@ -244,7 +244,7 @@ void FormProject::OnButtonRun(void)
 	{ 
 		std::string str_result_xml = p_device->Ensemble_Poject_Run(GetIdInfo()) ;
 
-		qDebug("Project Result = %s", str_result_xml.c_str()) ;
+		//qDebug("Project Result = %s", str_result_xml.c_str()) ;
 
 		QString qstr_id = QString::fromStdString(GetIdInfo());
 
@@ -269,7 +269,7 @@ void FormProject::showEvent(QShowEvent *ev)
 
 void FormProject::OnTriggerRunCheckBoxToggled(bool checked)
 {
-	qDebug("Trigger Run Check = %d", checked) ;
+	//qDebug("Trigger Run Check = %d", checked) ;
 
 	CEnsembleAPI *p_device = CEnsemble::getInstance()->GetDevice(GetNetworkInfo_Ip_Address(), GetNetworkInfo_Port()) ;
 

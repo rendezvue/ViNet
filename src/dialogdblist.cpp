@@ -32,7 +32,7 @@ void DialogDbList::showEvent(QShowEvent *ev)
 	{ 
 		std::string str_db_list_xml = p_device->Ensemble_DB_Get_List() ;
 
-		qDebug("db list = %s", str_db_list_xml.c_str()) ;
+		//qDebug("db list = %s", str_db_list_xml.c_str()) ;
 
 		if( !str_db_list_xml.empty() )
 		{
@@ -42,7 +42,7 @@ void DialogDbList::showEvent(QShowEvent *ev)
 
 			if (!result)
 			{
-				qDebug("DB list xml parsing error") ;
+				//qDebug("DB list xml parsing error") ;
 			}
 			else
 			{
@@ -87,7 +87,7 @@ std::vector<std::string> DialogDbList::Get_Sel_DB(void)
 
 		std::string str_db_id = str_db.substr(start_id, (end_id - start_id));
 
-		qDebug("DB sel id = %s(%s)", str_db.c_str(), str_db_id.c_str() ) ;
+		//qDebug("DB sel id = %s(%s)", str_db.c_str(), str_db_id.c_str() ) ;
 
 		if( !str_db_id.empty() )
 		{

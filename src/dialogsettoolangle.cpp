@@ -37,7 +37,7 @@ void DialogSetToolAngle::showEvent(QShowEvent *ev)
     std::string tool_name = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Tool_Get_Name(GetId()) ;
     ui->label_name_angle->setText(QString::fromUtf8(tool_name.c_str()));
 
-    qDebug("Tool Name = %s", tool_name.c_str()) ;
+    //qDebug("Tool Name = %s", tool_name.c_str()) ;
 
 	//Calc Distance
     OnButtonGetCalcAngle() ;
@@ -138,7 +138,7 @@ void DialogSetToolAngle::OnButtonNameChange(void)
     { // YesButton clicked
         std::string change_name = dlg_change_name.GetName() ;
 
-        qDebug("Tool Change Name = %s", change_name.c_str()) ;
+        //qDebug("Tool Change Name = %s", change_name.c_str()) ;
 		
         if( !change_name.empty() )
         {
@@ -148,7 +148,7 @@ void DialogSetToolAngle::OnButtonNameChange(void)
         tool_name = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Tool_Get_Name(GetId()) ;
         ui->label_name_angle->setText(QString::fromUtf8(tool_name.c_str()));
 
-        qDebug("Tool Name = %s", tool_name.c_str()) ;
+        //qDebug("Tool Name = %s", tool_name.c_str()) ;
 		
 		emit UpdateToolName(QString::fromUtf8(tool_name.c_str())) ;
     }

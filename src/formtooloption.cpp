@@ -144,12 +144,12 @@ bool FormToolOption::event(QEvent * e)
 
 void FormToolOption::enterEvent(QEvent * e)
 {
-    //qDebug() << Q_FUNC_INFO << e->type();
+    ////qDebug() << Q_FUNC_INFO << e->type();
 }
 
 void FormToolOption::leaveEvent(QEvent * e)
 {
-    //qDebug() << Q_FUNC_INFO << e->type();
+    ////qDebug() << Q_FUNC_INFO << e->type();
 }
 
 void FormToolOption::OnButtonDel(void)
@@ -168,7 +168,7 @@ void FormToolOption::OnButtonSet(void)
 {
 	const int type = GetType() ;
 
-	qDebug("Set : Type = %d", type) ;
+	//qDebug("Set : Type = %d", type) ;
 
 	if( type == ToolTypeList::TOOL_TYPE_OPTION_INSPECT_CRACK || type == ToolTypeList::TOOL_TYPE_OPTION_INSPECT_CRACK2 )
 	{
@@ -352,7 +352,7 @@ void FormToolOption::SetAlarm(const bool b_on_off)
 	{
         ui->label_bg->setStyleSheet(QString("background-color: rgb(255, 0, 0);"));
 		
-        qDebug("%s : Tool Option Alarm Set!", GetIdInfo().c_str()) ;
+        //qDebug("%s : Tool Option Alarm Set!", GetIdInfo().c_str()) ;
 #if 0
 		QPropertyAnimation *animation = new QPropertyAnimation(ui->label_bg, "color");
 		animation->setDuration(2000);

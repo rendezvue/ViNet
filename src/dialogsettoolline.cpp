@@ -44,7 +44,7 @@ void DialogSetToolLine::showEvent(QShowEvent *ev)
     std::string tool_name = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Tool_Get_Name(GetId()) ;
     ui->label_name_line->setText(QString::fromUtf8(tool_name.c_str()));
 
-    qDebug("Tool Name = %s", tool_name.c_str()) ;
+    //qDebug("Tool Name = %s", tool_name.c_str()) ;
 	
 	//Get Level 
     int feature_level = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Tool_Get_FeatureLevel(GetId());
@@ -79,7 +79,7 @@ void DialogSetToolLine::OnButtonNameChange(void)
     { // YesButton clicked
         std::string change_name = dlg_change_name.GetName() ;
 
-        qDebug("Tool Change Name = %s", change_name.c_str()) ;
+        //qDebug("Tool Change Name = %s", change_name.c_str()) ;
 		
         if( !change_name.empty() )
         {
@@ -89,7 +89,7 @@ void DialogSetToolLine::OnButtonNameChange(void)
         tool_name = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Tool_Get_Name(GetId()) ;
         ui->label_name_line->setText(QString::fromUtf8(tool_name.c_str()));
 
-        qDebug("Tool Name = %s", tool_name.c_str()) ;
+        //qDebug("Tool Name = %s", tool_name.c_str()) ;
 		
 		emit UpdateToolName(QString::fromUtf8(tool_name.c_str())) ;
     }
@@ -155,7 +155,7 @@ void DialogSetToolLine::updatePicture(cv::Mat image, cv::Rect rect_user)
 	//draw set rect
     if( !(rect_user.width <= 0 || rect_user.height <= 0) )
 	{
-	    qDebug("%s : rect(%d,%d,%d,%d", __func__, rect_user.x, rect_user.y, rect_user.width, rect_user.height) ;
+	    //qDebug("%s : rect(%d,%d,%d,%d", __func__, rect_user.x, rect_user.y, rect_user.width, rect_user.height) ;
 
 		if( rect_user.width > 0 && rect_user.height > 0 && m_pt_start.x >= 0 && m_pt_start.y >= 0 && m_pt_end.x >= 0 && m_pt_end.y >= 0 )
 		{
@@ -250,20 +250,20 @@ void DialogSetToolLine::OnSliderSetFeatureLevel(void)
     //get level
     int level = ui->horizontalSlider_feature_level_line->value() ;
 
-	qDebug("%s : SetFeatureLevel = %d", __func__, level) ;
+	//qDebug("%s : SetFeatureLevel = %d", __func__, level) ;
 	//set level
     CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Tool_Set_FeatureLevel(GetId(), level);
 
 	//Update Image
-	qDebug("%s : GetImage", __func__) ;
+	//qDebug("%s : GetImage", __func__) ;
 	OnButtonGetImage() ;
 
-	qDebug("%s : GetFeatureLevel", __func__) ;
+	//qDebug("%s : GetFeatureLevel", __func__) ;
 	
 	//Get Level 
     int feature_level = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Tool_Get_FeatureLevel(GetId());
 
-	qDebug("%s : GetFeatureLevel = %d", __func__, feature_level) ;
+	//qDebug("%s : GetFeatureLevel = %d", __func__, feature_level) ;
 	
 	//Set Slider
     ui->horizontalSlider_feature_level_line->setValue(feature_level) ;
@@ -300,7 +300,7 @@ void DialogSetToolLine::OnButtonResetObject(void)
 #if 1
 void DialogSetToolLine::mousePressEvent(QMouseEvent *event)
 {
-    qDebug("%s - %d", __func__, __LINE__) ;
+    //qDebug("%s - %d", __func__, __LINE__) ;
 
     if (event->button() == Qt::LeftButton && m_cls_set_user_region.GetStatus() > SetBaseStatus::NORMAL ) 
 	{
@@ -319,7 +319,7 @@ void DialogSetToolLine::mousePressEvent(QMouseEvent *event)
 
 void DialogSetToolLine::mouseMoveEvent(QMouseEvent *event)
 {
-    qDebug("%s - %d", __func__, __LINE__) ;
+    //qDebug("%s - %d", __func__, __LINE__) ;
 
     if ((event->buttons() & Qt::LeftButton) && m_cls_set_user_region.GetStatus() > SetBaseStatus::NORMAL)
 	{
@@ -345,11 +345,11 @@ void DialogSetToolLine::mouseReleaseEvent(QMouseEvent *event)
 	//Set
 	int set_status = m_cls_set_user_region.GetStatus() ;
 
-	qDebug("%s - %d : m_set_status(%d), event->buttons()=%d", __func__, __LINE__, set_status, event->buttons()) ;
+	//qDebug("%s - %d : m_set_status(%d), event->buttons()=%d", __func__, __LINE__, set_status, event->buttons()) ;
 	
     if (set_status > SetBaseStatus::NORMAL)
 	{
-		qDebug("%s - %d", __func__, __LINE__) ;
+		//qDebug("%s - %d", __func__, __LINE__) ;
 		
 		float f_x = 0.0 ;
 		float f_y = 0.0 ;
@@ -366,7 +366,7 @@ void DialogSetToolLine::mouseReleaseEvent(QMouseEvent *event)
         f_w = (float)rect_user.width / (float)label_w ;
         f_h = (float)rect_user.height / (float)label_h ;
 
-		qDebug("%s - %d : m_set_status(%d)", __func__, __LINE__, set_status) ;
+		//qDebug("%s - %d : m_set_status(%d)", __func__, __LINE__, set_status) ;
 		
         if( set_status == SetBaseStatus::SET_AREA )
         {

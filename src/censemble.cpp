@@ -123,7 +123,7 @@ std::string CEnsemble::GetDeviceJobInfo(const int index)
 	{
 		const int size_device = m_list_ensembles.size();
 
-		qDebug("GetDeviceJobInfo : all : size_device=%d", size_device) ;
+		//qDebug("GetDeviceJobInfo : all : size_device=%d", size_device) ;
 
 		for( int i=0 ; i<size_device ; i++ )
 		{
@@ -131,7 +131,7 @@ std::string CEnsemble::GetDeviceJobInfo(const int index)
 
 			if( p_device )
 			{
-				qDebug("GetDeviceJobInfo : all : %d device", i) ;
+				//qDebug("GetDeviceJobInfo : all : %d device", i) ;
 				
 				str_xml_device_info += p_device->Ensemble_Project_Get_List() ;
 			}
@@ -143,7 +143,7 @@ std::string CEnsemble::GetDeviceJobInfo(const int index)
 
 		if( p_device )
 		{
-			qDebug("GetDeviceJobInfo : %d device", index) ;
+			//qDebug("GetDeviceJobInfo : %d device", index) ;
 			
 			str_xml_device_info += p_device->Ensemble_Project_Get_List() ;
 		}

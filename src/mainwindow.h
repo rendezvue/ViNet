@@ -91,7 +91,7 @@ protected:
 						int port ;
 	                	p_device->Ensemble_Network_GetInfo(&str_ip, &port);
 						
-	                    qDebug("Try Re-Connect = %s:%d", str_ip.c_str(), port) ;
+	                    //qDebug("Try Re-Connect = %s:%d", str_ip.c_str(), port) ;
 	                    //try re-connect
 	                    p_device->Ensemble_Network_Disconnect() ;
 	                    p_device->Ensemble_Network_Connect(str_ip.c_str(), port) ;

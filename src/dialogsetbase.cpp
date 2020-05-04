@@ -106,9 +106,9 @@ void DialogSetBase::showEvent(QShowEvent *ev)
     ui->lineEdit_detect_threshold->setText(QString("%2").arg(detect_option_threshold)) ;
     ui->lineEdit_detect_count->setText(QString::number(detect_option_count)) ;
 
-    qDebug("Detect Option : Margin = %d", detect_option_margin) ;
-    qDebug("Detect Option : Threshold = %f", detect_option_threshold) ;
-    qDebug("Detect Option : Count = %d", detect_option_count) ;
+    //qDebug("Detect Option : Margin = %d", detect_option_margin) ;
+    //qDebug("Detect Option : Threshold = %f", detect_option_threshold) ;
+    //qDebug("Detect Option : Count = %d", detect_option_count) ;
 #endif
 
     OnButtonGetImage() ;	
@@ -141,7 +141,7 @@ void DialogSetBase::updatePicture(cv::Mat image, cv::Rect rect_user)
     if( !(rect_user.width <= 0 || rect_user.height <= 0) )
 	{
 		//draw set rect
-	    qDebug("%s : rect(%d,%d,%d,%d", __func__, rect_user.x, rect_user.y, rect_user.width, rect_user.height) ;
+	    //qDebug("%s : rect(%d,%d,%d,%d", __func__, rect_user.x, rect_user.y, rect_user.width, rect_user.height) ;
 
 		if( rect_user.width > 0 && rect_user.height > 0 )
 		{
@@ -183,7 +183,7 @@ void DialogSetBase::updatePictureCenterLine(cv::Mat image, cv::Point pt_user)
 	QImage qt_display_image = cls_mat_2_qimage.cvtMat2QImage(image, ui->label_image->width(), ui->label_image->height()) ;
 
     //draw set rect
-    qDebug("%s : point(%d,%d)", __func__, pt_user.x, pt_user.y) ;
+    //qDebug("%s : point(%d,%d)", __func__, pt_user.x, pt_user.y) ;
 
     if( pt_user.x > 0 && pt_user.y > 0 )
     {
@@ -403,7 +403,7 @@ void DialogSetBase::OnSliderMove(int value)
 #if 1
 void DialogSetBase::mousePressEvent(QMouseEvent *event)
 {
-    qDebug("%s - %d", __func__, __LINE__) ;
+    //qDebug("%s - %d", __func__, __LINE__) ;
 
     if (event->button() == Qt::LeftButton && m_cls_set_user_region.GetStatus() > SetBaseStatus::NORMAL ) 
 	{
@@ -419,7 +419,7 @@ void DialogSetBase::mousePressEvent(QMouseEvent *event)
 
 void DialogSetBase::mouseMoveEvent(QMouseEvent *event)
 {
-    qDebug("%s - %d", __func__, __LINE__) ;
+    //qDebug("%s - %d", __func__, __LINE__) ;
 
     if ( m_cls_set_user_region.GetStatus() > SetBaseStatus::NORMAL)
 	{
@@ -448,11 +448,11 @@ void DialogSetBase::mouseReleaseEvent(QMouseEvent *event)
 	//Set
 	int set_status = m_cls_set_user_region.GetStatus() ;
 
-	qDebug("%s - %d : m_set_status(%d), event->buttons()=%d", __func__, __LINE__, set_status, event->buttons()) ;
+	//qDebug("%s - %d : m_set_status(%d), event->buttons()=%d", __func__, __LINE__, set_status, event->buttons()) ;
 	
     if (set_status > SetBaseStatus::NORMAL)
 	{
-		qDebug("%s - %d", __func__, __LINE__) ;
+		//qDebug("%s - %d", __func__, __LINE__) ;
 		
 		float f_x = 0.0 ;
 		float f_y = 0.0 ;
@@ -469,7 +469,7 @@ void DialogSetBase::mouseReleaseEvent(QMouseEvent *event)
         f_w = (float)rect_user.width / (float)label_w ;
         f_h = (float)rect_user.height / (float)label_h ;
 
-		qDebug("%s - %d : m_set_status(%d)", __func__, __LINE__, set_status) ;
+		//qDebug("%s - %d : m_set_status(%d)", __func__, __LINE__, set_status) ;
 		
         if( set_status == SetBaseStatus::SET_AREA )
         {
@@ -578,7 +578,7 @@ void DialogSetBase::OnButtonGetDetectOptionCount(void)
 
 void DialogSetBase::OnCheckFeatureUseCustomOption(bool checked)
 {
-    qDebug("Check = %d : Use Custom Feature", checked) ;
+    //qDebug("Check = %d : Use Custom Feature", checked) ;
 
 	CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Job_Set_UseCustomFeatureOption(GetId(), checked) ;
 	int use_custom_feature = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Job_Get_UseCustomFeatureOption(GetId()) ;

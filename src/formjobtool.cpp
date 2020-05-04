@@ -97,12 +97,12 @@ void FormJobTool::ShowContextMenu(const QPoint &pos)
             std::string str_txt = txt.toUtf8().constData();
             const int type = selectedItem->data().toInt() ;
 
-            qDebug("select item = %s, type = %d", str_txt.c_str(), type) ;
+            //qDebug("select item = %s, type = %d", str_txt.c_str(), type) ;
 
 			//new job
 			const std::string str_id = GetIdInfo() ;
 			
-			qDebug("call API : CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Tool_Add_NewOption(%s)", str_id.c_str()) ;
+			//qDebug("call API : CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Tool_Add_NewOption(%s)", str_id.c_str()) ;
 
 			CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Tool_Add_NewOption(str_id, type) ;
 
@@ -140,11 +140,11 @@ void FormJobTool::OnButtonSetBase(void)
 {
     int type = GetType() ;
 
-	qDebug("%s : type=%d", __func__, type) ;
+	//qDebug("%s : type=%d", __func__, type) ;
 	
     if( type == ToolTypeList::TOOL_TYPE_DETECT_OBJECT )		//obejct
 	{
-		qDebug("Object Set") ;
+		//qDebug("Object Set") ;
 		
 	    //DialogSetBase dlg_setbase ;
 	    m_dlg_set_tool_object.SetParentId(GetParentIdInfo());
@@ -158,7 +158,7 @@ void FormJobTool::OnButtonSetBase(void)
 	}
     if( type == ToolTypeList::TOOL_TYPE_DETECT_LINE )		//line
 	{	
-		qDebug("Line Set") ;
+		//qDebug("Line Set") ;
 		
 	    m_dlg_set_tool_line.SetParentId(GetParentIdInfo());
 	    m_dlg_set_tool_line.SetToolId(GetIdInfo());
@@ -171,7 +171,7 @@ void FormJobTool::OnButtonSetBase(void)
 	}
     else if( type == ToolTypeList::TOOL_TYPE_DETECT_CIRCLE )		//circle
    	{
-   		qDebug("Circle Set") ;
+   		//qDebug("Circle Set") ;
 		
 	    m_dlg_set_tool_circle.SetParentId(GetParentIdInfo());
 	    m_dlg_set_tool_circle.SetToolId(GetIdInfo());
@@ -184,7 +184,7 @@ void FormJobTool::OnButtonSetBase(void)
 	}
 	else if( type == ToolTypeList::TOOL_TYPE_DETECT_CODE )		//circle
    	{
-   		qDebug("Code Set") ;
+   		//qDebug("Code Set") ;
 		
 	    m_dlg_set_code.SetParentId(GetParentIdInfo());
 	    m_dlg_set_code.SetToolId(GetIdInfo());
@@ -197,7 +197,7 @@ void FormJobTool::OnButtonSetBase(void)
 	}
     else if( type == ToolTypeList::TOOL_TYPE_CALC_DISTANCE )
 	{
-		qDebug("Distance Set") ;
+		//qDebug("Distance Set") ;
 		
 	    m_dlg_set_tool_distance.SetParentId(GetParentIdInfo());
 	    m_dlg_set_tool_distance.SetToolId(GetIdInfo());
@@ -210,7 +210,7 @@ void FormJobTool::OnButtonSetBase(void)
 	}
 	else if( type == ToolTypeList::TOOL_TYPE_CALC_ANGLE )
 	{
-		qDebug("Angle Set") ;
+		//qDebug("Angle Set") ;
 		
 	    m_dlg_set_tool_angle.SetParentId(GetParentIdInfo());
 	    m_dlg_set_tool_angle.SetToolId(GetIdInfo());
@@ -223,7 +223,7 @@ void FormJobTool::OnButtonSetBase(void)
 	}
 	else if( type == ToolTypeList::TOOL_TYPE_OFFSET_DISTANCE )
 	{
-		qDebug("Offset Distance Set") ;
+		//qDebug("Offset Distance Set") ;
 		
 	    m_dlg_set_tool_offset_distance.SetParentId(GetParentIdInfo());
 	    m_dlg_set_tool_offset_distance.SetToolId(GetIdInfo());
@@ -247,7 +247,7 @@ void FormJobTool::OnButtonSetBase(void)
 	    { // YesButton clicked
 	        std::string change_name = dlg_change_name.GetName() ;
 
-	        qDebug("Project Change Name = %s", change_name.c_str()) ;
+	        //qDebug("Project Change Name = %s", change_name.c_str()) ;
 
 			CEnsembleAPI *p_device = CEnsemble::getInstance()->GetDevice(GetNetworkInfo_Ip_Address(), GetNetworkInfo_Port()) ;
 
@@ -261,7 +261,7 @@ void FormJobTool::OnButtonSetBase(void)
 		        std::string project_name = p_device->Ensemble_Tool_Get_Name(GetIdInfo()) ;
 		        ui->label_name->setText(QString::fromUtf8(project_name.c_str()));
 
-		        qDebug("Project Name = %s", project_name.c_str()) ;
+		        //qDebug("Project Name = %s", project_name.c_str()) ;
 			}
 	    }
 	}
@@ -269,7 +269,7 @@ void FormJobTool::OnButtonSetBase(void)
 #if 0
     else if( type == ToolTypeList::TOOL_TYPE_INSPECT_DISTANCE )
 	{
-		qDebug("Inspect Distance Set") ;
+		//qDebug("Inspect Distance Set") ;
 
 		m_dlg_set_tool_inspect_distance.SetParentId(GetParentIdInfo());
 	    m_dlg_set_tool_inspect_distance.SetToolId(GetIdInfo());
@@ -282,7 +282,7 @@ void FormJobTool::OnButtonSetBase(void)
 	}
     else if( type == ToolTypeList::TOOL_TYPE_INSPECT_CRACK )		//crack
    	{
-   		qDebug("Crack Set") ;
+   		//qDebug("Crack Set") ;
 		
    		//DialogSetBase dlg_setbase ;
 	    m_dlg_set_tool_crack.SetParentId(GetParentIdInfo());
@@ -401,12 +401,12 @@ bool FormJobTool::event(QEvent * e)
 
 void FormJobTool::enterEvent(QEvent * e)
 {
-    //qDebug() << Q_FUNC_INFO << e->type();
+    ////qDebug() << Q_FUNC_INFO << e->type();
 }
 
 void FormJobTool::leaveEvent(QEvent * e)
 {
-    //qDebug() << Q_FUNC_INFO << e->type();
+    ////qDebug() << Q_FUNC_INFO << e->type();
 }
 
 
@@ -418,7 +418,7 @@ void FormJobTool::hoverEnter(QHoverEvent * event)
 	//ui->checkBox_run->setVisible(true);
 	//ui->checkBox_view->setVisible(true);
 
-    //qDebug() << Q_FUNC_INFO << event->type();
+    ////qDebug() << Q_FUNC_INFO << event->type();
 }
 
 void FormJobTool::hoverLeave(QHoverEvent * event)
@@ -429,12 +429,12 @@ void FormJobTool::hoverLeave(QHoverEvent * event)
 	//ui->checkBox_run->setVisible(false);
 	//ui->checkBox_view->setVisible(false);
 	
-    //qDebug() << Q_FUNC_INFO << event->type();
+    ////qDebug() << Q_FUNC_INFO << event->type();
 }
 
 void FormJobTool::hoverMove(QHoverEvent * event)
 {
-    //qDebug() << Q_FUNC_INFO << event->type() ;
+    ////qDebug() << Q_FUNC_INFO << event->type() ;
 }
 
 void FormJobTool::OnUpdateImage(void)

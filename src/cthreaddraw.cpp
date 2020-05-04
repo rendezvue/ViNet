@@ -13,11 +13,11 @@ void CThreadDraw::run()
 {
     cv::VideoCapture cap(0); // open the default camera
 
-     qDebug("%s\n", __func__)  ;
+     //qDebug("%s\n", __func__)  ;
 
     if( !cap.isOpened() )
     {
-        qDebug("Fail : Camera Open") ;
+        //qDebug("Fail : Camera Open") ;
     }
 
     int count = 0 ;
@@ -28,7 +28,7 @@ void CThreadDraw::run()
             break;
         }
 
-        qDebug("Count = %d", count++)  ;
+        //qDebug("Count = %d", count++)  ;
 
         if( cap.isOpened() )
         {

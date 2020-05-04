@@ -53,7 +53,7 @@ void DialogSetToolOffsetDistance::showEvent(QShowEvent *ev)
     std::string tool_name = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Tool_Get_Name(GetId()) ;
     ui->label_name->setText(QString::fromUtf8(tool_name.c_str()));
 
-    qDebug("Tool Name = %s", tool_name.c_str()) ;
+    //qDebug("Tool Name = %s", tool_name.c_str()) ;
 
 	int direction = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Tool_Offset_Distance_Get_Direction(GetId()) ;
 
@@ -143,7 +143,7 @@ void DialogSetToolOffsetDistance::updatePicture(cv::Mat image, cv::Rect rect_use
 	//draw set rect
     if( !(rect_user.width <= 0 || rect_user.height <= 0) )
 	{
-	    qDebug("%s : rect(%d,%d,%d,%d", __func__, rect_user.x, rect_user.y, rect_user.width, rect_user.height) ;
+	    //qDebug("%s : rect(%d,%d,%d,%d", __func__, rect_user.x, rect_user.y, rect_user.width, rect_user.height) ;
 
 		if( rect_user.width > 0 && rect_user.height > 0 )
 		{
@@ -174,7 +174,7 @@ void DialogSetToolOffsetDistance::OnButtonNameChange(void)
     { // YesButton clicked
         std::string change_name = dlg_change_name.GetName() ;
 
-        qDebug("Tool Change Name = %s", change_name.c_str()) ;
+        //qDebug("Tool Change Name = %s", change_name.c_str()) ;
 		
         if( !change_name.empty() )
         {
@@ -184,7 +184,7 @@ void DialogSetToolOffsetDistance::OnButtonNameChange(void)
         tool_name = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Tool_Get_Name(GetId()) ;
         ui->label_name->setText(QString::fromUtf8(tool_name.c_str()));
 
-        qDebug("Tool Name = %s", tool_name.c_str()) ;
+        //qDebug("Tool Name = %s", tool_name.c_str()) ;
 		
 		emit UpdateToolName(QString::fromUtf8(tool_name.c_str())) ;
     }
@@ -207,7 +207,7 @@ void DialogSetToolOffsetDistance::OnButtonResetObject(void)
 
 void DialogSetToolOffsetDistance::mousePressEvent(QMouseEvent *event)
 {
-    qDebug("%s - %d", __func__, __LINE__) ;
+    //qDebug("%s - %d", __func__, __LINE__) ;
 
     if (event->button() == Qt::LeftButton && m_cls_set_user_region.GetStatus() > SetBaseStatus::NORMAL ) 
 	{
@@ -223,7 +223,7 @@ void DialogSetToolOffsetDistance::mousePressEvent(QMouseEvent *event)
 
 void DialogSetToolOffsetDistance::mouseMoveEvent(QMouseEvent *event)
 {
-    qDebug("%s - %d", __func__, __LINE__) ;
+    //qDebug("%s - %d", __func__, __LINE__) ;
 
    if ( m_cls_set_user_region.GetStatus() > SetBaseStatus::NORMAL)
 	{
@@ -250,11 +250,11 @@ void DialogSetToolOffsetDistance::mouseReleaseEvent(QMouseEvent *event)
 	//Set
 	int set_status = m_cls_set_user_region.GetStatus() ;
 
-	qDebug("%s - %d : m_set_status(%d), event->buttons()=%d", __func__, __LINE__, set_status, event->buttons()) ;
+	//qDebug("%s - %d : m_set_status(%d), event->buttons()=%d", __func__, __LINE__, set_status, event->buttons()) ;
 	
     if (set_status > SetBaseStatus::NORMAL)
 	{
-		qDebug("%s - %d", __func__, __LINE__) ;
+		//qDebug("%s - %d", __func__, __LINE__) ;
 		
 		float f_x = 0.0 ;
 		float f_y = 0.0 ;
@@ -271,7 +271,7 @@ void DialogSetToolOffsetDistance::mouseReleaseEvent(QMouseEvent *event)
         f_w = (float)rect_user.width / (float)label_w ;
         f_h = (float)rect_user.height / (float)label_h ;
 
-		qDebug("%s - %d : m_set_status(%d)", __func__, __LINE__, set_status) ;
+		//qDebug("%s - %d : m_set_status(%d)", __func__, __LINE__, set_status) ;
 		
         if( set_status == SetBaseStatus::SET_AREA )
         {

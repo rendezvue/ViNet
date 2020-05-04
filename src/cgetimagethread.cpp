@@ -50,7 +50,7 @@ void CGetImageThread::run(void)
 	                //ret = if( CEnsemble::getInstance()->GetSelectDevice() ) CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Job_Get_ResultImage(m_str_id, image_type, &get_data_result, &width_result, &height_result) ;
 	                ret += CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Result_Get_Image(m_str_id, image_type, &result_buf) ;
 
-	                //qDebug("Result Image Size = %d, %d", width_result, height_result) ;
+	                ////qDebug("Result Image Size = %d, %d", width_result, height_result) ;
 	            }
 	            else if( m_i_type == 2 )        //merge image = image + result
 	            {
@@ -63,8 +63,8 @@ void CGetImageThread::run(void)
                     ret = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Source_Get_Image(image_type+IMAGE_ADD_TIME+IMAGE_ADD_SOURCE_INFO, &image_buf) ;
 	            }
 
-	            //qDebug("Network return = %d", ret) ;
-	            //qDebug("Get Image Size = %d x %d", width, height) ;
+	            ////qDebug("Network return = %d", ret) ;
+	            ////qDebug("Get Image Size = %d x %d", width, height) ;
 	            //Check Get Data(Input Image)
 	            if( image_buf.p_buf != NULL )
 	            {
@@ -104,7 +104,7 @@ void CGetImageThread::run(void)
 	                }
 	            }
 
-	            //qDebug("Get Result Image") ;
+	            ////qDebug("Get Result Image") ;
 	            //Check Result Data
 	            if( result_buf.p_buf )
 	            {
@@ -145,13 +145,13 @@ void CGetImageThread::run(void)
 	                }
 	            }
 
-	            //qDebug("Get Image Mege") ;
+	            ////qDebug("Get Image Mege") ;
 
 	            if( m_i_type == 1 )        //result
 	            {
 	                //cv::imshow("result", m_mat_result_image) ;
 	                //cv::waitKey(1) ;
-	                //qDebug("input result image size = %d, %d", m_mat_result_image.cols, m_mat_result_image.rows) ;
+	                ////qDebug("input result image size = %d, %d", m_mat_result_image.cols, m_mat_result_image.rows) ;
 
 	                m_mat_result_image.copyTo(m_mat_input_image );
 	            }

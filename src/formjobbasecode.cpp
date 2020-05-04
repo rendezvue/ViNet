@@ -62,7 +62,7 @@ void FormJobBaseCode::OnButtonDel(void)
     	p_device->Ensemble_Job_Del(GetIdInfo()) ;
 	}
 
-	qDebug("emit UpdateList") ;
+	//qDebug("emit UpdateList") ;
 	
 	emit UpdateList();
 }
@@ -78,7 +78,7 @@ void FormJobBaseCode::OnButtonRun(void)
 	{
 		std::string str_result_xml = p_device->Ensemble_Job_Run(GetIdInfo()) ;
 
-		qDebug("Job Run = %s", str_result_xml.c_str()) ;
+		//qDebug("Job Run = %s", str_result_xml.c_str()) ;
 
 		QString qstr_id = QString::fromStdString(GetIdInfo());
 		emit UpdateResultImage(qstr_id) ;
@@ -118,7 +118,7 @@ void FormJobBaseCode::OnButtonEdit(void)
 {
 	int type = GetType() ;
 
-	qDebug("%s : type=%d", __func__, type) ;
+	//qDebug("%s : type=%d", __func__, type) ;
 	
     if( type == BaseTypeList::BASE_TYPE_PYTHON )		
 	{
@@ -163,12 +163,12 @@ bool FormJobBaseCode::event(QEvent * e)
 
 void FormJobBaseCode::enterEvent(QEvent * e)
 {
-    //qDebug() << Q_FUNC_INFO << e->type();
+    ////qDebug() << Q_FUNC_INFO << e->type();
 }
 
 void FormJobBaseCode::leaveEvent(QEvent * e)
 {
-    //qDebug() << Q_FUNC_INFO << e->type();
+    ////qDebug() << Q_FUNC_INFO << e->type();
 }
 
 
@@ -188,12 +188,12 @@ void FormJobBaseCode::hoverLeave(QHoverEvent * event)
 
 void FormJobBaseCode::hoverMove(QHoverEvent * event)
 {
-    //qDebug() << Q_FUNC_INFO << event->type() ;
+    ////qDebug() << Q_FUNC_INFO << event->type() ;
 }
 
 void FormJobBaseCode::OnRunCheckBoxToggled(bool checked)
 {
-	qDebug("Base Run Check = %d", checked) ;
+	//qDebug("Base Run Check = %d", checked) ;
 
 	std::string str_ip ;
 	int port ;

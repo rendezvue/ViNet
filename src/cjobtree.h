@@ -29,8 +29,8 @@ public:
 
     void drawPrimitive(PrimitiveElement element, const QStyleOption * option, QPainter * painter, const QWidget * widget) const
     {
-        //qDebug("%s", __func__) ;
-        //qDebug("element : (%d)%d", QStyle::PE_IndicatorItemViewItemDrop, element);
+        ////qDebug("%s", __func__) ;
+        ////qDebug("element : (%d)%d", QStyle::PE_IndicatorItemViewItemDrop, element);
 		
         if(element == QStyle::PE_IndicatorItemViewItemDrop)
         {

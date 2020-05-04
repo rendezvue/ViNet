@@ -73,7 +73,7 @@ void CJobTree::dropEvent(QDropEvent *event)
 		}
 	}
 
-    qDebug("CJobTree : %s : target_index=%d", __func__, target_index) ;
+    //qDebug("CJobTree : %s : target_index=%d", __func__, target_index) ;
     //delCandidateItem() ;
 
 	delCandidateItem() ;
@@ -92,13 +92,13 @@ void CJobTree::dropEvent(QDropEvent *event)
         dataStream >> item_from_type;		
 		int item_to_type = item->type() ;
 		
-        qDebug("dropEvent : New Job = item_from_type:%d -> item_to_type:%d", item_from_type, item_to_type) ;
+        //qDebug("dropEvent : New Job = item_from_type:%d -> item_to_type:%d", item_from_type, item_to_type) ;
 
         QVariant item_user_data = item->data(0, Qt::UserRole+1) ;
         QString job_target_id = item_user_data.toString() ;
         std::string str_target_id = job_target_id.toUtf8().constData() ;
 
-        qDebug("dropEvent : project id = %s", str_target_id.c_str()) ;
+        //qDebug("dropEvent : project id = %s", str_target_id.c_str()) ;
 
         //if( CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Network_IsOnline() & ENSEMBLE_CONNECT_CONTROL_PORT )
 		{
@@ -106,7 +106,7 @@ void CJobTree::dropEvent(QDropEvent *event)
 			{
 				if( item_from_type >= JobType::JOB_TYPE_BASE && item_from_type < JobType::JOB_TYPE_BASE+10000 )
 				{
-					qDebug("call API : CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Job_Add_New(%s)", str_target_id.c_str()) ;
+					//qDebug("call API : CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Job_Add_New(%s)", str_target_id.c_str()) ;
 					
 					CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Job_Add_New(str_target_id, item_from_type) ;
 				}
@@ -115,7 +115,7 @@ void CJobTree::dropEvent(QDropEvent *event)
 			{
 				if( item_from_type >= JobType::JOB_TYPE_TOOL && item_from_type < JobType::JOB_TYPE_TOOL+10000 )
 				{
-                    qDebug("call API : CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Tool_Add_New (target id = %s)", str_target_id.c_str()) ;
+                    //qDebug("call API : CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Tool_Add_New (target id = %s)", str_target_id.c_str()) ;
 					
 					CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Tool_Add_New(str_target_id, item_from_type) ;
 				}
@@ -124,7 +124,7 @@ void CJobTree::dropEvent(QDropEvent *event)
 			{
 				//Insert
 				//int CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Tool_Insert(const std::string parent_id, const int index, const int tool_type)
-				qDebug("call API : EnsembleInsertTool : Type Tool") ;
+				//qDebug("call API : EnsembleInsertTool : Type Tool") ;
 				
 				//parent
 				QTreeWidgetItem* parent_item = item->parent() ;
@@ -139,7 +139,7 @@ void CJobTree::dropEvent(QDropEvent *event)
 
                         CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Tool_Insert(str_parent_job_base_id, target_index, item_from_type) ;
 
-						qDebug("call API : EnsembleInsertTool : Type Tool : parent id=%s, target_index=%d, type=%d", str_parent_job_base_id.c_str(), target_index, item_from_type) ;
+						//qDebug("call API : EnsembleInsertTool : Type Tool : parent id=%s, target_index=%d, type=%d", str_parent_job_base_id.c_str(), target_index, item_from_type) ;
 						
                 	}
 				}
@@ -150,11 +150,11 @@ void CJobTree::dropEvent(QDropEvent *event)
 			{
                 CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Tool_Add_New(str_job_base_id, type) ;
 
-				qDebug("call API : EnsembleAddTool(%s, %d)", str_job_project_id.c_str(), type) ;
+				//qDebug("call API : EnsembleAddTool(%s, %d)", str_job_project_id.c_str(), type) ;
 			}
 			else if( item->type() == JobType::JOB_TYPE_TOOL )
 			{
-				qDebug("call API : EnsembleInsertTool : Type Tool") ;
+				//qDebug("call API : EnsembleInsertTool : Type Tool") ;
 				
 				//parent
 				QTreeWidgetItem* parent_item = item->parent() ;
@@ -169,7 +169,7 @@ void CJobTree::dropEvent(QDropEvent *event)
 
                         CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Tool_Insert(str_parent_job_base_id, target_index, type) ;
 
-						qDebug("call API : EnsembleInsertTool : Type Tool : parent id=%s, target_index=%d, type=%d", str_parent_job_base_id.c_str(), target_index, type) ;
+						//qDebug("call API : EnsembleInsertTool : Type Tool : parent id=%s, target_index=%d, type=%d", str_parent_job_base_id.c_str(), target_index, type) ;
 						
                 	}
 				}
@@ -200,7 +200,7 @@ void CJobTree::dropEvent(QDropEvent *event)
 		str_tool_id = qstr_item_tool_id.toStdString() ;
         //std::string str_text =text.toUtf8().constData();
 
-        qDebug("%s : dropEvent : move id = %s", __func__, str_tool_id.c_str()) ;
+        //qDebug("%s : dropEvent : move id = %s", __func__, str_tool_id.c_str()) ;
 
 		QPoint pos = event->pos() ;
         QTreeWidgetItem* item = this->itemAt(pos);
@@ -223,7 +223,7 @@ void CJobTree::dropEvent(QDropEvent *event)
 				        QString parent_job_base_id = parent_item_user_data.toString() ;
 				        std::string str_parent_job_base_id = parent_job_base_id.toUtf8().constData() ;
 
-						//qDebug("%s : dropEvent : call EnsembleMoveTool API : str_parent_job_base_id=%s,cur_index=%d,target_index=%d", __func__, str_parent_job_base_id.c_str(), cur_index, target_index) ;
+						////qDebug("%s : dropEvent : call EnsembleMoveTool API : str_parent_job_base_id=%s,cur_index=%d,target_index=%d", __func__, str_parent_job_base_id.c_str(), cur_index, target_index) ;
 						EnsembleMoveTool(str_parent_job_base_id, cur_index, target_index) ;
 						
                 	}
@@ -258,7 +258,7 @@ void CJobTree::dropEvent(QDropEvent *event)
 
 			if( str_parent_job_base_id.size() > 0 )
 			{
-				qDebug("Move Item : ID(%s), %d -> %d", str_parent_job_base_id.c_str(), cur_index, target_index) ;
+				//qDebug("Move Item : ID(%s), %d -> %d", str_parent_job_base_id.c_str(), cur_index, target_index) ;
                 CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Tool_Move(str_parent_job_base_id, cur_index, target_index-1) ;
 			}
 #endif
@@ -293,13 +293,13 @@ void CJobTree::dropEvent(QDropEvent *event)
     }
 
     QModelIndex droppedIndex = indexAt( event->pos() );
-    qDebug("%s : event pos = %d, %d", __func__, event->pos().x(), event->pos().y()) ;
+    //qDebug("%s : event pos = %d, %d", __func__, event->pos().x(), event->pos().y()) ;
 
     event->mimeData();
 
     QString str_test = droppedIndex.model()->objectName() ;
 
-    qDebug("%s : str_test = %s", __func__, str_test) ;
+    //qDebug("%s : str_test = %s", __func__, str_test) ;
 
     QModelIndex curIndex = this->indexAt(event->pos());
     curIndex = this->model()->index(curIndex.row(), curIndex.column(), curIndex.parent());
@@ -318,7 +318,7 @@ void CJobTree::dropEvent(QDropEvent *event)
 #if 1
 void CJobTree::dragEnterEvent(QDragEnterEvent *event)
 {
-	qDebug("CJobTree : %s", __func__) ;
+	//qDebug("CJobTree : %s", __func__) ;
     delCandidateItem() ;
 
     if (event->mimeData()->hasFormat(CToolList::itemMimeType()) || event->mimeData()->hasFormat(CJobTree::itemMimeType()) )
@@ -351,22 +351,22 @@ void CJobTree::dragLeaveEvent(QDragLeaveEvent *event)
 
 void CJobTree::delCandidateItem(void)
 {
-	qDebug("CJobTree : %s", __func__) ;
+	//qDebug("CJobTree : %s", __func__) ;
 
     if( m_p_item_candidate != NULL )
     {
-    	qDebug("Delete Candidate Item 0") ;
+    	//qDebug("Delete Candidate Item 0") ;
 		
     	//if( indexFromItem(m_p_item_candidate).isValid() )
     	{
-	        qDebug("Delete Candidate Item 1") ;
+	        //qDebug("Delete Candidate Item 1") ;
 	        //delete
 	        //m_p_item_candidate->parent()->removeChild(item->parent()->indexOfChild(item);
 	        delete m_p_item_candidate->parent()->takeChild(m_p_item_candidate->parent()->indexOfChild(m_p_item_candidate));
 
-			qDebug("Delete Candidate Item 2") ;
+			//qDebug("Delete Candidate Item 2") ;
 	        m_p_item_candidate = NULL ;
-			qDebug("Delete Candidate Item 3") ;
+			//qDebug("Delete Candidate Item 3") ;
     	}
     }
 
@@ -402,7 +402,7 @@ void CJobTree::dragMoveEvent(QDragMoveEvent *event)
 
         if (item == NULL || !indexFromItem(item).isValid())
         {
-            //qDebug("%s, item numm", __func__) ;
+            ////qDebug("%s, item numm", __func__) ;
             delCandidateItem() ;
 
 			m_dropIndicatorRect = QRect() ;
@@ -421,11 +421,11 @@ void CJobTree::dragMoveEvent(QDragMoveEvent *event)
 	        dataStream >> item_from_type;		
 			int item_to_type = item->type() ;
 
-			qDebug("dragMoveEvent : type=%d -> type=%d", item_from_type, item_to_type) ;
+			//qDebug("dragMoveEvent : type=%d -> type=%d", item_from_type, item_to_type) ;
 			#else
 
 			int item_type = item->type() ;
-			qDebug("dragMoveEvent : item_type=%d", item_type) ;
+			//qDebug("dragMoveEvent : item_type=%d", item_type) ;
 			#endif
 			
 	        std::string str_candidate_text = "+ Add New Tool" ;
@@ -458,7 +458,7 @@ void CJobTree::dragMoveEvent(QDragMoveEvent *event)
 				{
 					if( item_from_type >= JobType::JOB_TYPE_BASE && item_from_type < JobType::JOB_TYPE_BASE + 10000)
 					{
-						qDebug("From Base To Project") ;
+						//qDebug("From Base To Project") ;
 						enable_insert_item = 1 ;
 					}
 				}
@@ -466,7 +466,7 @@ void CJobTree::dragMoveEvent(QDragMoveEvent *event)
 				{
 					if( item_from_type >= JobType::JOB_TYPE_TOOL && item_from_type < JobType::JOB_TYPE_TOOL + 10000)
 					{
-						qDebug("From Tool To Base") ;
+						//qDebug("From Tool To Base") ;
 						enable_insert_item = 1 ;
 					}
 				}
@@ -474,7 +474,7 @@ void CJobTree::dragMoveEvent(QDragMoveEvent *event)
 				{
 					if( item_from_type >= JobType::JOB_TYPE_TOOL && item_from_type < JobType::JOB_TYPE_TOOL + 10000)
 					{
-						qDebug("From Tool To Base") ;
+						//qDebug("From Tool To Base") ;
 						enable_insert_item = 2;
 					}
 				}
@@ -482,17 +482,17 @@ void CJobTree::dragMoveEvent(QDragMoveEvent *event)
 		        {
 		            if( item_from_type >= JobType::JOB_TYPE_TOOL && item_from_type < JobType::JOB_TYPE_TOOL + 10000)
 					{
-						qDebug("From Tool To Base") ;
+						//qDebug("From Tool To Base") ;
 						enable_insert_item = 2;
 					}
 		        }
 				
 
-				qDebug("b_enable_insert_item = %d", enable_insert_item) ;
+				//qDebug("b_enable_insert_item = %d", enable_insert_item) ;
 				
                 if(  enable_insert_item && visualRect(indexFromItem(item)).adjusted(-1, -1, 1, 1).contains(pos, false) ) //&& item->type() == JobType::JOB_TYPE_BASE )
                 {
-                    //qDebug("%s, visual rect true", __func__) ;
+                    ////qDebug("%s, visual rect true", __func__) ;
 
                     //setDropIndicatorShown(true);
                     //QTreeView::dragMoveEvent(event);
@@ -560,11 +560,11 @@ void CJobTree::dragMoveEvent(QDragMoveEvent *event)
 					
 						if( parent != nullptr )
 						{
-							//qDebug("Parent");
+							////qDebug("Parent");
 
 							if( parent->type() == JobType::JOB_TYPE_BASE )
 							{
-								//qDebug("Parent is BASE");
+								////qDebug("Parent is BASE");
 
 								int index = parent->indexOfChild(item);
 
@@ -577,7 +577,7 @@ void CJobTree::dragMoveEvent(QDragMoveEvent *event)
 									//check
 									if( next_child->type() == JobType::JOB_TYPE_CANDIDATE )
 									{
-										//qDebug("Tool Candidate : Next Child is Candidate item");
+										////qDebug("Tool Candidate : Next Child is Candidate item");
 										b_new_candidate = false ;
 									}
 									else
@@ -597,7 +597,7 @@ void CJobTree::dragMoveEvent(QDragMoveEvent *event)
 									
 									if( cur_index > 0 )
 									{
-										//qDebug("%s : m_drag_countrow_for_redorder(%d), cur_index(%d), next_index(%d)", __func__, m_drag_countrow_for_redorder, cur_index, next_index) ;
+										////qDebug("%s : m_drag_countrow_for_redorder(%d), cur_index(%d), next_index(%d)", __func__, m_drag_countrow_for_redorder, cur_index, next_index) ;
 										
 										//The position to move is now your own position.
 										if( m_drag_countrow_for_redorder == cur_index || m_drag_countrow_for_redorder == next_index)
@@ -865,17 +865,17 @@ void CJobTree::dragMoveEvent(QDragMoveEvent *event)
                     }
                     else if( item->type() == JobType::JOB_TYPE_TOOL )
                     {
-                        //qDebug("Item is TOOL");
+                        ////qDebug("Item is TOOL");
 
                         QTreeWidgetItem* parent = item->parent();
 
                         if( parent != nullptr )
                         {
-                            //qDebug("Parent");
+                            ////qDebug("Parent");
 
                             if( parent->type() == JobType::JOB_TYPE_BASE )
                             {
-                                //qDebug("Parent is BASE");
+                                ////qDebug("Parent is BASE");
 
                                 int index = parent->indexOfChild(item);
 
@@ -888,7 +888,7 @@ void CJobTree::dragMoveEvent(QDragMoveEvent *event)
                                     //check
                                     if( next_child->type() == JobType::JOB_TYPE_CANDIDATE )
                                     {
-                                        //qDebug("Tool Candidate : Next Child is Candidate item");
+                                        ////qDebug("Tool Candidate : Next Child is Candidate item");
                                         b_new_candidate = false ;
                                     }
                                     else
@@ -908,7 +908,7 @@ void CJobTree::dragMoveEvent(QDragMoveEvent *event)
 									
 	                                if( cur_index > 0 )
 									{
-										//qDebug("%s : m_drag_countrow_for_redorder(%d), cur_index(%d), next_index(%d)", __func__, m_drag_countrow_for_redorder, cur_index, next_index) ;
+										////qDebug("%s : m_drag_countrow_for_redorder(%d), cur_index(%d), next_index(%d)", __func__, m_drag_countrow_for_redorder, cur_index, next_index) ;
 										
 										//The position to move is now your own position.
 										if( m_drag_countrow_for_redorder == cur_index || m_drag_countrow_for_redorder == next_index)
@@ -958,7 +958,7 @@ void CJobTree::dragMoveEvent(QDragMoveEvent *event)
                             {
                                 int index = parent->indexOfChild(item);
 
-                                //qDebug("Tool Candidate : index=%d", index);
+                                ////qDebug("Tool Candidate : index=%d", index);
 
                                 QTreeWidgetItem* next_child = parent->takeChild(index+1);
 
@@ -968,7 +968,7 @@ void CJobTree::dragMoveEvent(QDragMoveEvent *event)
                                     //check
                                     if( next_child->type() == JobType::JOB_TYPE_CANDIDATE )
                                     {
-                                        qDebug("Tool Candidate : Next Child is Candidate item");
+                                        //qDebug("Tool Candidate : Next Child is Candidate item");
                                         b_new_candidate = false ;
                                     }
                                     else
@@ -1046,7 +1046,7 @@ void CJobTree::dragMoveEvent(QDragMoveEvent *event)
                 }
                 else
                 {
-                    //qDebug("%s, visual rect false", __func__) ;
+                    ////qDebug("%s, visual rect false", __func__) ;
                     delCandidateItem() ;
 
                     m_drag_countrow_for_redorder = -1 ;
@@ -1062,12 +1062,12 @@ void CJobTree::dragMoveEvent(QDragMoveEvent *event)
         //event->acceptProposedAction();
         //QTreeView::dragMoveEvent(event);
 
-        qDebug("CJobTree : %s", __func__) ;
+        //qDebug("CJobTree : %s", __func__) ;
 		//QPixmap pixmap(viewport()->visibleRegion().boundingRect().size());
 		
 		DropIndicatorPosition position = dropIndicatorPosition();
 
-        qDebug("position = %d", position) ;
+        //qDebug("position = %d", position) ;
 		
         //highlightedRect = targetSquare(event->pos());
         //event->setDropAction(Qt::MoveAction);
@@ -1110,12 +1110,12 @@ void CJobTree::paintEvent( QPaintEvent * event )
 
 void CJobTree::paintDropIndicator(QPainter* painter)
 {
-    //qDebug("CJobTree : %s", __func__) ;
+    ////qDebug("CJobTree : %s", __func__) ;
 
     //if( this->state() == QAbstractItemView::DraggingState )
     if( m_dropIndicatorRect.isValid() )
     {
-        //qDebug("CJobTree : %s - paint", __func__) ;
+        ////qDebug("CJobTree : %s - paint", __func__) ;
 
         QStyleOption opt ;
         opt.init(this);
@@ -1141,7 +1141,7 @@ void CJobTree::startDrag(Qt::DropActions /*supportedActions*/)
     QModelIndex index = indexFromItem(item) ;
 	m_drag_countrow_for_redorder = index.row() ;
 
-	qDebug("%s : set m_drag_countrow_for_redorder = %d", __func__, m_drag_countrow_for_redorder) ;
+	//qDebug("%s : set m_drag_countrow_for_redorder = %d", __func__, m_drag_countrow_for_redorder) ;
 
     QByteArray itemData;
     QDataStream dataStream(&itemData, QIODevice::WriteOnly);

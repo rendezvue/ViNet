@@ -68,7 +68,7 @@ void DialogSetToolObject::showEvent(QShowEvent *ev)
     std::string tool_name = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Tool_Get_Name(GetId()) ;
     ui->label_name->setText(QString::fromUtf8(tool_name.c_str()));
 
-    qDebug("Tool Name = %s", tool_name.c_str()) ;
+    //qDebug("Tool Name = %s", tool_name.c_str()) ;
 	
 	//Get Level 
     int feature_level = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Tool_Get_FeatureLevel(GetId());
@@ -127,7 +127,7 @@ void DialogSetToolObject::OnButtonNameChange(void)
     { // YesButton clicked
         std::string change_name = dlg_change_name.GetName() ;
 
-        qDebug("Tool Change Name = %s", change_name.c_str()) ;
+        //qDebug("Tool Change Name = %s", change_name.c_str()) ;
 		
         if( !change_name.empty() )
         {
@@ -137,7 +137,7 @@ void DialogSetToolObject::OnButtonNameChange(void)
         tool_name = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Tool_Get_Name(GetId()) ;
         ui->label_name->setText(QString::fromUtf8(tool_name.c_str()));
 
-        qDebug("Tool Name = %s", tool_name.c_str()) ;
+        //qDebug("Tool Name = %s", tool_name.c_str()) ;
 		
 		emit UpdateToolName(QString::fromUtf8(tool_name.c_str())) ;
     }
@@ -204,7 +204,7 @@ void DialogSetToolObject::updatePicture(cv::Mat image, cv::Rect rect_user)
 	//draw set rect
     if( !(rect_user.width <= 0 || rect_user.height <= 0) )
 	{
-	    qDebug("%s : rect(%d,%d,%d,%d", __func__, rect_user.x, rect_user.y, rect_user.width, rect_user.height) ;
+	    //qDebug("%s : rect(%d,%d,%d,%d", __func__, rect_user.x, rect_user.y, rect_user.width, rect_user.height) ;
 
 		if( rect_user.width > 0 && rect_user.height > 0 )
 		{
@@ -244,7 +244,7 @@ void DialogSetToolObject::updatePictureCenterLine(cv::Mat image, cv::Point pt_us
 	QImage qt_display_image = cls_mat_2_qimage.cvtMat2QImage(image, ui->label_image->width(), ui->label_image->height()) ;
 
     //draw set rect
-    qDebug("%s : point(%d,%d)", __func__, pt_user.x, pt_user.y) ;
+    //qDebug("%s : point(%d,%d)", __func__, pt_user.x, pt_user.y) ;
 
     if( pt_user.x > 0 && pt_user.y > 0 )
     {
@@ -266,20 +266,20 @@ void DialogSetToolObject::OnSliderSetFeatureLevel(void)
     //get level
     int level = ui->horizontalSlider_feature_level->value() ;
 
-	qDebug("%s : SetFeatureLevel = %d", __func__, level) ;
+	//qDebug("%s : SetFeatureLevel = %d", __func__, level) ;
 	//set level
     CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Tool_Set_FeatureLevel(GetId(), level);
 
 	//Update Image
-	qDebug("%s : GetImage", __func__) ;
+	//qDebug("%s : GetImage", __func__) ;
 	OnButtonGetImage() ;
 
-	qDebug("%s : GetFeatureLevel", __func__) ;
+	//qDebug("%s : GetFeatureLevel", __func__) ;
 	
 	//Get Level 
     int feature_level = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Tool_Get_FeatureLevel(GetId());
 
-	qDebug("%s : GetFeatureLevel = %d", __func__, feature_level) ;
+	//qDebug("%s : GetFeatureLevel = %d", __func__, feature_level) ;
 	
 	//Set Slider
 	ui->horizontalSlider_feature_level->setValue(feature_level) ;
@@ -316,7 +316,7 @@ void DialogSetToolObject::OnButtonResetObject(void)
 #if 1
 void DialogSetToolObject::mousePressEvent(QMouseEvent *event)
 {
-    qDebug("%s - %d", __func__, __LINE__) ;
+    //qDebug("%s - %d", __func__, __LINE__) ;
 
     if (event->button() == Qt::LeftButton && m_cls_set_user_region.GetStatus() > SetBaseStatus::NORMAL ) 
 	{
@@ -332,7 +332,7 @@ void DialogSetToolObject::mousePressEvent(QMouseEvent *event)
 
 void DialogSetToolObject::mouseMoveEvent(QMouseEvent *event)
 {
-    qDebug("%s - %d", __func__, __LINE__) ;
+    //qDebug("%s - %d", __func__, __LINE__) ;
 
    if ( m_cls_set_user_region.GetStatus() > SetBaseStatus::NORMAL)
 	{
@@ -366,11 +366,11 @@ void DialogSetToolObject::mouseReleaseEvent(QMouseEvent *event)
 	//Set
 	int set_status = m_cls_set_user_region.GetStatus() ;
 
-	qDebug("%s - %d : m_set_status(%d), event->buttons()=%d", __func__, __LINE__, set_status, event->buttons()) ;
+	//qDebug("%s - %d : m_set_status(%d), event->buttons()=%d", __func__, __LINE__, set_status, event->buttons()) ;
 	
     if (set_status > SetBaseStatus::NORMAL)
 	{
-		qDebug("%s - %d", __func__, __LINE__) ;
+		//qDebug("%s - %d", __func__, __LINE__) ;
 		
 		float f_x = 0.0 ;
 		float f_y = 0.0 ;
@@ -387,7 +387,7 @@ void DialogSetToolObject::mouseReleaseEvent(QMouseEvent *event)
         f_w = (float)rect_user.width / (float)label_w ;
         f_h = (float)rect_user.height / (float)label_h ;
 
-		qDebug("%s - %d : m_set_status(%d)", __func__, __LINE__, set_status) ;
+		//qDebug("%s - %d : m_set_status(%d)", __func__, __LINE__, set_status) ;
 		
         if( set_status == SetBaseStatus::SET_AREA )
         {
@@ -442,7 +442,7 @@ void DialogSetToolObject::mouseReleaseEvent(QMouseEvent *event)
 
 void DialogSetToolObject::OnCheckFeatureUseCustomOption(bool checked)
 {
-    qDebug("Tool Check = %d : Use Custom Feature", checked) ;
+    //qDebug("Tool Check = %d : Use Custom Feature", checked) ;
 
 	CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Tool_Set_UseCustomFeatureOption(GetId(), checked) ;
 	int use_custom_feature = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Tool_Get_UseCustomFeatureOption(GetId()) ;

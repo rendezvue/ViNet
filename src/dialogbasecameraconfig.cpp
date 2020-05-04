@@ -563,7 +563,7 @@ void DialogBaseCameraConfig::OnButtonSetAutoExposure(void)
 
 void DialogBaseCameraConfig::mousePressEvent(QMouseEvent *event)
 {
-    qDebug("%s - %d", __func__, __LINE__) ;
+    //qDebug("%s - %d", __func__, __LINE__) ;
 
     if (event->button() == Qt::LeftButton && m_cls_set_user_region.GetStatus() > SetBaseStatus::NORMAL ) 
 	{
@@ -579,7 +579,7 @@ void DialogBaseCameraConfig::mousePressEvent(QMouseEvent *event)
 
 void DialogBaseCameraConfig::mouseMoveEvent(QMouseEvent *event)
 {
-    qDebug("%s - %d", __func__, __LINE__) ;
+    //qDebug("%s - %d", __func__, __LINE__) ;
 
     if ( m_cls_set_user_region.GetStatus() > SetBaseStatus::NORMAL)
 	{
@@ -606,11 +606,11 @@ void DialogBaseCameraConfig::mouseReleaseEvent(QMouseEvent *event)
 	//Set
 	int set_status = m_cls_set_user_region.GetStatus() ;
 
-	qDebug("%s - %d : m_set_status(%d), event->buttons()=%d", __func__, __LINE__, set_status, event->buttons()) ;
+	//qDebug("%s - %d : m_set_status(%d), event->buttons()=%d", __func__, __LINE__, set_status, event->buttons()) ;
 	
     if (set_status > SetBaseStatus::NORMAL)
 	{
-		qDebug("%s - %d", __func__, __LINE__) ;
+		//qDebug("%s - %d", __func__, __LINE__) ;
 		
 		float f_x = 0.0 ;
 		float f_y = 0.0 ;
@@ -627,7 +627,7 @@ void DialogBaseCameraConfig::mouseReleaseEvent(QMouseEvent *event)
         f_w = (float)m_rect_user.width / (float)label_w ;
         f_h = (float)m_rect_user.height / (float)label_h ;
 
-		qDebug("%s - %d : m_set_status(%d)", __func__, __LINE__, set_status) ;
+		//qDebug("%s - %d : m_set_status(%d)", __func__, __LINE__, set_status) ;
 		
         if( set_status == SetBaseStatus::SET_AREA )
         {

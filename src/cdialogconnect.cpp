@@ -32,11 +32,11 @@ CDialogConnect::CDialogConnect(QWidget *parent) :
         ui->lineEdit_ip_address->setText(QString::fromUtf8(str_ip_address.c_str()));
 		ui->lineEdit_port->setText(QString::number(port));
 
-        qDebug("ip info from ini : ip=%s", str_ip_address.c_str()) ;
+        ////qDebug("ip info from ini : ip=%s", str_ip_address.c_str()) ;
 	}
     catch (const std::exception& ex)
 	{
-        qDebug("%s", ex.what()) ;
+        ////qDebug("%s", ex.what()) ;
 	}
 }
 

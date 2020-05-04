@@ -9,7 +9,7 @@ std::vector<AddableJobInfo> CParsingAddableJobList::GetAddableJobList(const std:
 {
 	std::vector<AddableJobInfo> ret ;
 
-	qDebug("GetAddableJobList : %s", str_xml.c_str()) ;
+	//qDebug("GetAddableJobList : %s", str_xml.c_str()) ;
 	
 	//Upate Job List
 	//XML Parsing
@@ -18,7 +18,7 @@ std::vector<AddableJobInfo> CParsingAddableJobList::GetAddableJobList(const std:
 
 	if (!result)
 	{
-		qDebug("Addable Job list xml parsing error") ;
+		//qDebug("Addable Job list xml parsing error") ;
 	}
 	else
 	{

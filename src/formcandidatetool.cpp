@@ -15,7 +15,7 @@ FormCandidateTool::~FormCandidateTool()
 
 void FormCandidateTool::SetBackground(QPixmap &image)
 {
-    qDebug("%s", __func__) ;
+    //qDebug("%s", __func__) ;
 
 #if 0
     image = image.scaled(this->size(), Qt::IgnoreAspectRatio); //set scale of pic to match the window

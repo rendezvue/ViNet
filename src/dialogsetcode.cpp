@@ -40,7 +40,7 @@ void DialogSetCode::showEvent(QShowEvent *ev)
     std::string tool_name = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Tool_Get_Name(GetId()) ;
     ui->label_name->setText(QString::fromUtf8(tool_name.c_str()));
 
-    qDebug("Tool Name = %s", tool_name.c_str()) ;
+    //qDebug("Tool Name = %s", tool_name.c_str()) ;
 
 	//Image
 	OnButtonGetImage() ;
@@ -109,7 +109,7 @@ void DialogSetCode::OnButtonGetImage(void)
 	cv::Mat object_image ;
     if( image_buf.image_width > 0 && image_buf.image_height > 0 )
 	{
-        qDebug("object image test : object_image_width(%d), object_image_height(%d), ret_image_size(%d)", image_buf.image_width, image_buf.image_height, ret_image_size) ;
+        //qDebug("object image test : object_image_width(%d), object_image_height(%d), ret_image_size(%d)", image_buf.image_width, image_buf.image_height, ret_image_size) ;
 
         if( image_buf.image_type == IMAGE_YUV420 )
 		{
@@ -227,7 +227,7 @@ void DialogSetCode::OnButtonNameChange(void)
     { // YesButton clicked
         std::string change_name = dlg_change_name.GetName() ;
 
-        qDebug("Tool Change Name = %s", change_name.c_str()) ;
+        //qDebug("Tool Change Name = %s", change_name.c_str()) ;
 		
         if( !change_name.empty() )
         {
@@ -237,7 +237,7 @@ void DialogSetCode::OnButtonNameChange(void)
         tool_name = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Tool_Get_Name(GetId()) ;
         ui->label_name->setText(QString::fromUtf8(tool_name.c_str()));
 
-        qDebug("Tool Name = %s", tool_name.c_str()) ;
+        //qDebug("Tool Name = %s", tool_name.c_str()) ;
 		
 		emit UpdateToolName(QString::fromUtf8(tool_name.c_str())) ;
     }

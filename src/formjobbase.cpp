@@ -87,14 +87,14 @@ void FormJobBase::ShowContextMenu(const QPoint &pos)
             std::string str_txt = txt.toUtf8().constData();
             const int type = selectedItem->data().toInt() ;
 
-            qDebug("select item = %s, type = %d", str_txt.c_str(), type) ;
+            //qDebug("select item = %s, type = %d", str_txt.c_str(), type) ;
 
 			//new job
 			if( type >= JobType::JOB_TYPE_TOOL && type < JobType::JOB_TYPE_TOOL+10000 )
 			{
 				const std::string str_id = GetIdInfo() ;
 				
-				qDebug("call API : CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Tool_Add_New(%s)", str_id.c_str()) ;
+				//qDebug("call API : CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Tool_Add_New(%s)", str_id.c_str()) ;
 				
 				CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Tool_Add_New(str_id, type) ;
 
@@ -104,7 +104,7 @@ void FormJobBase::ShowContextMenu(const QPoint &pos)
 			/*
 			if( item_from_type >= JobType::JOB_TYPE_BASE && item_from_type < JobType::JOB_TYPE_BASE+10000 )
 			{
-				qDebug("call API : CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Job_Add_New(%s)", str_target_id.c_str()) ;
+				//qDebug("call API : CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Job_Add_New(%s)", str_target_id.c_str()) ;
 				
 				CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Job_Add_New(str_target_id, item_from_type) ;
 			}
@@ -150,7 +150,7 @@ void FormJobBase::OnButtonDel(void)
     	p_device->Ensemble_Job_Del(GetIdInfo()) ;
 	}
 
-	qDebug("emit UpdateList") ;
+	//qDebug("emit UpdateList") ;
 	
 	emit UpdateList();
 }
@@ -166,7 +166,7 @@ void FormJobBase::OnButtonRun(void)
 	{
 		std::string str_result_xml = p_device->Ensemble_Job_Run(GetIdInfo()) ;
 
-		qDebug("Job Run = %s", str_result_xml.c_str()) ;
+		//qDebug("Job Run = %s", str_result_xml.c_str()) ;
 
 		QString qstr_id = QString::fromStdString(GetIdInfo());
 		emit UpdateResultImage(qstr_id) ;
@@ -225,11 +225,11 @@ void FormJobBase::OnButtonSetBase(void)
 {
 	int type = GetType() ;
 
-	qDebug("%s : type=%d", __func__, type) ;
+	//qDebug("%s : type=%d", __func__, type) ;
 	
     if( type == BaseTypeList::BASE_TYPE_DETECT_OBJECT )		//obejct
 	{
-		qDebug("Detect Object Set") ;
+		//qDebug("Detect Object Set") ;
 		
 	    m_dlg_setbase_detect_objet.SetId(GetIdInfo());
 
@@ -241,7 +241,7 @@ void FormJobBase::OnButtonSetBase(void)
 	}
 	else if( type == BaseTypeList::BASE_TYPE_DETECT_PLANE )		//plane
 	{
-		qDebug("Detect Plane Set") ;
+		//qDebug("Detect Plane Set") ;
 		
 	    m_dlg_setbase_detect_plane.SetId(GetIdInfo());
 
@@ -255,7 +255,7 @@ void FormJobBase::OnButtonSetBase(void)
 
 void FormJobBase::OnUpdateImage(void)
 {
-    qDebug("%s - %d 1", __func__, __LINE__) ;
+    //qDebug("%s - %d 1", __func__, __LINE__) ;
 
 	std::string str_ip ;
 	int port ;
@@ -279,7 +279,7 @@ void FormJobBase::OnUpdateImage(void)
 		CImageBuf2Mat cls_imagebuf2mat ;
 		cv::Mat bae_image= cls_imagebuf2mat.Cvt(image_buf) ;
 
-	    qDebug("%s - %d 2", __func__, __LINE__) ;
+	    //qDebug("%s - %d 2", __func__, __LINE__) ;
 
 	    if( image_buf.p_buf != NULL )
 	    {
@@ -287,7 +287,7 @@ void FormJobBase::OnUpdateImage(void)
 	        image_buf.p_buf = NULL ;
 	    }
 
-	    qDebug("%s - %d 3", __func__, __LINE__) ;
+	    //qDebug("%s - %d 3", __func__, __LINE__) ;
 
 		SetImage(bae_image) ;
 
@@ -302,7 +302,7 @@ void FormJobBase::OnUpdateImage(void)
 
 	    int object_image_size = p_device->Ensemble_Job_Get_ObjectImage(GetIdInfo(), image_type+IMAGE_THUMBNAIL, &image_buf)  ;
 
-		qDebug("%s - %d 4", __func__, __LINE__) ;
+		//qDebug("%s - %d 4", __func__, __LINE__) ;
 
 	    if( image_buf.p_buf != NULL )
 	    {
@@ -314,7 +314,7 @@ void FormJobBase::OnUpdateImage(void)
 	        SetObjectImage(object_image) ;
 	    }
 
-	    qDebug("%s - %d 3", __func__, __LINE__) ;
+	    //qDebug("%s - %d 3", __func__, __LINE__) ;
 	}
 	
 }
@@ -350,12 +350,12 @@ bool FormJobBase::event(QEvent * e)
 
 void FormJobBase::enterEvent(QEvent * e)
 {
-    //qDebug() << Q_FUNC_INFO << e->type();
+    ////qDebug() << Q_FUNC_INFO << e->type();
 }
 
 void FormJobBase::leaveEvent(QEvent * e)
 {
-    //qDebug() << Q_FUNC_INFO << e->type();
+    ////qDebug() << Q_FUNC_INFO << e->type();
 }
 
 
@@ -369,7 +369,7 @@ void FormJobBase::hoverEnter(QHoverEvent * event)
 	//ui->checkBox_run->setVisible(true);
 	//ui->checkBox_view->setVisible(true);
 
-    //qDebug() << Q_FUNC_INFO << event->type();
+    ////qDebug() << Q_FUNC_INFO << event->type();
 }
 
 void FormJobBase::hoverLeave(QHoverEvent * event)
@@ -382,17 +382,17 @@ void FormJobBase::hoverLeave(QHoverEvent * event)
 	//ui->checkBox_run->setVisible(false);
 	//ui->checkBox_view->setVisible(false);
 	
-    //qDebug() << Q_FUNC_INFO << event->type();
+    ////qDebug() << Q_FUNC_INFO << event->type();
 }
 
 void FormJobBase::hoverMove(QHoverEvent * event)
 {
-    //qDebug() << Q_FUNC_INFO << event->type() ;
+    ////qDebug() << Q_FUNC_INFO << event->type() ;
 }
 
 void FormJobBase::OnRunCheckBoxToggled(bool checked)
 {
-	qDebug("Base Run Check = %d", checked) ;
+	//qDebug("Base Run Check = %d", checked) ;
 
 	std::string str_ip ;
 	int port ;
@@ -414,7 +414,7 @@ void FormJobBase::OnRunCheckBoxToggled(bool checked)
 
 void FormJobBase::OnViewCheckBoxToggled(bool checked)
 {
-    qDebug("Base View Check = %d", checked) ;
+    //qDebug("Base View Check = %d", checked) ;
 
 	std::string str_ip ;
 	int port ;
@@ -466,7 +466,7 @@ void FormJobBase::UpdateInfo(void)
 {
 	QString qstr_info = QString::fromStdString(m_str_info);
 
-	qDebug("Update Info = %s", m_str_info.c_str()) ;
+	//qDebug("Update Info = %s", m_str_info.c_str()) ;
 	
 	ui->label_info->setText(qstr_info);
 }

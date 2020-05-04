@@ -297,7 +297,7 @@ void DialogSetToolColor::CheckedUseBlue(void)
 
 void DialogSetToolColor::OnButtonSetUseRed(bool checked)
 {
-	qDebug("Check RED = %d", checked) ;
+	//qDebug("Check RED = %d", checked) ;
 	
 	int color_elem = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Tool_Option_InspectColor_Get_Histogram_UseElement(GetId())  ;
 	
@@ -313,7 +313,7 @@ void DialogSetToolColor::OnButtonSetUseRed(bool checked)
 
 void DialogSetToolColor::OnButtonSetUseGreen(bool checked)
 {
-	qDebug("Check GREEN = %d", checked) ;
+	//qDebug("Check GREEN = %d", checked) ;
 	
 	int color_elem = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Tool_Option_InspectColor_Get_Histogram_UseElement(GetId())  ;
 	
@@ -329,7 +329,7 @@ void DialogSetToolColor::OnButtonSetUseGreen(bool checked)
 
 void DialogSetToolColor::OnButtonSetUseBlue(bool checked)
 {
-	qDebug("Check BLUE = %d", checked) ;
+	//qDebug("Check BLUE = %d", checked) ;
 	
 	int color_elem = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Tool_Option_InspectColor_Get_Histogram_UseElement(GetId())  ;
 	
@@ -427,7 +427,7 @@ void DialogSetToolColor::OnButtonSetBlueHistogramRange(void)
 
 void DialogSetToolColor::mousePressEvent(QMouseEvent *event)
 {
-    qDebug("%s - %d", __func__, __LINE__) ;
+    //qDebug("%s - %d", __func__, __LINE__) ;
 
     if (event->button() == Qt::LeftButton ) 
 	{
@@ -435,18 +435,18 @@ void DialogSetToolColor::mousePressEvent(QMouseEvent *event)
         //point.setX(point.x() - ui->label_image->x());
         //point.setY(point.y() - ui->label_image->y());
 
-		qDebug("point : %d, %d", point.x(), point.y()) ;
-        qDebug("label_image_red_histogram : %d, %d, %d, %d", ui->label_image_red_histogram->x(), ui->label_image_red_histogram->y(), ui->label_image_red_histogram->width(), ui->label_image_red_histogram->height()) ;
+		//qDebug("point : %d, %d", point.x(), point.y()) ;
+        //qDebug("label_image_red_histogram : %d, %d, %d, %d", ui->label_image_red_histogram->x(), ui->label_image_red_histogram->y(), ui->label_image_red_histogram->width(), ui->label_image_red_histogram->height()) ;
 
 		int groupBox_color_x = ui->groupBox_color->x() ;
 		int groupBox_color_y = ui->groupBox_color->y() ;
 
-		qDebug("groupBox_color : %d, %d", groupBox_color_x, groupBox_color_y) ;
+		//qDebug("groupBox_color : %d, %d", groupBox_color_x, groupBox_color_y) ;
 		
 		int groupBox_color_red_x = groupBox_color_x + ui->groupBox_red->x() ;
 		int groupBox_color_red_y = groupBox_color_y + ui->groupBox_red->y() ;
 
-		qDebug("groupBox_color_red : %d, %d", groupBox_color_red_x, groupBox_color_red_y) ;
+		//qDebug("groupBox_color_red : %d, %d", groupBox_color_red_x, groupBox_color_red_y) ;
 		
 		int groupBox_color_green_x = groupBox_color_x + ui->groupBox_green->x() ;
 		int groupBox_color_green_y = groupBox_color_y + ui->groupBox_green->y() ;
@@ -463,7 +463,7 @@ void DialogSetToolColor::mousePressEvent(QMouseEvent *event)
 		int groupBox_color_blue_histogram_x = groupBox_color_blue_x + ui->label_image_blue_histogram_2->x() ;
 		int groupBox_color_blue_histogram_y = groupBox_color_blue_y + ui->label_image_blue_histogram_2->y() ;
 
-		qDebug("groupBox_color_red_histogram : %d, %d", groupBox_color_red_histogram_x, groupBox_color_red_histogram_y) ;
+		//qDebug("groupBox_color_red_histogram : %d, %d", groupBox_color_red_histogram_x, groupBox_color_red_histogram_y) ;
 
 		//check position
         if( point.x() >= groupBox_color_red_histogram_x &&
@@ -471,19 +471,19 @@ void DialogSetToolColor::mousePressEvent(QMouseEvent *event)
             point.y() >= groupBox_color_red_histogram_y &&
             point.y() <= groupBox_color_red_histogram_y + ui->label_image_red_histogram_2->height()  )
 		{
-			qDebug("Start Set Red Range") ;
+			//qDebug("Start Set Red Range") ;
 			
             m_i_set_color = HISTOGRAM_USE_RED ;
             m_i_s_value = point.x() - (groupBox_color_red_x + ui->label_image_red_histogram->x()) ;
 			m_i_e_value = m_i_s_value ;
 
-			//qDebug("Red Value : m_i_s_value = %d, point.x()=%d, groupBox_color_red_x=%d, ui->label_image_red_histogram->x()=%d", m_i_s_value, point.x(), groupBox_color_red_x, ui->label_image_red_histogram->x()) ;
+			////qDebug("Red Value : m_i_s_value = %d, point.x()=%d, groupBox_color_red_x=%d, ui->label_image_red_histogram->x()=%d", m_i_s_value, point.x(), groupBox_color_red_x, ui->label_image_red_histogram->x()) ;
 
 			float f_min = 0.0 ;
 	        int label_w = ui->label_image_red_histogram->width() ;
 	        f_min = (float)m_i_s_value / (float)label_w ;
 
-			qDebug("Red Value : f_min = %f", f_min) ;
+			//qDebug("Red Value : f_min = %f", f_min) ;
 			
             CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Tool_Option_InspectColor_Set_Histogram_Range(GetId(), m_i_set_color, f_min, f_min) ;
 
@@ -499,19 +499,19 @@ void DialogSetToolColor::mousePressEvent(QMouseEvent *event)
                  point.y() >= groupBox_color_green_histogram_y &&
                  point.y() <= groupBox_color_green_histogram_y + ui->label_image_green_histogram_2->height()  )
         {
-        	qDebug("Start Set Green Range") ;
+        	//qDebug("Start Set Green Range") ;
 			
             m_i_set_color = HISTOGRAM_USE_GREEN ;
             m_i_s_value = point.x() - (groupBox_color_green_x + ui->label_image_green_histogram->x()) ;
 			m_i_e_value = m_i_s_value ;
 			
-			qDebug("Green Value : m_i_s_value = %d", m_i_s_value) ;
+			//qDebug("Green Value : m_i_s_value = %d", m_i_s_value) ;
 			
 			float f_min = 0.0 ;
 	        int label_w = ui->label_image_green_histogram->width() ;
 	        f_min = (float)m_i_s_value / (float)label_w ;
 
-			qDebug("Green Value : f_min = %f", f_min) ;
+			//qDebug("Green Value : f_min = %f", f_min) ;
 			
             CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Tool_Option_InspectColor_Set_Histogram_Range(GetId(), m_i_set_color, f_min, f_min) ;
 
@@ -527,19 +527,19 @@ void DialogSetToolColor::mousePressEvent(QMouseEvent *event)
                  point.y() >= groupBox_color_blue_histogram_y &&
                  point.y() <= groupBox_color_blue_histogram_y + ui->label_image_blue_histogram_2->height()  )
         {
-        	qDebug("Start Set Blue Range") ;
+        	//qDebug("Start Set Blue Range") ;
 			
             m_i_set_color = HISTOGRAM_USE_BLUE ;
             m_i_s_value = point.x() - (groupBox_color_blue_x + ui->label_image_blue_histogram->x()) ;
 			m_i_e_value = m_i_s_value ;
 			
-			qDebug("Blue Value : m_i_s_value = %d", m_i_s_value) ;
+			//qDebug("Blue Value : m_i_s_value = %d", m_i_s_value) ;
 			
 			float f_min = 0.0 ;
 	        int label_w = ui->label_image_blue_histogram->width() ;
 	        f_min = (float)m_i_s_value / (float)label_w ;
 
-			qDebug("Blue Value : f_min = %f", f_min) ;
+			//qDebug("Blue Value : f_min = %f", f_min) ;
 			
             CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Tool_Option_InspectColor_Set_Histogram_Range(GetId(), m_i_set_color, f_min, f_min) ;
 
@@ -561,7 +561,7 @@ void DialogSetToolColor::mousePressEvent(QMouseEvent *event)
 
 void DialogSetToolColor::mouseMoveEvent(QMouseEvent *event)
 {
-    //qDebug("%s - %d", __func__, __LINE__) ;
+    ////qDebug("%s - %d", __func__, __LINE__) ;
 
     if ((event->buttons() & Qt::LeftButton) )
 	{
@@ -574,12 +574,12 @@ void DialogSetToolColor::mouseMoveEvent(QMouseEvent *event)
         	int groupBox_color_x = ui->groupBox_color->x() ;
 			int groupBox_color_y = ui->groupBox_color->y() ;
 
-			//qDebug("groupBox_color : %d, %d", groupBox_color_x, groupBox_color_y) ;
+			////qDebug("groupBox_color : %d, %d", groupBox_color_x, groupBox_color_y) ;
 			
 			int groupBox_color_red_x = groupBox_color_x + ui->groupBox_red->x() ;
 			int groupBox_color_red_y = groupBox_color_y + ui->groupBox_red->y() ;
 
-			//qDebug("groupBox_color_red : %d, %d", groupBox_color_red_x, groupBox_color_red_y) ;
+			////qDebug("groupBox_color_red : %d, %d", groupBox_color_red_x, groupBox_color_red_y) ;
 			
 			int groupBox_color_green_x = groupBox_color_x + ui->groupBox_green->x() ;
 			int groupBox_color_green_y = groupBox_color_y + ui->groupBox_green->y() ;
@@ -600,8 +600,8 @@ void DialogSetToolColor::mouseMoveEvent(QMouseEvent *event)
             {
             	//m_i_s_value = point.x() - (groupBox_color_red_x + ui->label_image_red_histogram->x()) ;
                 m_i_e_value = point.x() - (groupBox_color_red_x + ui->label_image_red_histogram->x()) ;
-				//qDebug("m_i_e_value = %d", m_i_e_value) ;
-				//qDebug("m_i_e_value = %d, point.x()=%d, groupBox_color_red_x=%d, ui->label_image_red_histogram->x()=%d", m_i_e_value, point.x(), groupBox_color_red_x, ui->label_image_red_histogram->x()) ;
+				////qDebug("m_i_e_value = %d", m_i_e_value) ;
+				////qDebug("m_i_e_value = %d, point.x()=%d, groupBox_color_red_x=%d, ui->label_image_red_histogram->x()=%d", m_i_e_value, point.x(), groupBox_color_red_x, ui->label_image_red_histogram->x()) ;
 				
 				if( m_i_e_value > m_i_s_value)
 				{

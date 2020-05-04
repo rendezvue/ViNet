@@ -149,7 +149,7 @@ void MainWindow::OnTreeViewClick(const QModelIndex& index)
 	{
 		int port = std::stoi(str_port) ;
 
-		qDebug("OnTreeViewClick : ip = %s, port = %s(%d)", str_ip.c_str(), str_port.c_str(), port) ;
+		//qDebug("OnTreeViewClick : ip = %s, port = %s(%d)", str_ip.c_str(), str_port.c_str(), port) ;
 
 		m_str_select_ip_address = str_ip ;
 		m_i_select_port = port ;
@@ -169,7 +169,7 @@ void MainWindow::OnSourceListDClick(const QModelIndex &index)
 
     //tab : Result Image
     ui->tabWidget_image->setCurrentIndex(0);
-    //qDebug("source item text = %s". itemText.toUtf8().constData()) ;
+    ////qDebug("source item text = %s". itemText.toUtf8().constData()) ;
 }
 
 void MainWindow::updatePicture(cv::Mat image)
@@ -226,11 +226,11 @@ void MainWindow::tabSelected()
 {
     int index = ui->tabWidget_image->currentIndex() ;
 
-    qDebug("%s : index=%d", __func__, index) ;
+    //qDebug("%s : index=%d", __func__, index) ;
 
     if( m_p_cls_getimage != NULL )
     {
-        qDebug("%s : index=%d set", __func__, index) ;
+        //qDebug("%s : index=%d set", __func__, index) ;
 
         m_p_cls_getimage->SetSourceType(index);
     }
@@ -239,7 +239,7 @@ void MainWindow::tabSelected()
 
 void MainWindow::OnMenuConnect(void)
 {
-    qDebug("%s", __func__);
+    //qDebug("%s", __func__);
 
 #if 1
     CDialogConnect dlg_connect ;
@@ -250,12 +250,12 @@ void MainWindow::OnMenuConnect(void)
     { // YesButton clicked
 
         //m_p_cls_dlg_connect->ui->lineEdit_ip_address->
-        qDebug("Aceept") ;
+        //qDebug("Aceept") ;
 
         m_str_ip_address = dlg_connect.GetIpAddress() ;
         m_p_cls_check_network->SetIPAddress(m_str_ip_address) ;
 
-        qDebug("Connect Info : %s", m_str_ip_address.c_str()) ;
+        //qDebug("Connect Info : %s", m_str_ip_address.c_str()) ;
 
 		m_i_port = dlg_connect.GetPortNumber() ;
 		m_p_cls_check_network->SetPort(m_i_port) ;
@@ -281,16 +281,16 @@ void MainWindow::OnMenuConnect(void)
 #if 0		
 	        int ret = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Network_Connect(m_str_ip_address.c_str(), m_i_port);
 
-	        qDebug("Connect Ensemble : %d", ret ) ;
+	        //qDebug("Connect Ensemble : %d", ret ) ;
 
 	        if( CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Network_IsOnline() )
 	        {
-	            qDebug(" - Success : Control Port") ;
+	            //qDebug(" - Success : Control Port") ;
 
 				UpdateToolsListFromDevice(ui->listWidget_items) ;
 				UpdateJobsListFromDevice(ui->listWidget_items_job) ;
 	       
-	            qDebug(" - Success : Image Port") ;
+	            //qDebug(" - Success : Image Port") ;
 
 				OnButtonUpdateSourceList() ;
 	        }
@@ -307,7 +307,7 @@ void MainWindow::OnMenuConnect(void)
     }
     else if(dialogCode == QDialog::Rejected)
     { // NoButton clicked
-        qDebug("Reject") ;
+        //qDebug("Reject") ;
     }
 
     //m_p_cls_dlg_connect->setModal(true);
@@ -352,7 +352,7 @@ void MainWindow::AddTreeChild(QTreeWidgetItem *parent,
 
 void MainWindow::UpdateResultImage(QString id)
 {
-	qDebug("UpdateResultImage : ID(%s)", qUtf8Printable(id)) ;
+	//qDebug("UpdateResultImage : ID(%s)", qUtf8Printable(id)) ;
 	
     if( m_p_cls_getimage != NULL )
     {
@@ -366,7 +366,7 @@ void MainWindow::UpdateResultImage(QString id)
 
 void MainWindow::UpdateResult(QString qstr_xml)
 {
-	qDebug("UpdateResult : xml = %s", qUtf8Printable(qstr_xml)) ;
+	//qDebug("UpdateResult : xml = %s", qUtf8Printable(qstr_xml)) ;
 
 	/*
 	//Example
@@ -403,7 +403,7 @@ void MainWindow::UpdateResult(QString qstr_xml)
 	
 	if (!result_xml_parsing)
 	{
-		qDebug("xml parsing error") ;
+		//qDebug("xml parsing error") ;
 	}
 	else
 	{
@@ -412,7 +412,7 @@ void MainWindow::UpdateResult(QString qstr_xml)
         {
         	std::string str_project_id = result.attribute("ID").value() ;
 
-			qDebug("xml parsing : project id =%s", str_project_id.c_str()) ;
+			//qDebug("xml parsing : project id =%s", str_project_id.c_str()) ;
 
 			for (pugi::xml_node jobs: result.children("Jobs"))
             {
@@ -436,7 +436,7 @@ void MainWindow::UpdateResult(QString qstr_xml)
 				}
 
 				std::string str_result ;
-				qDebug("Job ID=%s, TYPE=%d, FindCount=%d", str_jobs_id.c_str(), jobs_type, jobs_find_count) ;
+				//qDebug("Job ID=%s, TYPE=%d, FindCount=%d", str_jobs_id.c_str(), jobs_type, jobs_find_count) ;
 				str_result = "<p><strong> Job ID=" + str_jobs_id + ", TYPE=" + std::to_string(jobs_type) + ", FindCount=" + std::to_string(jobs_find_count) + "</strong></p>" ;
 				
 				int job_count = 0 ;
@@ -466,9 +466,9 @@ void MainWindow::UpdateResult(QString qstr_xml)
                     float robot_mm_y = 0;
                     CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Job_Calibration_GetPoint(str_jobs_id, robot_pixel_x, robot_pixel_y, &robot_mm_x, &robot_mm_y);
 					
-                    qDebug("[%d] Center(%.2f, %.2f), Angle(%.2f), Score(%.2f)", job_count,center_x,center_y, angle, score) ;
-                    qDebug("[%d] Robot Center(%.2f, %.2f)",job_count, robot_mm_x, robot_mm_y ) ;
-					qDebug("    - ROI : (%.2f, %.2f), (%.2f, %.2f), (%.2f, %.2f), (%.2f, %.2f)", roi_tl_x,roi_tl_y,roi_tr_x,roi_tr_y,roi_br_x,roi_br_y,roi_bl_x,roi_bl_y) ;
+                    //qDebug("[%d] Center(%.2f, %.2f), Angle(%.2f), Score(%.2f)", job_count,center_x,center_y, angle, score) ;
+                    //qDebug("[%d] Robot Center(%.2f, %.2f)",job_count, robot_mm_x, robot_mm_y ) ;
+					//qDebug("    - ROI : (%.2f, %.2f), (%.2f, %.2f), (%.2f, %.2f), (%.2f, %.2f)", roi_tl_x,roi_tl_y,roi_tr_x,roi_tr_y,roi_br_x,roi_br_y,roi_bl_x,roi_bl_y) ;
 
                     str_result +=   "<li>[" + std::to_string(job_count) + "] Center(" + std::to_string(center_x) + ", " + std::to_string(center_y) + "), Angle(" + std::to_string(angle) + "), Score(" + std::to_string(score) + ") , Robot Center(" + std::to_string(robot_mm_x) + ", " + std::to_string(robot_mm_y) + ")</li>" ;
 
@@ -482,7 +482,7 @@ void MainWindow::UpdateResult(QString qstr_xml)
             				std::string str_tool_id = tool.attribute("ID").value() ;
 							int tool_type = tool.attribute("TYPE").as_int() ;
 
-							qDebug("Tool ID=%s, TYPE=%d", str_tool_id.c_str(), tool_type) ;
+							//qDebug("Tool ID=%s, TYPE=%d", str_tool_id.c_str(), tool_type) ;
 
 							float center_x = tool.child("Pose").attribute("CenterX").as_float() ;
 							float center_y = tool.child("Pose").attribute("CenterY").as_float() ;
@@ -498,8 +498,8 @@ void MainWindow::UpdateResult(QString qstr_xml)
 							float roi_bl_x = tool.child("Pose").attribute("Roi_BL_X").as_float() ;
 							float roi_bl_y = tool.child("Pose").attribute("Roi_BL_Y").as_float() ;
 							
-		                    qDebug("    - Center(%.2f, %.2f), Angle(%.2f), Score(%.2f)", center_x,center_y, angle, score) ;
-							qDebug("    - ROI : (%.2f, %.2f), (%.2f, %.2f), (%.2f, %.2f), (%.2f, %.2f)", roi_tl_x,roi_tl_y,roi_tr_x,roi_tr_y,roi_br_x,roi_br_y,roi_bl_x,roi_bl_y) ;
+		                    //qDebug("    - Center(%.2f, %.2f), Angle(%.2f), Score(%.2f)", center_x,center_y, angle, score) ;
+							//qDebug("    - ROI : (%.2f, %.2f), (%.2f, %.2f), (%.2f, %.2f), (%.2f, %.2f)", roi_tl_x,roi_tl_y,roi_tr_x,roi_tr_y,roi_br_x,roi_br_y,roi_bl_x,roi_bl_y) ;
 
 							//CSearchTreeItem cls_search_tree_item ;
 							//QTreeWidgetItem *item = cls_search_tree_item.GetItem(ui->treeWidget_job, str_tool_id) ;
@@ -519,7 +519,7 @@ void MainWindow::UpdateResult(QString qstr_xml)
                                     int option_specific_pass = option.child("Specific").child("Pass").text().as_int() ;
 									float quality = option.child("Specific").child("Quality").text().as_float();
 											
-                                    qDebug("Option ID=%s, TYPE=%d", str_option_id.c_str(), option_type) ;
+                                    //qDebug("Option ID=%s, TYPE=%d", str_option_id.c_str(), option_type) ;
 
                                     std::string str_result_style = "style='color:black;background-color:white;'" ;
 									bool b_alarm = false ;
@@ -569,19 +569,19 @@ void MainWindow::UpdateResult(QString qstr_xml)
 				str_result += "</ul>" ;
 
 				//Find Job in List				
-				qDebug("Update Job Form : Find %s item", str_jobs_id.c_str()) ;
+				//qDebug("Update Job Form : Find %s item", str_jobs_id.c_str()) ;
                 //CSearchTreeItem cls_search_tree_item ;
                 //QTreeWidgetItem *item = cls_search_tree_item.GetItem(ui->treeWidget_job, str_jobs_id) ;
                 QTreeWidgetItem *search_item = cls_search_tree_item.GetItem(ui->treeWidget_job, str_jobs_id) ;
                 if( search_item )
 				{
-					qDebug("Search Item") ;
+					//qDebug("Search Item") ;
 
                     FormJobBase* p_FromJobBase = dynamic_cast<FormJobBase*>(ui->treeWidget_job->itemWidget(search_item, 0));
                 
                     if( p_FromJobBase )
                     {
-                        qDebug("Item is Job") ;
+                        //qDebug("Item is Job") ;
 
                         std::string str_info = "Find Count : " + std::to_string(jobs_find_count) ;
 
@@ -604,7 +604,7 @@ void MainWindow::UpdateJobTree(void)
 	std::string str_prj_list_xml = CEnsemble::getInstance()->GetDeviceJobInfo() ;
 	
 
-    qDebug("project list xml (%d, %d) = %s", str_prj_list_xml.size(), str_prj_list_xml.length(), str_prj_list_xml.c_str()) ;
+    //qDebug("project list xml (%d, %d) = %s", str_prj_list_xml.size(), str_prj_list_xml.length(), str_prj_list_xml.c_str()) ;
 
     //XML Parsing
     pugi::xml_document doc;
@@ -612,7 +612,7 @@ void MainWindow::UpdateJobTree(void)
 
     if (!result)
     {
-        qDebug("xml parsing error") ;
+        //qDebug("xml parsing error") ;
     }
     else
     {
@@ -627,7 +627,7 @@ void MainWindow::UpdateJobTree(void)
 
 			CEnsembleAPI *p_device = CEnsemble::getInstance()->GetDevice(str_device_ip_addr, device_port) ;
 			
-            qDebug("xml: Device MAC address=%s, IP=%s, Port=%s(%d)", str_device_mac.c_str(), str_device_ip_addr.c_str(), str_device_port.c_str(), device_port) ;
+            //qDebug("xml: Device MAC address=%s, IP=%s, Port=%s(%d)", str_device_mac.c_str(), str_device_ip_addr.c_str(), str_device_port.c_str(), device_port) ;
             //AddTreeRoot(QString::fromStdString(str_device), QString::fromStdString("test")) ;
 
             std::string str_device_info = str_device_model_name + "(" + str_device_mac + ")" ;
@@ -661,7 +661,7 @@ void MainWindow::UpdateJobTree(void)
                 //CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Source_Get_Image(GET_IMAGE_DEVICE_ICON, std::string(), image_type, &image_buf) ;
                 if( p_device ) 	p_device->Ensemble_DeviceIcon_Get_Image(&image_buf) ;
 
-                //qDebug("Get Image Size = %d x %d", width, height) ;
+                ////qDebug("Get Image Size = %d x %d", width, height) ;
 
                 if( image_buf.p_buf != NULL )
                 {
@@ -701,7 +701,7 @@ void MainWindow::UpdateJobTree(void)
             	std::string str_prj_id = project.attribute("ID").value();
                 std::string str_prj_name = project.attribute("Name").value();
 
-				qDebug("Project[%d]: id=%s, name=%s", project_count, str_prj_id.c_str(), str_prj_name.c_str()) ;
+				//qDebug("Project[%d]: id=%s, name=%s", project_count, str_prj_id.c_str(), str_prj_name.c_str()) ;
 
 				QTreeWidgetItem *treeChileItem = new QTreeWidgetItem(JobType::JOB_TYPE_PROJECT);
                 treeItem->addChild(treeChileItem);
@@ -739,7 +739,7 @@ void MainWindow::UpdateJobTree(void)
 					std::string str_tool_type_name ;
 					if( p_device ) 	str_tool_type_name = p_device->Ensemble_Info_Get_ToolTypeName(type) ;
 					
-                    qDebug("Job : Type=%d, TypeName=%s, Name=%s", type, str_tool_type_name.c_str(), str_name.c_str()) ;
+                    //qDebug("Job : Type=%d, TypeName=%s, Name=%s", type, str_tool_type_name.c_str(), str_name.c_str()) ;
 
                     QTreeWidgetItem *treeJobItem = new QTreeWidgetItem(JobType::JOB_TYPE_BASE);
                     treeChileItem->setExpanded(true);
@@ -795,7 +795,7 @@ void MainWindow::UpdateJobTree(void)
 						std::string str_tool_type_name ;
 						if( p_device ) str_tool_type_name = p_device->Ensemble_Info_Get_ToolTypeName(type) ;
 						
-	                    qDebug("Tool Type=%d, TypeName=%s, Name=%s", type, str_tool_type_name.c_str(), str_name.c_str()) ;
+	                    //qDebug("Tool Type=%d, TypeName=%s, Name=%s", type, str_tool_type_name.c_str(), str_name.c_str()) ;
 
 	                    QTreeWidgetItem *treeToolItem = new QTreeWidgetItem(JobType::JOB_TYPE_TOOL);
 	                    treeJobItem->setExpanded(true);
@@ -833,7 +833,7 @@ void MainWindow::UpdateJobTree(void)
 							std::string str_tool_option_type_name ;
 							if( p_device ) str_tool_option_type_name = p_device->Ensemble_Info_Get_ToolTypeName(option_type) ;
 							
-		                    qDebug("Tool Option Type=%d, TypeName=%s, Name=%s", option_type, str_tool_option_type_name.c_str(), str_option_name.c_str()) ;
+		                    //qDebug("Tool Option Type=%d, TypeName=%s, Name=%s", option_type, str_tool_option_type_name.c_str(), str_option_name.c_str()) ;
 
 		                    QTreeWidgetItem *treeToolOptionItem = new QTreeWidgetItem(JobType::JOB_TYPE_TOOL_OPTION);
 		                    treeToolItem->setExpanded(true);
@@ -913,7 +913,7 @@ void MainWindow::OnButtonUpdateSourceList(void)
 {
 	std::string str_source_list_xml = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Source_Get_List() ;
 
-	qDebug(" - Get Source List : %s", str_source_list_xml.c_str()) ;
+	//qDebug(" - Get Source List : %s", str_source_list_xml.c_str()) ;
 	
 	//xml parsing
 	//XML Parsing
@@ -923,7 +923,7 @@ void MainWindow::OnButtonUpdateSourceList(void)
     if (!result)
     {
 
-        qDebug("xml parsing error") ;
+        //qDebug("xml parsing error") ;
     }
     else
     {

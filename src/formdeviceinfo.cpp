@@ -86,7 +86,7 @@ void FormDeviceInfo::OnButton_DB_Load(void)
 	QString qstr_port = ui->label_port->text() ;
     std::string str_port = qstr_port.toUtf8().constData();
 
-	qDebug("OnButton_DB_Load = %s, %s", str_ip.c_str(), str_port.c_str()) ;
+	//qDebug("OnButton_DB_Load = %s, %s", str_ip.c_str(), str_port.c_str()) ;
 	
 	if( !str_ip.empty() && !str_port.empty() )
 	{
@@ -128,7 +128,7 @@ void FormDeviceInfo::OnButton_DB_Save(void)
 	QString qstr_port = ui->label_port->text() ;
     std::string str_port = qstr_port.toUtf8().constData();
 
-	qDebug("OnButton_DB_Save = %s, %s", str_ip.c_str(), str_port.c_str()) ;
+	//qDebug("OnButton_DB_Save = %s, %s", str_ip.c_str(), str_port.c_str()) ;
 	
 	if( !str_ip.empty() && !str_port.empty() )
 	{
@@ -152,7 +152,7 @@ void FormDeviceInfo::OnButton_Job_Clear(void)
 	QString qstr_port = ui->label_port->text() ;
     std::string str_port = qstr_port.toUtf8().constData();
 
-	qDebug("OnButton_Job_Clear = %s, %s", str_ip.c_str(), str_port.c_str()) ;
+	//qDebug("OnButton_Job_Clear = %s, %s", str_ip.c_str(), str_port.c_str()) ;
 	
 	if( !str_ip.empty() && !str_port.empty() )
 	{
@@ -177,7 +177,7 @@ void FormDeviceInfo::OnButton_Add_New_Project(void)
 	QString qstr_port = ui->label_port->text() ;
     std::string str_port = qstr_port.toUtf8().constData();
 
-	qDebug("OnButton_Add_New_Project = %s, %s", str_ip.c_str(), str_port.c_str()) ;
+	//qDebug("OnButton_Add_New_Project = %s, %s", str_ip.c_str(), str_port.c_str()) ;
 	
 	if( !str_ip.empty() && !str_port.empty() )
 	{
@@ -205,7 +205,7 @@ void FormDeviceInfo::OnButton_Add_New_Project(void)
 
 void FormDeviceInfo::OnButton_Device_Update(void)
 {
-	qDebug("%s", __func__);
+	//qDebug("%s", __func__);
 
 	QString qstr_ip = ui->label_ip->text() ;
     std::string str_ip = qstr_ip.toUtf8().constData();
@@ -213,7 +213,7 @@ void FormDeviceInfo::OnButton_Device_Update(void)
 	QString qstr_port = ui->label_port->text() ;
     std::string str_port = qstr_port.toUtf8().constData();
 
-	qDebug("OnButton_Add_New_Project = %s, %s", str_ip.c_str(), str_port.c_str()) ;
+	//qDebug("OnButton_Add_New_Project = %s, %s", str_ip.c_str(), str_port.c_str()) ;
 	
 	if( !str_ip.empty() && !str_port.empty() )
 	{

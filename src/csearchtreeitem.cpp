@@ -14,7 +14,7 @@ QTreeWidgetItem *CSearchTreeItem::traverseNode(QTreeWidgetItem *item, const std:
 	QString qstr_item_id = item_user_data.toString() ;
 	std::string str_item_id = qstr_item_id.toUtf8().constData() ;
 
-	qDebug("traverseNode item id = %s", str_item_id.c_str()) ;
+	//qDebug("traverseNode item id = %s", str_item_id.c_str()) ;
 
 	if( str_item_id == id )
     {
@@ -29,28 +29,28 @@ QTreeWidgetItem *CSearchTreeItem::traverseNode(QTreeWidgetItem *item, const std:
     FormToolOption* p_FromToolOption = (FormToolOption*)(item) ;
 
     //Check Project
-    qDebug("traverseNode Check Project") ;
+    //qDebug("traverseNode Check Project") ;
     if( p_FromProject )
     {
-    	qDebug("traverseNode This is Project Form") ;
+    	//qDebug("traverseNode This is Project Form") ;
 		
         if( p_FromProject->GetIdInfo() == id )
         {
-        	qDebug("Same ID") ;
+        	//qDebug("Same ID") ;
 			
             p_ret_item = item ;
 
-			qDebug("return") ;
+			//qDebug("return") ;
 			
             return p_ret_item ;
         }
     }
 
     //Check Job
-    qDebug("traverseNode Check Job") ;
+    //qDebug("traverseNode Check Job") ;
     if( p_FromJobBase )
     {
-    	qDebug("traverseNode This is Job Form") ;
+    	//qDebug("traverseNode This is Job Form") ;
 		
         if( p_FromJobBase->GetIdInfo() == id )
         {
@@ -60,10 +60,10 @@ QTreeWidgetItem *CSearchTreeItem::traverseNode(QTreeWidgetItem *item, const std:
     }
 
     //Check Tool
-    qDebug("traverseNode Check Tool") ;
+    //qDebug("traverseNode Check Tool") ;
     if( p_FromJobTool )
     {
-    	qDebug("traverseNode This is Tool Form") ;
+    	//qDebug("traverseNode This is Tool Form") ;
 		
         if( p_FromJobTool->GetIdInfo() == id )
         {
@@ -73,10 +73,10 @@ QTreeWidgetItem *CSearchTreeItem::traverseNode(QTreeWidgetItem *item, const std:
     }
 
     //Check Tool Option
-    qDebug("traverseNode Check Tool Option") ;
+    //qDebug("traverseNode Check Tool Option") ;
     if( p_FromToolOption )
     {
-    	qDebug("traverseNode This is Option Form") ;
+    	//qDebug("traverseNode This is Option Form") ;
 		
         if( p_FromToolOption->GetIdInfo() == id )
         {
@@ -86,7 +86,7 @@ QTreeWidgetItem *CSearchTreeItem::traverseNode(QTreeWidgetItem *item, const std:
     }
 #endif
 
-	qDebug("traverseNode item->childCount()=%d", item->childCount()) ;
+	//qDebug("traverseNode item->childCount()=%d", item->childCount()) ;
 	
     // Do something with item
     for (int i = 0; i < item->childCount(); ++i)
@@ -103,7 +103,7 @@ QTreeWidgetItem *CSearchTreeItem::GetItem(CJobTree *p_tree, const std::string id
 {
     QTreeWidgetItem *p_ret_item = NULL ;
 
-	qDebug("Get Tree Item p_tree->topLevelItemCount()=%d", p_tree->topLevelItemCount()) ;
+	//qDebug("Get Tree Item p_tree->topLevelItemCount()=%d", p_tree->topLevelItemCount()) ;
 	
     for (int i = 0; i < p_tree->topLevelItemCount(); ++i)
     {
