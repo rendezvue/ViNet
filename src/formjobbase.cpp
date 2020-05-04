@@ -54,7 +54,8 @@ void FormJobBase::ShowContextMenu(const QPoint &pos)
 {
 	QMenu contextMenu(tr("Context menu"), this);
 
-
+	//Get Sub Job List
+	
 	QAction action1("Remove Data Point", this);
 	connect(&action1, SIGNAL(triggered()), this, SLOT(removeDataPoint()));
 

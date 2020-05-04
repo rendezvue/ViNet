@@ -20,11 +20,29 @@ FormProject::FormProject(QWidget *parent) :
 
 	//check box
     connect(ui->checkBox_trigger_run, SIGNAL(clicked(bool)), this, SLOT(OnTriggerRunCheckBoxToggled(bool)));
+
+	//context menu
+	this->setContextMenuPolicy(Qt::CustomContextMenu);
+	connect(this, SIGNAL(customContextMenuRequested(const QPoint &)), 
+	        this, SLOT(ShowContextMenu(const QPoint &)));
 }
 
 FormProject::~FormProject()
 {
     delete ui;
+}
+
+void FormProject::ShowContextMenu(const QPoint &pos) 
+{
+	QMenu contextMenu(tr("Context menu"), this);
+
+	//Get Sub Job List
+	
+	QAction action1("Remove Data Point", this);
+	connect(&action1, SIGNAL(triggered()), this, SLOT(removeDataPoint()));
+
+	contextMenu.addAction(&action1);
+	contextMenu.exec(mapToGlobal(pos));
 }
 
 void FormProject::SetNameInfo(const std::string name)

@@ -5,6 +5,7 @@
 #include <QHoverEvent>
 #include <QEvent>
 #include <QDebug>
+#include <QMenu>
 
 //API
 #include "EnsembleAPI.h"
@@ -57,6 +58,7 @@ public slots:
 	void OnButtonDel(void);
 	void OnButtonSetName(void) ;
 	void OnButtonRun(void) ;
+	void ShowContextMenu(const QPoint &pos) ;
 
 
 };
