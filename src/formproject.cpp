@@ -32,11 +32,13 @@ FormProject::~FormProject()
     delete ui;
 }
 
-void FormProject::ShowContextMenu(const QPoint &pos) 
+void FormProject::ShowContextMenu(const QPoint &pos)
 {
 	QMenu contextMenu(tr("Context menu"), this);
 
 	//Get Sub Job List
+	const std::string str_addable_job_list_xml = CEnsemble::getInstance()->Ensemble_Info_Get_Addable_Subjob_List_Xml(GetIdInfo()) ;
+	
 	
 	QAction action1("Remove Data Point", this);
 	connect(&action1, SIGNAL(triggered()), this, SLOT(removeDataPoint()));
