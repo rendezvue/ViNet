@@ -52,15 +52,65 @@ FormJobBase::~FormJobBase()
 
 void FormJobBase::ShowContextMenu(const QPoint &pos) 
 {
-	QMenu contextMenu(tr("Context menu"), this);
+	CEnsembleAPI *p_device = CEnsemble::getInstance()->GetDevice(GetNetworkInfo_Ip_Address(), GetNetworkInfo_Port()) ;
 
-	//Get Sub Job List
-	
-	QAction action1("Remove Data Point", this);
-	connect(&action1, SIGNAL(triggered()), this, SLOT(removeDataPoint()));
+	if( p_device )
+	{
+		QMenu contextMenu(tr("Context menu"), this);
 
-	contextMenu.addAction(&action1);
-	contextMenu.exec(mapToGlobal(pos));
+		//Get Sub Job List
+		const std::string str_addable_job_list_xml = p_device->Ensemble_Info_Get_Addable_Subjob_List_Xml(GetIdInfo()) ;
+
+		//parsing
+		CParsingAddableJobList cls_parsing_addable_job_list ;
+		std::vector<AddableJobInfo> vec_list = cls_parsing_addable_job_list.GetAddableJobList(str_addable_job_list_xml) ;
+
+        const int size_list = vec_list.size() ;
+		for( int i=0 ; i<size_list ; i++ )
+		{
+            std::string str_menu ;
+            str_menu = "New " + vec_list[i].name ;
+			if( !vec_list[i].description.empty() )	str_menu += "(" + vec_list[i].description + ")" ;
+			
+            //QAction action1(str_name.c_str(), this);
+            //connect(&action1, SIGNAL(triggered()), this, SLOT(removeDataPoint()));
+
+            //contextMenu.addAction(&action1);
+            contextMenu.addAction(str_menu.c_str());
+            //contextMenu.exec(mapToGlobal(pos));
+        }
+
+       	QAction* selectedItem = contextMenu.exec(mapToGlobal(pos));
+        if( selectedItem )
+        {
+	        QString txt = selectedItem->text();
+            std::string str_txt = txt.toUtf8().constData();
+            const int type = selectedItem->data().toInt() ;
+
+            qDebug("select item = %s, type = %d", str_txt.c_str(), type) ;
+
+			//new job
+			if( type >= JobType::JOB_TYPE_TOOL && type < JobType::JOB_TYPE_TOOL+10000 )
+			{
+				const std::string str_id = GetIdInfo() ;
+				
+				qDebug("call API : CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Tool_Add_New(%s)", str_id.c_str()) ;
+				
+				CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Tool_Add_New(str_id, type) ;
+
+				emit UpdateList() ;
+			}
+			
+			/*
+			if( item_from_type >= JobType::JOB_TYPE_BASE && item_from_type < JobType::JOB_TYPE_BASE+10000 )
+			{
+				qDebug("call API : CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Job_Add_New(%s)", str_target_id.c_str()) ;
+				
+				CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Job_Add_New(str_target_id, item_from_type) ;
+			}
+			*/
+        }
+	}
 }
 
 

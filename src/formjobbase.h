@@ -28,6 +28,7 @@
 
 #include "cmat2qimage.h"
 #include "cnetworkinfo.h"
+#include "cparsingaddablejoblist.h"
 
 namespace Ui {
 class FormJobBase;

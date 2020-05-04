@@ -51,20 +51,51 @@ void FormProject::ShowContextMenu(const QPoint &pos)
 		for( int i=0 ; i<size_list ; i++ )
 		{
             std::string str_menu ;
-            str_menu = "New " + vec_list[i].name + "(" + vec_list[i].description + ")" ;
+            str_menu = "New " + vec_list[i].name ;
+
+			if( !vec_list[i].description.empty() )	str_menu += "(" + vec_list[i].description + ")" ;
 			
-            //QAction action1(str_name.c_str(), this);
+            //QAction action1(str_menu.c_str(), this);
+            //action1.setData(vec_list[i].type) ;
+            QAction *action ;
+            action = new  QAction(str_menu.c_str(), this) ;
+            action->setData(vec_list[i].type);
             //connect(&action1, SIGNAL(triggered()), this, SLOT(removeDataPoint()));
 
-            //contextMenu.addAction(&action1);
-            contextMenu.addAction(str_menu.c_str());
+            contextMenu.addAction(action);
+            //contextMenu.addAction(str_menu.c_str());
             //contextMenu.exec(mapToGlobal(pos));
         }
 
         QAction* selectedItem = contextMenu.exec(mapToGlobal(pos));
         if( selectedItem )
         {
+	        QString txt = selectedItem->text();
+            std::string str_txt = txt.toUtf8().constData();
+            const int type = selectedItem->data().toInt() ;
 
+            qDebug("select item = %s, type = %d", str_txt.c_str(), type) ;
+
+			//new job
+			if( type >= JobType::JOB_TYPE_BASE && type < JobType::JOB_TYPE_BASE+10000 )
+			{
+				const std::string str_id = GetIdInfo() ;
+				
+				qDebug("call API : CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Job_Add_New(%s)", str_id.c_str()) ;
+				
+				CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Job_Add_New(str_id, type) ;
+
+				emit UpdateList() ;
+			}
+			
+			/*
+			if( item_from_type >= JobType::JOB_TYPE_BASE && item_from_type < JobType::JOB_TYPE_BASE+10000 )
+			{
+				qDebug("call API : CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Job_Add_New(%s)", str_target_id.c_str()) ;
+				
+				CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Job_Add_New(str_target_id, item_from_type) ;
+			}
+			*/
         }
 	}
 }

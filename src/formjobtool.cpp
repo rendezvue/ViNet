@@ -54,12 +54,56 @@ FormJobTool::FormJobTool(QWidget *parent) :
 	//check box
 	connect(ui->checkBox_run, SIGNAL(clicked(bool)), this, SLOT(OnRunCheckBoxToggled(bool)));
 	connect(ui->checkBox_view, SIGNAL(clicked(bool)), this, SLOT(OnViewCheckBoxToggled(bool)));
+
+	this->setContextMenuPolicy(Qt::CustomContextMenu);
+	connect(this, SIGNAL(customContextMenuRequested(const QPoint &)), 
+	        this, SLOT(ShowContextMenu(const QPoint &)));
 }
 
 FormJobTool::~FormJobTool()
 {
     delete ui;
 }
+
+
+void FormJobTool::ShowContextMenu(const QPoint &pos) 
+{
+	CEnsembleAPI *p_device = CEnsemble::getInstance()->GetDevice(GetNetworkInfo_Ip_Address(), GetNetworkInfo_Port()) ;
+
+	if( p_device )
+	{
+		QMenu contextMenu(tr("Context menu"), this);
+
+		//Get Sub Job List
+		const std::string str_addable_job_list_xml = p_device->Ensemble_Info_Get_Addable_Subjob_List_Xml(GetIdInfo()) ;
+
+		//parsing
+		CParsingAddableJobList cls_parsing_addable_job_list ;
+		std::vector<AddableJobInfo> vec_list = cls_parsing_addable_job_list.GetAddableJobList(str_addable_job_list_xml) ;
+
+        const int size_list = vec_list.size() ;
+		for( int i=0 ; i<size_list ; i++ )
+		{
+            std::string str_menu ;
+            str_menu = "New " + vec_list[i].name ;
+			if( !vec_list[i].description.empty() )	str_menu += "(" + vec_list[i].description + ")" ;
+			
+            //QAction action1(str_name.c_str(), this);
+            //connect(&action1, SIGNAL(triggered()), this, SLOT(removeDataPoint()));
+
+            //contextMenu.addAction(&action1);
+            contextMenu.addAction(str_menu.c_str());
+            //contextMenu.exec(mapToGlobal(pos));
+        }
+
+        QAction* selectedItem = contextMenu.exec(mapToGlobal(pos));
+        if( selectedItem )
+        {
+
+        }
+	}
+}
+
 
 void FormJobTool::showEvent(QShowEvent *ev)
 {

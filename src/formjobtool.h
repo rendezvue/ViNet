@@ -4,6 +4,7 @@
 #include <QWidget>
 #include <QHoverEvent>
 #include <QEvent>
+#include <QMenu>
 
 //API
 #include "EnsembleAPI.h"
@@ -31,6 +32,7 @@
 #include "cnetworkinfo.h"
 
 #include "CImageBuf2Mat.h"
+#include "cparsingaddablejoblist.h"
 
 
 namespace Ui {
@@ -118,6 +120,7 @@ public slots:
 	void OnUpdateName(QString name) ;
 	void OnRunCheckBoxToggled(bool checked) ;
 	void OnViewCheckBoxToggled(bool checked) ;
+	void ShowContextMenu(const QPoint &pos) ;
 
 };
 
