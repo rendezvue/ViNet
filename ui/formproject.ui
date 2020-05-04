@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>490</width>
-    <height>40</height>
+    <height>61</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,7 +17,7 @@
    <property name="geometry">
     <rect>
      <x>430</x>
-     <y>10</y>
+     <y>20</y>
      <width>21</width>
      <height>21</height>
     </rect>
@@ -30,7 +30,7 @@
    <property name="geometry">
     <rect>
      <x>460</x>
-     <y>10</y>
+     <y>20</y>
      <width>21</width>
      <height>21</height>
     </rect>
@@ -47,7 +47,7 @@
    <property name="geometry">
     <rect>
      <x>50</x>
-     <y>20</y>
+     <y>30</y>
      <width>161</width>
      <height>17</height>
     </rect>
@@ -65,17 +65,29 @@
    <property name="geometry">
     <rect>
      <x>50</x>
-     <y>0</y>
+     <y>10</y>
      <width>251</width>
-     <height>27</height>
+     <height>21</height>
     </rect>
    </property>
    <layout class="QHBoxLayout" name="horizontalLayout">
     <property name="sizeConstraint">
      <enum>QLayout::SetFixedSize</enum>
     </property>
+    <property name="topMargin">
+     <number>0</number>
+    </property>
+    <property name="bottomMargin">
+     <number>0</number>
+    </property>
     <item>
      <widget class="QLabel" name="label">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
       <property name="font">
        <font>
         <weight>75</weight>
@@ -89,6 +101,12 @@
     </item>
     <item>
      <widget class="QLabel" name="label_name">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
       <property name="font">
        <font>
         <weight>75</weight>
@@ -100,25 +118,13 @@
       </property>
      </widget>
     </item>
-    <item>
-     <widget class="QPushButton" name="pushButton_change">
-      <property name="font">
-       <font>
-        <pointsize>8</pointsize>
-       </font>
-      </property>
-      <property name="text">
-       <string>Change Name</string>
-      </property>
-     </widget>
-    </item>
    </layout>
   </widget>
   <widget class="QCheckBox" name="checkBox_trigger_run">
    <property name="geometry">
     <rect>
      <x>0</x>
-     <y>0</y>
+     <y>10</y>
      <width>41</width>
      <height>40</height>
     </rect>
@@ -132,6 +138,28 @@
    <property name="icon">
     <iconset resource="../resource.qrc">
      <normaloff>:/icons/image/icons/trigger.png</normaloff>:/icons/image/icons/trigger.png</iconset>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pushButton_change">
+   <property name="geometry">
+    <rect>
+     <x>400</x>
+     <y>20</y>
+     <width>21</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>6</pointsize>
+    </font>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="icon">
+    <iconset resource="../resource.qrc">
+     <normaloff>:/icons/image/icons/set.png</normaloff>:/icons/image/icons/set.png</iconset>
    </property>
   </widget>
  </widget>

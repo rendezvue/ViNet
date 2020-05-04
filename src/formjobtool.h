@@ -18,7 +18,6 @@
 #include "dialogsettooldistance.h"
 #include "dialogsettoolangle.h"
 #include "dialogsettoolinspectdistance.h"
-#include "dialogselecttooloption.h"
 #include "dialogsettooloffsetdistance.h"
 #include "dialogsetcode.h"
 
@@ -100,9 +99,6 @@ private:
 	DialogSetToolInspectDistance m_dlg_set_tool_inspect_distance ;	
 	//Set Dialog : Offset Distance
 	DialogSetToolOffsetDistance m_dlg_set_tool_offset_distance ;
-
-	//Select Option Dialog
-    DialogSelectToolOption m_dlg_select_option ;
 	
 	int m_type ;
 	int m_i_option_count ;
@@ -115,7 +111,6 @@ public slots:
 	void OnUpdateList(void);
 	void OnButtonDel(void);
     void OnButtonSetBase(void) ;
-	void OnButtonSetOption(void) ;
 	void OnUpdateImage(void) ;
 	void OnUpdateName(QString name) ;
 	void OnRunCheckBoxToggled(bool checked) ;

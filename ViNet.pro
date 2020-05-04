@@ -51,7 +51,6 @@ HEADERS += \
     src/cthreaddraw.h \
     src/ctoollist.h \
     src/dialogchangename.h \
-    src/dialogselecttooloption.h \
     src/dialogsetbase.h \
     src/dialogsetcalibration.h \
     src/dialogsettoolangle.h \
@@ -70,7 +69,6 @@ HEADERS += \
     src/formjobbase.h \
     src/formjobtool.h \
     src/formproject.h \
-    src/formtoollist.h \
     src/formtooloption.h \
     src/mainwindow.h \
     src/dialogsetcustomfeatureoption.h \
@@ -114,7 +112,6 @@ SOURCES += \
     src/cthreaddraw.cpp \
     src/ctoollist.cpp \
     src/dialogchangename.cpp \
-    src/dialogselecttooloption.cpp \
     src/dialogsetbase.cpp \
     src/dialogsetcalibration.cpp \
     src/dialogsettoolangle.cpp \
@@ -133,7 +130,6 @@ SOURCES += \
     src/formjobbase.cpp \
     src/formjobtool.cpp \
     src/formproject.cpp \
-    src/formtoollist.cpp \
     src/formtooloption.cpp \
     src/main.cpp \
     src/mainwindow.cpp \
@@ -165,7 +161,6 @@ FORMS += \
     ui/cdialogconnect.ui \
     ui/cdialognewproject.ui \
     ui/dialogchangename.ui \
-    ui/dialogselecttooloption.ui \
     ui/dialogsetbase.ui \
     ui/dialogsetcalibration.ui \
     ui/dialogsettoolangle.ui \
@@ -184,7 +179,6 @@ FORMS += \
     ui/formjobbase.ui \
     ui/formjobtool.ui \
     ui/formproject.ui \
-    ui/formtoollist.ui \
     ui/formtooloption.ui \
     ui/mainwindow.ui \
     ui/dialogsetcustomfeatureoption.ui \

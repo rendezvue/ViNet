@@ -13,7 +13,6 @@ FormJobTool::FormJobTool(QWidget *parent) :
 
     ui->pushButton_change->setVisible(false);	
 	ui->pushButton_del->setVisible(false);
-	ui->pushButton_option->setVisible(false);
 
 	//ui->checkBox_run->setVisible(false);
 	//ui->checkBox_view->setVisible(false);
@@ -21,7 +20,6 @@ FormJobTool::FormJobTool(QWidget *parent) :
 	//button
     connect(ui->pushButton_del, SIGNAL(clicked()), this,  SLOT(OnButtonDel())) ;
     connect(ui->pushButton_change, SIGNAL(clicked()), this,  SLOT(OnButtonSetBase())) ;
-	connect(ui->pushButton_option, SIGNAL(clicked()), this,  SLOT(OnButtonSetOption())) ;
 
     connect(&m_dlg_set_tool_object, SIGNAL(UpdateToolObjectImage()), this, SLOT(OnUpdateImage())) ;
 	connect(&m_dlg_set_tool_object, SIGNAL(UpdateToolName(QString)), this, SLOT(OnUpdateName(QString))) ;
@@ -46,10 +44,6 @@ FormJobTool::FormJobTool(QWidget *parent) :
 	//offset distance
 	connect(&m_dlg_set_tool_offset_distance, SIGNAL(UpdateToolObjectImage()), this, SLOT(OnUpdateImage())) ;
 	connect(&m_dlg_set_tool_offset_distance, SIGNAL(UpdateToolName(QString)), this, SLOT(OnUpdateName(QString))) ;
-
-	//update list
-	connect(&m_dlg_select_option, SIGNAL(UpdateList()), this, SLOT(OnUpdateList())) ;
-
 	
 	//check box
 	connect(ui->checkBox_run, SIGNAL(clicked(bool)), this, SLOT(OnRunCheckBoxToggled(bool)));
@@ -88,18 +82,31 @@ void FormJobTool::ShowContextMenu(const QPoint &pos)
             str_menu = "New " + vec_list[i].name ;
 			if( !vec_list[i].description.empty() )	str_menu += "(" + vec_list[i].description + ")" ;
 			
-            //QAction action1(str_name.c_str(), this);
+            QAction *action ;
+            action = new  QAction(str_menu.c_str(), this) ;
+            action->setData(vec_list[i].type);
             //connect(&action1, SIGNAL(triggered()), this, SLOT(removeDataPoint()));
 
-            //contextMenu.addAction(&action1);
-            contextMenu.addAction(str_menu.c_str());
-            //contextMenu.exec(mapToGlobal(pos));
+            contextMenu.addAction(action);
         }
 
-        QAction* selectedItem = contextMenu.exec(mapToGlobal(pos));
+       	QAction* selectedItem = contextMenu.exec(mapToGlobal(pos));
         if( selectedItem )
         {
+	        QString txt = selectedItem->text();
+            std::string str_txt = txt.toUtf8().constData();
+            const int type = selectedItem->data().toInt() ;
 
+            qDebug("select item = %s, type = %d", str_txt.c_str(), type) ;
+
+			//new job
+			const std::string str_id = GetIdInfo() ;
+			
+			qDebug("call API : CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Tool_Add_NewOption(%s)", str_id.c_str()) ;
+
+			CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Tool_Add_NewOption(str_id, type) ;
+
+			emit UpdateList() ;
         }
 	}
 }
@@ -126,23 +133,6 @@ void FormJobTool::showEvent(QShowEvent *ev)
 		//view checkbox
 		int view_option = p_device->Ensemble_Task_Get_View_Option(GetIdInfo()) ;
 		ui->checkBox_view->setChecked(view_option);
-	}
-}
-
-void FormJobTool::OnButtonSetOption(void) 
-{
-	if( m_i_option_count > 0 )
-	{
-		m_dlg_select_option.SetToolType(GetType()) ;
-		m_dlg_select_option.SetToolId(GetIdInfo()) ;
-
-		int dialogCode = m_dlg_select_option.exec();
-
-		//Update
-	    if(dialogCode == QDialog::Accepted)
-	    {
-	    	OnUpdateList();
-	    }
 	}
 }
 
@@ -424,7 +414,6 @@ void FormJobTool::hoverEnter(QHoverEvent * event)
 {
     ui->pushButton_change->setVisible(true);
 	ui->pushButton_del->setVisible(true);
-	if( m_i_option_count > 0 )	ui->pushButton_option->setVisible(true);
 
 	//ui->checkBox_run->setVisible(true);
 	//ui->checkBox_view->setVisible(true);
@@ -436,7 +425,6 @@ void FormJobTool::hoverLeave(QHoverEvent * event)
 {
     ui->pushButton_change->setVisible(false);
 	ui->pushButton_del->setVisible(false);
-	if( m_i_option_count > 0 )	ui->pushButton_option->setVisible(false);
 
 	//ui->checkBox_run->setVisible(false);
 	//ui->checkBox_view->setVisible(false);

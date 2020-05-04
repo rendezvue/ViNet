@@ -72,12 +72,12 @@ void FormJobBase::ShowContextMenu(const QPoint &pos)
             str_menu = "New " + vec_list[i].name ;
 			if( !vec_list[i].description.empty() )	str_menu += "(" + vec_list[i].description + ")" ;
 			
-            //QAction action1(str_name.c_str(), this);
+            QAction *action ;
+            action = new  QAction(str_menu.c_str(), this) ;
+            action->setData(vec_list[i].type);
             //connect(&action1, SIGNAL(triggered()), this, SLOT(removeDataPoint()));
 
-            //contextMenu.addAction(&action1);
-            contextMenu.addAction(str_menu.c_str());
-            //contextMenu.exec(mapToGlobal(pos));
+            contextMenu.addAction(action);
         }
 
        	QAction* selectedItem = contextMenu.exec(mapToGlobal(pos));
