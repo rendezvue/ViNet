@@ -5,6 +5,7 @@
 #include <QHoverEvent>
 #include <QEvent>
 #include <QDebug>
+#include <QMenu>
 
 #include "EnsembleCommon.h"
 
@@ -93,6 +94,7 @@ public slots:
 	void OnViewCheckBoxToggled(bool checked) ;
 	void OnButtonSetCalibration(void) ;
 	void OnButtonResultInfo(void) ;
+	void ShowContextMenu(const QPoint &pos) ;
 	//void UpdateInfo(void) ;
 };
 

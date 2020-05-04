@@ -38,13 +38,30 @@ FormJobBase::FormJobBase(QWidget *parent) :
     //QSize size_result_bt =  ui->pushButton_result_more->sizeHint();
     //ui->pushButton_result_more->resize(20, size_result_bt.height());
     connect(ui->pushButton_result_more, SIGNAL(clicked()), this, SLOT(OnButtonResultInfo())) ;
-	
+
+	//
+	this->setContextMenuPolicy(Qt::CustomContextMenu);
+	connect(this, SIGNAL(customContextMenuRequested(const QPoint &)), 
+	        this, SLOT(ShowContextMenu(const QPoint &)));
 }
 
 FormJobBase::~FormJobBase()
 {
     delete ui;
 }
+
+void FormJobBase::ShowContextMenu(const QPoint &pos) 
+{
+	QMenu contextMenu(tr("Context menu"), this);
+
+
+	QAction action1("Remove Data Point", this);
+	connect(&action1, SIGNAL(triggered()), this, SLOT(removeDataPoint()));
+
+	contextMenu.addAction(&action1);
+	contextMenu.exec(mapToGlobal(pos));
+}
+
 
 void FormJobBase::showEvent(QShowEvent *ev)
 {
