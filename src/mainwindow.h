@@ -133,9 +133,6 @@ private:
     void AddTreeChild(QTreeWidgetItem *parent,
                       QString name, QString description);
 
-	void UpdateToolsListFromDevice(QListWidget *listWidget) ;
-    void UpdateJobsListFromDevice(QListWidget *listWidget) ;
-
     QStringListModel *m_source_list_model ;
 
     std::string m_str_ip_address ;
@@ -152,8 +149,6 @@ protected :
 
 public slots:
     void updatePicture(cv::Mat image);
-    void UpdateToolsList(void) ;
-    void UpdateJobsList(void) ;
     void UpdateJobTree(void) ;
 	void UpdateResultImage(QString id) ;
 	void UpdateResult(QString qstr_xml) ;

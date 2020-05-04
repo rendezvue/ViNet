@@ -77,7 +77,8 @@ void CJobTree::dropEvent(QDropEvent *event)
     //delCandidateItem() ;
 
 	delCandidateItem() ;
-	
+
+#if 0	
     if (event->mimeData()->hasFormat(CToolList::itemMimeType()))		//Add a New Base job or Tool
     {
         //--
@@ -185,6 +186,8 @@ void CJobTree::dropEvent(QDropEvent *event)
         emit SignalDropDone();
     }
 	else if( event->mimeData()->hasFormat(CJobTree::itemMimeType()) )
+#endif
+	if( event->mimeData()->hasFormat(CJobTree::itemMimeType()) )
 	{
 		QByteArray itemData = event->mimeData()->data(CJobTree::itemMimeType());
         QDataStream dataStream(&itemData, QIODevice::ReadOnly);

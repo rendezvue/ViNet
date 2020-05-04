@@ -18,9 +18,7 @@ MainWindow::MainWindow(QWidget *parent) :
     m_source_list_model = new QStringListModel(this); ;
 
     //button
-    connect(ui->pushButton_update_tool, SIGNAL(clicked()), this,  SLOT(UpdateToolsList())) ;
     connect(ui->pushButton_update_job_tree, SIGNAL(clicked()), this,  SLOT(UpdateJobTree())) ;
-	connect(ui->pushButton_update_job, SIGNAL(clicked()), this,  SLOT(UpdateJobsList())) ;
 
 	connect(ui->pushButton_update_source_list, SIGNAL(clicked()), this,  SLOT(OnButtonUpdateSourceList())) ;
 		
@@ -277,13 +275,6 @@ void MainWindow::OnMenuConnect(void)
 					m_i_select_port = m_i_port ;
 					CEnsemble::getInstance()->SelectDevice(m_str_select_ip_address, m_i_select_port) ;
 					
-					qDebug(" - Success : Control Port") ;
-
-					UpdateToolsListFromDevice(ui->listWidget_items) ;
-					UpdateJobsListFromDevice(ui->listWidget_items_job) ;
-		       
-		            qDebug(" - Success : Image Port") ;
-
 					OnButtonUpdateSourceList() ;
 				}
 			}
@@ -333,170 +324,6 @@ void MainWindow::OnMenuConnect(void)
     //my_progress_dialog.show();
 }
 
-void MainWindow::UpdateToolsListFromDevice(QListWidget *listWidget) 
-{
-    qDebug("test1") ;
-
-	std::string str_able_tools_list_xml = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Info_Type_Get_Tool_List_Xml() ;
-
-	qDebug("tools info xml = %s", str_able_tools_list_xml.c_str()) ;
-
-	//Upate Job List
-	//XML Parsing
-	pugi::xml_document doc;
-	pugi::xml_parse_result result = doc.load_string((char *)(str_able_tools_list_xml.c_str()));
-
-    //listWidget->reset();
-    //delete listWidget->currentIndex()
-    //listWidget->clear();
-    //qDeleteAll(listWidget->selectedItems());
-    //delete all item
-#if 1
-    listWidget->clear();
-#else
-    while(auto item = listWidget->takeItem(0))
-    {
-       //do something with item
-       delete item ;
-    }
-#endif
-
-	if (!result)
-	{
-		qDebug("tools list xml parsing error") ;
-	}
-	else
-	{
-		for (pugi::xml_node tool: doc.child("Ability").child("Tools").children("Tool"))
-		{
-            int type = tool.attribute("Type").as_int();
-            std::string str_type = tool.attribute("TypeName").value();
-			std::string str_name = tool.attribute("Name").value();
-
-            qDebug("TypeName=%s, Name=%s", str_type.c_str(), str_name.c_str()) ;
-
-			std::string str_tool = str_type + ": " + str_name ;
-
-            //QListWidgetItem *listWidgetItem = new QListWidgetItem(listWidget);
-            //listWidgetItem->setData(Qt::UserRole, 1);
-
-            //listWidget->addItem(str_tool.c_str());
-
-            //Creating a new list widget item whose parent is the listwidget itself
-            QListWidgetItem *listWidgetItem = new QListWidgetItem(listWidget);
-
-            //Adding the item to the listwidget
-            listWidget->addItem(listWidgetItem);
-
-            listWidgetItem->setData(Qt::UserRole+1, type);
-            //listWidgetItem->setText(QString::fromUtf8(str_tool.c_str()));     //display item
-
-            //Creating an object of the designed widget which is to be added to the listwidget
-            FormToolList *theWidgetItem = new FormToolList;
-
-            theWidgetItem->SetName(str_tool);
-            theWidgetItem->SetTypeNumber(type);
-
-            //Making sure that the listWidgetItem has the same size as the TheWidgetItem
-            QSize item_size = theWidgetItem->size() ;
-            qDebug("UpdateToolsListFromDevice theWidgetItem size = %d, %d", item_size.width(), item_size.height()) ;
-
-            //QSize list_size = listWidget->sizeHint() ;
-            //listWidgetItem->setSizeHint();
-            listWidgetItem->setSizeHint(item_size);
-
-            //listWidgetItem->setSizeHint(item_size);
-            //listWidget->setFixedHeight(item_size.height());
-            //listWidgetItem->setSizeHint(theWidgetItem->sizeHint());
-
-            //Finally adding the itemWidget to the list
-            listWidget->setItemWidget(listWidgetItem, theWidgetItem);
-		}
-	}
-
-}
-
-void MainWindow::UpdateJobsListFromDevice(QListWidget *listWidget) 
-{
-	std::string str_able_tools_list_xml = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Info_Type_Get_Job_List_Xml() ;
-
-	qDebug("tools info xml = %s", str_able_tools_list_xml.c_str()) ;
-
-	//Upate Job List
-	//XML Parsing
-	pugi::xml_document doc;
-	pugi::xml_parse_result result = doc.load_string((char *)(str_able_tools_list_xml.c_str()));
-
-    //listWidget->reset();
-    //delete listWidget->currentIndex()
-    //listWidget->clear();
-    //qDeleteAll(listWidget->selectedItems());
-    //delete all item
-#if 1
-    listWidget->clear();
-#else
-    while(auto item = listWidget->takeItem(0))
-    {
-       //do something with item
-       delete item ;
-    }
-#endif
-
-	if (!result)
-	{
-		qDebug("tools list xml parsing error") ;
-	}
-	else
-	{
-		for (pugi::xml_node tool: doc.child("Ability").child("Bases").children("Base"))
-		{
-            int type = tool.attribute("Type").as_int();
-            std::string str_type = tool.attribute("TypeName").value();
-			std::string str_name = tool.attribute("Name").value();
-
-            qDebug("TypeName=%s, Name=%s", str_type.c_str(), str_name.c_str()) ;
-
-			std::string str_tool = str_type + ": " + str_name ;
-
-            //QListWidgetItem *listWidgetItem = new QListWidgetItem(listWidget);
-            //listWidgetItem->setData(Qt::UserRole, 1);
-
-            //listWidget->addItem(str_tool.c_str());
-
-            //Creating a new list widget item whose parent is the listwidget itself
-            QListWidgetItem *listWidgetItem = new QListWidgetItem(listWidget);
-
-            //Adding the item to the listwidget
-            listWidget->addItem(listWidgetItem);
-
-            listWidgetItem->setData(Qt::UserRole+1, type);
-            //listWidgetItem->setText(QString::fromUtf8(str_tool.c_str()));     //display item
-
-            //Creating an object of the designed widget which is to be added to the listwidget
-            FormToolList *theWidgetItem = new FormToolList;
-
-            theWidgetItem->SetName(str_tool);
-            theWidgetItem->SetTypeNumber(type);
-
-            //Making sure that the listWidgetItem has the same size as the TheWidgetItem
-            QSize item_size = theWidgetItem->size() ;
-            qDebug("UpdateJobsListFromDevice theWidgetItem size = %d, %d", item_size.width(), item_size.height()) ;
-
-            //QSize list_size = listWidget->sizeHint() ;
-            //listWidgetItem->setSizeHint();
-            listWidgetItem->setSizeHint(item_size);
-
-            //listWidgetItem->setSizeHint(item_size);
-            //listWidget->setFixedHeight(item_size.height());
-            //listWidgetItem->setSizeHint(theWidgetItem->sizeHint());
-
-            //Finally adding the itemWidget to the list
-            listWidget->setItemWidget(listWidgetItem, theWidgetItem);
-		}
-	}
-
-}
-
 void MainWindow::AddTreeRoot(QString name, QString description)
 {
     // QTreeWidgetItem(QTreeWidget * parent, int type = Type)
@@ -522,17 +349,6 @@ void MainWindow::AddTreeChild(QTreeWidgetItem *parent,
     // QTreeWidgetItem::addChild(QTreeWidgetItem * child)
     parent->addChild(treeItem);
 }
-				  
-void MainWindow::UpdateToolsList(void)
-{
-    UpdateToolsListFromDevice(ui->listWidget_items) ;
-}
-
-void MainWindow::UpdateJobsList(void)
-{
-    UpdateJobsListFromDevice(ui->listWidget_items_job) ;
-}
-
 
 void MainWindow::UpdateResultImage(QString id)
 {
