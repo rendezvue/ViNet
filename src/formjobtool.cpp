@@ -4,7 +4,6 @@
 FormJobTool::FormJobTool(QWidget *parent) :
     QWidget(parent),
     m_type(-1),
-    m_i_option_count(0) ,
     ui(new Ui::FormJobTool)
 {
 	setAttribute(Qt::WA_Hover);
@@ -69,7 +68,7 @@ void FormJobTool::ShowContextMenu(const QPoint &pos)
 		QMenu contextMenu(tr("Context menu"), this);
 
 		//Get Sub Job List
-		const std::string str_addable_job_list_xml = p_device->Ensemble_Info_Get_Addable_Subjob_List_Xml(GetIdInfo()) ;
+        const std::string str_addable_job_list_xml = p_device->Ensemble_Task_Get_Addable_Subjob_List_Info_Xml(GetIdInfo()) ;
 
 		//parsing
 		CParsingAddableJobList cls_parsing_addable_job_list ;
@@ -122,7 +121,6 @@ void FormJobTool::showEvent(QShowEvent *ev)
 	{
 	    //Set Initialize
 	    //Get Option Count
-	    m_i_option_count = p_device->Ensemble_Tool_Get_OptionList_Count(GetType()) ;
 
 		OnUpdateImage() ;
 
@@ -255,10 +253,10 @@ void FormJobTool::OnButtonSetBase(void)
 			{
 		        if( !change_name.empty() )
 		        {
-		            p_device->Ensemble_Tool_Set_Name(GetIdInfo(), change_name) ;
+		            p_device->Ensemble_Task_Set_Name(GetIdInfo(), change_name) ;
 		        }
 
-		        std::string project_name = p_device->Ensemble_Tool_Get_Name(GetIdInfo()) ;
+                std::string project_name = p_device->Ensemble_Task_Get_Name(GetIdInfo()) ;
 		        ui->label_name->setText(QString::fromUtf8(project_name.c_str()));
 
 		        //qDebug("Project Name = %s", project_name.c_str()) ;
@@ -453,7 +451,7 @@ void FormJobTool::OnUpdateImage(void)
 
 		const int image_type = IMAGE_RGB888 ;
 	    //int get_image_type = 0 ;
-	    p_device->Ensemble_Tool_Get_ObjectImage(GetIdInfo(), image_type+IMAGE_ICON, &image_buf)  ;
+	    p_device->Ensemble_Task_Get_ObjectImage(GetIdInfo(), image_type+IMAGE_ICON, &image_buf)  ;
 
 		CImageBuf2Mat cls_imagebuf2mat ;
 		cv::Mat object_image = cls_imagebuf2mat.Cvt(image_buf) ;

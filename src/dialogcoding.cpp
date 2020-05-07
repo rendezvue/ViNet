@@ -25,7 +25,7 @@ void DialogCoding::OnButtonUpload(void)
 	std::string code ;
 	code = ui->plainTextEdit_code->toPlainText().toStdString();;
 	
-	CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Job_Set_Python_Code(GetId(), code) ;
+    CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Task_Set_Python_Code(GetId(), code) ;
 
 	//Get Code from Ensemble
 	OnButtonUpdate() ;
@@ -33,7 +33,7 @@ void DialogCoding::OnButtonUpload(void)
 
 void DialogCoding::OnButtonDownload(void)
 {
-	const std::string code = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Job_Get_Python_Code(GetId()) ;
+    const std::string code = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Task_Get_Python_Code(GetId()) ;
 	QString qstr_code = QString::fromUtf8(code.c_str());
 	
 	ui->plainTextEdit_code->setPlainText(qstr_code);
@@ -50,13 +50,13 @@ void DialogCoding::OnButtonUploadAndRun(void)
 	OnButtonDownload() ;
 	
 	//Run
-	CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Job_Run_Python_Code(GetId()) ;
+	CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Job_Run(GetId()) ;
 }
 
 void DialogCoding::OnButtonUpdate(void)
 {
 	//Get Code from Ensemble
-	const std::string code = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Job_Get_Python_Code(GetId()) ;
+    const std::string code = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Task_Get_Python_Code(GetId()) ;
 	QString qstr_code = QString::fromUtf8(code.c_str());
 	ui->plainTextEdit_code_ensemble->setPlainText(qstr_code);
 }
@@ -79,7 +79,7 @@ void DialogCoding::showEvent(QShowEvent *ev)
     QDialog::showEvent(ev) ;
 
     //Get Name
-    std::string base_name = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Job_Get_Name(GetId()) ;
+    std::string base_name = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Task_Get_Name(GetId()) ;
     ui->label_name->setText(QString::fromUtf8(base_name.c_str()));
 
 	OnButtonUpdate() ;
@@ -88,7 +88,7 @@ void DialogCoding::showEvent(QShowEvent *ev)
 
 void DialogCoding::OnButtonNameChange(void)
 {
-    std::string base_name = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Job_Get_Name(GetId()) ;
+    std::string base_name = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Task_Get_Name(GetId()) ;
 
     DialogChangeName dlg_change_name ;
 
@@ -103,10 +103,10 @@ void DialogCoding::OnButtonNameChange(void)
 
         if( !change_name.empty() )
         {
-            CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Job_Set_Name(GetId(), change_name) ;
+            CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Task_Set_Name(GetId(), change_name) ;
         }
 
-        base_name = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Job_Get_Name(GetId()) ;
+        base_name = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Task_Get_Name(GetId()) ;
         ui->label_name->setText(QString::fromUtf8(base_name.c_str()));
 
 		emit UpdateBaseName(QString::fromUtf8(base_name.c_str())) ;

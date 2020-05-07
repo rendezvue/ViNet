@@ -101,7 +101,7 @@ void DialogSetToolColor::OnButtonGetImage(void)
 
 	const int image_type = IMAGE_RGB888 ;
     //int get_image_type = 0 ;
-    CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Tool_Option_GetImage(GetId(), image_type, &image_buf)  ;
+    CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Task_Get_Image(GetId(), image_type, &image_buf)  ;
 
     if( image_buf.image_width > 0 && image_buf.image_height > 0 )
     {

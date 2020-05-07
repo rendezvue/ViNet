@@ -48,7 +48,7 @@ void CGetImageThread::run(void)
 	            if( m_i_type == 1 )        //result
 	            {
 	                //ret = if( CEnsemble::getInstance()->GetSelectDevice() ) CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Job_Get_ResultImage(m_str_id, image_type, &get_data_result, &width_result, &height_result) ;
-	                ret += CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Result_Get_Image(m_str_id, image_type, &result_buf) ;
+                    ret += CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Task_Get_Result_Image(m_str_id, image_type, &result_buf) ;
 
 	                ////qDebug("Result Image Size = %d, %d", width_result, height_result) ;
 	            }
@@ -56,7 +56,7 @@ void CGetImageThread::run(void)
 	            {
                     ret = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Source_Get_Image(image_type+IMAGE_ADD_TIME+IMAGE_ADD_SOURCE_INFO, &image_buf) ;
 	                //ret += if( CEnsemble::getInstance()->GetSelectDevice() ) CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Job_Get_ResultImage(m_str_id, image_type, &get_data_result, &width_result, &height_result) ;
-	                ret += CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Result_Get_Image(m_str_id, image_type, &result_buf) ;
+                    ret += CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Task_Get_Result_Image(m_str_id, image_type, &result_buf) ;
 	            }
 	            else
 	            {

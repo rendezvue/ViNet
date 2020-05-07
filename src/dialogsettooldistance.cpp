@@ -34,7 +34,7 @@ void DialogSetToolDistance::showEvent(QShowEvent *ev)
     QDialog::showEvent(ev) ;
 
     //Get Name
-    std::string tool_name = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Tool_Get_Name(GetId()) ;
+    std::string tool_name = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Task_Get_Name(GetId()) ;
     ui->label_name_distance->setText(QString::fromUtf8(tool_name.c_str()));
 
     //qDebug("Tool Name = %s", tool_name.c_str()) ;
@@ -61,7 +61,7 @@ void DialogSetToolDistance::OnButtonGetImage(void)
 
 	const int image_type = IMAGE_RGB888 ;
     //int get_image_type = 0 ;
-    CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Tool_Get_Image(GetId(), image_type, &image_buf)  ;
+    CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Task_Get_Image(GetId(), image_type, &image_buf)  ;
 
     if( image_buf.image_width > 0 && image_buf.image_height > 0 )
     {
@@ -125,7 +125,7 @@ void DialogSetToolDistance::OnButtonGetCalcDistance(void)
 
 void DialogSetToolDistance::OnButtonNameChange(void)
 {
-    std::string tool_name = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Tool_Get_Name(GetId()) ;
+    std::string tool_name = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Task_Get_Name(GetId()) ;
 
     DialogChangeName dlg_change_name ;
 
@@ -142,10 +142,10 @@ void DialogSetToolDistance::OnButtonNameChange(void)
 		
         if( !change_name.empty() )
         {
-            CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Tool_Set_Name(GetId(), change_name) ;
+            CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Task_Set_Name(GetId(), change_name) ;
         }
 
-        tool_name = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Tool_Get_Name(GetId()) ;
+        tool_name = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Task_Get_Name(GetId()) ;
         ui->label_name_distance->setText(QString::fromUtf8(tool_name.c_str()));
 
         //qDebug("Tool Name = %s", tool_name.c_str()) ;

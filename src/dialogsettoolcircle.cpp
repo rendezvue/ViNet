@@ -41,19 +41,19 @@ void DialogSetToolCircle::showEvent(QShowEvent *ev)
     QDialog::showEvent(ev) ;
 
     //Get Name
-    std::string tool_name = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Tool_Get_Name(GetId()) ;
+    std::string tool_name = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Task_Get_Name(GetId()) ;
     ui->label_name_circle->setText(QString::fromUtf8(tool_name.c_str()));
 
     //qDebug("Tool Name = %s", tool_name.c_str()) ;
 	
 	//Get Level 
-    int feature_level = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Tool_Get_FeatureLevel(GetId());
+    int feature_level = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Task_Get_FeatureLevel(GetId());
 	//Set Slider
     ui->horizontalSlider_feature_level_circle->setValue(feature_level) ;
     ui->label_feature_level_circle->setText(QString::number(feature_level));
 
 	//Get Base Level
-	int base_feature_level = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Job_Get_FeatureLevel(GetParentId());
+    int base_feature_level = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Task_Get_FeatureLevel(GetParentId());
 	//Set Slider
 	std::string str_base_feature_level ;
 	str_base_feature_level = "(Base: " + std::to_string(base_feature_level) + ")" ;
@@ -76,7 +76,7 @@ void DialogSetToolCircle::OnButtonGetImage(void)
 
 	const int image_type = IMAGE_RGB888 ;
     //int get_image_type = 0 ;
-    CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Tool_Get_Image(GetId(), image_type, &image_buf)  ;
+    CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Task_Get_Image(GetId(), image_type, &image_buf)  ;
 
     if( image_buf.image_width > 0 && image_buf.image_height > 0 )
     {
@@ -156,7 +156,7 @@ void DialogSetToolCircle::updatePicture(cv::Mat image, cv::Rect rect_user)
 
 void DialogSetToolCircle::OnButtonNameChange(void)
 {
-    std::string tool_name = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Tool_Get_Name(GetId()) ;
+    std::string tool_name = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Task_Get_Name(GetId()) ;
 
     DialogChangeName dlg_change_name ;
 
@@ -173,10 +173,10 @@ void DialogSetToolCircle::OnButtonNameChange(void)
 		
         if( !change_name.empty() )
         {
-            CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Tool_Set_Name(GetId(), change_name) ;
+            CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Task_Set_Name(GetId(), change_name) ;
         }
 
-        tool_name = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Tool_Get_Name(GetId()) ;
+        tool_name = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Task_Get_Name(GetId()) ;
         ui->label_name_circle->setText(QString::fromUtf8(tool_name.c_str()));
 
         //qDebug("Tool Name = %s", tool_name.c_str()) ;
@@ -192,7 +192,7 @@ void DialogSetToolCircle::OnSliderSetFeatureLevel(void)
 
 	//qDebug("%s : SetFeatureLevel = %d", __func__, level) ;
 	//set level
-    CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Tool_Set_FeatureLevel(GetId(), level);
+    CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Task_Set_FeatureLevel(GetId(), level);
 
 	//Update Image
 	//qDebug("%s : GetImage", __func__) ;
@@ -201,7 +201,7 @@ void DialogSetToolCircle::OnSliderSetFeatureLevel(void)
 	//qDebug("%s : GetFeatureLevel", __func__) ;
 	
 	//Get Level 
-    int feature_level = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Tool_Get_FeatureLevel(GetId());
+    int feature_level = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Task_Get_FeatureLevel(GetId());
 
 	//qDebug("%s : GetFeatureLevel = %d", __func__, feature_level) ;
 	
@@ -210,7 +210,7 @@ void DialogSetToolCircle::OnSliderSetFeatureLevel(void)
     ui->label_feature_level_circle->setText(QString::number(feature_level));
 
 	//Get Base Level
-	int base_feature_level = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Job_Get_FeatureLevel(GetParentId());
+    int base_feature_level = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Task_Get_FeatureLevel(GetParentId());
 	//Set Slider
 	std::string str_base_feature_level ;
 	str_base_feature_level = "(Base: " + std::to_string(base_feature_level) + ")" ;
@@ -356,7 +356,7 @@ void DialogSetToolCircle::mouseReleaseEvent(QMouseEvent *event)
 			pt_line_4.x /= (float)label_w ;
 	        pt_line_4.y /= (float)label_h ;
 
-            CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Tool_Set_SelectObject(GetId(), pt_line_1.x, pt_line_1.y, pt_line_2.x, pt_line_2.y, pt_line_3.x, pt_line_3.y, pt_line_4.x, pt_line_4.y, circle_margin) ;
+            CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Find_Object_Set_SelectObject(GetId(), pt_line_1.x, pt_line_1.y, pt_line_2.x, pt_line_2.y, pt_line_3.x, pt_line_3.y, pt_line_4.x, pt_line_4.y, circle_margin) ;
 
 			emit UpdateToolObjectImage();
 		}

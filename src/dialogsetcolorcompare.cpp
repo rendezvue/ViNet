@@ -30,7 +30,7 @@ void DialogSetColorCompare::showEvent(QShowEvent *ev)
 {
     QDialog::showEvent(ev) ;
 
-	const int type = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Info_Get_Type(GetId()) ;
+    const int type = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Task_Get_Type_Info(GetId()) ;
 	int inspect_level = -1 ;
 	int sensitivity_level = -1 ;
 	
@@ -51,7 +51,7 @@ void DialogSetColorCompare::showEvent(QShowEvent *ev)
 
 void DialogSetColorCompare::OnSliderSetInspectThresholdLevel(void)
 {
-	const int type = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Info_Get_Type(GetId()) ;
+    const int type = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Task_Get_Type_Info(GetId()) ;
 
 	//get level
     int level = ui->horizontalSlider_feature_level->value() ;
@@ -83,7 +83,7 @@ void DialogSetColorCompare::OnInspectThresholdLevelSliderMove(int value)
 
 void DialogSetColorCompare::OnSliderSetSensitivityLevel(void)
 {
-	const int type = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Info_Get_Type(GetId()) ;
+    const int type = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Task_Get_Type_Info(GetId()) ;
 
 	//get level
     int level = ui->horizontalSlider_sensitivity->value() ;

@@ -737,7 +737,7 @@ void MainWindow::UpdateJobTree(void)
 					
 					//std::string str_tool_type_name = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Info_Get_ToolTypeName(type) ;
 					std::string str_tool_type_name ;
-					if( p_device ) 	str_tool_type_name = p_device->Ensemble_Info_Get_ToolTypeName(type) ;
+                    if( p_device ) 	str_tool_type_name = p_device->Ensemble_Tool_Get_TypeName(type) ;
 					
                     //qDebug("Job : Type=%d, TypeName=%s, Name=%s", type, str_tool_type_name.c_str(), str_name.c_str()) ;
 
@@ -793,7 +793,7 @@ void MainWindow::UpdateJobTree(void)
 	                    std::string str_name = tool.attribute("Name").value();
 						
 						std::string str_tool_type_name ;
-						if( p_device ) str_tool_type_name = p_device->Ensemble_Info_Get_ToolTypeName(type) ;
+                        if( p_device ) str_tool_type_name = p_device->Ensemble_Tool_Get_TypeName(type) ;
 						
 	                    //qDebug("Tool Type=%d, TypeName=%s, Name=%s", type, str_tool_type_name.c_str(), str_name.c_str()) ;
 
@@ -831,7 +831,7 @@ void MainWindow::UpdateJobTree(void)
 		                    std::string str_option_name = option.attribute("Name").value();
 							
 							std::string str_tool_option_type_name ;
-							if( p_device ) str_tool_option_type_name = p_device->Ensemble_Info_Get_ToolTypeName(option_type) ;
+                            if( p_device ) str_tool_option_type_name = p_device->Ensemble_Tool_Get_TypeName(option_type) ;
 							
 		                    //qDebug("Tool Option Type=%d, TypeName=%s, Name=%s", option_type, str_tool_option_type_name.c_str(), str_option_name.c_str()) ;
 

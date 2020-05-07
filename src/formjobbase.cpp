@@ -59,7 +59,7 @@ void FormJobBase::ShowContextMenu(const QPoint &pos)
 		QMenu contextMenu(tr("Context menu"), this);
 
 		//Get Sub Job List
-		const std::string str_addable_job_list_xml = p_device->Ensemble_Info_Get_Addable_Subjob_List_Xml(GetIdInfo()) ;
+        const std::string str_addable_job_list_xml = p_device->Ensemble_Task_Get_Addable_Subjob_List_Info_Xml(GetIdInfo()) ;
 
 		//parsing
 		CParsingAddableJobList cls_parsing_addable_job_list ;
@@ -274,7 +274,7 @@ void FormJobBase::OnUpdateImage(void)
 
 		const int image_type = IMAGE_RGB888 ;
 	    //int get_image_type = 0 ;
-	   p_device->Ensemble_Job_Get_Image(GetIdInfo(), image_type+IMAGE_THUMBNAIL+IMAGE_ALL_AREA, &image_buf)  ;
+	   p_device->Ensemble_Task_Get_Image(GetIdInfo(), image_type+IMAGE_THUMBNAIL+IMAGE_ALL_AREA, &image_buf)  ;
 
 		CImageBuf2Mat cls_imagebuf2mat ;
 		cv::Mat bae_image= cls_imagebuf2mat.Cvt(image_buf) ;
@@ -300,7 +300,7 @@ void FormJobBase::OnUpdateImage(void)
 	    image_buf.image_height = 0 ;
 	    image_buf.image_type = 0 ;
 
-	    int object_image_size = p_device->Ensemble_Job_Get_ObjectImage(GetIdInfo(), image_type+IMAGE_THUMBNAIL, &image_buf)  ;
+	    int object_image_size = p_device->Ensemble_Task_Get_ObjectImage(GetIdInfo(), image_type+IMAGE_THUMBNAIL, &image_buf)  ;
 
 		//qDebug("%s - %d 4", __func__, __LINE__) ;
 

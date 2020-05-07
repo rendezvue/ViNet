@@ -51,7 +51,7 @@ void DialogSetDetectPlane::showEvent(QShowEvent *ev)
     QDialog::showEvent(ev) ;
 
     //Get Name
-    std::string base_name = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Job_Get_Name(GetId()) ;
+    std::string base_name = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Task_Get_Name(GetId()) ;
     ui->label_name->setText(QString::fromUtf8(base_name.c_str()));
 
     OnButtonGetImage() ;	
@@ -69,7 +69,7 @@ void DialogSetDetectPlane::OnButtonGetImage(void)
 
 	const int image_type = ImageTypeOption::IMAGE_RGB888 ;
     //int get_image_type = 0 ;
-    CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Job_Get_Image(GetId(), image_type, &image_buf)  ;
+    CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Task_Get_Image(GetId(), image_type, &image_buf)  ;
 	
     if( image_buf.image_width > 0 && image_buf.image_height > 0 )
     {
@@ -167,7 +167,7 @@ void DialogSetDetectPlane::OnButtonZoomReset(void)
 
 void DialogSetDetectPlane::OnButtonNameChange(void)
 {
-    std::string base_name = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Job_Get_Name(GetId()) ;
+    std::string base_name = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Task_Get_Name(GetId()) ;
 
     DialogChangeName dlg_change_name ;
 
@@ -182,10 +182,10 @@ void DialogSetDetectPlane::OnButtonNameChange(void)
 
         if( !change_name.empty() )
         {
-            CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Job_Set_Name(GetId(), change_name) ;
+            CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Task_Set_Name(GetId(), change_name) ;
         }
 
-        base_name = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Job_Get_Name(GetId()) ;
+        base_name = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Task_Get_Name(GetId()) ;
         ui->label_name->setText(QString::fromUtf8(base_name.c_str()));
 
 		emit UpdateBaseName(QString::fromUtf8(base_name.c_str())) ;
@@ -199,7 +199,7 @@ void DialogSetDetectPlane::OnButtonMaskPush(void)
 
 void DialogSetDetectPlane::OnButtonMaskPop(void)
 {
-	CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Job_Undo_MaskArea(GetId()) ;
+    CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Task_Undo_MaskArea(GetId()) ;
 
 	OnButtonGetImage() ;
 
@@ -208,7 +208,7 @@ void DialogSetDetectPlane::OnButtonMaskPop(void)
 
 void DialogSetDetectPlane::OnButtonMaskClear(void)
 {
-	CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Job_Del_MaskArea(GetId()) ;
+    CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Task_Del_MaskArea(GetId()) ;
 
 	OnButtonGetImage() ;
 
@@ -301,14 +301,28 @@ void DialogSetDetectPlane::mouseReleaseEvent(QMouseEvent *event)
             if (ui->checkBox_mask_enable_inside->isChecked())	b_enable_inside = false ;
             else												b_enable_inside = true ;
 				
-            CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Job_Set_MaskArea(GetId(), f_x, f_y, f_w, f_h, b_enable_inside) ;
+            CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Task_Set_MaskArea(GetId(), f_x, f_y, f_w, f_h, b_enable_inside) ;
 
 			emit UpdateBaseImage();
         }
 		else if( set_status == SetBaseStatus::SET_OBJECT)
 		{
-			//SelectObject
-			CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Job_Set_SelectObject(GetId(), f_x, f_y, f_w, f_h) ;
+            cv::Point2f pt_rotated_roi_1 = cv::Point2f(rect_user.x, rect_user.y) ;
+            cv::Point2f pt_rotated_roi_2 = cv::Point2f(rect_user.x + rect_user.width, rect_user.y) ;
+            cv::Point2f pt_rotated_roi_3 = cv::Point2f(rect_user.x + rect_user.width, rect_user.y + rect_user.height) ;
+            cv::Point2f pt_rotated_roi_4 = cv::Point2f(rect_user.x, rect_user.y + rect_user.height) ;
+
+            pt_rotated_roi_1.x /= (float)label_w ;
+            pt_rotated_roi_1.y /= (float)label_h ;
+            pt_rotated_roi_2.x /= (float)label_w ;
+            pt_rotated_roi_2.y /= (float)label_h ;
+            pt_rotated_roi_3.x /= (float)label_w ;
+            pt_rotated_roi_3.y /= (float)label_h ;
+            pt_rotated_roi_4.x /= (float)label_w ;
+            pt_rotated_roi_4.y /= (float)label_h ;
+
+            //SelectObject
+            CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Find_Object_Set_SelectObject(GetId(), pt_rotated_roi_1.x, pt_rotated_roi_1.y, pt_rotated_roi_2.x, pt_rotated_roi_2.y, pt_rotated_roi_3.x, pt_rotated_roi_3.y, pt_rotated_roi_4.x, pt_rotated_roi_4.y ) ;
 
 			emit UpdateBaseImage();
 		}
@@ -322,15 +336,14 @@ void DialogSetDetectPlane::mouseReleaseEvent(QMouseEvent *event)
         	f_y = (float)point.y() / (float)label_h ;
 		
 			//SelectObject
-			//CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Job_Set_SelectObject(GetId(), f_x, f_y, f_w, f_h) ;
-            CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Job_Set_Ref_Point(GetId(), f_x, f_y) ;
+            CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Find_Object_Set_Ref_Point(GetId(), f_x, f_y) ;
 
 			emit UpdateBaseImage();
 		}
 		else if( set_status == SetBaseStatus::SET_ERASE)
 		{
 			//SelectObject
-			CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Job_Set_Erase(GetId(), f_x, f_y, f_w, f_h) ;
+            CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Job_Set_Feature_Erase(GetId(), f_x, f_y, f_w, f_h) ;
 
 			emit UpdateBaseImage();
 		}
@@ -390,7 +403,7 @@ void DialogSetDetectPlane::OnButtonSelectObject(void)
 
 void DialogSetDetectPlane::OnButtonResetObject(void)
 {
-	CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Job_Del_SelectObject(GetId()) ;
+    CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Find_Object_Del_SelectObject(GetId()) ;
 	
     OnButtonGetImage() ;
 }

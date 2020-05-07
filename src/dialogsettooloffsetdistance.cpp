@@ -50,7 +50,7 @@ void DialogSetToolOffsetDistance::showEvent(QShowEvent *ev)
     QDialog::showEvent(ev) ;
 
     //Get Name
-    std::string tool_name = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Tool_Get_Name(GetId()) ;
+    std::string tool_name = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Task_Get_Name(GetId()) ;
     ui->label_name->setText(QString::fromUtf8(tool_name.c_str()));
 
     //qDebug("Tool Name = %s", tool_name.c_str()) ;
@@ -83,7 +83,7 @@ void DialogSetToolOffsetDistance::OnButtonGetImage(void)
 
 	const int image_type = IMAGE_RGB888 ;
     //int get_image_type = 0 ;
-    CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Tool_Get_Image(GetId(), image_type, &image_buf)  ;
+    CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Task_Get_Image(GetId(), image_type, &image_buf)  ;
 
     if( image_buf.image_width > 0 && image_buf.image_height > 0 )
     {
@@ -161,7 +161,7 @@ void DialogSetToolOffsetDistance::updatePicture(cv::Mat image, cv::Rect rect_use
 
 void DialogSetToolOffsetDistance::OnButtonNameChange(void)
 {
-    std::string tool_name = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Tool_Get_Name(GetId()) ;
+    std::string tool_name = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Task_Get_Name(GetId()) ;
 
     DialogChangeName dlg_change_name ;
 
@@ -178,10 +178,10 @@ void DialogSetToolOffsetDistance::OnButtonNameChange(void)
 		
         if( !change_name.empty() )
         {
-            CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Tool_Set_Name(GetId(), change_name) ;
+            CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Task_Set_Name(GetId(), change_name) ;
         }
 
-        tool_name = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Tool_Get_Name(GetId()) ;
+        tool_name = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Task_Get_Name(GetId()) ;
         ui->label_name->setText(QString::fromUtf8(tool_name.c_str()));
 
         //qDebug("Tool Name = %s", tool_name.c_str()) ;
@@ -297,9 +297,23 @@ void DialogSetToolOffsetDistance::mouseReleaseEvent(QMouseEvent *event)
         }
 		else if( set_status == SetBaseStatus::SET_OBJECT)
 		{
-			//SelectObject
-            CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Tool_Set_SelectObject(GetId(), f_x, f_y, f_w, f_h) ;
+			cv::Point2f pt_rotated_roi_1 = cv::Point2f(rect_user.x, rect_user.y) ;
+			cv::Point2f pt_rotated_roi_2 = cv::Point2f(rect_user.x + rect_user.width, rect_user.y) ;
+			cv::Point2f pt_rotated_roi_3 = cv::Point2f(rect_user.x + rect_user.width, rect_user.y + rect_user.height) ;
+			cv::Point2f pt_rotated_roi_4 = cv::Point2f(rect_user.x, rect_user.y + rect_user.height) ;			
 
+			pt_rotated_roi_1.x /= (float)label_w ;
+	        pt_rotated_roi_1.y /= (float)label_h ;
+			pt_rotated_roi_2.x /= (float)label_w ;
+	        pt_rotated_roi_2.y /= (float)label_h ;
+			pt_rotated_roi_3.x /= (float)label_w ;
+	        pt_rotated_roi_3.y /= (float)label_h ;
+			pt_rotated_roi_4.x /= (float)label_w ;
+	        pt_rotated_roi_4.y /= (float)label_h ;			
+			
+			//SelectObject
+            CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Find_Object_Set_SelectObject(GetId(), pt_rotated_roi_1.x, pt_rotated_roi_1.y, pt_rotated_roi_2.x, pt_rotated_roi_2.y, pt_rotated_roi_3.x, pt_rotated_roi_3.y, pt_rotated_roi_4.x, pt_rotated_roi_4.y ) ;
+			
 			OnButtonRegionGet() ;
 			
 			emit UpdateToolObjectImage();
@@ -315,7 +329,6 @@ void DialogSetToolOffsetDistance::mouseReleaseEvent(QMouseEvent *event)
         	f_y = (float)point.y() / (float)label_h ;
 		
 			//SelectObject
-			//CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Job_Set_SelectObject(GetId(), f_x, f_y, f_w, f_h) ;
             CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Tool_Set_Ref_Point(GetId(), f_x, f_y) ;
 
             emit UpdateToolObjectImage();

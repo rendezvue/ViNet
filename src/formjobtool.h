@@ -101,7 +101,6 @@ private:
 	DialogSetToolOffsetDistance m_dlg_set_tool_offset_distance ;
 	
 	int m_type ;
-	int m_i_option_count ;
 
 signals:
 	void UpdateList(void);

@@ -27,7 +27,7 @@ void DialogSetToolCrack::showEvent(QShowEvent *ev)
 {
     QDialog::showEvent(ev) ;
 
-	const int type = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Info_Get_Type(GetId()) ;
+    const int type = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Task_Get_Type_Info(GetId()) ;
 	int inspect_level = -1 ;
 	
 	//Get Level 
@@ -47,7 +47,7 @@ void DialogSetToolCrack::showEvent(QShowEvent *ev)
 
 void DialogSetToolCrack::OnSliderSetFeatureLevel(void)
 {
-	const int type = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Info_Get_Type(GetId()) ;
+    const int type = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Task_Get_Type_Info(GetId()) ;
 
 	//get level
     int level = ui->horizontalSlider_feature_level->value() ;

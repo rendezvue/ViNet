@@ -41,7 +41,7 @@ void FormProject::ShowContextMenu(const QPoint &pos)
 		QMenu contextMenu(tr("Context menu"), this);
 
 		//Get Sub Job List
-		const std::string str_addable_job_list_xml = p_device->Ensemble_Info_Get_Addable_Subjob_List_Xml(GetIdInfo()) ;
+        const std::string str_addable_job_list_xml = p_device->Ensemble_Task_Get_Addable_Subjob_List_Info_Xml(GetIdInfo()) ;
 
 		//parsing
 		CParsingAddableJobList cls_parsing_addable_job_list ;
@@ -213,10 +213,10 @@ void FormProject::OnButtonSetName(void)
 			
 	        if( !change_name.empty() )
 	        {
-	           p_device->Ensemble_Project_Set_Name(GetIdInfo(), change_name) ;
+	           p_device->Ensemble_Task_Set_Name(GetIdInfo(), change_name) ;
 	        }
 
-	        std::string project_name = p_device->Ensemble_Project_Get_Name(GetIdInfo()) ;
+            std::string project_name = p_device->Ensemble_Task_Get_Name(GetIdInfo()) ;
 	        ui->label_name->setText(QString::fromUtf8(project_name.c_str()));
 
 	        //qDebug("Project Name = %s", project_name.c_str()) ;

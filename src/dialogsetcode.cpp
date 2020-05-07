@@ -37,7 +37,7 @@ void DialogSetCode::showEvent(QShowEvent *ev)
     QDialog::showEvent(ev) ;
 
     //Get Name
-    std::string tool_name = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Tool_Get_Name(GetId()) ;
+    std::string tool_name = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Task_Get_Name(GetId()) ;
     ui->label_name->setText(QString::fromUtf8(tool_name.c_str()));
 
     //qDebug("Tool Name = %s", tool_name.c_str()) ;
@@ -61,7 +61,7 @@ void DialogSetCode::OnButtonGetImage(void)
 
     int image_type = IMAGE_RGB888 ;
     int get_image_type = 0 ;
-    CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Tool_Get_Image(GetId(), image_type, &image_buf)  ;
+    CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Task_Get_Image(GetId(), image_type, &image_buf)  ;
 
     if( image_buf.image_width > 0 && image_buf.image_height > 0 )
     {
@@ -104,7 +104,7 @@ void DialogSetCode::OnButtonGetImage(void)
     image_type = IMAGE_RGB888 ;
     image_type += IMAGE_ORI_SIZE ;
     //get_image_type = 0 ;
-    int ret_image_size = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Tool_Get_ObjectImage(GetId(), image_type, &image_buf)  ;
+    int ret_image_size = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Task_Get_ObjectImage(GetId(), image_type, &image_buf)  ;
 
 	cv::Mat object_image ;
     if( image_buf.image_width > 0 && image_buf.image_height > 0 )
@@ -214,7 +214,7 @@ void DialogSetCode::SetObjectImage(cv::Mat image)
 
 void DialogSetCode::OnButtonNameChange(void)
 {
-    std::string tool_name = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Tool_Get_Name(GetId()) ;
+    std::string tool_name = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Task_Get_Name(GetId()) ;
 
     DialogChangeName dlg_change_name ;
 
@@ -231,10 +231,10 @@ void DialogSetCode::OnButtonNameChange(void)
 		
         if( !change_name.empty() )
         {
-            CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Tool_Set_Name(GetId(), change_name) ;
+            CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Task_Set_Name(GetId(), change_name) ;
         }
 
-        tool_name = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Tool_Get_Name(GetId()) ;
+        tool_name = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Task_Get_Name(GetId()) ;
         ui->label_name->setText(QString::fromUtf8(tool_name.c_str()));
 
         //qDebug("Tool Name = %s", tool_name.c_str()) ;
