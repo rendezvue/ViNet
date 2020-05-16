@@ -44,6 +44,12 @@ DialogSetBase::DialogSetBase(QWidget *parent) :
     connect(ui->pushButton_detect_margin_get, SIGNAL(clicked()), this,  SLOT(OnButtonGetDetectOptionMargin())) ;
     connect(ui->pushButton_detect_threshold_get, SIGNAL(clicked()), this,  SLOT(OnButtonGetDetectOptionThreshold())) ;
     connect(ui->pushButton_detect_count_get, SIGNAL(clicked()), this,  SLOT(OnButtonGetDetectOptionCount())) ;
+
+	//scale detect
+	connect(ui->checkBox_scale_enable, SIGNAL(clicked(bool)), this,  SLOT(OnCheckScaleEnable(bool))) ;
+	connect(ui->pushButton_scale_get, SIGNAL(clicked()), this,  SLOT(OnButtonGetScaleOption())) ;
+	connect(ui->pushButton_scale_set, SIGNAL(clicked()), this,  SLOT(OnButtonSetScaleOption())) ;
+	
 	//constraint angle
 	connect(ui->pushButton_constraint_angle_get, SIGNAL(clicked()), this,  SLOT(OnButtonGetConstraintAngle())) ;
 	connect(ui->pushButton_constraint_angle_set, SIGNAL(clicked()), this,  SLOT(OnButtonSetConstraintAngle())) ;
@@ -97,6 +103,7 @@ void DialogSetBase::showEvent(QShowEvent *ev)
     OnButtonGetDetectOptionThreshold(); ;
     OnButtonGetDetectOptionCount() ;
 	OnButtonGetConstraintAngle() ;
+	OnButtonGetScaleOption() ;
 	
 #if 0
 	int detect_option_margin = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Job_Get_DetectOption(GetId(), DetectOption::DETECT_OPTION_MARGIN) ;
@@ -618,6 +625,48 @@ void DialogSetBase::OnCheckFeatureUseCustomOption(bool checked)
 	}
 
 	OnButtonGetImage() ;
+}
+
+void DialogSetBase::OnCheckScaleEnable(bool checked)
+{
+	//enable
+	CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Find_Object_Set_DetectOption(GetId(), DetectOption::DETECT_OPTION_SCALE_ENABLE, checked) ;
+
+	OnButtonGetScaleOption() ;
+}
+
+void DialogSetBase::OnButtonGetScaleOption(void)
+{
+	//Get Detect Option Value
+	//enable
+	int detect_option_scale_enable = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Find_Object_Get_DetectOption(GetId(), DetectOption::DETECT_OPTION_SCALE_ENABLE) ;
+	ui->checkBox_scale_enable->setChecked(detect_option_scale_enable);
+	
+	//value
+    float detect_option_scale_min = 0.0 ;
+    float detect_option_scale_max = 0.0 ;
+	float detect_option_scale_precision = 0.0 ;
+
+	CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Find_Object_Get_DetectOption_Scale_Value(GetId(), &detect_option_scale_min, &detect_option_scale_max, &detect_option_scale_precision) ;
+	
+    ui->lineEdit_scale_min->setText(QString::number(detect_option_scale_min)) ;
+	ui->lineEdit_scale_max->setText(QString::number(detect_option_scale_max)) ;
+	ui->lineEdit_scale_precision->setText(QString::number(detect_option_scale_precision)) ;
+}
+
+void DialogSetBase::OnButtonSetScaleOption(void)
+{
+	//Set Detect Option Value
+	//enable
+	CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Find_Object_Set_DetectOption(GetId(), DetectOption::DETECT_OPTION_SCALE_ENABLE, ui->checkBox_scale_enable->isChecked()) ;
+
+	//value
+    QString qstr_detect_option_scale_min = ui->lineEdit_scale_min->text() ;
+	QString qstr_detect_option_scale_max = ui->lineEdit_scale_max->text() ;
+	QString qstr_detect_option_scale_precision = ui->lineEdit_scale_precision->text() ;
+    CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Find_Object_Set_DetectOption_Scale_Value(GetId(), qstr_detect_option_scale_min.toFloat(), qstr_detect_option_scale_max.toFloat(), qstr_detect_option_scale_precision.toFloat()) ;
+
+    OnButtonGetScaleOption() ;
 }
 
 void DialogSetBase::OnButtonGetConstraintAngle(void)

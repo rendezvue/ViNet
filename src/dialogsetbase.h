@@ -85,6 +85,9 @@ public slots:
 	void OnButtonSelectRefPoint(void) ;
 	void OnButtonResetRefPoint(void) ;
 
+	void OnButtonGetScaleOption(void) ;
+	void OnButtonSetScaleOption(void) ;
+	
 	void OnButtonGetConstraintAngle(void) ;
 	void OnButtonSetConstraintAngle(void) ;
 
@@ -95,6 +98,7 @@ public slots:
     void OnButtonGetDetectOptionThreshold(void) ;
     void OnButtonGetDetectOptionCount(void) ;
 
+	void OnCheckScaleEnable(bool checked) ;
     void OnCheckFeatureUseCustomOption(bool checked) ;
 
 	void UpdateImage(void) ;
