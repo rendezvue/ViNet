@@ -35,6 +35,7 @@ public slots:
 	void OnSensitivitySliderMove(int value) ;
 	void OnSliderSetInspectThresholdLevel(void) ;
 	void OnInspectThresholdLevelSliderMove(int value) ;
+	void OnCheckUseAmp(bool checked) ;
 
 };
 

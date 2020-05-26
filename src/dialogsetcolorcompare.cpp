@@ -13,6 +13,9 @@ DialogSetColorCompare::DialogSetColorCompare(QWidget *parent) :
 	
 	connect(ui->horizontalSlider_feature_level, SIGNAL(sliderReleased()), this, SLOT(OnSliderSetInspectThresholdLevel()));
 	connect(ui->horizontalSlider_feature_level, SIGNAL(sliderMoved(int)), this, SLOT(OnInspectThresholdLevelSliderMove(int)));
+
+	//use amp check box
+    connect(ui->checkBox_Amplifier, SIGNAL(clicked(bool)), this,  SLOT(OnCheckUseAmp(bool))) ;
 }
 
 DialogSetColorCompare::~DialogSetColorCompare()
@@ -47,6 +50,10 @@ void DialogSetColorCompare::showEvent(QShowEvent *ev)
 
 	ui->horizontalSlider_sensitivity->setValue(sensitivity_level) ;
 	ui->label_sensitivity_level->setText(QString::number(sensitivity_level));
+
+	//Get Use Amp
+	int use_amp = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Tool_Option_ColorCompare_Get_UseAmplifier(GetId());
+	ui->checkBox_Amplifier->setChecked(use_amp);
 }
 
 void DialogSetColorCompare::OnSliderSetInspectThresholdLevel(void)
@@ -111,5 +118,14 @@ void DialogSetColorCompare::OnSliderSetSensitivityLevel(void)
 void DialogSetColorCompare::OnSensitivitySliderMove(int value)
 {
 	ui->label_sensitivity_level->setText(QString::number(value));
+}
+
+void DialogSetColorCompare::OnCheckUseAmp(bool checked)
+{
+    //qDebug("Check = %d : Use Custom Feature", checked) ;
+
+    CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Tool_Option_ColorCompare_Set_UseAmplifier(GetId(), checked) ;
+    int use_amp = CEnsemble::getInstance()->GetSelectDevice()->Ensemble_Tool_Option_ColorCompare_Get_UseAmplifier(GetId()) ;
+	ui->checkBox_Amplifier->setChecked(use_amp);
 }
 
