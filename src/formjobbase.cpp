@@ -164,6 +164,7 @@ void FormJobBase::OnButtonRun(void)
 
 	if( p_device )
 	{
+        p_device->Ensemble_Camera_Capture_SW_Trigger();
 		std::string str_result_xml = p_device->Ensemble_Job_Run(GetIdInfo()) ;
 
 		//qDebug("Job Run = %s", str_result_xml.c_str()) ;

@@ -242,6 +242,7 @@ void FormProject::OnButtonRun(void)
 
 	if( p_device )
 	{ 
+        p_device->Ensemble_Camera_Capture_SW_Trigger();
 		std::string str_result_xml = p_device->Ensemble_Poject_Run(GetIdInfo()) ;
 
 		//qDebug("Project Result = %s", str_result_xml.c_str()) ;
